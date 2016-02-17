@@ -2,6 +2,7 @@ import {createApp} from 'mantra-core';
 import initContext from './configs/context';
 
 // modules
+import testModule from './modules/test';
 import coreModule from './modules/core';
 import _usersModule from './modules/_users';
 
@@ -15,5 +16,6 @@ const app = createApp(context);
 // Context and all actions (even from other modules) are available to modules
 app.loadModule(coreModule);
 app.loadModule(_usersModule);
+app.loadModule(testModule);
 
 app.init();
