@@ -1,3 +1,4 @@
+// All actions are automatically passed the context as the first arg
 export default {
   create({Meteor, LocalState, FlowRouter}, title, content) {
     if (!title || !content) {

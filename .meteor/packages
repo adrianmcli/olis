@@ -23,3 +23,6 @@ check
 random
 
 meteortoys:allthings
+accounts-base
+accounts-ui
+accounts-password

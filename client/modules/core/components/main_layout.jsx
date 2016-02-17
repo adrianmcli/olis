@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Layout = ({content = () => null }) => (
+const Layout = ({content = () => null}) => (
   <div>
     <header>
     <h1>Olis</h1>
