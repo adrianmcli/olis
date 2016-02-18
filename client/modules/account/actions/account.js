@@ -12,7 +12,7 @@ export default {
       if (err && err.reason) { LocalState.set('REGISTRATION_ERROR', err.reason); }
       else {
         Meteor.loginWithPassword(user.username, user.password, (_err) => {
-          if (_err && _err.reason) { LocalState.set('REGISTRATION_ERROR', err.reason); }
+          if (_err && _err.reason) { LocalState.set('REGISTRATION_ERROR', _err.reason); }
           else { FlowRouter.go('/home'); }
         });
       }
