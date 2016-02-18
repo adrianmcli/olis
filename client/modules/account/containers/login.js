@@ -2,8 +2,21 @@ import {useDeps, composeAll} from 'mantra-core';
 import Login from '../components/login.jsx';
 
 export const depsMapper = (context, actions) => ({
-  login: actions.account.login
+  context: () => context,
+  login: actions.account.login,
+  clearErrors: actions.account.clearErrors
 });
+
+export const composer = ({context, clearErrors}, onData) => {
+  const {LocalState} = context();
+  const regError = LocalState.get('REGISTRATION_ERROR');
+  const loginError = LocalState.get('LOGIN_ERROR');
+
+  onData(null, {regError, loginError});
+
+  // clearErrors when unmounting the component
+  return clearErrors;
+};
 
 export default composeAll(
   useDeps(depsMapper)
