@@ -20,12 +20,13 @@ export const depsMapper = (context) => ({
 //   actions: () => actions
 // });
 
+// First arg is from the obj returned by depsMapper
 export const composer = ({context, test}, onData) => {
   const {Meteor, Collections} = context();
 
   if (Meteor.subscribe('posts.list').ready()) {
     const posts = Collections.Posts.find().fetch();
-    onData(null, {posts});
+    onData(null, {posts}); // posts is provided to the PostList as props
   }
 };
 
