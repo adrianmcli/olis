@@ -9,9 +9,10 @@ import {Meteor} from 'meteor/meteor';
   Trying to set a value of the "serverOnly" field that does not exist in the "X" class
 */
 export default function () {
-  Meteor.publish('teams.list', function () {
+  const TEAMS_LIST = 'teams.list';
+  Meteor.publish(TEAMS_LIST, function () {
     if (!this.userId) {
-      throw new Meteor.Error('teams.list', 'Must be logged in to get teams list.');
+      throw new Meteor.Error(TEAMS_LIST, 'Must be logged in to get teams list.');
     }
     return Teams.find({userIds: this.userId});
   });

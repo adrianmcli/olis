@@ -7,5 +7,11 @@ export default {
         console.log(team);
       }
     });
+  },
+
+  select({LocalState}, teamId) {
+    LocalState.set('teamId', teamId);
+    console.log('LocalState');
+    console.log(LocalState);
   }
 };

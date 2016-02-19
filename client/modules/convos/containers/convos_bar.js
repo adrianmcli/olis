@@ -1,24 +1,24 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import TeamsBar from '../components/teams_bar.jsx';
+import ConvosBar from '../components/convos_bar.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  addTeam: actions.teams.add,
-  selectTeam: actions.teams.select,
-  teamId: context.LocalState.get('teamId')
+  addConvo: actions.convos.add,
+  selectConvo: actions.convos.select
 });
 
 export const composer = ({context}, onData) => {
   const {Meteor, Collections} = context();
 
-  if (Meteor.subscribe('teams.list').ready()) {
-    const teams = Collections.Teams.find().fetch();
-    onData(null, {teams});
+  // If you only see loading, make sure you added the collection to the index
+  if (Meteor.subscribe('convos.list').ready()) {
+    const convos = Collections.Convos.find().fetch();
+    onData(null, {convos});
   }
 };
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(TeamsBar);
+)(ConvosBar);
