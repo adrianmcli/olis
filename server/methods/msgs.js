@@ -23,7 +23,7 @@ export default function () {
       Meteor._sleepForMs(5000);
 
       const msg = new Message();
-      msg.set({text, convoId});
+      msg.set({text, userId: this.userId, convoId});
       msg.save();
       return msg; // Will return _id, and the server side only stuff too
     }

@@ -22,7 +22,7 @@ export default function ({Meteor, Collections}) {
       });
 
       const msg = new Collections.Message();
-      msg.set({text, convoId});
+      msg.set({text, userId: Meteor.userId(), convoId});
       msg.save();
     }
   });
