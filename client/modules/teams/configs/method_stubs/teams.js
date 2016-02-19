@@ -2,10 +2,11 @@ import {check} from 'meteor/check';
 import R from 'ramda';
 
 export default function ({Meteor, Collections}) {
+  const TEAMS_ADD = 'teams.add';
   Meteor.methods({
-    'teams.insert'({name, userIds}) {
+    'teams.add'({name, userIds}) {
       if (!Meteor.userId) {
-        throw new Meteor.Error('teams.insert', 'Must be logged in to insert team.');
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
       }
 
       check(arguments[0], {
