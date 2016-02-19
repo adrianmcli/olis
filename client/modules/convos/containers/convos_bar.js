@@ -9,13 +9,17 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, Collections} = context();
+  const {Meteor, LocalState, Collections} = context();
+  const teamId = LocalState.get('teamId');
 
   // If you only see loading, make sure you added the collection to the index
-  if (Meteor.subscribe('convos.list').ready()) {
-    const convos = Collections.Convos.find().fetch();
-    onData(null, {convos});
+  if (teamId) {
+    if (Meteor.subscribe('convos.list', {teamId}).ready()) {
+      const convos = Collections.Convos.find().fetch();
+      onData(null, {convos});
+    }
   }
+  else { onData(null, {convos: []}); }
 };
 
 export default composeAll(

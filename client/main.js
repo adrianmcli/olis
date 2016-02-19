@@ -7,6 +7,7 @@ import coreModule from './modules/core';
 import accountModule from './modules/account';
 import teamsModule from './modules/teams';
 import convosModule from './modules/convos';
+import msgsModule from './modules/messages';
 
 // init context
 const context = initContext();
@@ -20,6 +21,7 @@ app.loadModule(coreModule);
 app.loadModule(accountModule);
 app.loadModule(teamsModule);
 app.loadModule(convosModule);
+app.loadModule(msgsModule);
 
 app.loadModule(testModule);
 

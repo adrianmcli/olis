@@ -6,7 +6,7 @@ const TeamsBar = ({teams, addTeam, selectTeam}) => (
     <button onClick={addTeam}>Add</button>
     {
       teams.map(team => {
-        return <div onClick={selectTeam.bind(this, team._id)}>{team.name}</div>;
+        return <div onClick={selectTeam.bind(this, team._id)}>{team.name} {team._id}</div>;
       })
     }
   </div>

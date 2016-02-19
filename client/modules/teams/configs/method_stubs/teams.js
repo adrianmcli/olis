@@ -13,7 +13,7 @@ export default function ({Meteor, Collections}) {
         userIds: [ String ]
       });
 
-      const newUserIds = [ this.userId, ...userIds ];
+      const newUserIds = [ Meteor.userId(), ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
 
       const team = new Collections.Team();

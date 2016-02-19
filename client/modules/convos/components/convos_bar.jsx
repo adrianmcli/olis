@@ -6,7 +6,7 @@ const ConvosBar = ({convos, addConvo, selectConvo}) => (
     <button onClick={addConvo.bind(null)}>Add</button>
     {
       convos.map(convo => {
-        return <div onClick={selectConvo.bind(null, convo._id)}>{convo.name}</div>;
+        return <div onClick={selectConvo.bind(null, convo._id)}>{convo.name} {convo._id}</div>;
       })
     }
   </div>
