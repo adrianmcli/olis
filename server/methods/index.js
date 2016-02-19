@@ -1,7 +1,9 @@
-import posts from './posts';
+import posts from './posts'; // Test
 import account from './account';
+import teams from './teams';
 
 export default function () {
-  posts();
+  posts(); // Test
   account();
+  teams();
 }

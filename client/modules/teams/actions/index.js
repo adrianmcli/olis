@@ -1,5 +1,5 @@
-// import teams from './teams';
+import teams from './teams';
 
 export default {
-
+  teams
 };

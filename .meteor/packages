@@ -22,7 +22,14 @@ audit-argument-checks
 check
 random
 
+jagi:astronomy
+jagi:astronomy-slug-behavior
+jagi:astronomy-timestamp-behavior
+jagi:astronomy-validators
+
 meteortoys:allthings
 accounts-base
 accounts-ui
 accounts-password
+
+alanning:roles

@@ -3,15 +3,16 @@ import TeamsBar from '../components/teams_bar.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  actions: () => actions
+  actions: () => actions,
+  addTeam: actions.teams.add
 });
 
 export const composer = ({context}, onData) => {
   const {Meteor, Collections} = context();
 
   if (Meteor.subscribe('teams.list').ready()) {
-    const posts = Collections.Teams.find().fetch();
-    onData(null, {posts});
+    const teams = Collections.Teams.find().fetch();
+    onData(null, {teams});
   }
 };
 
