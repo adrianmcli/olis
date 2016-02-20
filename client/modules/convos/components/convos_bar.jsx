@@ -1,8 +1,8 @@
 import React from 'react';
 
-const ConvosBar = ({convos, addConvo, selectConvo}) => (
+const ConvosBar = ({context, convos, addConvo, selectConvo}) => (
   <div>
-    <h2>Convos</h2>
+    <h2>Convos {context().LocalState.get('convoId')}</h2>
     <button onClick={addConvo.bind(null)}>Add</button>
     {
       convos.map(convo => {

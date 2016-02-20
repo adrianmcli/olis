@@ -11,5 +11,9 @@ export default {
 
   select({LocalState}, convoId) {
     LocalState.set('convoId', convoId);
+  },
+
+  addMembers(context, convoId, userIds) {
+    console.log('actions.convos.addMembers');
   }
 };

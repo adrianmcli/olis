@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {Team} from '../../lib/collections';
+import {Teams, Team} from '../../lib/collections';
 import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
@@ -35,6 +35,35 @@ export default function () {
       Roles.addUsersToRoles(userIds, [ 'member' ], team._id);
 
       return team; // Will return _id, and the server side only stuff too
+    }
+  });
+
+  const TEAMS_ADD_MEMBERS = 'teams.addMembers';
+  Meteor.methods({
+    'teams.addMembers'({teamId, userIds}) {
+      check(arguments[0], {
+        teamId: String,
+        userIds: [ String ]
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must add members to an existing team.');
+      }
+
+      Meteor._sleepForMs(3000);
+
+      Roles.addUsersToRoles(userIds, [ 'member' ], teamId);
+
+      const newUserIds = [ ...team.userIds, ...userIds ];
+      const uniqueUserIds = R.uniq(newUserIds);
+
+      team.set({userIds: uniqueUserIds});
+      team.save();
     }
   });
 }

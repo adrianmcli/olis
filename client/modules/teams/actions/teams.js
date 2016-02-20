@@ -12,5 +12,12 @@ export default {
   select({LocalState}, teamId) {
     LocalState.set('teamId', teamId);
     LocalState.set('convoId', null);
+  },
+
+  addMembers({Meteor, LocalState}, teamId, userIds) {
+    Meteor.call('teams.addMembers', {teamId, userIds}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };

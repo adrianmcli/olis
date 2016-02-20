@@ -30,4 +30,31 @@ export default function ({Meteor, Collections}) {
       return team; // Will return _id, and the server side only stuff too
     }
   });
+
+  const TEAMS_ADD_MEMBERS = 'teams.addMembers';
+  Meteor.methods({
+    'teams.addMembers'({teamId, userIds}) {
+      check(arguments[0], {
+        teamId: String,
+        userIds: [ String ]
+      });
+
+      const userId = Meteor.userId();
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+      const team = Collections.Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must add members to an existing team.');
+      }
+
+      Roles.addUsersToRoles(userIds, [ 'member' ], teamId);
+
+      const newUserIds = [ ...team.userIds, ...userIds ];
+      const uniqueUserIds = R.uniq(newUserIds);
+
+      team.set({userIds: uniqueUserIds});
+      team.save();
+    }
+  });
 }
