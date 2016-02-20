@@ -13,7 +13,7 @@ export const composer = ({context}, onData) => {
   const {Meteor, Collections} = context();
 
   if (Meteor.subscribe('teams.list').ready()) {
-    const teams = Collections.Teams.find().fetch();
+    const teams = Collections.Teams.find({userIds: Meteor.userId()}).fetch();
     onData(null, {teams});
   }
 };

@@ -14,7 +14,7 @@ export const composer = ({context}, onData) => {
   // If you only see loading, make sure you added the collection to the index
   if (convoId) {
     if (Meteor.subscribe('msgs.list', {convoId}).ready()) {
-      const msgs = Collections.Messages.find().fetch();
+      const msgs = Collections.Messages.find({convoId}).fetch();
       onData(null, {msgs});
     }
   }

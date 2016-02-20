@@ -15,7 +15,12 @@ export const composer = ({context}, onData) => {
   // If you only see loading, make sure you added the collection to the index
   if (teamId) {
     if (Meteor.subscribe('convos.list', {teamId}).ready()) {
-      const convos = Collections.Convos.find().fetch();
+      const selector = {
+        userIds: Meteor.userId(),
+        teamId
+      };
+
+      const convos = Collections.Convos.find(selector).fetch();
       onData(null, {convos});
     }
   }

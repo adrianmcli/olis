@@ -11,7 +11,6 @@ export default {
 
   select({LocalState}, teamId) {
     LocalState.set('teamId', teamId);
-    console.log('LocalState');
-    console.log(LocalState);
+    LocalState.set('convoId', null);
   }
 };
