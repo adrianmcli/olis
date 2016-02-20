@@ -5,14 +5,15 @@ export default function ({Meteor, Collections}) {
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
     'msgs.add'({text, convoId}) {
-      if (!Meteor.userId()) {
+      const userId = Meteor.userId();
+      if (!userId) {
         throw new Meteor.Error(MSGS_ADD, 'Must be logged in to insert msgs.');
       }
       const convo = Collections.Convos.findOne(convoId);
       if (!convo) {
         throw new Meteor.Error(MSGS_ADD, 'Must add msgs to an existing convo.');
       }
-      if (!convo.isUserInConvo([ Meteor.userId() ])) {
+      if (!convo.isUserInConvo([ userId ])) {
         throw new Meteor.Error(MSGS_ADD, 'Must be a part of convo to add msgs');
       }
 
@@ -22,7 +23,7 @@ export default function ({Meteor, Collections}) {
       });
 
       const msg = new Collections.Message();
-      msg.set({text, userId: Meteor.userId(), convoId});
+      msg.set({text, userId, convoId});
       msg.save();
     }
   });
