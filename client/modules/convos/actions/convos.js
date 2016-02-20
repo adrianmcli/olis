@@ -2,7 +2,7 @@ export default {
   add({Meteor, LocalState}, name, userIds) {
     console.log('actions.convos.add');
     Meteor.call('convos.add', {
-      name: 'convo name', userIds: [ ], teamId: LocalState.get('teamId')
+      name, userIds, teamId: LocalState.get('teamId')
     }, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
@@ -13,7 +13,10 @@ export default {
     LocalState.set('convoId', convoId);
   },
 
-  addMembers(context, convoId, userIds) {
-    console.log('actions.convos.addMembers');
+  addMembers({Meteor}, convoId, userIds) {
+    Meteor.call('convos.addMembers', {convoId, userIds}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };

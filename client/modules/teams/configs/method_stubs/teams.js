@@ -47,6 +47,9 @@ export default function ({Meteor, Collections}) {
       if (!team) {
         throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must add members to an existing team.');
       }
+      if (!team.isUserInTeam([ userId ])) {
+        throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must be a part of team to add new members to it.');
+      }
 
       Roles.addUsersToRoles(userIds, [ 'member' ], teamId);
 

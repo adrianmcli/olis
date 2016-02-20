@@ -48,11 +48,14 @@ export default function () {
 
       const userId = this.userId;
       if (!userId) {
-        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+        throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must be logged in to insert team.');
       }
       const team = Teams.findOne(teamId);
       if (!team) {
         throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must add members to an existing team.');
+      }
+      if (!team.isUserInTeam([ userId ])) {
+        throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must be a part of team to add new members to it.');
       }
 
       Meteor._sleepForMs(3000);
