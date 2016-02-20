@@ -30,6 +30,7 @@ export default {
     .then(_login)
     .then(() => FlowRouter.go('/home'))
     .catch((err) => {
+      console.log('REGISTRATION_ERROR');
       console.log(err);
     });
   },

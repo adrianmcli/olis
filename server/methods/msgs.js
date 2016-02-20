@@ -20,7 +20,7 @@ export default function () {
         convoId: String
       });
 
-      Meteor._sleepForMs(5000);
+      Meteor._sleepForMs(3000);
 
       const msg = new Message();
       msg.set({text, userId: this.userId, convoId});

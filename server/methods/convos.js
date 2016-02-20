@@ -27,7 +27,7 @@ export default function () {
       const newUserIds = [ this.userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
 
-      Meteor._sleepForMs(5000);
+      Meteor._sleepForMs(3000);
 
       const convo = new Convo();
       convo.set({name, userIds: uniqueUserIds, teamId});
