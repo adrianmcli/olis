@@ -8,7 +8,8 @@ export default function () {
   const TEAMS_ADD = 'teams.add';
   Meteor.methods({
     'teams.add'({name, userIds}) {
-      if (!this.userId) {
+      const userId = this.userId;
+      if (!userId) {
         throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
       }
 
@@ -17,7 +18,7 @@ export default function () {
         userIds: [ String ]
       });
 
-      const newUserIds = [ this.userId, ...userIds ];
+      const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
 
       // Can't use Meteor.setTimeout here
@@ -30,7 +31,7 @@ export default function () {
       team.save();
 
       // Add users to roles
-      Roles.addUsersToRoles(this.userId, [ 'admin' ], team._id);
+      Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Roles.addUsersToRoles(userIds, [ 'member' ], team._id);
 
       return team; // Will return _id, and the server side only stuff too
