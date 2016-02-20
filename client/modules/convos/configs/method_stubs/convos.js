@@ -5,7 +5,8 @@ export default function ({Meteor, Collections}) {
   const CONVOS_ADD = 'convos.add';
   Meteor.methods({
     'convos.add'({name, userIds, teamId}) {
-      if (!Meteor.userId()) {
+      const userId = Meteor.userId();
+      if (!userId) {
         throw new Meteor.Error(CONVOS_ADD, 'Must be logged in to insert convo.');
       }
       const team = Collections.Teams.findOne(teamId);
@@ -22,7 +23,7 @@ export default function ({Meteor, Collections}) {
         teamId: String,
       });
 
-      const newUserIds = [ Meteor.userId(), ...userIds ];
+      const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
 
       const convo = new Collections.Convo();
