@@ -3,6 +3,7 @@ import {check} from 'meteor/check';
 import R from 'ramda';
 
 export default function () {
+  const ACCOUNT_REGISTER = 'account.register';
   Meteor.methods({
     'account.register'({email, username, password}) {
       check(arguments[0], {
@@ -10,11 +11,17 @@ export default function () {
         username: String,
         password: String
       });
+      if (email === '') {
+        throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty email.');
+      }
+      if (username === '') {
+        throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty username.');
+      }
+      if (password === '') {
+        throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty password.');
+      }
 
-      const userId = Accounts.createUser({username, email, password});
-      const myself = {_id: userId, username, email};
-      const myselfWithPwd = R.merge(myself, {password});
-      return myselfWithPwd;
+      Accounts.createUser({username, email, password});
     }
   });
 }

@@ -9,8 +9,9 @@ import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 // console.log('Accounts');
 // console.log(Accounts);
 
-export const depsMapper = (context) => ({
+export const depsMapper = (context, actions) => ({
   context: () => context,
+  actions: () => actions,
   test: 'test'
 });
 

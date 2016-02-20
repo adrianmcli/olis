@@ -1,8 +1,9 @@
 import React from 'react';
 
-const PostList = ({posts}) => (
+const PostList = ({context, actions, posts}) => (
   <div className='postlist'>
     Test
+    <div><button onClick={actions().test.register}>Register</button></div>
     <ul>
       {posts.map(post => (
         <li key={post._id}>

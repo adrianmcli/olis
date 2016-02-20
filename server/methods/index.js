@@ -1,11 +1,11 @@
-import posts from './posts'; // Test
+import test from './_myTest';
 import account from './account';
 import teams from './teams';
 import convos from './convos';
 import msgs from './msgs';
 
 export default function () {
-  posts(); // Test
+  test();
   account();
   teams();
   convos();

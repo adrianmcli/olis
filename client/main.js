@@ -2,7 +2,7 @@ import {createApp} from 'mantra-core';
 import initContext from './configs/context';
 
 // modules
-import testModule from './modules/test';
+import testModule from './modules/_myTest';
 import coreModule from './modules/core';
 import accountModule from './modules/account';
 import teamsModule from './modules/teams';

@@ -19,6 +19,9 @@ export default function () {
       const newUserIds = [ this.userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
 
+      // Can't use Meteor.setTimeout here
+      // Cuz simulation will insert obj, but server looks like it inserted nothing since we didn't block it.
+      // The simulated insert will revert to nothing. Then X time later the server will actually insert.
       Meteor._sleepForMs(5000);
 
       const team = new Team();

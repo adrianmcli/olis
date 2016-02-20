@@ -1,5 +1,7 @@
 import posts from './posts';
+import test from './_myTest';
 
 export default {
-  posts
+  posts,
+  test
 };
