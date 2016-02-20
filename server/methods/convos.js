@@ -21,7 +21,7 @@ export default function () {
       if (!team) {
         throw new Meteor.Error(CONVOS_ADD, 'Must add convo to existing team.');
       }
-      if (!team.isUserInTeam([ userId ])) {
+      if (!team.isUserInTeam(userId)) {
         throw new Meteor.Error(CONVOS_ADD, 'Must be a member of team to add new convo.');
       }
       if (!team.isUserInTeam(userIds)) {
@@ -56,7 +56,7 @@ export default function () {
       if (!convo) {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must add members to an existing convo.');
       }
-      if (!convo.isUserInConvo([ userId ])) {
+      if (!convo.isUserInConvo(userId)) {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must already be a member of convo to add new members.');
       }
       const team = Teams.findOne(convo.teamId);

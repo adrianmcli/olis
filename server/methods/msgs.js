@@ -12,7 +12,7 @@ export default function () {
         throw new Meteor.Error(MSGS_ADD, 'Must be logged in to insert msgs.');
       }
       const convo = Convos.findOne(convoId);
-      if (!convo.isUserInConvo([ userId ])) {
+      if (!convo.isUserInConvo(userId)) {
         throw new Meteor.Error(MSGS_ADD, 'Must be a part of convo to add msgs');
       }
 

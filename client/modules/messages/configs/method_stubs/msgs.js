@@ -13,7 +13,7 @@ export default function ({Meteor, Collections}) {
       if (!convo) {
         throw new Meteor.Error(MSGS_ADD, 'Must add msgs to an existing convo.');
       }
-      if (!convo.isUserInConvo([ userId ])) {
+      if (!convo.isUserInConvo(userId)) {
         throw new Meteor.Error(MSGS_ADD, 'Must be a part of convo to add msgs');
       }
 

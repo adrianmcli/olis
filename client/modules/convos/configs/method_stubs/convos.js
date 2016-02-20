@@ -48,7 +48,7 @@ export default function ({Meteor, Collections}) {
       if (!convo) {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must add members to an existing convo.');
       }
-      if (!convo.isUserInConvo([ userId ])) {
+      if (!convo.isUserInConvo(userId)) {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must already be a member of convo to add new members.');
       }
       const team = Collections.Teams.findOne(convo.teamId);
