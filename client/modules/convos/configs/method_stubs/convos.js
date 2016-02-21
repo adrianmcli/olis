@@ -1,7 +1,7 @@
 import {check} from 'meteor/check';
 import R from 'ramda';
 
-export default function ({Meteor, Collections}) {
+export default function ({Meteor, Collections, Models}) {
   const CONVOS_ADD = 'convos.add';
   Meteor.methods({
     'convos.add'({name, userIds, teamId}) {
@@ -26,7 +26,7 @@ export default function ({Meteor, Collections}) {
         throw new Meteor.Error(CONVOS_ADD, 'At least one user doesn\'t belong to the team');
       }
 
-      const convo = new Collections.Convo();
+      const convo = new Models.Convo();
       convo.set({name, userIds: uniqueUserIds, teamId});
       convo.save();
     }

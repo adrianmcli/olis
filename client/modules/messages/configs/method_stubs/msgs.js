@@ -1,7 +1,7 @@
 import {check} from 'meteor/check';
 import R from 'ramda';
 
-export default function ({Meteor, Collections}) {
+export default function ({Meteor, Collections, Models}) {
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
     'msgs.add'({text, convoId}) {
@@ -22,7 +22,7 @@ export default function ({Meteor, Collections}) {
         convoId: String
       });
 
-      const msg = new Collections.Message();
+      const msg = new Models.Message();
       msg.set({text, userId, convoId});
       msg.save();
     }

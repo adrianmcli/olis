@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
-import {Teams, Team} from '../../lib/collections';
+import {Teams} from '/lib/collections';
+import Team from '/lib/team';
 import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';

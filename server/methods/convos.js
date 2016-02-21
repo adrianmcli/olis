@@ -1,5 +1,6 @@
 import {Meteor} from 'meteor/meteor';
-import {Convos, Convo, Teams} from '../../lib/collections';
+import {Convos, Teams} from '/lib/collections';
+import Convo from '/lib/convo';
 import {check} from 'meteor/check';
 import R from 'ramda';
 
