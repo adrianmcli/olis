@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Convos, Teams} from '/lib/collections';
 import Convo from '/lib/convo';
+import Note from '/lib/note';
 import {check} from 'meteor/check';
 import R from 'ramda';
 
@@ -8,13 +9,13 @@ export default function () {
   const CONVOS_ADD = 'convos.add';
   Meteor.methods({
     'convos.add'({name, userIds, teamId}) {
-      const userId = this.userId;
       check(arguments[0], {
         name: String,
         userIds: [ String ],
         teamId: String,
       });
 
+      const userId = this.userId;
       if (!userId) {
         throw new Meteor.Error(CONVOS_ADD, 'Must be logged in to insert convo.');
       }
@@ -29,13 +30,16 @@ export default function () {
         throw new Meteor.Error(CONVOS_ADD, 'Only users in the team can be added to the convo.');
       }
 
-      Meteor._sleepForMs(3000);
-
       const convo = new Convo();
       const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
       convo.set({name, userIds: uniqueUserIds, teamId});
       convo.save();
+
+      // Insert a note
+      const note = new Note();
+      note.set({convoId: convo._id});
+      note.save();
 
       return convo;
     }
@@ -64,8 +68,6 @@ export default function () {
       if (!team.isUserInTeam(userIds)) {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Only users in the team can be added to the convo.');
       }
-
-      Meteor._sleepForMs(3000);
 
       const newUserIds = [ ...convo.userIds, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);

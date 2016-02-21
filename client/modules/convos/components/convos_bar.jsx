@@ -13,6 +13,7 @@ const ConvosBar = ({context, convos, addConvo, selectConvo}) => (
               Users:
               {convo.userIds.map(userId => <span>{userId}, </span>)}
             </div>
+            -----
           </div>
         );
       })

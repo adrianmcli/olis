@@ -6,18 +6,23 @@ export default function ({Meteor, Collections, Models}) {
   const TEAMS_ADD = 'teams.add';
   Meteor.methods({
     'teams.add'({name, userIds}) {
-      const userId = Meteor.userId();
-      if (!userId) {
-        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
-      }
-
       check(arguments[0], {
         name: String,
         userIds: [ String ]
       });
 
+      const userId = Meteor.userId();
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+
       const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
+
+      // Can't use Meteor.setTimeout here
+      // Cuz simulation will insert obj, but server looks like it inserted nothing since we didn't block it.
+      // The simulated insert will revert to nothing. Then X time later the server will actually insert.
+      // Meteor._sleepForMs(3000);
 
       const team = new Models.Team();
       team.set({name, userIds: uniqueUserIds});
@@ -26,8 +31,6 @@ export default function ({Meteor, Collections, Models}) {
       // Add users to roles
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Roles.addUsersToRoles(userIds, [ 'member' ], team._id);
-
-      return team; // Will return _id, and the server side only stuff too
     }
   });
 
@@ -41,7 +44,7 @@ export default function ({Meteor, Collections, Models}) {
 
       const userId = Meteor.userId();
       if (!userId) {
-        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+        throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must be logged in to insert team.');
       }
       const team = Collections.Teams.findOne(teamId);
       if (!team) {

@@ -3,6 +3,8 @@ import teams from './teams';
 import convos from './convos';
 import msgs from './msgs';
 import users from './users';
+import notes from './notes';
+import sections from './sections';
 
 export default function () {
   test();
@@ -10,4 +12,6 @@ export default function () {
   convos();
   msgs();
   users();
+  notes();
+  sections();
 }

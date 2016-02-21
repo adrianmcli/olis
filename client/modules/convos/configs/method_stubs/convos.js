@@ -5,30 +5,37 @@ export default function ({Meteor, Collections, Models}) {
   const CONVOS_ADD = 'convos.add';
   Meteor.methods({
     'convos.add'({name, userIds, teamId}) {
-      const userId = Meteor.userId();
       check(arguments[0], {
         name: String,
         userIds: [ String ],
         teamId: String,
       });
 
-      const newUserIds = [ userId, ...userIds ];
-      const uniqueUserIds = R.uniq(newUserIds);
-
+      const userId = Meteor.userId();
       if (!userId) {
         throw new Meteor.Error(CONVOS_ADD, 'Must be logged in to insert convo.');
       }
       const team = Collections.Teams.findOne(teamId);
       if (!team) {
-        throw new Meteor.Error(CONVOS_ADD, 'Team does not exist.');
+        throw new Meteor.Error(CONVOS_ADD, 'Must add convo to existing team.');
       }
-      if (!team.isUserInTeam(uniqueUserIds)) {
-        throw new Meteor.Error(CONVOS_ADD, 'At least one user doesn\'t belong to the team');
+      if (!team.isUserInTeam(userId)) {
+        throw new Meteor.Error(CONVOS_ADD, 'Must be a member of team to add new convo.');
+      }
+      if (!team.isUserInTeam(userIds)) {
+        throw new Meteor.Error(CONVOS_ADD, 'Only users in the team can be added to the convo.');
       }
 
       const convo = new Models.Convo();
+      const newUserIds = [ userId, ...userIds ];
+      const uniqueUserIds = R.uniq(newUserIds);
       convo.set({name, userIds: uniqueUserIds, teamId});
       convo.save();
+
+      // Insert a note
+      const note = new Models.Note();
+      note.set({convoId: convo._id});
+      note.save();
     }
   });
 

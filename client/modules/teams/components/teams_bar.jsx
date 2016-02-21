@@ -13,6 +13,7 @@ const TeamsBar = ({context, teams, addTeam, selectTeam}) => (
               Users:
               {team.userIds.map(userId => <span>{userId}, </span>)}
             </div>
+            -----
           </div>
         );
       })
