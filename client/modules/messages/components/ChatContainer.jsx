@@ -17,6 +17,7 @@ export default class ChatContainer extends React.Component {
       e.preventDefault();
       const text = e.target.value;
       addMsg(text);
+      e.target.value = '';
     }
   }
 
