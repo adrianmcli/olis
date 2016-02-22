@@ -45,7 +45,7 @@ export default class HeaderSearch extends React.Component {
       <div>
 
         <div className="header-icon">
-          <IconButton tooltip="Search" onTouchTap={this.handleOpen.bind(this)}>
+          <IconButton tooltip="Search" onClick={this.handleOpen.bind(this)}>
             <ActionSearch color={iconColor} />
           </IconButton>
         </div>
