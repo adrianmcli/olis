@@ -6,15 +6,17 @@ const depsMapper = (context, actions) => ({
   actions: () => actions,
   addTeam: actions.teams.add,
   selectTeam: actions.teams.select,
-  teamId: context.LocalState.get('teamId')
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, Collections} = context();
+  const {Meteor, Collections, LocalState} = context();
 
   if (Meteor.subscribe('teams.list').ready()) {
     const teams = Collections.Teams.find({userIds: Meteor.userId()}).fetch();
-    onData(null, {teams});
+    onData(null, {
+      teams,
+      teamId: LocalState.get('teamId')
+    });
   }
 };
 

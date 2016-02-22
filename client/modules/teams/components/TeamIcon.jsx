@@ -8,6 +8,8 @@ export default class TeamIcon extends React.Component {
     // TODO - make sure the team ID is passed into this component
     // TODO - fire an action to reflect the fact that user wants
     //        to switch teams to that team ID
+
+    this.props.selectTeam();
   }
 
   render() {
@@ -49,7 +51,7 @@ export default class TeamIcon extends React.Component {
         <Badge
           badgeContent={4}
           primary={true}
-          style={{padding:'0',display:'block'}}
+          style={{padding: '0',display: 'block'}}
           badgeStyle={{
             top: '-5px',
             right: '-5px',

@@ -6,7 +6,6 @@ import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 
 export default class Teams extends React.Component {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -25,11 +24,13 @@ export default class Teams extends React.Component {
   handleManageTeams() {
     alert('route users to the team management page');
   }
-  
+
   render() {
-    const bgColor = "#253256";
+    const {teams, teamId, selectTeam} = this.props;
+
+    const bgColor = '#253256';
     const addTeamIconStyle = {
-      fontSize:'36px',
+      fontSize: '36px',
       color: bgColor,
       position: 'absolute',
       top: '50%',
@@ -37,7 +38,7 @@ export default class Teams extends React.Component {
       transform: 'translate(-50%,-50%)',
     };
     const manageTeamsIconStyle = {
-      fontSize:'36px',
+      fontSize: '36px',
       color: 'white',
       position: 'absolute',
       top: '50%',
@@ -49,36 +50,38 @@ export default class Teams extends React.Component {
       <FlatButton
         label="Cancel"
         secondary={true}
-        onTouchTap={this.handleClose.bind(this)}
+        onClick={this.handleClose.bind(this)}
       />,
       <FlatButton
         label="Submit"
         primary={true}
         disabled={true}
-        onTouchTap={this.handleClose.bind(this)}
+        onClick={this.handleClose.bind(this)}
       />,
     ];
+
     return (
       <div id="team-list-wrapper">
 
         <div id="team-list">
 
           {/* Team Icons */}
-          <TeamIcon
-            teamName="The A Team"
-            iconSrc='https://s3.amazonaws.com/uifaces/faces/twitter/vladabazhan/128.jpg'
-            unreadCount={15}
-            unread
-            active
-          />
-          <TeamIcon/>
-          <TeamIcon
-            teamName="Custom Team Name"
-            iconSrc='https://s3.amazonaws.com/uifaces/faces/twitter/eduardo_olv/128.jpg'
-            unreadCount={4}
-            unread
-          />
-          
+          {
+            teams.map(team => {
+              return (
+                <TeamIcon
+                  key={team._id}
+                  teamName={team.name}
+                  iconSrc='https://s3.amazonaws.com/uifaces/faces/twitter/vladabazhan/128.jpg'
+                  unreadCount={15}
+                  unread
+                  active={teamId === team._id}
+                  selectTeam={selectTeam.bind(null, team._id)}
+                />
+              );
+            })
+          }
+
           {/* Add Team Button */}
           <div className="team-item add-team">
             <IconButton
@@ -91,7 +94,7 @@ export default class Teams extends React.Component {
                 left: '56px',
               }}
               iconStyle={addTeamIconStyle}
-              style={{zIndex:'1'}}
+              style={{zIndex: '1'}}
             >
               add
             </IconButton>
@@ -111,7 +114,7 @@ export default class Teams extends React.Component {
               left: '56px',
             }}
             iconStyle={manageTeamsIconStyle}
-            style={{zIndex:'1'}}
+            style={{zIndex: '1'}}
           >
             settings
           </IconButton>
@@ -130,3 +133,7 @@ export default class Teams extends React.Component {
     );
   }
 }
+Teams.defaultProps = {
+  teams: [],
+  // teamId: 'someTeamId'
+};
