@@ -10,15 +10,18 @@ import ChatMessageItem from './ChatMessageItem.jsx';
 
 export default class ChatContainer extends React.Component {
   handleEnterKeyDown(e) {
+    const {addMsg} = this.props;
     if (e.shiftKey === true) {
       console.log('shift-key has been pressed');
     } else {
       // e.preventDefault();
       console.log('SUBMIT');
+      addMsg('sadasdas');
     }
   }
 
   render() {
+    const {msgs} = this.props;
     return (
       <div id="chat-container">
         <div id="chat-header">
@@ -44,12 +47,17 @@ export default class ChatContainer extends React.Component {
         </div>
 
         <div id="chat-msg-area">
-          <ChatMessageItem
-            authorName='Nicky Cage'
-            avatarSrc='http://www.placecage.com/200/200'
-            content='Hey there, I had a question to ask you, Bill.'
-            timestamp='an hour ago'
-          />
+          {msgs.map(msg => {
+            return (
+              <ChatMessageItem
+                key={msg._id}
+                authorName='Nicky Cage'
+                avatarSrc='http://www.placecage.com/200/200'
+                content={msg.text}
+                timestamp={msg.createdAt}
+              />
+            );
+          })}
         </div>
 
         <div id="chat-input">

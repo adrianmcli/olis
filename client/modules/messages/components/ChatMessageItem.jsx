@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Avatar from 'material-ui/lib/avatar';
+import TimeAgo from 'react-timeago';
 
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -92,7 +92,9 @@ export default class ChatMessageItem extends React.Component {
             <div className="chat-bubble">
               <p>{content}</p>
             </div>
-            <div className="chat-timestamp">{timestamp}</div>
+            <div className="chat-timestamp">
+              <TimeAgo date={timestamp} />
+            </div>
           </div>
           <div>
             {contextMenu}
