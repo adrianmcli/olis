@@ -14,9 +14,9 @@ export default class ChatContainer extends React.Component {
     if (e.shiftKey === true) {
       console.log('shift-key has been pressed');
     } else {
-      // e.preventDefault();
-      console.log('SUBMIT');
-      addMsg('sadasdas');
+      e.preventDefault();
+      const text = e.target.value;
+      addMsg(text);
     }
   }
 
