@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import MsgsBar from '../components/msgs_bar.jsx';
+import ChatContainer from '../components/ChatContainer.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -24,4 +24,4 @@ export const composer = ({context}, onData) => {
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(MsgsBar);
+)(ChatContainer);
