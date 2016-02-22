@@ -1,7 +1,8 @@
 import {Meteor} from 'meteor/meteor';
 import {Sections, Convos, Notes} from '/lib/collections';
 import Section from '/lib/section';
-import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
+import R from 'ramda';
 
 const dateInXMin = (x) => {
   const minutes = x * 60 * 1000;
@@ -11,10 +12,11 @@ const dateInXMin = (x) => {
 export default function () {
   const SECTION_ADD = 'sections.add';
   Meteor.methods({
-    'sections.add'({noteId, text}) {
+    'sections.add'({noteId, text, afterSectionId = ''}) {
       check(arguments[0], {
         noteId: String,
-        text: String
+        text: String,
+        afterSectionId: String
       });
 
       const userId = this.userId;
@@ -42,6 +44,12 @@ export default function () {
         unlocksAt
       });
       section.save();
+
+      const index = afterSectionId === '' ? 0 : note.sectionIds.indexOf(afterSectionId) + 1;
+      note.set({
+        sectionIds: R.insert(index, section._id, note.sectionIds)
+      });
+      note.save();
     }
   });
 

@@ -17,6 +17,7 @@ export const composer = ({context}, onData) => {
       const note = Collections.Notes.findOne({convoId});
       const noteId = note._id;
 
+      // TODO order the sections properly
       if (Meteor.subscribe('sections', {noteId}).ready()) {
         const sections = Collections.Sections.find({noteId}).fetch();
         onData(null, {note, sections});
