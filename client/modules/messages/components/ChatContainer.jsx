@@ -22,7 +22,7 @@ export default class ChatContainer extends React.Component {
   }
 
   render() {
-    const {msgs} = this.props;
+    const {msgs, userId, convoUsers} = this.props;
     return (
       <div id="chat-container">
         <div id="chat-header">
@@ -52,10 +52,11 @@ export default class ChatContainer extends React.Component {
             return (
               <ChatMessageItem
                 key={msg._id}
-                authorName='Nicky Cage'
+                authorName={convoUsers[msg.userId].username}
                 avatarSrc='http://www.placecage.com/200/200'
                 content={msg.text}
                 timestamp={msg.createdAt}
+                selfAuthor={msg.userId === userId}
               />
             );
           })}
