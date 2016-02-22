@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Sections, Convos, Notes} from '/lib/collections';
 import Section from '/lib/section';
-import {check, Match} from 'meteor/check';
+import {check} from 'meteor/check';
 import R from 'ramda';
 
 const dateInXMin = (x) => {
