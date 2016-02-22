@@ -135,5 +135,5 @@ export default class Teams extends React.Component {
 }
 Teams.defaultProps = {
   teams: [],
-  // teamId: 'someTeamId'
+  teamId: 'someTeamId'
 };
