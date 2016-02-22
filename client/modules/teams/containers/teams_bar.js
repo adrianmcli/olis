@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import TeamsBar from '../components/teams_bar.jsx';
+import Teams from '../components/Teams.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
@@ -21,4 +21,4 @@ export const composer = ({context}, onData) => {
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(TeamsBar);
+)(Teams);

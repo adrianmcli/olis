@@ -47,6 +47,7 @@ jagi:astronomy-timestamp-behavior@1.1.0
 jagi:astronomy-validators@1.1.2
 jagi:reactive-map@2.0.0
 jquery@1.11.5-beta.11
+kadira:dochead@1.4.0
 kadira:flow-router@2.10.1
 lai:collection-extensions@0.1.4
 launch-screen@1.0.6-beta.11
