@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import ConvosBar from '../components/convos_bar.jsx';
+import Sidebar from '../components/Sidebar.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
@@ -30,4 +30,4 @@ export const composer = ({context}, onData) => {
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(ConvosBar);
+)(Sidebar);
