@@ -22,16 +22,16 @@ export default class ChatContainer extends React.Component {
   }
 
   render() {
-    const {msgs, userId, convoUsers} = this.props;
+    const {msgs, userId, convoUsers, title, usersListString} = this.props;
     return (
       <div id="chat-container">
         <div id="chat-header">
           <div className="header-body">
             <div className="chat-title">
-              Q4 Sales Report
+              {title}
             </div>
             <div className="chat-meta">
-              Nicky Cage, Billy Murray, Stevey Segal
+              {usersListString}
             </div>
           </div>
           <div className="header-icon">
@@ -78,3 +78,8 @@ export default class ChatContainer extends React.Component {
     );
   }
 }
+ChatContainer.defaultProps = {
+  title: 'Default title',
+  usersListString: 'Default users list string'
+};
+

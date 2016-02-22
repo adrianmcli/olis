@@ -8,7 +8,7 @@ import coreModule from './modules/core';
 import accountModule from './modules/account';
 import teamsModule from './modules/teams';
 import convosModule from './modules/convos';
-import msgsModule from './modules/messages';
+import msgsModule from './modules/chat';
 import usersModule from './modules/users';
 import notesModule from './modules/notes';
 

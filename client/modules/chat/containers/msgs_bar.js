@@ -15,6 +15,9 @@ export const composer = ({context}, onData) => {
   // If you only see loading, make sure you added the collection to the index
   let msgs = [];
   let convoUsers = {};
+  let title = null;
+  let usersListString = null;
+
   if (convoId) {
     if (Meteor.subscribe('msgs.list', {convoId}).ready()) {
       msgs = Collections.Messages.find({convoId}).fetch();
@@ -25,6 +28,12 @@ export const composer = ({context}, onData) => {
       if (convo) {
         const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
         convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
+        title = convo.name;
+
+        usersListString = convoUsersArr.reduce((prev, curr, index) => {
+          if (index > 0) { return `${prev}, ${curr.username}`; }
+          return `${curr.username}`;
+        }, '');
       }
     }
   }
@@ -32,7 +41,9 @@ export const composer = ({context}, onData) => {
   onData(null, {
     msgs,
     userId: Meteor.userId(),
-    convoUsers
+    convoUsers,
+    title,
+    usersListString
   });
 };
 
