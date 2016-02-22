@@ -21,7 +21,10 @@ export const composer = ({context}, onData) => {
       };
 
       const convos = Collections.Convos.find(selector).fetch();
-      onData(null, {convos});
+      onData(null, {
+        convos,
+        convoId: LocalState.get('convoId')
+      });
     }
   }
   else { onData(null, {convos: []}); }

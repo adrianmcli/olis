@@ -9,6 +9,7 @@ export default class ConversationItem extends React.Component {
     // TODO - make sure the conversation ID is passed into this component
     // TODO - fire an action to reflect the fact that user wants 
     //        to switch to that conversation ID
+    this.props.selectConvo();
   }
 
   render() {
@@ -32,7 +33,7 @@ export default class ConversationItem extends React.Component {
     const unreadClass = unread ? ' unread' : '';
     const activeClass = active ? ' active' : '';
     return (
-      <div 
+      <div
         className={'conversation-item' + unreadClass + activeClass}
         onClick={this.handleClick.bind(this)}
       >
@@ -67,7 +68,7 @@ export default class ConversationItem extends React.Component {
 ConversationItem.defaultProps = {
   title: 'Chat Title',
   timeString: '34 minutes ago',
-  previewText: "Today's meeting minutes has been summarized into the notes on the side of this conversation.",
+  previewText: 'Today\'s meeting minutes has been summarized into the notes on the side of this conversation.',
   avatarSrc: 'http://www.placecage.com/200/200',
   unread: false,
   unreadCount: 2,
