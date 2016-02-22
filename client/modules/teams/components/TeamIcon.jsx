@@ -49,7 +49,7 @@ export default class TeamIcon extends React.Component {
     if (unread) {
       return (
         <Badge
-          badgeContent={4}
+          badgeContent={unreadCount}
           primary={true}
           style={{padding: '0',display: 'block'}}
           badgeStyle={{
