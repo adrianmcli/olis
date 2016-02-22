@@ -3,7 +3,7 @@ import React from 'react';
 const ConvosBar = ({context, convos, addConvo, selectConvo}) => (
   <div>
     <h2>Convos {context().LocalState.get('convoId')}</h2>
-    <button onClick={addConvo.bind(null, 'convo name', [ context().Meteor.userId() ])}>Add</button>
+    <button onClick={addConvo.bind(null, 'convo name', [])}>Add</button>
     {
       convos.map(convo => {
         return (

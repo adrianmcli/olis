@@ -26,7 +26,7 @@ export default class Teams extends React.Component {
   }
 
   render() {
-    const {teams, teamId, selectTeam} = this.props;
+    const {teams, teamId, selectTeam, addTeam} = this.props;
 
     const bgColor = '#253256';
     const addTeamIconStyle = {
@@ -83,6 +83,8 @@ export default class Teams extends React.Component {
           }
 
           {/* Add Team Button */}
+          <button onClick={addTeam.bind(null, 'team name', [])}>Add team</button>
+
           <div className="team-item add-team">
             <IconButton
               onClick={this.handleOpen.bind(this)}

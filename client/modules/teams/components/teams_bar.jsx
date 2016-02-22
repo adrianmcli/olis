@@ -3,7 +3,7 @@ import React from 'react';
 const TeamsBar = ({context, teams, addTeam, selectTeam}) => (
   <div>
     <h2>Teams {context().LocalState.get('teamId')}</h2>
-    <button onClick={addTeam.bind(null, 'team name', [ context().Meteor.userId() ])}>Add</button>
+    <button onClick={addTeam.bind(null, 'team name', [])}>Add</button>
     {
       teams.map(team => {
         return (

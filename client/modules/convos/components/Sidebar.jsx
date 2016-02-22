@@ -9,7 +9,7 @@ import ConversationItem from './ConversationItem.jsx';
 
 export default class Sidebar extends React.Component {
   render() {
-    const {convos, selectConvo, convoId} = this.props;
+    const {convos, selectConvo, convoId, addConvo} = this.props;
     return (
       <div id="sidebar-container">
         <div id="sidebar-header">
@@ -21,6 +21,7 @@ export default class Sidebar extends React.Component {
 
         {/* Conversation List */}
         <div id="conversation-list">
+          <button onClick={addConvo.bind(null, 'convo name', [])}>Add convo</button>
           {convos.map(convo => {
             return (
               <ConversationItem
