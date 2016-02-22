@@ -6,12 +6,19 @@ import UsersBar from '../../users/containers/users_bar';
 import NotesBar from '../../notes/containers/notes_bar';
 
 const Home = () => (
-  <div>
-    <TeamsBar />
-    <ConvosBar />
-    <MsgsBar />
-    <UsersBar />
-    <NotesBar />
+  <div id="main-page">
+    <div id="teams-column">
+      <TeamsBar />
+    </div>
+    <div id="sidebar">
+      <ConvosBar />
+    </div>
+    <div id="chat-column">
+      <MsgsBar />
+    </div>
+    <div id="notes-column">
+      <NotesBar />
+    </div>
   </div>
 );
 
