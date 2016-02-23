@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import NotesBar from '../components/notes_bar.jsx';
+import NotesContainer from '../components/NotesContainer.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -33,4 +33,4 @@ export const composer = ({context}, onData) => {
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(NotesBar);
+)(NotesContainer);
