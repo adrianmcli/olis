@@ -23,12 +23,11 @@ export const composer = ({context}, onData) => {
         userIds: Meteor.userId(),
         teamId
       };
+      const options = {sort: [ [ 'updatedAt', 'desc' ] ]};
 
-      convos = Collections.Convos.find(selector).fetch();
+      convos = Collections.Convos.find(selector, options).fetch();
       convoId = LocalState.get('convoId');
       lastTimeInConvo = Meteor.user().lastTimeInConvo;
-      console.log('lastTimeInConvo');
-      console.log(lastTimeInConvo);
     }
   }
   onData(null, {
