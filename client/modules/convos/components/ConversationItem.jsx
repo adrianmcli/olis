@@ -44,7 +44,7 @@ export default class ConversationItem extends React.Component {
           <Badge
                 badgeContent={unreadCount}
                 primary={true}
-                style={{padding:'0',display:'block'}}
+                style={{padding: '0',display: 'block'}}
                 badgeStyle={badgeStyle}
               >
               <Avatar size={51} src={avatarSrc} />

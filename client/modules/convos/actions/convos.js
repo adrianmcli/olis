@@ -12,6 +12,11 @@ export default {
   },
 
   select({Meteor, LocalState}, convoId) {
+    const prevConvoId = LocalState.get('convoId');
+    if (prevConvoId) {
+      Meteor.call('account.setLastTimeInConvo', {convoId: prevConvoId});
+    }
+
     LocalState.set('convoId', convoId);
     SectionUtils.releaseLock({Meteor, LocalState});
   },

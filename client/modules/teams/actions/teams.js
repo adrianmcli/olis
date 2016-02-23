@@ -12,6 +12,11 @@ export default {
   },
 
   select({Meteor, Collections, LocalState}, teamId) {
+    const prevTeamId = LocalState.get('teamId');
+    if (prevTeamId) {
+      Meteor.call('account.setLastTimeInTeam', {teamId: prevTeamId});
+    }
+
     LocalState.set('teamId', teamId);
     LocalState.set('convoId', null);
     SectionUtils.releaseLock({Meteor, LocalState});
