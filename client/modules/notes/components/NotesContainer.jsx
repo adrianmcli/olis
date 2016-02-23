@@ -6,15 +6,20 @@ import SaveIcon from 'material-ui/lib/svg-icons/content/save';
 import ShareIcon from 'material-ui/lib/svg-icons/social/share';
 
 import IconButton from 'material-ui/lib/icon-button';
-import Editor from 'react-medium-editor';
+import Editor from 'react-medium-editor/lib/editor';
 
 export default class NotesContainer extends React.Component {
-  handleChange(text, medium) {
+  handleChange(sectionId, text, medium) {
+    const {editSection} = this.props;
+    console.log(sectionId);
     console.log('Content Has Changed');
     console.log(text);
+
+    editSection(sectionId, text);
   }
 
   render() {
+    const {sections, addSection} = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
 
     return (
@@ -36,26 +41,35 @@ export default class NotesContainer extends React.Component {
           </div>
         </div>
         <div className="notes-data-wrapper">
-          <Editor
-            text="<h1>Meeting Notes</h1><p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p>"
-            onChange={this.handleChange.bind(this)}
-            options={{toolbar:
-              {buttons: [
-                'bold',
-                'italic',
-                'underline',
-                'anchor',
-                'h1',
-                'h2',
-                'h3',
-                'quote',
-                'orderedlist',
-                'unorderedlist',
-              ]}
-            }}
-          />
+          <button onClick={addSection.bind(null, '<p>test section</p>', '')}>Add section</button>
+          {sections.map(section => {
+            return (
+              <Editor
+                key={section._id}
+                text={section.text}
+                onChange={this.handleChange.bind(this, section._id)}
+                options={{toolbar:
+                  {buttons: [
+                    'bold',
+                    'italic',
+                    'underline',
+                    'anchor',
+                    'h1',
+                    'h2',
+                    'h3',
+                    'quote',
+                    'orderedlist',
+                    'unorderedlist',
+                  ]}
+                }}
+              />
+            );
+          })}
         </div>
       </div>
     );
   }
 }
+NotesContainer.defaultProps = {
+  sections: []
+};

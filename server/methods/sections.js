@@ -13,6 +13,11 @@ export default function () {
   const SECTION_ADD = 'sections.add';
   Meteor.methods({
     'sections.add'({noteId, text, afterSectionId = ''}) {
+      console.log('sections.add');
+      console.log(noteId);
+      console.log(text);
+      console.log(afterSectionId);
+
       check(arguments[0], {
         noteId: String,
         text: String,

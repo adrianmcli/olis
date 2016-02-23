@@ -1,33 +1,43 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import NotesContainer from '../components/NotesContainer.jsx';
+import R from 'ramda';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  addSection: actions.sections.add,
   editSection: actions.sections.edit
 });
 
-export const composer = ({context}, onData) => {
+export const composer = ({context, actions}, onData) => {
   const {Meteor, LocalState, Collections} = context();
   const convoId = LocalState.get('convoId');
 
+  let note = {};
+  let sections = [];
+  let _addSection = actions().sections.add;
+
   if (convoId) {
     if (Meteor.subscribe('notes.single', {convoId}).ready()) {
-      const note = Collections.Notes.findOne({convoId});
+      note = Collections.Notes.findOne({convoId});
       const noteId = note._id;
 
-      // TODO order the sections properly
+      _addSection = _addSection.bind(null, noteId);
+
       if (Meteor.subscribe('sections', {noteId}).ready()) {
-        const sections = Collections.Sections.find({noteId}).fetch();
-        onData(null, {note, sections});
+        const unsortedSections = Collections.Sections.find({noteId}).fetch();
+
+        if (!R.isEmpty(unsortedSections)) {
+          const groupById = R.groupBy(R.prop('_id'), unsortedSections);
+          const sort = R.map(id => groupById[id][0]);
+          sections = sort(note.sectionIds);
+        }
       }
     }
   }
-  else { onData(null, {
-    note: {},
-    sections: []
-  }); }
+
+  onData(null, {
+    note, sections, addSection: _addSection
+  });
 };
 
 export default composeAll(
