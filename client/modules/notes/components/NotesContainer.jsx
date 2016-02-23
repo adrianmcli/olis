@@ -18,9 +18,38 @@ export default class NotesContainer extends React.Component {
     editSection(sectionId, text);
   }
 
+  handleClick() {
+    console.log('handleClick');
+  }
+
+  handleKeyDown(e) {
+    console.log(e.target);
+    if (e.keyCode === 13) { // enter
+      console.log('enter pressed');
+    }
+  }
+
+  handleBlur() {
+    console.log('handleBlur');
+  }
+
   render() {
     const {sections, addSection} = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
+
+    const editorOptions = {
+      disableEditing: false,
+      disableReturn: true,
+      toolbar: {
+        buttons: [
+          'bold', 'italic', 'underline',
+          'anchor',
+          'h1', 'h2', 'h3',
+          'quote',
+          'orderedlist', 'unorderedlist',
+        ]
+      }
+    };
 
     return (
       <div id="notes-container">
@@ -41,27 +70,17 @@ export default class NotesContainer extends React.Component {
           </div>
         </div>
         <div className="notes-data-wrapper">
-          <button onClick={addSection.bind(null, '<p>test section</p>', '')}>Add section</button>
+          <button onClick={addSection.bind(null, '<p>test section</div></p>', '')}>Add section</button>
           {sections.map(section => {
             return (
               <Editor
                 key={section._id}
                 text={section.text}
                 onChange={this.handleChange.bind(this, section._id)}
-                options={{toolbar:
-                  {buttons: [
-                    'bold',
-                    'italic',
-                    'underline',
-                    'anchor',
-                    'h1',
-                    'h2',
-                    'h3',
-                    'quote',
-                    'orderedlist',
-                    'unorderedlist',
-                  ]}
-                }}
+                onClick={this.handleClick.bind(this)}
+                onKeyDown={this.handleKeyDown.bind(this)}
+                onBlur={this.handleBlur.bind(this)}
+                options={editorOptions}
               />
             );
           })}
