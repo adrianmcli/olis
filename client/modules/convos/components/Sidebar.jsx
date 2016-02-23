@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import HeaderMenu from './HeaderMenu.jsx';
 import HeaderNewConversation from './HeaderNewConversation.jsx';
@@ -31,7 +32,8 @@ export default class Sidebar extends React.Component {
               unreadCount = 0;
             }
             else {
-              unreadCount = lastTimeInConvo ? convo.numMsgs - lastTimeInConvo[convo._id].numMsgs : 0;
+              unreadCount = convo.numMsgs && _.has(lastTimeInConvo, `${convo._id}.numMsgs`) ?
+                convo.numMsgs - lastTimeInConvo[convo._id].numMsgs : 0;
               unread = unreadCount > 0;
             }
             return (

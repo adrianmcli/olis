@@ -18,8 +18,8 @@ export default {
     }
     Meteor.call('account.setLastTimeInConvo', {convoId}, (err) => {
       if (err) { alert(err); }
-      else { LocalState.set('convoId', convoId); }
     });
+    LocalState.set('convoId', convoId);
 
     SectionUtils.releaseLock({Meteor, LocalState});
   },
