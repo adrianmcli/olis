@@ -3,6 +3,8 @@ import React from 'react';
 import Avatar from 'material-ui/lib/avatar';
 import Badge from 'material-ui/lib/badge';
 
+import TimeAgo from 'react-timeago';
+
 export default class ConversationItem extends React.Component {
   handleClick(e) {
     console.log('User has clicked conversation: ' + this.props.title);
@@ -15,7 +17,7 @@ export default class ConversationItem extends React.Component {
   render() {
     const {
       title,
-      timeString,
+      lastUpdated,
       previewText,
       avatarSrc,
       unread,
@@ -54,7 +56,9 @@ export default class ConversationItem extends React.Component {
         <div className="chat-body">
           <div className="chat-main">
             <div className="chat-title">{title}</div>
-            <div className="chat-time">{timeString}</div>
+            <div className="chat-time">
+              <TimeAgo date={lastUpdated} />
+            </div>
           </div>
           <div className="chat-secondary">
             <div className="chat-status">{previewText}</div>
@@ -67,7 +71,7 @@ export default class ConversationItem extends React.Component {
 
 ConversationItem.defaultProps = {
   title: 'Chat Title',
-  timeString: '34 minutes ago',
+  lastUpdated: null,
   previewText: 'Today\'s meeting minutes has been summarized into the notes on the side of this conversation.',
   avatarSrc: 'http://www.placecage.com/200/200',
   unread: false,

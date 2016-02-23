@@ -27,8 +27,8 @@ export default class Sidebar extends React.Component {
               <ConversationItem
                 key={convo._id}
                 title={convo.name}
-                timeString='34 minutes ago'
-                previewText="Today's meeting minutes has been summarized into the notes on the side of this conversation."
+                lastUpdated={convo.updatedAt}
+                previewText={convo.lastMsgText}
                 avatarSrc='http://www.placecage.com/200/200'
                 unread={true}
                 unreadCount={12}

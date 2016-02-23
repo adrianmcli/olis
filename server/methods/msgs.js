@@ -2,7 +2,6 @@ import {Meteor} from 'meteor/meteor';
 import Convos from '/lib/convo';
 import Message from '/lib/msg';
 import {check} from 'meteor/check';
-import R from 'ramda';
 
 export default function () {
   const MSGS_ADD = 'msgs.add';
@@ -28,6 +27,13 @@ export default function () {
       const msg = new Message();
       msg.set({text, userId, convoId});
       msg.save();
+
+      // Update convo with last msg text
+      convo.set({
+        lastMsgText: text
+      });
+      convo.save();
+
       return msg; // Will return _id, and the server side only stuff too
     }
   });
