@@ -13,6 +13,10 @@ export const composer = ({context}, onData) => {
   const teamId = LocalState.get('teamId');
 
   // If you only see loading, make sure you added the collection to the index
+  let convos = [];
+  let convoId = null;
+  let lastTimeInConvo = null;
+
   if (teamId) {
     if (Meteor.subscribe('convos.list', {teamId}).ready()) {
       const selector = {
@@ -20,14 +24,18 @@ export const composer = ({context}, onData) => {
         teamId
       };
 
-      const convos = Collections.Convos.find(selector).fetch();
-      onData(null, {
-        convos,
-        convoId: LocalState.get('convoId')
-      });
+      convos = Collections.Convos.find(selector).fetch();
+      convoId = LocalState.get('convoId');
+      lastTimeInConvo = Meteor.user().lastTimeInConvo;
+      console.log('lastTimeInConvo');
+      console.log(lastTimeInConvo);
     }
   }
-  else { onData(null, {convos: []}); }
+  onData(null, {
+    convos,
+    convoId,
+    lastTimeInConvo
+  });
 };
 
 export default composeAll(
