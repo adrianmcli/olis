@@ -98,4 +98,59 @@ export default function () {
       }
     }
   });
+
+  const SECTION_RELEASE_LOCK = 'sections.releaseLock';
+  Meteor.methods({
+    'sections.releaseLock'({sectionId}) {
+      check(arguments[0], {
+        sectionId: String
+      });
+
+      const userId = this.userId;
+      const section = Sections.findOne(sectionId);
+      if (!section) {
+        throw new Meteor.Error(SECTION_RELEASE_LOCK, 'Must unlock an existing section.');
+      }
+      if (section.editingByUserId !== userId) {
+        throw new Meteor.Error(SECTION_RELEASE_LOCK, 'Can only unlock a section you are editing.');
+      }
+
+      section.set({
+        editingByUserId: null,
+        unlocksAt: new Date(0)
+      });
+      section.save();
+      return section;
+    }
+  });
+
+  const SECTION_ACQUIRE_LOCK = 'sections.acquireLock';
+  Meteor.methods({
+    'sections.acquireLock'({sectionId}) {
+      check(arguments[0], {
+        sectionId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(SECTION_ACQUIRE_LOCK, 'Must be logged in to acquire section lock.');
+      }
+      const section = Sections.findOne(sectionId);
+      if (!section) {
+        throw new Meteor.Error(SECTION_ACQUIRE_LOCK, 'Can only lock existing sections.');
+      }
+      const note = Notes.findOne(section.noteId);
+      const convo = Convos.findOne(note.convoId);
+      if (!convo.isUserInConvo(userId)) {
+        throw new Meteor.Error(SECTION_ACQUIRE_LOCK, 'Must be a member of convo to acquire section locks.');
+      }
+
+      section.set({
+        editingByUserId: userId,
+        unlocksAt: dateInXMin(5)
+      });
+      section.save();
+      return section;
+    }
+  });
 }

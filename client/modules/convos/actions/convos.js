@@ -1,3 +1,5 @@
+import SectionUtils from '/client/modules/core/libs/sections';
+
 export default {
   add({Meteor, LocalState}, name, userIds) {
     console.log('actions.convos.add');
@@ -9,8 +11,9 @@ export default {
     });
   },
 
-  select({LocalState}, convoId) {
+  select({Meteor, LocalState}, convoId) {
     LocalState.set('convoId', convoId);
+    SectionUtils.releaseLock({Meteor, LocalState});
   },
 
   addMembers({Meteor}, convoId, userIds) {

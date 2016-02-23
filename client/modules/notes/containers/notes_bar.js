@@ -5,7 +5,9 @@ import R from 'ramda';
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  editSection: actions.sections.edit
+  editSection: actions.sections.edit,
+  selectSection: actions.sections.select,
+  releaseSectionLock: actions.sections.releaseLock
 });
 
 export const composer = ({context, actions}, onData) => {

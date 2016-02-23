@@ -11,19 +11,21 @@ import Editor from 'react-medium-editor/lib/editor';
 export default class NotesContainer extends React.Component {
   handleChange(sectionId, text, medium) {
     const {editSection} = this.props;
-    console.log(sectionId);
-    console.log('Content Has Changed');
-    console.log(text);
+    // console.log(sectionId);
+    // console.log('Content Has Changed');
+    // console.log(text);
 
     editSection(sectionId, text);
   }
 
-  handleClick() {
-    console.log('handleClick');
+  handleClick(sectionId) {
+    console.log(`handleClick ${sectionId}`);
+    const {selectSection} = this.props;
+    selectSection(sectionId);
   }
 
   handleKeyDown(e) {
-    console.log(e.target);
+    // console.log(e.target);
     if (e.keyCode === 13) { // enter
       console.log('enter pressed');
     }
@@ -31,6 +33,8 @@ export default class NotesContainer extends React.Component {
 
   handleBlur() {
     console.log('handleBlur');
+    const {releaseSectionLock} = this.props;
+    releaseSectionLock();
   }
 
   render() {
@@ -77,9 +81,9 @@ export default class NotesContainer extends React.Component {
                 key={section._id}
                 text={section.text}
                 onChange={this.handleChange.bind(this, section._id)}
-                onClick={this.handleClick.bind(this)}
+                onClick={this.handleClick.bind(this, section._id)}
                 onKeyDown={this.handleKeyDown.bind(this)}
-                onBlur={this.handleBlur.bind(this)}
+                onBlur={this.handleBlur.bind(this, section._id)}
                 options={editorOptions}
               />
             );
