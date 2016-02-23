@@ -33,7 +33,9 @@ export default class Sidebar extends React.Component {
             }
             else {
               unreadCount = convo.numMsgs && _.has(lastTimeInConvo, `${convo._id}.numMsgs`) ?
-                convo.numMsgs - lastTimeInConvo[convo._id].numMsgs : 0;
+                Math.max(convo.numMsgs - lastTimeInConvo[convo._id].numMsgs, 0) : 0;
+              console.log('unreadCount');
+              console.log(unreadCount);
               unread = unreadCount > 0;
             }
             return (
