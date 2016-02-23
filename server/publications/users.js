@@ -3,17 +3,16 @@ import {Convos} from '/lib/collections';
 import {check} from 'meteor/check';
 
 export default function () {
-  const SELF = 'users.self';
+  const SELF = 'self';
   Meteor.publish(null, function () {
     if (!this.userId) {
       throw new Meteor.Error(SELF, 'Must be logged in to get self data.');
     }
 
     const fields = {
-      lastTimeInConvos: 1
+      lastTimeInConvo: 1
     };
-    console.log(SELF);
-    return Meteor.users.find(this.userId);
+    return Meteor.users.find(this.userId, {fields});
   });
 
   const USERS_LIST = 'users.list';
