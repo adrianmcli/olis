@@ -20,7 +20,9 @@ export const composer = ({context}, onData) => {
 
   if (convoId) {
     if (Meteor.subscribe('msgs.list', {convoId}).ready()) {
-      msgs = Collections.Messages.find({convoId}).fetch();
+
+      const options = {sort: [ [ 'createdAt', 'asc' ] ]};
+      msgs = Collections.Messages.find({convoId}, options).fetch();
     }
 
     const convo = Collections.Convos.findOne(convoId);
