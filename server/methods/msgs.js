@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import Convos from '/lib/convo';
 import Message from '/lib/msg';
+import {Messages} from '/lib/collections';
 import {check} from 'meteor/check';
 
 export default function () {
@@ -30,7 +31,8 @@ export default function () {
 
       // Update convo with last msg text
       convo.set({
-        lastMsgText: text
+        lastMsgText: text,
+        numMsgs: Messages.find({convoId}).count()
       });
       convo.save();
 
