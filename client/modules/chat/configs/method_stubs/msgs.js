@@ -1,5 +1,4 @@
 import {check} from 'meteor/check';
-import R from 'ramda';
 
 export default function ({Meteor, Collections, Models}) {
   const MSGS_ADD = 'msgs.add';
@@ -25,6 +24,12 @@ export default function ({Meteor, Collections, Models}) {
       const msg = new Models.Message();
       msg.set({text, userId, convoId});
       msg.save();
+
+      // Update convo with last msg text
+      convo.set({
+        lastMsgText: text
+      });
+      convo.save();
     }
   });
 }
