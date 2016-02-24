@@ -8,13 +8,6 @@ export default {
     });
   },
 
-  addFirstSection({Meteor}, noteId) {
-    Meteor.call('sections.addFirstSection', {noteId}, (err, res) => {
-      if (err) { alert(err); }
-      else { console.log(res); }
-    });
-  },
-
   edit({Meteor}, sectionId, text) {
     Meteor.call('sections.edit', {sectionId, text}, (err, res) => {
       if (err) { alert(err); }

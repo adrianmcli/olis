@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Convos, Teams} from '/lib/collections';
 import Convo from '/lib/convo';
 import Note from '/lib/note';
+import Section from '/lib/section';
 import {check} from 'meteor/check';
 import R from 'ramda';
 
@@ -40,6 +41,11 @@ export default function () {
       const note = new Note();
       note.set({convoId: convo._id});
       note.save();
+
+      // Insert a section
+      const text = `<h1>Notes</h1><p>Write notes here! 
+        You can also edit that title up there!</p>`;
+      Meteor.call('sections.add', {noteId: note._id, text});
 
       return convo;
     }

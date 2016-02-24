@@ -53,20 +53,6 @@ export default function () {
     }
   });
 
-  const SECTION_ADD_FIRST = 'sections.addFirstSection';
-  Meteor.methods({
-    'sections.addFirstSection'({noteId}) {
-      check(arguments[0], {
-        noteId: String
-      });
-
-      const note = Notes.findOne(noteId);
-      if (note && note.isEmpty()) {
-        Meteor.call('sections.add', {noteId, text: 'asdsa'});
-      }
-    }
-  });
-
   const SECTION_EDIT = 'sections.edit';
   Meteor.methods({
     'sections.edit'({sectionId, text}) {

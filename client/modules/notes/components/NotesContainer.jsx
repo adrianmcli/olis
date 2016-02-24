@@ -44,7 +44,7 @@ export default class NotesContainer extends React.Component {
   }
 
   render() {
-    const {note, sections, userId, addFirstSection} = this.props;
+    const {sections, userId} = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
 
     const editorOptions = {
@@ -63,7 +63,7 @@ export default class NotesContainer extends React.Component {
     };
 
     return (
-      <div id="notes-container" onClick={addFirstSection.bind(null, note._id)}>
+      <div id="notes-container">
         <div className="notes-header">
           <div className="notes-icon-bar">
             <IconButton tooltip="Share">
@@ -88,7 +88,7 @@ export default class NotesContainer extends React.Component {
               <Editor
                 key={section._id}
                 ref={section._id}
-                text={``}
+                text={section.text}
                 onChange={this.handleChange.bind(this, section._id)}
                 onClick={this.handleClick.bind(this, section._id)}
                 onKeyDown={this.handleKeyDown.bind(this, section._id)}
