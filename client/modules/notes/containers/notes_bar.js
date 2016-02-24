@@ -7,7 +7,8 @@ export const depsMapper = (context, actions) => ({
   actions: () => actions,
   editSection: actions.sections.edit,
   selectSection: actions.sections.select,
-  releaseSectionLock: actions.sections.releaseLock
+  releaseSectionLock: actions.sections.releaseLock,
+  addFirstSection: actions.sections.addFirstSection
 });
 
 export const composer = ({context, actions}, onData) => {
@@ -38,7 +39,7 @@ export const composer = ({context, actions}, onData) => {
   }
 
   onData(null, {
-    note, sections, addSection: _addSection
+    note, sections, addSection: _addSection, userId: Meteor.userId()
   });
 };
 

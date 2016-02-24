@@ -8,12 +8,13 @@ import ShareIcon from 'material-ui/lib/svg-icons/social/share';
 import IconButton from 'material-ui/lib/icon-button';
 import Editor from 'react-medium-editor/lib/editor';
 
+import R from 'ramda';
+
 export default class NotesContainer extends React.Component {
   handleChange(sectionId, text, medium) {
     const {editSection} = this.props;
-    // console.log(sectionId);
-    // console.log('Content Has Changed');
-    // console.log(text);
+    console.log('Content Has Changed');
+    console.log(text);
 
     editSection(sectionId, text);
   }
@@ -24,10 +25,13 @@ export default class NotesContainer extends React.Component {
     selectSection(sectionId);
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(sectionId, e) {
     // console.log(e.target);
     if (e.keyCode === 13) { // enter
       console.log('enter pressed');
+      const {addSection} = this.props;
+      addSection('', sectionId);
+      // Focus on new section
     }
   }
 
@@ -35,15 +39,18 @@ export default class NotesContainer extends React.Component {
     console.log('handleBlur');
     const {releaseSectionLock} = this.props;
     releaseSectionLock();
+
+    // TODO Save edits
   }
 
   render() {
-    const {sections, addSection} = this.props;
+    const {note, sections, userId, addFirstSection} = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
 
     const editorOptions = {
-      disableEditing: false,
+      // disableEditing: false,
       disableReturn: true,
+      disableExtraSpaces: false,
       toolbar: {
         buttons: [
           'bold', 'italic', 'underline',
@@ -56,7 +63,7 @@ export default class NotesContainer extends React.Component {
     };
 
     return (
-      <div id="notes-container">
+      <div id="notes-container" onClick={addFirstSection.bind(null, note._id)}>
         <div className="notes-header">
           <div className="notes-icon-bar">
             <IconButton tooltip="Share">
@@ -73,18 +80,20 @@ export default class NotesContainer extends React.Component {
             </IconButton>
           </div>
         </div>
+
         <div className="notes-data-wrapper">
-          <button onClick={addSection.bind(null, '<p>test section</p>', '')}>Add section</button>
           {sections.map(section => {
+            const editorOptions2 = R.merge(editorOptions, {disableEditing: !section.canEdit(userId)});
             return (
               <Editor
                 key={section._id}
-                text={section.text}
+                ref={section._id}
+                text={``}
                 onChange={this.handleChange.bind(this, section._id)}
                 onClick={this.handleClick.bind(this, section._id)}
-                onKeyDown={this.handleKeyDown.bind(this)}
+                onKeyDown={this.handleKeyDown.bind(this, section._id)}
                 onBlur={this.handleBlur.bind(this, section._id)}
-                options={editorOptions}
+                options={editorOptions2}
               />
             );
           })}

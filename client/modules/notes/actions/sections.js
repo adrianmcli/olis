@@ -1,8 +1,15 @@
 import SectionUtils from '/client/modules/core/libs/sections';
 
 export default {
-  add({Meteor}, noteId, text, afterSectionId) {
+  add({Meteor}, noteId, text = '', afterSectionId) {
     Meteor.call('sections.add', {noteId, text, afterSectionId}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
+  },
+
+  addFirstSection({Meteor}, noteId) {
+    Meteor.call('sections.addFirstSection', {noteId}, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
     });

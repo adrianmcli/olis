@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Sections, Convos, Notes} from '/lib/collections';
 import Section from '/lib/section';
-import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
 import R from 'ramda';
 
 const dateInXMin = (x) => {
@@ -12,16 +12,11 @@ const dateInXMin = (x) => {
 export default function () {
   const SECTION_ADD = 'sections.add';
   Meteor.methods({
-    'sections.add'({noteId, text, afterSectionId = ''}) {
-      console.log('sections.add');
-      console.log(noteId);
-      console.log(text);
-      console.log(afterSectionId);
-
+    'sections.add'({noteId, text, afterSectionId}) {
       check(arguments[0], {
         noteId: String,
         text: String,
-        afterSectionId: String
+        afterSectionId: Match.Optional(String)
       });
 
       const userId = this.userId;
@@ -50,11 +45,25 @@ export default function () {
       });
       section.save();
 
-      const index = afterSectionId === '' ? 0 : note.sectionIds.indexOf(afterSectionId) + 1;
-      note.set({
-        sectionIds: R.insert(index, section._id, note.sectionIds)
-      });
+      const index = afterSectionId ? note.sectionIds.indexOf(afterSectionId) + 1 : 0;
+      const sectionIds = R.insert(index, section._id, note.sectionIds);
+
+      note.set({sectionIds});
       note.save();
+    }
+  });
+
+  const SECTION_ADD_FIRST = 'sections.addFirstSection';
+  Meteor.methods({
+    'sections.addFirstSection'({noteId}) {
+      check(arguments[0], {
+        noteId: String
+      });
+
+      const note = Notes.findOne(noteId);
+      if (note && note.isEmpty()) {
+        Meteor.call('sections.add', {noteId, text: 'asdsa'});
+      }
     }
   });
 
