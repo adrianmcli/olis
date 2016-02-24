@@ -74,7 +74,7 @@ export default class NotesContainer extends React.Component {
           </div>
         </div>
         <div className="notes-data-wrapper">
-          <button onClick={addSection.bind(null, '<p>test section</div></p>', '')}>Add section</button>
+          <button onClick={addSection.bind(null, '<p>test section</p>', '')}>Add section</button>
           {sections.map(section => {
             return (
               <Editor
