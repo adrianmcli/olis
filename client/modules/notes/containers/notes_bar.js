@@ -8,7 +8,6 @@ export const depsMapper = (context, actions) => ({
   editSection: actions.sections.edit,
   selectSection: actions.sections.select,
   releaseSectionLock: actions.sections.releaseLock,
-  addFirstSection: actions.sections.addFirstSection
 });
 
 export const composer = ({context, actions}, onData) => {
