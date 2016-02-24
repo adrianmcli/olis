@@ -16,6 +16,7 @@ export default {
   },
 
   select({Meteor, LocalState}, sectionId) {
+    console.log('actions.sections.select');
     SectionUtils.releaseLock({Meteor, LocalState});
     SectionUtils.acquireLock({Meteor, LocalState}, sectionId);
   },

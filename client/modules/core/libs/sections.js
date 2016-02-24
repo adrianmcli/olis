@@ -5,7 +5,7 @@ export default {
     if (sectionId) {
       Meteor.call('sections.releaseLock', {sectionId}, (err, res) => {
         if (err) { alert(err); }
-        else { console.log(res); }
+        // else { console.log(res); }
       });
     }
     LocalState.set('sectionId', null);

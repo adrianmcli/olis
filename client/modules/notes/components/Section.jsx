@@ -21,12 +21,6 @@ export default class Section extends React.Component {
     editSection(sectionId, text);
   }
 
-  handleClick(sectionId) {
-    console.log(`handleClick ${sectionId}`);
-    const {selectSection} = this.props;
-    selectSection(sectionId);
-  }
-
   handleKeyDown(sectionId, e) {
     // console.log(e.target);
     if (e.keyCode === 13) { // enter
@@ -37,8 +31,14 @@ export default class Section extends React.Component {
     }
   }
 
-  handleBlur() {
-    console.log('handleBlur');
+  handleFocus(sectionId) {
+    console.log(`handleFocus ${sectionId}`);
+    const {selectSection} = this.props;
+    selectSection(sectionId);
+  }
+
+  handleBlur(sectionId) {
+    console.log(`handleBlur ${sectionId}`);
     const {releaseSectionLock} = this.props;
     releaseSectionLock();
 
@@ -71,8 +71,8 @@ export default class Section extends React.Component {
         ref={section._id}
         text={section.text}
         onChange={this.handleChange.bind(this, section._id)}
-        onClick={this.handleClick.bind(this, section._id)}
         onKeyDown={this.handleKeyDown.bind(this, section._id)}
+        onFocus={this.handleFocus.bind(this, section._id)}
         onBlur={this.handleBlur.bind(this, section._id)}
         options={editorOptions2}
       />
