@@ -15,4 +15,13 @@ export default function (injectDeps, {FlowRouter}) {
       });
     }
   });
+
+  FlowRouter.route('/test-medium', {
+    name: 'test-medium',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<TestMedium />)
+      });
+    }
+  });
 }
