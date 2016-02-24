@@ -5,10 +5,13 @@ import R from 'ramda';
 export default class Section extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      open: false,
-    };
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const {userId} = this.props;
+    console.log(`shouldComponentUpdate ${nextProps.section._id}, ${!nextProps.section.isUserEditing(userId)}`);
+    return !nextProps.section.isUserEditing(userId);
+  }  
 
   handleChange(sectionId, text, medium) {
     const {editSection} = this.props;
@@ -39,7 +42,7 @@ export default class Section extends React.Component {
     const {releaseSectionLock} = this.props;
     releaseSectionLock();
 
-    // TODO Save edits
+    // TODO Save edits. How to get the text out of contenteditable?
   }
 
   render() {

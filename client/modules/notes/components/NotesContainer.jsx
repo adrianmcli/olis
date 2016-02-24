@@ -9,7 +9,7 @@ import Section from './Section.jsx';
 
 export default class NotesContainer extends React.Component {
   render() {
-    const {sections, userId, editSection, selectSection, releaseSectionLock} = this.props;
+    const {sections, userId, addSection, editSection, selectSection, releaseSectionLock} = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
     return (
       <div id="notes-container">
@@ -37,6 +37,7 @@ export default class NotesContainer extends React.Component {
                 key={section._id}
                 section={section}
                 userId={userId}
+                addSection={addSection}
                 editSection={editSection}
                 selectSection={selectSection}
                 releaseSectionLock={releaseSectionLock}
