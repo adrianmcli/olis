@@ -2,6 +2,16 @@ import {Meteor} from 'meteor/meteor';
 import {Convos} from '/lib/collections';
 import {check} from 'meteor/check';
 
+const selfFields = {
+  lastTimeInConvo: 1
+};
+
+const othersFields = {
+  username: 1,
+  email: 1,
+  roles: 1
+};
+
 export default function () {
   const SELF = 'self';
   Meteor.publish(null, function () {
@@ -9,10 +19,7 @@ export default function () {
       throw new Meteor.Error(SELF, 'Must be logged in to get self data.');
     }
 
-    const fields = {
-      lastTimeInConvo: 1
-    };
-    return Meteor.users.find(this.userId, {fields});
+    return Meteor.users.find(this.userId, {fields: selfFields});
   });
 
   const USERS_LIST = 'users.list';
@@ -20,7 +27,7 @@ export default function () {
     if (!this.userId) {
       throw new Meteor.Error(USERS_LIST, 'Must be logged in to get users list.');
     }
-    return Meteor.users.find();
+    return Meteor.users.find(null, {othersFields});
   });
 
   const USERS_CONVO = 'users.convo';
@@ -39,6 +46,6 @@ export default function () {
 
     return Meteor.users.find({
       _id: {$in: convo.userIds}
-    });
+    }, {fields: othersFields});
   });
 }

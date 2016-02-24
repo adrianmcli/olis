@@ -44,6 +44,12 @@ export default {
     });
   },
 
+  logout({Meteor, LocalState}) {
+    Meteor.logout(err => {
+      if (err) { alert(err); }
+    });
+  },
+
   clearErrors({LocalState}) {
     LocalState.set('REGISTRATION_ERROR', null);
     LocalState.set('LOGIN_ERROR', null);

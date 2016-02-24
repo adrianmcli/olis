@@ -1,6 +1,6 @@
 import {createApp} from 'mantra-core';
-import {DocHead} from 'meteor/kadira:dochead';
 import initContext from './configs/context';
+import doHead from './dochead';
 
 // modules
 import testModule from './modules/_myTest';
@@ -32,13 +32,4 @@ app.loadModule(testModule);
 
 app.init();
 
-// head
-DocHead.setTitle('Olis');
-DocHead.addLink({
-  href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
-  rel: 'stylesheet'
-});
-DocHead.addLink({
-  href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
-  rel: 'stylesheet'
-});
+doHead();
