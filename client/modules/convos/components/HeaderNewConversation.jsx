@@ -68,6 +68,8 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   render() {
+    const {teamUsers} = this.props;
+
     const actions = [
       <FlatButton
       label="Cancel"
@@ -83,7 +85,6 @@ export default class HeaderNewConversation extends React.Component {
     ];
     return (
       <div>
-        
         <div className="header-icon">
           <IconButton
             onClick={this.handleOpen.bind(this)}
@@ -120,23 +121,19 @@ export default class HeaderNewConversation extends React.Component {
               floatingLabelText="Type here to search"
             />
           </div>
-          <div style={{maxHeight:'420px', overflowY:'scroll', width: '420px'}}>
+          <div style={{maxHeight: '420px', overflowY: 'scroll', width: '420px'}}>
             <List>
-              <ListItem
-                rightToggle={<Checkbox value="Nicky_Cage_ID" onCheck={this.handleCheckboxChange.bind(this)}/>}
-                primaryText="Nicky Cage"
-                leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-              />
-              <ListItem
-                rightToggle={<Checkbox value="Billy_Joel_ID" onCheck={this.handleCheckboxChange.bind(this)}/>}
-                primaryText={"Billy Joel"}
-                leftAvatar={<Avatar src="https://www.placecage.com/102/101" />}
-              />
-              <ListItem
-                rightToggle={<Checkbox value="Bruce_Willis_ID" onCheck={this.handleCheckboxChange.bind(this)}/>}
-                primaryText="Bruce Willis"
-                leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-              />
+            {
+              teamUsers.map(user => {
+                return (
+                  <ListItem
+                    rightToggle={<Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>}
+                    primaryText={user.username}
+                    leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
+                  />
+                );
+              })
+            }
             </List>
           </div>
         </div>
@@ -146,3 +143,6 @@ export default class HeaderNewConversation extends React.Component {
     );
   }
 }
+HeaderNewConversation.defaultProps = {
+  teamUsers: []
+};

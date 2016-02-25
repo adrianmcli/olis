@@ -16,8 +16,15 @@ export const composer = ({context}, onData) => {
   let convos = [];
   let convoId = null;
   let lastTimeInConvo = null;
+  let teamUsers = [];
 
   if (teamId) {
+    if (Meteor.subscribe('users.team', {teamId}).ready()) {
+      let selector = {};
+      selector[`roles.${teamId}`] = {$exists: true};
+      teamUsers = Meteor.users.find(selector).fetch();
+    }
+
     if (Meteor.subscribe('convos.list', {teamId}).ready()) {
       const selector = {
         userIds: Meteor.userId(),
@@ -33,7 +40,8 @@ export const composer = ({context}, onData) => {
   onData(null, {
     convos,
     convoId,
-    lastTimeInConvo
+    lastTimeInConvo,
+    teamUsers
   });
 };
 
