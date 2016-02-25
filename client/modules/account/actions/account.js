@@ -55,4 +55,48 @@ export default {
     LocalState.set('LOGIN_ERROR', null);
     return null;
   },
+
+  setRegisterEmail({LocalState, FlowRouter}, email) {
+    // TODO validate email
+
+    LocalState.set('register.email', email);
+    FlowRouter.go('/register/username');
+  },
+
+  setRegisterUsername({LocalState, FlowRouter}, username) {
+    // TODO validate username, make sure theres no other username in the db
+
+    LocalState.set('register.username', username);
+    FlowRouter.go('/register/team-name');
+  },
+
+  setRegisterTeamName({LocalState, FlowRouter}, teamName) {
+    // TODO validate team name
+
+    LocalState.set('register.teamName', teamName);
+    FlowRouter.go('/register/invite');
+  },
+
+  setRegisterInviteEmails({LocalState, FlowRouter}, inviteEmails) {
+    // TODO validate emails
+
+    LocalState.set('register.inviteEmails', inviteEmails);
+
+    // TODO submit to server
+    // THEN clear the register local state, go home
+    FlowRouter.go('/home');
+  },
+
+  skipInvites({LocalState, FlowRouter}) {
+    // TODO submit to server
+    // THEN clear the register local state, go home
+    FlowRouter.go('/home');
+  },
+
+  addMoreInvites({LocalState}) {
+    const current = LocalState.get('register.numInviteInputs') ?
+      LocalState.get('register.numInviteInputs') : 3;
+
+    LocalState.set('register.numInviteInputs', current + 1);
+  }
 };
