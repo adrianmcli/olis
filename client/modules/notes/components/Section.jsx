@@ -25,7 +25,7 @@ export default class Section extends React.Component {
     if (e.keyCode === 13) { // enter
       console.log('enter pressed');
       const {addSection} = this.props;
-      addSection('', sectionId);
+      // addSection('', sectionId);
       // TODO Focus on new section
     }
   }
@@ -45,12 +45,11 @@ export default class Section extends React.Component {
   }
 
   render() {
-    const {section, userId, editSection, selectSection, releaseSectionLock} = this.props;
-    const iconColor = 'rgba(0,0,0,0.8)';
+    const {section, userId} = this.props;
 
     const editorOptions = {
       // disableEditing: false,
-      disableReturn: true,
+      // disableReturn: true,
       disableExtraSpaces: false,
       toolbar: {
         buttons: [
