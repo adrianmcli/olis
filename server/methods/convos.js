@@ -50,7 +50,7 @@ export default function () {
         noteId: note._id, text: body, afterSectionId: section._id
       });
 
-      return convo;
+      return convo._id;
     }
   });
 

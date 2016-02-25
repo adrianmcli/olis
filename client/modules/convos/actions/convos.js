@@ -5,9 +5,9 @@ export default {
     console.log('actions.convos.add');
     Meteor.call('convos.add', {
       name, userIds, teamId: LocalState.get('teamId')
-    }, (err, res) => {
+    }, (err, convoId) => {
       if (err) { alert(err); }
-      else { console.log(res); }
+      else { LocalState.set('convoId', convoId); }
     });
   },
 
