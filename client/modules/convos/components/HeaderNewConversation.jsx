@@ -37,6 +37,13 @@ export default class HeaderNewConversation extends React.Component {
     this.setState({open: false});
   }
 
+  handleSubmit() {
+    const {addConvo} = this.props;
+    const {convoName, usersToAdd} = this.state;
+    addConvo(convoName, usersToAdd);
+    this.handleClose();
+  }
+
   handleConvoNameChange(event) {
     const input = event.target.value;
     this.setState({
@@ -47,9 +54,9 @@ export default class HeaderNewConversation extends React.Component {
   handleCheckboxChange(event, checked) {
     const targetId = event.target.value;
     if (checked) {        // add user to state
-      this.setState({ 
-        usersToAdd: this.state.usersToAdd.concat([targetId])
-      }, this.updateSubmitBtnStatus)
+      this.setState({
+        usersToAdd: this.state.usersToAdd.concat([ targetId ])
+      }, this.updateSubmitBtnStatus);
     } else {              // remove user from state
       var newData = this.state.usersToAdd.slice();
       newData.splice(newData.indexOf(targetId), 1);
@@ -79,7 +86,7 @@ export default class HeaderNewConversation extends React.Component {
       <FlatButton
         label="Submit"
         primary={true}
-        onClick={this.handleClose.bind(this)}
+        onClick={this.handleSubmit.bind(this)}
         disabled={this.state.disableSubmit}
       />,
     ];

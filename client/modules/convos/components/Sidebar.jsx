@@ -15,14 +15,13 @@ export default class Sidebar extends React.Component {
       <div id="sidebar-container">
         <div id="sidebar-header">
           <HeaderMenu />
-          <HeaderNewConversation teamUsers={teamUsers} />
+          <HeaderNewConversation teamUsers={teamUsers} addConvo={addConvo} />
           <HeaderSearch />
           <HeaderNotifications />
         </div>
 
         {/* Conversation List */}
         <div id="conversation-list">
-          <button onClick={addConvo.bind(null, 'convo name', [])}>Add convo</button>
           {convos.map(convo => {
 
             let unread = true;
