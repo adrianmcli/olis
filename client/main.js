@@ -11,6 +11,7 @@ import convosModule from './modules/convos';
 import msgsModule from './modules/chat';
 import usersModule from './modules/users';
 import notesModule from './modules/notes';
+import searchModule from './modules/search';
 
 // init context
 const context = initContext();
@@ -27,6 +28,7 @@ app.loadModule(convosModule);
 app.loadModule(msgsModule);
 app.loadModule(usersModule);
 app.loadModule(notesModule);
+app.loadModule(searchModule);
 
 app.loadModule(testModule);
 

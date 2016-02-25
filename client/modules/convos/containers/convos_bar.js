@@ -5,10 +5,12 @@ const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
   addConvo: actions.convos.add,
-  selectConvo: actions.convos.select
+  selectConvo: actions.convos.select,
+  searchTeamUsers: actions.search.setTeamUsersSearchText,
+  buildRegExp: actions.search.buildRegExp
 });
 
-export const composer = ({context}, onData) => {
+export const composer = ({context, buildRegExp}, onData) => {
   const {Meteor, LocalState, Collections} = context();
   const teamId = LocalState.get('teamId');
 
@@ -16,14 +18,19 @@ export const composer = ({context}, onData) => {
   let convos = [];
   let convoId = null;
   let lastTimeInConvo = null;
-  let teamUsers = [];
+  let teamSearchResultUsers = [];
 
   if (teamId) {
-    if (Meteor.subscribe('users.team', {teamId}).ready()) {
-      let selector = {};
-      selector[`roles.${teamId}`] = {$exists: true};
-      teamUsers = Meteor.users.find(selector).fetch();
-    }
+      if (Meteor.subscribe('users.team', {teamId}).ready()) {
+        const searchText = LocalState.get('teamUsersSearchText');
+        let selector = {};
+        if (searchText) {
+          const regExp = buildRegExp(searchText);
+          selector.username = regExp;
+        }
+        selector[`roles.${teamId}`] = {$exists: true};
+        teamSearchResultUsers = Meteor.users.find(selector).fetch();
+      }
 
     if (Meteor.subscribe('convos.list', {teamId}).ready()) {
       const selector = {
@@ -41,7 +48,7 @@ export const composer = ({context}, onData) => {
     convos,
     convoId,
     lastTimeInConvo,
-    teamUsers
+    teamSearchResultUsers
   });
 };
 

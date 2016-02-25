@@ -59,6 +59,8 @@ meteor@1.1.11-beta.11
 meteor-base@1.0.1
 meteor-env-dev@0.0.1-beta.11
 meteor-env-prod@0.0.1-beta.11
+meteorhacks:picker@1.0.3
+meteorhacks:search-source@1.4.2
 meteortoys:allthings@2.3.1
 meteortoys:authenticate@2.1.0
 meteortoys:autopub@2.1.0

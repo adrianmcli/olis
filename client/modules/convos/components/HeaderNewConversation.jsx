@@ -25,6 +25,7 @@ export default class HeaderNewConversation extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.open !== nextState.open) { return true; }
     if (this.state.disableSubmit !== nextState.disableSubmit) { return true; }
+    if (this.props.teamSearchResultUsers !== nextProps.teamSearchResultUsers) { return true; }
     return false;
   }
 
@@ -72,6 +73,12 @@ export default class HeaderNewConversation extends React.Component {
     }
   }
 
+  handleSearchTextChange(event) {
+    const input = event.target.value;
+    const {searchTeamUsers} = this.props;
+    searchTeamUsers(input);
+  }
+
   updateSubmitBtnStatus() {
     const convoName = this.state.convoName;
     const userList = this.state.usersToAdd;
@@ -81,7 +88,7 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   render() {
-    const {teamUsers} = this.props;
+    const {teamSearchResultUsers} = this.props;
 
     const actions = [
       <FlatButton
@@ -132,14 +139,16 @@ export default class HeaderNewConversation extends React.Component {
               <TextField
                 hintText="Username, Email, etc."
                 floatingLabelText="Type here to search"
+                onChange={this.handleSearchTextChange.bind(this)}
               />
             </div>
             <div style={{maxHeight: '420px', overflowY: 'scroll', width: '420px'}}>
               <List>
               {
-                teamUsers.map(user => {
+                teamSearchResultUsers.map(user => {
                   return (
                     <ListItem
+                      key={user._id}
                       rightToggle={<Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>}
                       primaryText={user.username}
                       leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
@@ -157,5 +166,5 @@ export default class HeaderNewConversation extends React.Component {
   }
 }
 HeaderNewConversation.defaultProps = {
-  teamUsers: []
+  teamSearchResultUsers: []
 };
