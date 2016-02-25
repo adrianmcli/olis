@@ -1,16 +1,21 @@
 import {Meteor} from 'meteor/meteor';
 import {Convos, Teams, Messages} from '/lib/collections';
-import {check} from 'meteor/check';
+import Team from '/lib/team';
+import {check, Match} from 'meteor/check';
+import {Random} from 'meteor/random';
+import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
+import GetEmails from 'get-emails';
 
 export default function () {
   const ACCOUNT_REGISTER = 'account.register';
   Meteor.methods({
-    'account.register'({email, username, password}) {
+    'account.register'({email, username, teamName, inviteEmails}) {
       check(arguments[0], {
         email: String,
         username: String,
-        password: String
+        teamName: String,
+        inviteEmails: Match.Optional([ String ])
       });
       if (email === '') {
         throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty email.');
@@ -18,11 +23,66 @@ export default function () {
       if (username === '') {
         throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty username.');
       }
-      if (password === '') {
-        throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty password.');
+
+      const password = Random.secret(15);
+      const userId = Accounts.createUser({username, email, password});
+
+      // Add users to team and set roles
+      const team = new Team();
+      team.set({
+        name: teamName,
+        userIds: [ userId ]
+      });
+      team.save();
+      Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
+      Accounts.sendResetPasswordEmail(userId);
+
+      if (inviteEmails && !R.isEmpty(inviteEmails)) {
+        Meteor.call(ACCOUNT_CREATE_INVITE_USERS, {
+          inviteEmails, invitedByName: username, invitedById: userId, teamId: team._id
+        });
+      }
+    }
+  });
+
+  const ACCOUNT_CREATE_INVITE_USERS = 'account.createInviteUsers';
+  Meteor.methods({
+    'account.createInviteUsers'({inviteEmails, invitedByName, invitedById, teamId}) {
+      check(arguments[0], {
+        inviteEmails: [ String ],
+        invitedByName: String,
+        invitedById: String,
+        teamId: String
+      });
+
+      const user = Meteor.users.findOne(invitedById);
+      if (!user) {
+        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must be a registered user to invite other users.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must invite users to existing team.');
+      }
+      if (!team.isUserInTeam(invitedById)) {
+        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must be a member of team to invite new users to it.');
+      }
+      const filteredEmails = R.filter(email => GetEmails(email).length === 1, inviteEmails);
+      if (R.isEmpty(filteredEmails)) {
+        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must provide proper invite emails.');
       }
 
-      Accounts.createUser({username, email, password});
+      const invitedUserIds = filteredEmails.map(inviteEmail => {
+        console.log(`inviteEmail ${inviteEmail}`);
+        const invitedUserId = Accounts.createUser({email: inviteEmail});
+        Meteor.users.update(invitedUserId, { $set: {invitedBy: invitedByName} });
+        return invitedUserId;
+      });
+
+      team.set({userIds: invitedUserIds});
+      team.save();
+      Roles.addUsersToRoles(invitedUserIds, [ 'member' ], teamId);
+
+      invitedUserIds.forEach(id => Accounts.sendEnrollmentEmail(id));
     }
   });
 
@@ -78,6 +138,25 @@ export default function () {
       setObj[`lastTimeInTeam.${teamId}`] = new Date();
       const modifier = { $set: setObj };
       Meteor.users.update(userId, modifier);
+    }
+  });
+
+  const ACCOUNT_VALIDATE_EMAIL = 'account.validateEmail';
+  Meteor.methods({
+    'account.validateEmail'({email}) {
+      check(arguments[0], {
+        email: String
+      });
+
+      const emailTrim = email.trim();
+      const emails = GetEmails(emailTrim);
+      if (emails.length !== 1) {
+        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, 'Please enter a proper email.');
+      }
+      const user = Accounts.findUserByEmail(emails[0]);
+      if (user) {
+        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, `The email ${emails[0]} is taken. Please enter another one.`);
+      }
     }
   });
 }
