@@ -19,9 +19,11 @@ export default class RegisterInvite extends React.Component {
   }
 
   renderInputs() {
-    const {inviteEmails, numInviteInputs} = this.props;
+    const {numInviteInputs} = this.props;
+    let {inviteEmails} = this.props;
+    inviteEmails = inviteEmails ? inviteEmails : [];
 
-    let oldInputs = inviteEmails.map((email, index) => {
+    const oldInputs = inviteEmails.map((email, index) => {
       return (
         <div>
           <input
