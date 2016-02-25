@@ -22,6 +22,12 @@ export default class HeaderNewConversation extends React.Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.open !== nextState.open) { return true; }
+    if (this.state.disableSubmit !== nextState.disableSubmit) { return true; }
+    return false;
+  }
+
   handleOpen(event) {
     this.setState({
       open: true,
@@ -115,35 +121,35 @@ export default class HeaderNewConversation extends React.Component {
               hintText="Sales Report, Issue #24, etc."
               floatingLabelText="Conversation Name"
               onChange={this.handleConvoNameChange.bind(this)}
-              onEnterKeyDown={this.moveForward}
+              // onEnterKeyDown={this.moveForward}
               defaultValue={this.state.convoName}
               ref="convoNameInput"
             />
           </div>
-                <div>
-          <div className="modal-step">
-          2. Choose who should be included in this conversation.
-            <TextField
-              hintText="Username, Email, etc."
-              floatingLabelText="Type here to search"
-            />
+          <div>
+            <div className="modal-step">
+            2. Choose who should be included in this conversation.
+              <TextField
+                hintText="Username, Email, etc."
+                floatingLabelText="Type here to search"
+              />
+            </div>
+            <div style={{maxHeight: '420px', overflowY: 'scroll', width: '420px'}}>
+              <List>
+              {
+                teamUsers.map(user => {
+                  return (
+                    <ListItem
+                      rightToggle={<Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>}
+                      primaryText={user.username}
+                      leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
+                    />
+                  );
+                })
+              }
+              </List>
+            </div>
           </div>
-          <div style={{maxHeight: '420px', overflowY: 'scroll', width: '420px'}}>
-            <List>
-            {
-              teamUsers.map(user => {
-                return (
-                  <ListItem
-                    rightToggle={<Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>}
-                    primaryText={user.username}
-                    leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-                  />
-                );
-              })
-            }
-            </List>
-          </div>
-        </div>
         </Dialog>
 
       </div>
