@@ -22,7 +22,7 @@ export default class ChatContainer extends React.Component {
   }
 
   render() {
-    const {msgs, userId, convoUsers, title, usersListString} = this.props;
+    const {msgs, userId, convoUsers, title, usersListString, loadMore} = this.props;
     return (
       <div id="chat-container">
         <div id="chat-header">
@@ -48,6 +48,7 @@ export default class ChatContainer extends React.Component {
         </div>
 
         <div id="chat-msg-area">
+          <button onClick={loadMore}>Load more messages</button>
           {msgs.map(msg => {
             return (
               <ChatMessageItem

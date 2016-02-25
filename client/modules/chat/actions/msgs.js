@@ -4,5 +4,11 @@ export default {
       if (err) { alert(err); }
       else { console.log(res); }
     });
+  },
+
+  loadMore({Collections, LocalState}) {
+    const convoId = LocalState.get('convoId');
+    const convoNumMsgs = Collections.Messages.find({convoId}).count();
+    LocalState.set('loadMore.convoNumMsgs', convoNumMsgs);
   }
 };

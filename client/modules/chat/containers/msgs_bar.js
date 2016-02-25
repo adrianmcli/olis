@@ -5,7 +5,8 @@ import R from 'ramda';
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  addMsg: actions.msgs.add
+  addMsg: actions.msgs.add,
+  loadMore: actions.msgs.loadMore
 });
 
 export const composer = ({context}, onData) => {
@@ -19,8 +20,9 @@ export const composer = ({context}, onData) => {
   let usersListString = null;
 
   if (convoId) {
-    if (Meteor.subscribe('msgs.list', {convoId}).ready()) {
-
+    const currentNumMsgs = LocalState.get('loadMore.convoNumMsgs') ?
+      LocalState.get('loadMore.convoNumMsgs') : 0;
+    if (Meteor.subscribe('msgs.list', {convoId, currentNumMsgs}).ready()) {
       const options = {sort: [ [ 'createdAt', 'asc' ] ]};
       msgs = Collections.Messages.find({convoId}, options).fetch();
     }
