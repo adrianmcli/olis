@@ -55,4 +55,22 @@ export default function (injectDeps, {FlowRouter}) {
       });
     }
   });
+
+  FlowRouter.route('/invite/:token', {
+    name: 'enroll-account',
+    action(params) {
+      mount(MainLayoutCtx, {
+        content: () => (<SetPasswordPage token={params.token} />)
+      });
+    }
+  });
+
+  FlowRouter.route('/reset/:token', {
+    name: 'reset-password',
+    action(params) {
+      mount(MainLayoutCtx, {
+        content: () => (<SetPasswordPage token={params.token} />)
+      });
+    }
+  });
 }

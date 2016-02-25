@@ -1,6 +1,6 @@
 import {createApp} from 'mantra-core';
 import initContext from './configs/context';
-import doHead from './dochead';
+import setupHead from './dochead';
 
 // modules
 import testModule from './modules/_myTest';
@@ -34,4 +34,4 @@ app.loadModule(testModule);
 
 app.init();
 
-doHead();
+setupHead();

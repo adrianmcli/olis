@@ -1,5 +1,7 @@
+import AccountUtils from '/client/modules/core/libs/account';
+
 export default {
-  register({Meteor, LocalState, FlowRouter}, {email, username, password}) {
+  oldRegister({Meteor, LocalState, FlowRouter}, {email, username, password}) {
     LocalState.set('REGISTRATION_ERROR', null);
     if (email === '' || !email) {
       LocalState.set('REGISTRATION_ERROR', 'Enter an email');
@@ -77,20 +79,13 @@ export default {
     FlowRouter.go('/register/invite');
   },
 
-  setRegisterInviteEmails({LocalState, FlowRouter}, inviteEmails) {
-    // TODO validate emails
-
+  setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails) {
     LocalState.set('register.inviteEmails', inviteEmails);
-
-    // TODO submit to server
-    // THEN clear the register local state, go home
-    FlowRouter.go('/home');
+    AccountUtils.register({Meteor, LocalState, FlowRouter});
   },
 
-  skipInvites({LocalState, FlowRouter}) {
-    // TODO submit to server
-    // THEN clear the register local state, go home
-    FlowRouter.go('/home');
+  skipInvites({Meteor, LocalState, FlowRouter}) {
+    AccountUtils.register({Meteor, LocalState, FlowRouter});
   },
 
   addMoreInvites({LocalState}) {
@@ -98,5 +93,16 @@ export default {
       LocalState.get('register.numInviteInputs') : 3;
 
     LocalState.set('register.numInviteInputs', current + 1);
+  },
+
+  validateEmail({Meteor}, email, onError, onSuccess) {
+    Meteor.call('account.validateEmail', {email}, (err, res) => {
+      if (err) {
+        if (onError) { onError(err); }
+      }
+      else {
+        if (onSuccess) { onSuccess(); }
+      }
+    });
   }
 };

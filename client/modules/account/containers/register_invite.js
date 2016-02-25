@@ -6,7 +6,8 @@ export const depsMapper = (context, actions) => ({
   actions: () => actions,
   setRegisterInviteEmails: actions.account.setRegisterInviteEmails,
   skipInvites: actions.account.skipInvites,
-  addMoreInvites: actions.account.addMoreInvites
+  addMoreInvites: actions.account.addMoreInvites,
+  validateEmail: actions.account.validateEmail
 });
 
 export const composer = ({context}, onData) => {
