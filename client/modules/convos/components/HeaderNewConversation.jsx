@@ -41,7 +41,9 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   handleClose() {
+    const {searchTeamUsers} = this.props;
     this.setState({open: false});
+    searchTeamUsers(null);
   }
 
   handleSubmit() {
