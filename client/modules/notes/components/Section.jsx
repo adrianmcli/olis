@@ -22,12 +22,11 @@ export default class Section extends React.Component {
   }
 
   handleKeyDown(sectionId, e) {
-    // console.log(e.target);
     if (e.keyCode === 13) { // enter
       console.log('enter pressed');
       const {addSection} = this.props;
       addSection('', sectionId);
-      // Focus on new section
+      // TODO Focus on new section
     }
   }
 

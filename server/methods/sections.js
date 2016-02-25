@@ -50,6 +50,8 @@ export default function () {
 
       note.set({sectionIds});
       note.save();
+
+      return section;
     }
   });
 
