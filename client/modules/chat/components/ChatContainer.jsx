@@ -21,6 +21,11 @@ export default class ChatContainer extends React.Component {
     }
   }
 
+  scrollToBottom() {
+    const ele = $(this._container);
+    ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
+  }
+
   render() {
     const {msgs, userId, convoUsers, title, usersListString, loadMore} = this.props;
     return (
@@ -47,8 +52,9 @@ export default class ChatContainer extends React.Component {
           </div>
         </div>
 
-        <div id="chat-msg-area">
+        <div id="chat-msg-area" ref={(x) => this._container = x}>
           <button onClick={loadMore}>Load more messages</button>
+          <button onClick={this.scrollToBottom.bind(this)}>Scroll to bottom</button>
           {msgs.map(msg => {
             return (
               <ChatMessageItem
