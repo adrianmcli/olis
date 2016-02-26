@@ -1,13 +1,10 @@
 import SectionUtils from '/client/modules/core/libs/sections';
 
 export default {
-  add({Meteor}, name, userIds) {
-    Meteor.call('teams.add', {name, userIds}, (err, team) => {
+  add({Meteor, LocalState}, name, userIds) {
+    Meteor.call('teams.add', {name, userIds}, (err, teamId) => {
       if (err) { alert(err); }
-      else {
-        console.log('team');
-        console.log(team);
-      }
+      else { LocalState.set('teamId', teamId); }
     });
   },
 

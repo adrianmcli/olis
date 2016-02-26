@@ -35,7 +35,8 @@ export default function () {
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Roles.addUsersToRoles(userIds, [ 'member' ], team._id);
 
-      return team; // Will return _id, and the server side only stuff too
+      // return team; // Will return _id, and the server side only stuff too
+      return team._id;
     }
   });
 
