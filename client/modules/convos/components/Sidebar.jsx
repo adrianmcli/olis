@@ -11,11 +11,12 @@ import ConversationItem from './ConversationItem.jsx';
 export default class Sidebar extends React.Component {
   render() {
     const {convos, selectConvo, convoId, addConvo,
-      lastTimeInConvo, teamSearchResultUsers, searchTeamUsers} = this.props;
+      lastTimeInConvo, teamSearchResultUsers, searchTeamUsers,
+      teamName, username} = this.props;
     return (
       <div id="sidebar-container">
         <div id="sidebar-header">
-          <HeaderMenu />
+          <HeaderMenu teamName={teamName} username={username} />
           <HeaderNewConversation
             teamSearchResultUsers={teamSearchResultUsers}
             addConvo={addConvo}

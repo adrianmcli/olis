@@ -16,11 +16,20 @@ export const composer = ({context}, onData) => {
 
   // If you only see loading, make sure you added the collection to the index
   let convos = [];
-  let convoId = null;
-  let lastTimeInConvo = null;
+  let convoId;
+  let lastTimeInConvo;
   let teamSearchResultUsers = [];
+  let teamName;
+
+  const user = Meteor.user();
+  const username = user ? user.username : undefined;
 
   if (teamId) {
+    if (Meteor.subscribe('teams.list').ready()) {
+      const team = Collections.Teams.findOne(teamId);
+      teamName = team ? team.name : undefined;
+    }
+
     if (Meteor.subscribe('users.team', {teamId}).ready()) {
       const searchText = LocalState.get('teamUsersSearchText');
       let selector = {};
@@ -48,7 +57,9 @@ export const composer = ({context}, onData) => {
     convos,
     convoId,
     lastTimeInConvo,
-    teamSearchResultUsers
+    teamSearchResultUsers,
+    teamName,
+    username
   });
 };
 

@@ -6,16 +6,16 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import Divider from 'material-ui/lib/divider';
 
 import Avatar from 'material-ui/lib/avatar';
-import RaisedButton from 'material-ui/lib/raised-button';
 
 import AddPersonIcon from 'material-ui/lib/svg-icons/social/person-add';
 import TeamDirIcon from 'material-ui/lib/svg-icons/action/list';
 import TeamInfoIcon from 'material-ui/lib/svg-icons/action/info';
 import TeamSettingsIcon from 'material-ui/lib/svg-icons/action/settings';
-// import LogoutIcon from 'material-ui/lib/svg-icons/action/power-settings-new';
+
+import RaisedButton from 'material-ui/lib/raised-button';
 import LogoutIcon from 'material-ui/lib/svg-icons/action/exit-to-app';
 
-export default class HeaderMenu extends React.Component {
+class HeaderMenu extends React.Component {
 
   constructor(props) {
     super(props);
@@ -50,10 +50,11 @@ export default class HeaderMenu extends React.Component {
   }
 
   render() {
+    const {username, teamName} = this.props;
     return (
       <div style={{flexGrow: '1'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
-          <span>The A Team <i className="fa fa-fw fa-caret-down" /></span>
+          <span>{teamName}<i className="fa fa-fw fa-caret-down" /></span>
         </div>
 
         <Popover
@@ -70,29 +71,31 @@ export default class HeaderMenu extends React.Component {
             zDepth={0}
             onItemTouchTap={this.handleItemTouchTap.bind(this)}
           >
-            <MenuItem style={{paddingTop: '12px', paddingBottom: '12px'}}>
+            <MenuItem style={{paddingTop: '12px',paddingBottom: '12px'}}>
               <div style={{display: 'flex'}}>
                 <Avatar size={72} src={'http://www.fillmurray.com/200/201'} />
                 <div style={{padding: '12px'}}>
-                  <div className="menu-name">Billy Murray</div>
+                  <div className="menu-name">{username}</div>
                   <div className="menu-my-account">My Account</div>
                 </div>
               </div>
             </MenuItem>
             <Divider />
             <MenuItem primaryText="Invite to team" leftIcon={<AddPersonIcon />}/>
-            <MenuItem primaryText="Team directory" leftIcon={<TeamDirIcon />}/>
-            <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />}/>
-            <MenuItem primaryText="Team settings" leftIcon={<TeamSettingsIcon />}/>
+            <MenuItem primaryText="Team directory" leftIcon={<TeamDirIcon />} disabled/>
+            <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled/>
+            <MenuItem primaryText="Team settings" leftIcon={<TeamSettingsIcon />} disabled/>
             <Divider />
             <MenuItem innerDivStyle={{background: 'white'}}>
               <div style={{display: 'flex'}}>
                 <RaisedButton
                   label="Logout"
                   primary={true}
-                  style={{width: '100%',height: 'auto'}}
+                  style={{lineHeight: '36px'}}
+                  labelStyle={{verticalAlign: 'middle'}}
                   labelPosition="before"
                   icon={<LogoutIcon />}
+                  fullWidth
                 />
               </div>
             </MenuItem>
@@ -103,3 +106,8 @@ export default class HeaderMenu extends React.Component {
   }
 }
 HeaderMenu.timerCloseId = undefined;
+HeaderMenu.defaultProps = {
+  username: 'John Doe',
+  teamName: 'The A Team'
+};
+export default HeaderMenu;
