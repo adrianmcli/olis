@@ -5,7 +5,7 @@ import TeamIcon from './TeamIcon.jsx';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 
-import AddTeamModal from './AddTeamModal.jsx';
+import AddTeamModal from '../containers/add_team_modal';
 
 export default class Teams extends React.Component {
   constructor(props) {

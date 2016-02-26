@@ -1,12 +1,14 @@
 export default {
-  buildRegExp({}, searchText) {
-    let words = searchText.trim().split(/[ \-\:]+/);
-    let exps = words.map(word => `(?=.*${word})`);
-    let fullExp = exps.join('') + '.+';
-    return new RegExp(fullExp, 'i');
-  },
-
   setTeamUsersSearchText({LocalState}, searchText) {
     LocalState.set('teamUsersSearchText', searchText);
   },
+
+  setAllUsersSearchText({LocalState}, searchText) {
+    LocalState.set('allUsersSearchText', searchText);
+  },
+
+  clearSearchTexts({LocalState}) {
+    LocalState.set('teamUsersSearchText', null);
+    LocalState.set('allUsersSearchText', null);
+  }
 };

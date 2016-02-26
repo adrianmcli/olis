@@ -5,7 +5,7 @@ const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
   addTeam: actions.teams.add,
-  selectTeam: actions.teams.select,
+  selectTeam: actions.teams.select
 });
 
 export const composer = ({context}, onData) => {

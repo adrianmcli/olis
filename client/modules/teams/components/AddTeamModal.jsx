@@ -10,7 +10,9 @@ import Avatar from 'material-ui/lib/avatar';
 import Divider from 'material-ui/lib/divider';
 import Checkbox from 'material-ui/lib/checkbox';
 
-export default class AddTeamModal extends React.Component {
+import R from 'ramda';
+
+class AddTeamModal extends React.Component {
 
   constructor(props) {
     super(props);
@@ -33,9 +35,9 @@ export default class AddTeamModal extends React.Component {
   handleCheckboxChange(event, checked) {
     const targetId = event.target.value;
     if (checked) {        // add user to state
-      this.setState({ 
-        usersToAdd: this.state.usersToAdd.concat([targetId])
-      }, this.updateSubmitBtnStatus.bind(this))
+      this.setState({
+        usersToAdd: this.state.usersToAdd.concat([ targetId ])
+      }, this.updateSubmitBtnStatus.bind(this));
     } else {              // remove user from state
       var newData = this.state.usersToAdd.slice();
       newData.splice(newData.indexOf(targetId), 1);
@@ -53,19 +55,41 @@ export default class AddTeamModal extends React.Component {
     });
   }
 
-  handleSubmit() {
-    const {onRequestClose, addTeam} = this.props;
-    const {teamName, usersToAdd} = this.state;
-    addTeam(teamName, usersToAdd);
+  close() {
+    const {onRequestClose} = this.props;
+    this.setState({
+      anchorEl: event.currentTarget,
+      stage: 0,
+      teamName: '',
+      usersToAdd: [],
+      disableSubmit: true
+    });
     onRequestClose();
   }
 
+  handleSubmit() {
+    const {addTeam} = this.props;
+    const {teamName, usersToAdd} = this.state;
+    addTeam(teamName, usersToAdd);
+    this.close();
+  }
+
+  handleSearchChange(event) {
+    const {search} = this.props;
+    const inputValue = event.target.value;
+    search(inputValue);
+  }
+
   render() {
+    const {searchResults} = this.props;
+    const {usersToAdd} = this.state;
+    const filteredResults = R.differenceWith((x,y) => x._id === y, searchResults, usersToAdd);
+
     const actions = [
       <FlatButton
         label="Cancel"
         secondary={true}
-        onClick={this.props.onRequestClose}
+        onClick={this.close.bind(this)}
       />,
       <FlatButton
         label="Submit"
@@ -79,7 +103,7 @@ export default class AddTeamModal extends React.Component {
         title={this.props.title}
         actions={actions}
         open={this.props.open}
-        onRequestClose={this.props.onRequestClose}
+        onRequestClose={this.close.bind(this)}
         modal={false}
         autoScrollBodyContent
       >
@@ -99,25 +123,33 @@ export default class AddTeamModal extends React.Component {
             <TextField
               hintText="Username, Email, etc."
               floatingLabelText="Type here to search"
+              onChange={this.handleSearchChange.bind(this)}
             />
           </div>
-          <div style={{maxHeight:'420px', overflowY:'scroll', width: '420px'}}>
+          <div>
+            {
+              usersToAdd.map(userId => {
+                return (
+                  <div>{userId}</div>
+                );
+              })
+            }
+          </div>
+          <div style={{maxHeight: '420px', overflowY: 'scroll', width: '420px'}}>
             <List>
-              <ListItem
-                rightToggle={<Checkbox value="Nicky_Cage_ID" onCheck={this.handleCheckboxChange.bind(this)}/>}
-                primaryText="Nicky Cage"
-                leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-              />
-              <ListItem
-                rightToggle={<Checkbox value="Billy_Joel_ID" onCheck={this.handleCheckboxChange.bind(this)}/>}
-                primaryText={"Billy Joel"}
-                leftAvatar={<Avatar src="https://www.placecage.com/102/101" />}
-              />
-              <ListItem
-                rightToggle={<Checkbox value="Bruce_Willis_ID" onCheck={this.handleCheckboxChange.bind(this)}/>}
-                primaryText="Bruce Willis"
-                leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-              />
+              {
+                filteredResults.map(user => {
+                  return (
+                    <ListItem
+                      key={user._id}
+                      rightToggle={<Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>}
+                      primaryText={user.username}
+                      secondaryText={user.emails[0].address}
+                      leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
+                    />
+                  );
+                })
+              }
             </List>
           </div>
         </div>
@@ -125,3 +157,7 @@ export default class AddTeamModal extends React.Component {
     );
   }
 }
+AddTeamModal.defaultProps = {
+  searchResults: []
+};
+export default AddTeamModal;

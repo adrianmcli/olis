@@ -36,7 +36,8 @@
     "react-timeago": "^2.2.1",
     "react-medium-editor": "^1.6.3",
     "lodash": "^4.5.1",
-    "get-emails": "^1.0.1"
+    "get-emails": "^1.0.1",
+    "react-tap-event-plugin": "^0.2.2"
   },
   "private": true
 }
