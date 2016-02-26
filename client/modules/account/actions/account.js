@@ -58,18 +58,27 @@ export default {
     return null;
   },
 
-  setRegisterEmail({LocalState, FlowRouter}, email) {
-    // TODO validate email
-
-    LocalState.set('register.email', email);
-    FlowRouter.go('/register/username');
+  setRegisterEmail({Meteor, LocalState, FlowRouter}, email) {
+    Meteor.call('account.validateEmail', {email}, (err, res) => {
+      if (err) { alert(err); }
+      else {
+        console.log(res);
+        LocalState.set('register.email', email);
+        FlowRouter.go('/register/username');
+      }
+    });
   },
 
-  setRegisterUsername({LocalState, FlowRouter}, username) {
+  setRegisterUsername({Meteor, LocalState, FlowRouter}, username) {
     // TODO validate username, make sure theres no other username in the db
-
-    LocalState.set('register.username', username);
-    FlowRouter.go('/register/team-name');
+    Meteor.call('account.validateUsername', {username}, (err, res) => {
+      if (err) { alert(err); }
+      else {
+        console.log(res);
+        LocalState.set('register.username', username);
+        FlowRouter.go('/register/team-name');
+      }
+    });
   },
 
   setRegisterTeamName({LocalState, FlowRouter}, teamName) {

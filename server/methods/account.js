@@ -159,4 +159,22 @@ export default function () {
       }
     }
   });
+
+  const ACCOUNT_VALIDATE_USERNAME = 'account.validateUsername';
+  Meteor.methods({
+    'account.validateUsername'({username}) {
+      check(arguments[0], {
+        username: String
+      });
+
+      const nameTrim = username.trim();
+      if (nameTrim === '') {
+        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, 'Please enter a non-blank username.');
+      }
+      const user = Accounts.findUserByUsername(username);
+      if (user) {
+        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, `The username ${username} is taken. Please enter another one.`);
+      }
+    }
+  });
 }
