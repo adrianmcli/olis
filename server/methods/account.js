@@ -30,6 +30,10 @@ export default function () {
         name: teamName,
         userIds: [ userId ]
       });
+
+      console.log('team');
+      console.log(team);
+
       team.save();
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Accounts.sendResetPasswordEmail(userId);
@@ -38,8 +42,10 @@ export default function () {
       if (inviteEmails && !R.isEmpty(inviteEmails)) {
         Meteor.call(ACCOUNT_CREATE_INVITE_USERS, {
           inviteEmails, invitedByName: username, invitedById: userId, teamId: team._id
-        });
+        }, (err, res) => {});
       }
+
+      return password;
     }
   });
 
@@ -76,7 +82,7 @@ export default function () {
         return invitedUserId;
       });
 
-      team.set({userIds: invitedUserIds});
+      team.set({userIds: [ ...team.userIds, ...invitedUserIds ]});
       team.save();
       Roles.addUsersToRoles(invitedUserIds, [ 'member' ], teamId);
 
