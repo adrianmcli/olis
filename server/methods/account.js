@@ -176,7 +176,7 @@ export default function () {
     }
   });
 
-  const ACCOUNT_VALIDATE_TEAMNAME = 'accout.validateTeamName';
+  const ACCOUNT_VALIDATE_TEAMNAME = 'account.validateTeamName';
   Meteor.methods({
     'account.validateTeamName'({teamName}) {
       check(arguments[0], {
