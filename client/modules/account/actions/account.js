@@ -79,5 +79,30 @@ export default {
         if (onSuccess) { onSuccess(); }
       }
     });
+  },
+
+  resetPassword({Meteor, FlowRouter}, token, newPassword) {
+    function _validate() {
+      return new Promise((resolve, reject) => {
+        Meteor.call('account.validatePassword', {password: newPassword}, (err) => {
+          if (err) { reject(err); }
+          else { resolve(); }
+        });
+      });
+    }
+
+    function _reset() {
+      return new Promise((resolve, reject) => {
+        Accounts.resetPassword(token, newPassword, (err) => {
+          if (err) { reject(err); }
+          else { resolve(); }
+        });
+      });
+    }
+
+    _validate()
+    .then(_reset)
+    .then(() => FlowRouter.go('/home'))
+    .catch((err) => alert(err));
   }
 };

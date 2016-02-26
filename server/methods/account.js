@@ -195,4 +195,20 @@ export default function () {
       }
     }
   });
+
+  const ACCOUNT_VALIDATE_PASSWORD = 'account.validatePassword';
+  Meteor.methods({
+    'account.validatePassword'({password}) {
+      check(arguments[0], {
+        password: String
+      });
+
+      const trimPwd = password.trim();
+      if (trimPwd === '') {
+        throw new Meteor.Error(ACCOUNT_VALIDATE_PASSWORD, 'Please enter a non-blank password.');
+      }
+
+      // Other things we want to validate...
+    }
+  });
 }

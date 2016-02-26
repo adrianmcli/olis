@@ -6,6 +6,7 @@ import RegisterEmail from './containers/register_email';
 import RegisterUsername from './containers/register_username';
 import RegisterTeamName from './containers/register_team-name';
 import RegisterInvite from './containers/register_invite';
+import SetPasswordPage from './containers/set_password';
 import Login from './containers/login';
 
 export default function (injectDeps, {FlowRouter}) {
