@@ -28,7 +28,7 @@ export default class RegisterInvite extends React.Component {
       if (inputValue.trim() !== '') {
         const onSuccess = e.keyCode === 13 ? () => this.shiftFocusDown(index) : () => null;
         const onError = (err) => {
-          console.log(err);
+          alert(err);
           this.refs[`${this.refBase}${index}`].focus();
         };
         validateEmail(inputValue, onError, onSuccess);
@@ -40,7 +40,7 @@ export default class RegisterInvite extends React.Component {
     const {validateEmail} = this.props;
     const inputValue = this.refs[`${this.refBase}${index}`].value;
     if (inputValue.trim() !== '') {
-      const onError = (err) => console.log(err);
+      const onError = (err) => alert(err);
       validateEmail(inputValue, onError);
     }
   }
