@@ -5,6 +5,8 @@ import TeamIcon from './TeamIcon.jsx';
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
 
+import AddTeamModal from './AddTeamModal.jsx';
+
 export default class Teams extends React.Component {
   constructor(props) {
     super(props);
@@ -46,20 +48,6 @@ export default class Teams extends React.Component {
       transform: 'translate(-50%,-50%)',
     };
 
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        secondary={true}
-        onClick={this.handleClose.bind(this)}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        disabled={true}
-        onClick={this.handleClose.bind(this)}
-      />,
-    ];
-
     return (
       <div id="team-list-wrapper">
 
@@ -83,8 +71,6 @@ export default class Teams extends React.Component {
           }
 
           {/* Add Team Button */}
-          <button onClick={addTeam.bind(null, 'team name', [])}>Add team</button>
-
           <div className="team-item add-team">
             <IconButton
               onClick={this.handleOpen.bind(this)}
@@ -123,14 +109,12 @@ export default class Teams extends React.Component {
         </div>
 
         {/* Add Team Dialog/Modal */}
-        <Dialog
+        <AddTeamModal
           title="Add Team"
-          actions={actions}
           open={this.state.addTeamDialogOpen}
           onRequestClose={this.handleClose.bind(this)}
-        >
-          Ask user if they want to join an existing team or create a new one.
-        </Dialog>
+          addTeam={addTeam}
+        />
       </div>
     );
   }
