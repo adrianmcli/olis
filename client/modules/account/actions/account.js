@@ -1,42 +1,6 @@
 import AccountUtils from '/client/modules/core/libs/account';
 
 export default {
-  oldRegister({Meteor, LocalState, FlowRouter}, {email, username, password}) {
-    LocalState.set('REGISTRATION_ERROR', null);
-    if (email === '' || !email) {
-      LocalState.set('REGISTRATION_ERROR', 'Enter an email');
-    }
-    if (username === '' || !username) {
-      LocalState.set('REGISTRATION_ERROR', 'Enter a username.');
-    }
-
-    function _register() {
-      return new Promise((resolve, reject) => {
-        Meteor.call('account.register', {email, username, password}, (err) => {
-          if (err) { reject(err); }
-          else { resolve('registered'); }
-        });
-      });
-    }
-
-    function _login() {
-      return new Promise((resolve, reject) => {
-        Meteor.loginWithPassword(username, password, (err) => {
-          if (err) { reject(err); }
-          else { resolve('logged in'); }
-        });
-      });
-    }
-
-    _register()
-    .then(_login)
-    .then(() => FlowRouter.go('/home'))
-    .catch((err) => {
-      console.log('REGISTRATION_ERROR');
-      console.log(err);
-    });
-  },
-
   login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
     LocalState.set('LOGIN_ERROR', null);
 
@@ -70,7 +34,6 @@ export default {
   },
 
   setRegisterUsername({Meteor, LocalState, FlowRouter}, username) {
-    // TODO validate username, make sure theres no other username in the db
     Meteor.call('account.validateUsername', {username}, (err, res) => {
       if (err) { alert(err); }
       else {
@@ -81,11 +44,14 @@ export default {
     });
   },
 
-  setRegisterTeamName({LocalState, FlowRouter}, teamName) {
-    // TODO validate team name
-
-    LocalState.set('register.teamName', teamName);
-    FlowRouter.go('/register/invite');
+  setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
+    Meteor.call('account.validateTeamName', {teamName}, (err, res) => {
+      if (err) { alert(err); }
+      else {
+        LocalState.set('register.teamName', teamName);
+        FlowRouter.go('/register/invite');
+      }
+    });
   },
 
   setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails) {

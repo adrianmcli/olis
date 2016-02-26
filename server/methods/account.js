@@ -17,12 +17,9 @@ export default function () {
         teamName: String,
         inviteEmails: Match.Optional([ String ])
       });
-      if (email === '') {
-        throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty email.');
-      }
-      if (username === '') {
-        throw new Meteor.Error(ACCOUNT_REGISTER, 'Enter a non-empty username.');
-      }
+      Meteor.call(ACCOUNT_VALIDATE_EMAIL, {email});
+      Meteor.call(ACCOUNT_VALIDATE_USERNAME, {username});
+      Meteor.call(ACCOUNT_VALIDATE_TEAMNAME, {teamName});
 
       const password = Random.secret(15);
       const userId = Accounts.createUser({username, email, password});
@@ -37,6 +34,7 @@ export default function () {
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Accounts.sendResetPasswordEmail(userId);
 
+      // Create invite users and send invite emails
       if (inviteEmails && !R.isEmpty(inviteEmails)) {
         Meteor.call(ACCOUNT_CREATE_INVITE_USERS, {
           inviteEmails, invitedByName: username, invitedById: userId, teamId: team._id
@@ -174,6 +172,20 @@ export default function () {
       const user = Accounts.findUserByUsername(username);
       if (user) {
         throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, `The username ${username} is taken. Please enter another one.`);
+      }
+    }
+  });
+
+  const ACCOUNT_VALIDATE_TEAMNAME = 'accout.validateTeamName';
+  Meteor.methods({
+    'account.validateTeamName'({teamName}) {
+      check(arguments[0], {
+        teamName: String
+      });
+
+      const nameTrim = teamName.trim();
+      if (nameTrim === '') {
+        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, 'Please enter a non-blank username.');
       }
     }
   });
