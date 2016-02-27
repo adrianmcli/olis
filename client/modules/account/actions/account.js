@@ -2,10 +2,8 @@ import AccountUtils from '/client/modules/core/libs/account';
 
 export default {
   login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
-    LocalState.set('LOGIN_ERROR', null);
-
     Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
-      if (err && err.reason) { LocalState.set('LOGIN_ERROR', err.reason); }
+      if (err) { alert(err); }
       else { FlowRouter.go('/home'); }
     });
   },
