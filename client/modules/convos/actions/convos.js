@@ -7,7 +7,7 @@ export default {
       name, userIds, teamId: LocalState.get('teamId')
     }, (err, convoId) => {
       if (err) { alert(err); }
-      else { LocalState.set('convoId', convoId); }
+      else { ConvoUtils.select({Meteor, LocalState}, convoId); }
     });
   },
 
