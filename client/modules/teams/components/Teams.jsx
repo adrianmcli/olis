@@ -24,7 +24,8 @@ export default class Teams extends React.Component {
   }
 
   handleManageTeams() {
-    alert('route users to the team management page');
+    const {goToManageTeams} = this.props;
+    goToManageTeams();
   }
 
   render() {

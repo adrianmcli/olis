@@ -24,5 +24,9 @@ export default {
       if (err) { alert(err); }
       else { console.log(res); }
     });
+  },
+
+  goToManageTeams({FlowRouter}) {
+    FlowRouter.go('/home/teams');
   }
 };

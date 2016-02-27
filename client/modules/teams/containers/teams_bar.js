@@ -3,9 +3,9 @@ import Teams from '../components/Teams.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  actions: () => actions,
   addTeam: actions.teams.add,
-  selectTeam: actions.teams.select
+  selectTeam: actions.teams.select,
+  goToManageTeams: actions.teams.goToManageTeams
 });
 
 export const composer = ({context}, onData) => {
