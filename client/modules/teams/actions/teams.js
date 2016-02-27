@@ -28,5 +28,10 @@ export default {
 
   goToManageTeams({FlowRouter}) {
     FlowRouter.go('/home/teams');
+  },
+
+  selectAndGo({LocalState, FlowRouter}, teamId) {
+    LocalState.set('teamId', teamId);
+    FlowRouter.go('/home');
   }
 };

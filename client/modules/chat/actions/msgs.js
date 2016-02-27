@@ -10,5 +10,9 @@ export default {
     const convoId = LocalState.get('convoId');
     const convoNumMsgs = Collections.Messages.find({convoId}).count();
     LocalState.set('loadMore.convoNumMsgs', convoNumMsgs);
+  },
+
+  goToChat({FlowRouter}) {
+    FlowRouter.go('/home');
   }
 };

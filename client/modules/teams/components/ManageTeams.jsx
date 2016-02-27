@@ -1,5 +1,6 @@
 import React from 'react';
 import TimeAgo from 'react-timeago';
+import R from 'ramda';
 
 import Table from 'material-ui/lib/table/table';
 import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
@@ -24,16 +25,18 @@ export default class ManageTeams extends React.Component {
   }
 
   handleTeamNameClick(teamId, event) {
-    console.log(`switch to chat view for team id: ${teamId}`);
+    const {selectTeamAndGo} = this.props;
+    selectTeamAndGo(teamId);
   }
 
   render() {
-    const teamRowItems = this.props.teams.map(team => {
+    const {teams, teamConvos, goToChat} = this.props;
+    const teamRowItems = teams.map(team => {
       return (
-        <TableRow key={team.id}>
+        <TableRow key={team._id}>
           <TableRowColumn style={{width: '72px'}}>
             <IconButton
-              onClick={this.handleTeamSettingsClick.bind(this, team.id)}
+              onClick={this.handleTeamSettingsClick.bind(this, team._id)}
               style={{transform: 'scale(0.7)'}}
               team="tester"
             >
@@ -43,13 +46,13 @@ export default class ManageTeams extends React.Component {
           <TableRowColumn>
             <div
               style={{fontWeight: '700',fontSize: '16px',cursor: 'pointer',color: '#00BCD4'}}
-              onClick={this.handleTeamNameClick.bind(this, team.id)}
+              onClick={this.handleTeamNameClick.bind(this, team._id)}
             >
               {team.name}
             </div>
           </TableRowColumn>
-          <TableRowColumn>{team.members} Members</TableRowColumn>
-          <TableRowColumn>{team.conversations} Conversations</TableRowColumn>
+          <TableRowColumn>{team.userIds.length} {team.userIds.length === 1 ? 'Member' : 'Members'}</TableRowColumn>
+          <TableRowColumn>{teamConvos[team._id] ? teamConvos[team._id].length : null} Conversations</TableRowColumn>
           <TableRowColumn><TimeAgo date={team.updatedAt} /></TableRowColumn>
         </TableRow>
       );
@@ -62,6 +65,7 @@ export default class ManageTeams extends React.Component {
         backButton
         lightDescription
         showDescription
+        handleBackButtonPress={goToChat}
       >
         <div>
           <Table
@@ -123,8 +127,8 @@ export default class ManageTeams extends React.Component {
 
 ManageTeams.defaultProps = {
   teams: [
-    {id: 'team_a_UUID', name: 'Alpha Company', members: 3, conversations: 21, updatedAt: new Date(0)},
-    {id: 'team_b_UUID', name: 'Beta Bunch', members: 13, conversations: 121, updatedAt: new Date(121232134)},
-    {id: 'team_c_UUID', name: 'Charlie Corporation', members: 1, conversations: 12, updatedAt: new Date(1456394386)},
-  ],
+    {_id: 'team_a_UUID', name: 'Alpha Company', members: 3, conversations: 21, updatedAt: new Date(0)},
+    {_id: 'team_b_UUID', name: 'Beta Bunch', members: 13, conversations: 121, updatedAt: new Date(121232134)},
+    {_id: 'team_c_UUID', name: 'Charlie Corporation', members: 1, conversations: 12, updatedAt: new Date(1456394386)},
+  ]
 };
