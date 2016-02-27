@@ -3,7 +3,8 @@ import {Convos, Teams} from '/lib/collections';
 import {check} from 'meteor/check';
 
 const selfFields = {
-  lastTimeInConvo: 1
+  lastTimeInConvo: 1,
+  lastTimeInTeam: 1
 };
 
 const othersFields = {

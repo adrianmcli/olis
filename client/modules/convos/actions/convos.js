@@ -1,4 +1,4 @@
-import SectionUtils from '/client/modules/core/libs/sections';
+import ConvoUtils from '/client/modules/core/libs/convos';
 
 export default {
   add({Meteor, LocalState}, name, userIds) {
@@ -12,19 +12,7 @@ export default {
   },
 
   select({Meteor, LocalState}, convoId) {
-    const prevConvoId = LocalState.get('convoId');
-    if (prevConvoId) {
-      Meteor.call('account.setLastTimeInConvo', {convoId: prevConvoId}, (err) => {
-        if (err) { alert(err); }
-      });
-    }
-    LocalState.set('convoId', convoId);
-
-    Meteor.call('account.setLastTimeInConvo', {convoId}, (err) => {
-      if (err) { alert(err); }
-    });
-
-    SectionUtils.releaseLock({Meteor, LocalState});
+    ConvoUtils.select({Meteor, LocalState}, convoId);
   },
 
   addMembers({Meteor}, convoId, userIds) {

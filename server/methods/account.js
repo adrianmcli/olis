@@ -30,10 +30,6 @@ export default function () {
         name: teamName,
         userIds: [ userId ]
       });
-
-      console.log('team');
-      console.log(team);
-
       team.save();
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Accounts.sendResetPasswordEmail(userId);
@@ -45,7 +41,7 @@ export default function () {
         }, (err, res) => {});
       }
 
-      return password;
+      return {password, teamId: team._id};
     }
   });
 

@@ -1,4 +1,4 @@
-import SectionUtils from '/client/modules/core/libs/sections';
+import TeamUtils from '/client/modules/core/libs/teams';
 
 export default {
   add({Meteor, LocalState}, name, userIds) {
@@ -8,15 +8,8 @@ export default {
     });
   },
 
-  select({Meteor, Collections, LocalState}, teamId) {
-    const prevTeamId = LocalState.get('teamId');
-    if (prevTeamId) {
-      Meteor.call('account.setLastTimeInTeam', {teamId: prevTeamId});
-    }
-
-    LocalState.set('teamId', teamId);
-    LocalState.set('convoId', null);
-    SectionUtils.releaseLock({Meteor, LocalState});
+  select({Meteor, LocalState}, teamId) {
+    TeamUtils.select({Meteor, LocalState}, teamId);
   },
 
   addMembers({Meteor, LocalState}, teamId, userIds) {
@@ -26,7 +19,8 @@ export default {
     });
   },
 
-  goToManageTeams({FlowRouter}) {
+  goToManageTeams({Meteor, LocalState, FlowRouter}) {
+    TeamUtils.select({Meteor, LocalState}, null);
     FlowRouter.go('/home/teams');
   },
 

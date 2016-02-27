@@ -1,3 +1,6 @@
+import R from 'ramda';
+import TeamUtils from '/client/modules/core/libs/teams';
+
 export default {
   register({Meteor, LocalState, FlowRouter}) {
     const email = LocalState.get('register.email');
@@ -19,21 +22,55 @@ export default {
       });
     }
 
-    function _login(password) {
+    function _login({password, teamId}) {
       return new Promise((resolve, reject) => {
         Meteor.loginWithPassword(username, password, (err) => {
           if (err) { reject(err); }
-          else { resolve('logged in'); }
+          else { resolve({teamId}); }
         });
       });
     }
 
     _register()
     .then(_login)
+    .then(({teamId}) => TeamUtils.select({Meteor, LocalState}, teamId))
     .then(() => FlowRouter.go('/home'))
     .catch((err) => {
       console.log('REGISTRATION_ERROR');
       console.log(err);
     });
   },
+
+
+  getMostRecentTeamId({Meteor}) {
+    const user = Meteor.user();
+    if (!user) { return null; }
+    if (!user.lastTimeInTeam) { return null; }
+
+    const pairs = R.toPairs(user.lastTimeInTeam);
+    const sortByDate = R.sortBy(R.prop(1));
+    const sorted = sortByDate(pairs); // asc
+    const teamId = R.last(sorted)[0];
+
+    return teamId;
+  },
+
+  getMostRecentConvoId({Meteor}) {
+    const user = Meteor.user();
+    if (!user) { return null; }
+    if (!user.lastTimeInConvo) { return null; }
+
+    const pairs = R.toPairs(user.lastTimeInConvo);
+
+    const sortByTimestamp = R.sortBy(
+      R.compose(
+        R.prop('timestamp'),
+        R.prop(1)
+      )
+    );
+    const sorted = sortByTimestamp(pairs); // asc
+    const convoId = R.last(sorted)[0];
+
+    return convoId;
+  }
 };
