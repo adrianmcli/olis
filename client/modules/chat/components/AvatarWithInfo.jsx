@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 
 import Avatar from 'material-ui/lib/avatar';
 import Popover from 'material-ui/lib/popover/popover';
@@ -7,6 +8,8 @@ import IconButton from 'material-ui/lib/icon-button';
 import ChatIcon from 'material-ui/lib/svg-icons/action/question-answer';
 import InfoIcon from 'material-ui/lib/svg-icons/action/info';
 import NoteIcon from 'material-ui/lib/svg-icons/action/note-add';
+
+import AccountUtils from '/client/modules/core/libs/account';
 
 export default class AvatarWithInfo extends React.Component {
 
@@ -30,8 +33,10 @@ export default class AvatarWithInfo extends React.Component {
 
   render() {
     const {
-      avatarSrc,
+      avatarSrc, username
     } = this.props;
+
+    const avatarString = avatarSrc ? null : R.take(2, username);
 
     return (
       <div>
@@ -40,7 +45,10 @@ export default class AvatarWithInfo extends React.Component {
           src={avatarSrc}
           onClick={this.handleOpen.bind(this)}
           style={{cursor: 'pointer'}}
-        />
+          backgroundColor={AccountUtils.convertStringToColor(username)}
+        >
+          {avatarString}
+        </Avatar>
 
         <Popover
           open={this.state.open}
@@ -56,7 +64,10 @@ export default class AvatarWithInfo extends React.Component {
               src={avatarSrc}
               onClick={this.handleOpen.bind(this)}
               style={{cursor: 'pointer'}}
-            />
+              backgroundColor={AccountUtils.convertStringToColor(username)}
+            >
+              {avatarString}
+            </Avatar>
             <div style={{fontSize: '18px',lineHeight: '24px'}}>Nicky Cage</div>
             <div style={{fontSize: '12px',lineHeight: '16px'}}>I like tuna sandwiches.</div>
             <div style={{display: 'flex'}}>
@@ -76,7 +87,3 @@ export default class AvatarWithInfo extends React.Component {
     );
   }
 }
-
-AvatarWithInfo.defaultProps = {
-  avatarSrc: 'http://www.placecage.com/200/200',
-};

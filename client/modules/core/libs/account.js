@@ -72,5 +72,36 @@ export default {
     const convoId = R.last(sorted)[0];
 
     return convoId;
+  },
+
+  convertStringToColor(str) {
+    // All must be readable with white text
+    // Using Material colors 500, or the next closest number
+    const colors = {
+      red500: '#f44336',
+      pink500: '#e91e63',
+      purple500: '#9c27b0',
+      deepPurple500: '#673ab7',
+      indigo500: '#3f51b5',
+      blue500: '#2196f3',
+      lightBlue600: '#039be5',
+      cyan700: '#0097a7',
+      teal500: '#009688',
+      green600: '#43a047',
+      lightGreen700: '#689f38',
+      lime900: '#827717',
+      orange800: '#ef6c00',
+      deepOrange500: '#ff5722',
+      brown500: '#795548',
+      blueGrey500: '#607d8b',
+      grey600: '#757575',
+    };
+
+    const colorsArr = R.keys(colors);
+    const index = str.length % colorsArr.length;
+    const key = colorsArr[index];
+    const color = colors[key];
+
+    return color;
   }
 };

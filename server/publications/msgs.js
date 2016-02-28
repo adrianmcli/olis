@@ -7,7 +7,6 @@ export default function () {
   const MSGS_LIST = 'msgs.list';
   const NUM_MSG_INTERVAL = 5;
   Meteor.publish(MSGS_LIST, function ({convoId, currentNumMsgs}) {
-    console.log(`currentNumMsgs ${currentNumMsgs}`);
     check(arguments[0], {
       convoId: String,
       currentNumMsgs: Number
