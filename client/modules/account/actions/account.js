@@ -1,4 +1,6 @@
 import AccountUtils from '/client/modules/core/libs/account';
+import TeamUtils from '/client/modules/core/libs/teams';
+import ConvoUtils from '/client/modules/core/libs/convos';
 
 export default {
   login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
@@ -8,10 +10,13 @@ export default {
     });
   },
 
-  logout({Meteor, LocalState}) {
+  logout({Meteor, LocalState, FlowRouter}) {
     Meteor.logout(err => {
       if (err) { alert(err); }
     });
+    FlowRouter.go('/login');
+    TeamUtils.select({LocalState, Meteor}, null);
+    ConvoUtils.select({LocalState, Meteor}, null);
   },
 
   clearErrors({LocalState}) {

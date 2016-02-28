@@ -50,7 +50,7 @@ class HeaderMenu extends React.Component {
   }
 
   render() {
-    const {username, teamName} = this.props;
+    const {username, teamName, logout} = this.props;
     return (
       <div style={{flexGrow: '1'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
@@ -96,6 +96,7 @@ class HeaderMenu extends React.Component {
                   labelPosition="before"
                   icon={<LogoutIcon />}
                   fullWidth
+                  onClick={logout}
                 />
               </div>
             </MenuItem>

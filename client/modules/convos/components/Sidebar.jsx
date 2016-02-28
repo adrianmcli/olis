@@ -12,11 +12,11 @@ export default class Sidebar extends React.Component {
   render() {
     const {convos, selectConvo, convoId, addConvo,
       lastTimeInConvo, teamSearchResultUsers, searchTeamUsers,
-      teamName, username} = this.props;
+      teamName, username, logout} = this.props;
     return (
       <div id="sidebar-container">
         <div id="sidebar-header">
-          <HeaderMenu teamName={teamName} username={username} />
+          <HeaderMenu teamName={teamName} username={username} logout={logout} />
           <HeaderNewConversation
             teamSearchResultUsers={teamSearchResultUsers}
             addConvo={addConvo}
