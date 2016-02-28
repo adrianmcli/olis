@@ -11,12 +11,14 @@ export default {
   },
 
   logout({Meteor, LocalState, FlowRouter}) {
+    // Must be logged in to do these 2
+    TeamUtils.select({LocalState, Meteor}, null);
+    ConvoUtils.select({LocalState, Meteor}, null);
+    FlowRouter.go('/login');
+
     Meteor.logout(err => {
       if (err) { alert(err); }
     });
-    FlowRouter.go('/login');
-    TeamUtils.select({LocalState, Meteor}, null);
-    ConvoUtils.select({LocalState, Meteor}, null);
   },
 
   clearErrors({LocalState}) {
