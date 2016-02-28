@@ -1,5 +1,5 @@
 import React from 'react';
-import MediumEditor from 'react-medium-editor/lib/editor';
+import MediumEditor from 'react-medium-editor';
 import R from 'ramda';
 
 export default class Section extends React.Component {
