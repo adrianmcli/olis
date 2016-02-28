@@ -1,6 +1,9 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import ChatContainer from '../components/ChatContainer.jsx';
 import R from 'ramda';
+import {SubsManager} from 'meteor/meteorhacks:subs-manager';
+
+const MsgSubs = new SubsManager();
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -22,8 +25,12 @@ export const composer = ({context}, onData) => {
   if (convoId) {
     const currentNumMsgs = LocalState.get('loadMore.convoNumMsgs') ?
       LocalState.get('loadMore.convoNumMsgs') : 0;
-    if (Meteor.subscribe('msgs.list', {convoId, currentNumMsgs}).ready()) {
-      const options = {sort: [ [ 'createdAt', 'asc' ] ]};
+
+    const options = {sort: [ [ 'createdAt', 'asc' ] ]};
+    if (currentNumMsgs > 0) {
+      msgs = Collections.Messages.find({convoId}, options).fetch();
+    }
+    if (MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs}).ready()) {
       msgs = Collections.Messages.find({convoId}, options).fetch();
     }
 

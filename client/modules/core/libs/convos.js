@@ -17,5 +17,6 @@ export default {
     }
 
     SectionUtils.releaseLock({Meteor, LocalState});
+    LocalState.set('loadMore.convoNumMsgs', null);
   }
 };
