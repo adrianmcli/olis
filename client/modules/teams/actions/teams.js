@@ -4,7 +4,7 @@ export default {
   add({Meteor, LocalState}, name, userIds) {
     Meteor.call('teams.add', {name, userIds}, (err, teamId) => {
       if (err) { alert(err); }
-      else { LocalState.set('teamId', teamId); }
+      else { TeamUtils.select({Meteor, LocalState}, teamId); }
     });
   },
 
@@ -24,8 +24,9 @@ export default {
     FlowRouter.go('/home/teams');
   },
 
-  selectAndGo({LocalState, FlowRouter}, teamId) {
-    LocalState.set('teamId', teamId);
+  'manageTeams.selectAndGo'({Meteor, LocalState, FlowRouter}, teamId) {
+    TeamUtils.select({Meteor, LocalState}, teamId);
+    LocalState.set('ignoreDefaultTeamAndConvo', true);
     FlowRouter.go('/home');
   }
 };
