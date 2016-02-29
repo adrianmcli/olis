@@ -10,6 +10,10 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 
+const HighlightText = ({children}) => (
+  <span style={{color: '#00bcd4'}}>{children}</span>
+);
+
 export default class HeaderNotifications extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +31,10 @@ export default class HeaderNotifications extends React.Component {
 
   handleClose() {
     this.setState({open: false});
+  }
+
+  renderHighlightText(text) {
+    return <span style={{color: '#00bcd4'}}>{text} </span>
   }
 
   render() {
@@ -57,8 +65,10 @@ export default class HeaderNotifications extends React.Component {
               <ListItem
                 primaryText={notif.convoName}
                 secondaryText={
-                  <span><span style={{color: '#00bcd4'}}>{R.last(notif.recentUsernames)} </span>
-                   has replied to the conversation.
+                  <span><HighlightText>{R.last(notif.recentUsernames)}</HighlightText>
+                  {notif.recentUsernames.length > 1 ?
+                    <span> and <HighlightText>{notif.recentUsernames.length - 1} others</HighlightText></span> : null}
+                  <span> {notif.recentUsernames.length > 1 ? 'have' : 'has'} replied to the conversation.</span>
                   </span>
                 }
                 leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}

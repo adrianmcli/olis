@@ -39,19 +39,19 @@ export default function () {
       convo.save();
 
       // Notify convo users, other than yourself, SERVER ONLY
-      const otherUserIds = R.filter(id => id !== userId, convo.userIds);
-      otherUserIds.map(id => {
-        const username = Meteor.users.findOne(userId).username;
+      const otherUserIds = R.filter(otherId => otherId !== userId, convo.userIds);
+      const username = Meteor.users.findOne(userId).username;
 
+      otherUserIds.map(otherId => {
         const oldNotif = Notifications.findOne({
-          userId: id,
+          userId: otherId,
           teamId: convo.teamId,
           convoId: convo._id
         });
         if (!oldNotif) {
           const notif = new Notification();
           notif.set({
-            userId: id,
+            userId: otherId,
             teamId: convo.teamId,
             convoId: convo._id,
             convoName: convo.name,
@@ -60,6 +60,8 @@ export default function () {
           notif.save();
         }
         else {
+          console.log('oldNotif');
+          console.log(oldNotif);
           const oldRecentUsernames = oldNotif.recentUsernames;
           const recentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
           oldNotif.set({recentUsernames});
