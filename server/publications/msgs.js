@@ -36,6 +36,15 @@ export default function () {
     const selectorTime = {convoId, createdAt: {$gte: oldestDate}};
     let options = { sort: [ [ 'createdAt', 'asc' ] ] };
 
-    return Messages.find(selectorTime, options);
+    const othersFields = {
+      username: 1,
+      email: 1,
+      roles: 1
+    };
+
+    return [
+      Messages.find(selectorTime, options),
+      Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields})
+    ];
   });
 }

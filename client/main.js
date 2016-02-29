@@ -12,6 +12,7 @@ import msgsModule from './modules/chat';
 import usersModule from './modules/users';
 import notesModule from './modules/notes';
 import searchModule from './modules/search';
+import notificationsModule from './modules/notifications';
 
 // init context
 const context = initContext();
@@ -29,6 +30,7 @@ app.loadModule(msgsModule);
 app.loadModule(usersModule);
 app.loadModule(notesModule);
 app.loadModule(searchModule);
+app.loadModule(notificationsModule);
 
 app.loadModule(testModule);
 

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import HeaderMenu from './HeaderMenu.jsx';
 import HeaderNewConversation from './HeaderNewConversation.jsx';
 import HeaderSearch from './HeaderSearch.jsx';
-import HeaderNotifications from './HeaderNotifications.jsx';
+import HeaderNotifications from '../containers/header_notifications';
 
 import ConversationItem from './ConversationItem.jsx';
 

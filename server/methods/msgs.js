@@ -1,8 +1,10 @@
 import {Meteor} from 'meteor/meteor';
 import Convos from '/lib/convo';
 import Message from '/lib/msg';
-import {Messages} from '/lib/collections';
+import Notification from '/lib/notification';
+import {Messages, Notifications} from '/lib/collections';
 import {check} from 'meteor/check';
+import R from 'ramda';
 
 export default function () {
   const MSGS_ADD = 'msgs.add';
@@ -35,6 +37,35 @@ export default function () {
         numMsgs: Messages.find({convoId}).count()
       });
       convo.save();
+
+      // Notify convo users, other than yourself, SERVER ONLY
+      const otherUserIds = R.filter(id => id !== userId, convo.userIds);
+      otherUserIds.map(id => {
+        const username = Meteor.users.findOne(userId).username;
+
+        const oldNotif = Notifications.findOne({
+          userId: id,
+          teamId: convo.teamId,
+          convoId: convo._id
+        });
+        if (!oldNotif) {
+          const notif = new Notification();
+          notif.set({
+            userId: id,
+            teamId: convo.teamId,
+            convoId: convo._id,
+            convoName: convo.name,
+            recentUsernames: [ username ]
+          });
+          notif.save();
+        }
+        else {
+          const oldRecentUsernames = oldNotif.recentUsernames;
+          const recentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
+          oldNotif.set({recentUsernames});
+          oldNotif.save();
+        }
+      });
 
       return msg; // Will return _id, and the server side only stuff too
     }
