@@ -12,7 +12,8 @@ export default class ChatContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      distanceFromBottom: 0
+      distanceFromBottom: 0,
+      distanceFromTop: 0
     };
   }
 
@@ -20,6 +21,7 @@ export default class ChatContainer extends React.Component {
     // before the new props come in, save the current scroll position
     const ele = $(this._container);
     const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
+    const distanceFromTop = ele.scrollTop();
 
     const {msgs} = this.props;
     const nextMsgs = nextProps.msgs;
@@ -28,10 +30,12 @@ export default class ChatContainer extends React.Component {
     // console.log(`msgs ${msgs.length}`);
     // console.log(`nextMsgs ${nextMsgs.length}`);
     // console.log(`componentWillReceiveProps distanceFromBottom ${distanceFromBottom}`);
+    // console.log(`componentWillReceiveProps distanceFromTop ${distanceFromTop}`);
     // console.log('-----');
 
     this.setState({
       distanceFromBottom,
+      distanceFromTop
     });
   }
 
@@ -48,9 +52,13 @@ export default class ChatContainer extends React.Component {
     // console.log(`prevMsgs ${prevMsgs.length}`);
     // console.log(`msgs ${msgs.length}`);
     // console.log(`componentDidUpdate distanceFromBottom ${this.state.distanceFromBottom}`);
+    // console.log(`componentWillReceiveProps distanceFromTop ${this.state.distanceFromTop}`);
     // console.log('-----');
-
-    ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+    
+    const {distanceFromBottom, distanceFromTop} = this.state;
+    if (distanceFromBottom === 0 || distanceFromTop === 0) {
+      ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+    }
   }
 
   handleEnterKeyDown(e) {
