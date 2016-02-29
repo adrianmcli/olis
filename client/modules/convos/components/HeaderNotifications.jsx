@@ -55,15 +55,14 @@ export default class HeaderNotifications extends React.Component {
           {notifications.map(notif => {
             return (
               <ListItem
-                primaryText="Q4 Sales Report"
+                primaryText={notif.convoName}
                 secondaryText={
                   <span><span style={{color: '#00bcd4'}}>{R.last(notif.recentUsernames)} </span>
-                   has commented in
-                   <span style={{color: '#00bcd4'}}> {notif.convoName}</span>.
+                   has replied to the conversation.
                   </span>
                 }
                 leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-                onTouchTap={clickNotification.bind(null, notif._id, notif.teamId, notif.convoId)}
+                onTouchTap={clickNotification.bind(null, notif.teamId, notif.convoId)}
               />
             );
           })}

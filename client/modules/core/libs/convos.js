@@ -7,6 +7,10 @@ export default {
       Meteor.call('account.setLastTimeInConvo', {convoId: prevConvoId}, (err) => {
         if (err) { alert(err); }
       });
+
+      Meteor.call('notifications.remove', {convoId: prevConvoId}, (err) => {
+        if (err) { alert(err); }
+      });
     }
 
     LocalState.set('convoId', convoId);
