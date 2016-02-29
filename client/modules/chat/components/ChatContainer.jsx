@@ -119,7 +119,6 @@ export default class ChatContainer extends React.Component {
 
         <div id="chat-msg-area" ref={(x) => this._container = x}>
           <button onClick={loadMore}>Load more messages</button>
-          <button onClick={this.scrollToBottom.bind(this)}>Scroll to bottom</button>
           {msgs.map(msg => {
             return (
               <ChatMessageItem
