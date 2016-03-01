@@ -46,6 +46,13 @@ meta-font-color = #efefef - 50%
     font-size 12px
     margin-top 6px
     color meta-font-color
+    position relative
+    
+  .chat-timestamp-string
+    position absolute
+    left 0
+    white-space no-wrap
+    
   
   &.you
     text-align right
@@ -68,3 +75,8 @@ meta-font-color = #efefef - 50%
         border-style solid
         border-width 16px 16px 0 0
         border-color bubble-color-me transparent transparent transparent
+    
+    .chat-timestamp-string
+      left auto
+      right 0
+      

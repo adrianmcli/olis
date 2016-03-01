@@ -1,18 +1,10 @@
 import React from 'react';
-import R from 'ramda';
 
 import IconButton from 'material-ui/lib/icon-button';
 import SocialNotifications from 'material-ui/lib/svg-icons/social/notifications';
 import Popover from 'material-ui/lib/popover/popover';
 
-import Avatar from 'material-ui/lib/avatar';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import Divider from 'material-ui/lib/divider';
-
-const HighlightText = ({children}) => (
-  <span style={{color: '#00bcd4'}}>{children}</span>
-);
+import NotificationList from './NotificationList.jsx';
 
 export default class HeaderNotifications extends React.Component {
   constructor(props) {
@@ -60,22 +52,11 @@ export default class HeaderNotifications extends React.Component {
           onRequestClose={this.handleClose.bind(this)}
         >
         <div style={{maxHeight: '480px'}}>
-          {notifications.map(notif => {
-            return (
-              <ListItem
-                primaryText={notif.convoName}
-                secondaryText={
-                  <span><HighlightText>{R.last(notif.recentUsernames)}</HighlightText>
-                  {notif.recentUsernames.length > 1 ?
-                    <span> and <HighlightText>{notif.recentUsernames.length - 1} others</HighlightText></span> : null}
-                  <span> {notif.recentUsernames.length > 1 ? 'have' : 'has'} replied to the conversation.</span>
-                  </span>
-                }
-                leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-                onTouchTap={clickNotification.bind(null, notif.teamId, notif.convoId)}
-              />
-            );
-          })}
+          <NotificationList
+            notifications={notifications}
+            clickNotification={clickNotification}
+            closePopoverFunction={this.handleClose.bind(this)}
+          />
         </div>
         </Popover>
       </div>
