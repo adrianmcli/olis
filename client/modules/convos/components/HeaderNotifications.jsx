@@ -1,20 +1,10 @@
 import React from 'react';
-import R from 'ramda';
 
 import IconButton from 'material-ui/lib/icon-button';
 import SocialNotifications from 'material-ui/lib/svg-icons/social/notifications';
 import Popover from 'material-ui/lib/popover/popover';
 
-import Avatar from 'material-ui/lib/avatar';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import Divider from 'material-ui/lib/divider';
-
 import NotificationList from './NotificationList.jsx';
-
-const HighlightText = ({children}) => (
-  <span style={{color: '#00bcd4'}}>{children}</span>
-);
 
 export default class HeaderNotifications extends React.Component {
   constructor(props) {
