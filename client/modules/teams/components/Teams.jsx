@@ -72,7 +72,7 @@ export default class Teams extends React.Component {
           }
 
           {/* Add Team Button */}
-          <div className="team-item add-team">
+          {/*<div className="team-item add-team">
             <IconButton
               onClick={this.handleOpen.bind(this)}
               iconClassName="material-icons"
@@ -87,7 +87,7 @@ export default class Teams extends React.Component {
             >
               add
             </IconButton>
-          </div>
+          </div>*/}
 
         </div>
 
