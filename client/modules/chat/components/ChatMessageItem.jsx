@@ -93,7 +93,7 @@ export default class ChatMessageItem extends React.Component {
               <p>{content}</p>
             </div>
             <div className="chat-timestamp">
-              <TimeAgo date={timestamp} />
+              <div className="chat-timestamp-string"><TimeAgo date={timestamp} /></div>
             </div>
           </div>
           <div>
