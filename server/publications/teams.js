@@ -40,9 +40,6 @@ export default function () {
     const selectUserId = {userId};
     const selector = getSelector(selectUserId);
 
-    console.log('selector');
-    console.log(selector);
-
     return [
       Teams.find({userIds: userId}),
       Notifications.find(selector)
