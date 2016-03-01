@@ -10,6 +10,8 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 
+import NotificationList from './NotificationList.jsx';
+
 const HighlightText = ({children}) => (
   <span style={{color: '#00bcd4'}}>{children}</span>
 );
@@ -60,22 +62,11 @@ export default class HeaderNotifications extends React.Component {
           onRequestClose={this.handleClose.bind(this)}
         >
         <div style={{maxHeight: '480px'}}>
-          {notifications.map(notif => {
-            return (
-              <ListItem
-                primaryText={notif.convoName}
-                secondaryText={
-                  <span><HighlightText>{R.last(notif.recentUsernames)}</HighlightText>
-                  {notif.recentUsernames.length > 1 ?
-                    <span> and <HighlightText>{notif.recentUsernames.length - 1} others</HighlightText></span> : null}
-                  <span> {notif.recentUsernames.length > 1 ? 'have' : 'has'} replied to the conversation.</span>
-                  </span>
-                }
-                leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-                onTouchTap={clickNotification.bind(null, notif.teamId, notif.convoId)}
-              />
-            );
-          })}
+          <NotificationList
+            notifications={notifications}
+            clickNotification={clickNotification}
+            closePopoverFunction={this.handleClose.bind(this)}
+          />
         </div>
         </Popover>
       </div>
