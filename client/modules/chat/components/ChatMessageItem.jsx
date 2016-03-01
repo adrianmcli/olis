@@ -30,6 +30,24 @@ export default class ChatMessageItem extends React.Component {
     console.log('You have selected: ' + child.props.primaryText);
   }
 
+  _timestampFormatter(value, unit, suffix) {
+    let timeStr = '';
+    let resultingUnit = unit;
+
+    if (unit === 'minute') { resultingUnit = 'min'; }
+    if (unit === 'hour') { resultingUnit = 'hr'; }
+
+    if (unit === 'second') {
+      timeStr = 'Just now';
+    } else {
+      if (value !== 1) {
+        resultingUnit += 's';
+      }
+      return value + ' ' + resultingUnit + ' ' + suffix;
+    }
+    return timeStr;
+  }
+
   render() {
 
     const {
@@ -93,7 +111,9 @@ export default class ChatMessageItem extends React.Component {
               <p>{content}</p>
             </div>
             <div className="chat-timestamp">
-              <div className="chat-timestamp-string"><TimeAgo date={timestamp} /></div>
+              <div className="chat-timestamp-string">
+                <TimeAgo date={timestamp} formatter={this._timestampFormatter} title={timestamp}/>
+              </div>
             </div>
           </div>
           <div>
