@@ -4,7 +4,7 @@ import HeaderMenu from '../components/HeaderMenu.jsx';
 const depsMapper = (context, actions) => ({
   context: () => context,
   logout: actions.account.logout,
-  goToMyAccount: actions.profile.goToMyAccount
+  goToMyAccount: actions.account.goToMyAccount
 });
 
 export const composer = ({context}, onData) => {

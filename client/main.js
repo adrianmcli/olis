@@ -15,7 +15,6 @@ import notesModule from './modules/notes';
 import searchModule from './modules/search';
 import notificationsModule from './modules/notifications';
 import imagesModule from './modules/images';
-import profileModule from './modules/profile';
 
 // init context
 const context = initContext();
@@ -35,7 +34,6 @@ app.loadModule(notesModule);
 app.loadModule(searchModule);
 app.loadModule(notificationsModule);
 app.loadModule(imagesModule);
-app.loadModule(profileModule);
 
 app.loadModule(testModule);
 

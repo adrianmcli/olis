@@ -109,5 +109,9 @@ export default {
     .then(_reset)
     .then(() => FlowRouter.go('/home'))
     .catch((err) => alert(err));
+  },
+
+  goToMyAccount({FlowRouter}) {
+    FlowRouter.go('/home/account');
   }
 };

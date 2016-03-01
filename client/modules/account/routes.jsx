@@ -8,6 +8,7 @@ import RegisterTeamName from './containers/register_team-name';
 import RegisterInvite from './containers/register_invite';
 import SetPasswordPage from './containers/set_password';
 import Login from './containers/login';
+import MyAccount from './containers/my_account';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
@@ -71,6 +72,15 @@ export default function (injectDeps, {FlowRouter}) {
     action(params) {
       mount(MainLayoutCtx, {
         content: () => (<SetPasswordPage token={params.token} />)
+      });
+    }
+  });
+
+  FlowRouter.route('/home/account', {
+    name: 'account',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<MyAccount />)
       });
     }
   });
