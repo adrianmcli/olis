@@ -2,7 +2,8 @@ import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import MyAccount from '../components/MyAccount.jsx';
 
 const depsMapper = (context, actions) => ({
-  context: () => context
+  context: () => context,
+  uploadImage: actions.images.add
 });
 
 export const composer = ({context}, onData) => {

@@ -28,19 +28,3 @@ export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
 )(HeaderMenu);
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     files: []
-  //   };
-  // }
-
-  // handleFileChange(e) {
-  //   const files = e.currentTarget.files;
-  //   this.setState({files});
-  // }
-
-
-          //  <input type="file" onChange={this.handleFileChange.bind(this)} />
-          // <button onClick={uploadImage.bind(null, files)}>UPLOAD</button>

@@ -8,9 +8,12 @@ import FontIcon from 'material-ui/lib/font-icon';
 import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 import MyAccountSettings from './MyAccountSettings.jsx';
 import MyAccountNotifications from './MyAccountNotifications.jsx';
+import MyAccountProfile from './MyAccountProfile.jsx';
 
 export default class MyAccount extends React.Component {
   render() {
+    const {uploadImage} = this.props;
+
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
     const tabStyle = {
@@ -45,7 +48,7 @@ export default class MyAccount extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>face</FontIcon>}
             label="Profile"
           >
-            User Profile Settings Here
+            <MyAccountProfile uploadImage={uploadImage} />
           </Tab>
         </Tabs>
       </PageWrapper>
