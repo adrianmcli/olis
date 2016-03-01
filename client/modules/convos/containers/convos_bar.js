@@ -7,8 +7,7 @@ const depsMapper = (context, actions) => ({
   actions: () => actions,
   addConvo: actions.convos.add,
   selectConvo: actions.convos.select,
-  searchTeamUsers: actions.search.setTeamUsersSearchText,
-  logout: actions.account.logout
+  searchTeamUsers: actions.search.setTeamUsersSearchText
 });
 
 export const composer = ({context}, onData) => {

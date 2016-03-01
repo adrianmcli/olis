@@ -45,4 +45,22 @@ export default function () {
       Notifications.find(selector)
     ];
   });
+
+  const TEAMS_SINGLE = 'teams.single';
+  Meteor.publish(TEAMS_SINGLE, function ({teamId}) {
+    check(arguments[0], {
+      teamId: String
+    });
+
+    const userId = this.userId;
+    if (!userId) {
+      throw new Meteor.Error(TEAMS_SINGLE, 'Must be logged in to get team.');
+    }
+    const team = Teams.findOne(teamId);
+    if (!team.isUserInTeam(userId)) {
+      throw new Meteor.Error(TEAMS_SINGLE, 'Must be a member of team to get team info.');
+    }
+
+    return Teams.find(teamId);
+  });
 }

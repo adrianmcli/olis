@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-import HeaderMenu from './HeaderMenu.jsx';
+import HeaderMenu from '../containers/header_menu';
 import HeaderNewConversation from './HeaderNewConversation.jsx';
 import HeaderSearch from './HeaderSearch.jsx';
 import HeaderNotifications from '../containers/header_notifications';
@@ -11,12 +11,12 @@ import ConversationItem from './ConversationItem.jsx';
 export default class Sidebar extends React.Component {
   render() {
     const {convos, selectConvo, convoId, addConvo,
-      lastTimeInConvo, teamSearchResultUsers, searchTeamUsers,
-      teamName, username, logout} = this.props;
+      lastTimeInConvo, teamSearchResultUsers, searchTeamUsers} = this.props;
+
     return (
       <div id="sidebar-container">
         <div id="sidebar-header">
-          <HeaderMenu teamName={teamName} username={username} logout={logout} />
+          <HeaderMenu/>
           <HeaderNewConversation
             teamSearchResultUsers={teamSearchResultUsers}
             addConvo={addConvo}

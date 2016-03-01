@@ -46,11 +46,13 @@ class HeaderMenu extends React.Component {
       this.handleClose.bind(this)();
       // TODO - do the thing the user wants
       console.log('You have selected: ' + child.props.primaryText);
+
+      if (child.props.onClick) { child.props.onClick(); }
     }, 200);
   }
 
   render() {
-    const {username, teamName, logout} = this.props;
+    const {username, teamName, logout, goToMyAccount} = this.props;
     return (
       <div style={{flexGrow: '1'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
@@ -71,7 +73,7 @@ class HeaderMenu extends React.Component {
             zDepth={0}
             onItemTouchTap={this.handleItemTouchTap.bind(this)}
           >
-            <MenuItem style={{paddingTop: '12px',paddingBottom: '12px'}}>
+            <MenuItem style={{paddingTop: '12px',paddingBottom: '12px'}} onClick={goToMyAccount}>
               <div style={{display: 'flex'}}>
                 <Avatar size={72} src={'http://www.fillmurray.com/200/201'} />
                 <div style={{padding: '12px'}}>
