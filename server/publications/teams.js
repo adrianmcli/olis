@@ -1,6 +1,7 @@
-import {Teams} from '/lib/collections';
+import {Teams, Notifications} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
-// import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
+import R from 'ramda';
 
 /*  If you restrict the data you publish,
   the Astro Class will fill in the rest of the specified fields with null
@@ -10,10 +11,41 @@ import {Meteor} from 'meteor/meteor';
 */
 export default function () {
   const TEAMS_LIST = 'teams.list';
-  Meteor.publish(TEAMS_LIST, function () {
-    if (!this.userId) {
+  Meteor.publish(TEAMS_LIST, function (args) {
+    check(args, Match.Optional(Object));
+    if (args) {
+      check(args, {
+        teamId: Match.Optional(String), // Must be undefined for optional, null does not work
+        convoId: Match.Optional(String)
+      });
+    }
+
+    const userId = this.userId;
+    if (!userId) {
       throw new Meteor.Error(TEAMS_LIST, 'Must be logged in to get teams list.');
     }
-    return Teams.find({userIds: this.userId});
+
+    function mergeTeamId(selectObj) {
+      if (!args) { return selectObj; }
+      if (args.teamId) { return R.merge(selectObj, {teamId: args.teamId}); }
+      return selectObj;
+    }
+    function mergeConvoId(selectObj) {
+      if (!args) { return selectObj; }
+      if (args.convoId) { return R.merge(selectObj, {convoId: args.convoId}); }
+      return selectObj;
+    }
+    const getSelector = R.compose(mergeConvoId, mergeTeamId);
+
+    const selectUserId = {userId};
+    const selector = getSelector(selectUserId);
+
+    console.log('selector');
+    console.log(selector);
+
+    return [
+      Teams.find({userIds: userId}),
+      Notifications.find(selector)
+    ];
   });
 }

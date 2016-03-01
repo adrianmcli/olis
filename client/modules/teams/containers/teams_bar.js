@@ -13,6 +13,9 @@ export const composer = ({context}, onData) => {
 
   if (Meteor.subscribe('teams.list').ready()) {
     const teams = Collections.Teams.find({userIds: Meteor.userId()}).fetch();
+
+
+
     onData(null, {
       teams,
       teamId: LocalState.get('teamId')

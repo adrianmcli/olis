@@ -34,7 +34,7 @@ export default function () {
       // Update convo with last msg text
       convo.set({
         lastMsgText: text,
-        numMsgs: Messages.find({convoId}).count()
+        numMsgs: Messages.find({convoId}).count() // SERVER ONLY
       });
       convo.save();
 
@@ -60,8 +60,6 @@ export default function () {
           notif.save();
         }
         else {
-          console.log('oldNotif');
-          console.log(oldNotif);
           const oldRecentUsernames = oldNotif.recentUsernames;
           const recentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
           oldNotif.set({recentUsernames});
