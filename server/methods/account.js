@@ -15,7 +15,7 @@ export default function () {
         email: String,
         username: String,
         teamName: String,
-        inviteEmails: Match.Optional([ String ])
+        inviteEmails: Match.Maybe([ String ])
       });
       Meteor.call(ACCOUNT_VALIDATE_EMAIL, {email});
       Meteor.call(ACCOUNT_VALIDATE_USERNAME, {username});

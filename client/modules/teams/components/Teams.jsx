@@ -1,11 +1,10 @@
 import React from 'react';
 import IconButton from 'material-ui/lib/icon-button';
 import TeamIcon from './TeamIcon.jsx';
-
 import Dialog from 'material-ui/lib/dialog';
 import FlatButton from 'material-ui/lib/flat-button';
-
 import AddTeamModal from '../containers/add_team_modal';
+import _ from 'lodash';
 
 export default class Teams extends React.Component {
   constructor(props) {
@@ -29,7 +28,7 @@ export default class Teams extends React.Component {
   }
 
   render() {
-    const {teams, teamId, selectTeam, addTeam} = this.props;
+    const {teams, teamId, selectTeam, addTeam, notificationsByTeam} = this.props;
 
     const bgColor = '#253256';
     const addTeamIconStyle = {
@@ -57,13 +56,14 @@ export default class Teams extends React.Component {
           {/* Team Icons */}
           {
             teams.map(team => {
+              const unreadCount = notificationsByTeam[team._id] ? notificationsByTeam[team._id].length : 0;
               return (
                 <TeamIcon
                   key={team._id}
                   teamName={team.name}
                   iconSrc='https://s3.amazonaws.com/uifaces/faces/twitter/vladabazhan/128.jpg'
-                  unreadCount={15}
-                  unread
+                  unreadCount={unreadCount}
+                  unread={unreadCount > 0}
                   active={teamId === team._id}
                   selectTeam={selectTeam.bind(null, team._id)}
                 />

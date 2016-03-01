@@ -12,11 +12,11 @@ import R from 'ramda';
 export default function () {
   const TEAMS_LIST = 'teams.list';
   Meteor.publish(TEAMS_LIST, function (args) {
-    check(args, Match.Optional(Object));
+    check(args, Match.Optional(Match.OneOf(undefined, null, Object)));
     if (args) {
       check(args, {
-        teamId: Match.Optional(String), // Must be undefined for optional, null does not work
-        convoId: Match.Optional(String)
+        teamId: Match.Optional(Match.OneOf(undefined, null, String)),
+        convoId: Match.Optional(Match.OneOf(undefined, null, String))
       });
     }
 
@@ -27,12 +27,12 @@ export default function () {
 
     function mergeTeamId(selectObj) {
       if (!args) { return selectObj; }
-      if (args.teamId) { return R.merge(selectObj, {teamId: args.teamId}); }
+      if (args.teamId) { return R.merge(selectObj, {teamId: {$ne: args.teamId}}); }
       return selectObj;
     }
     function mergeConvoId(selectObj) {
       if (!args) { return selectObj; }
-      if (args.convoId) { return R.merge(selectObj, {convoId: args.convoId}); }
+      if (args.convoId) { return R.merge(selectObj, {convoId: {$ne: args.convoId}}); }
       return selectObj;
     }
     const getSelector = R.compose(mergeConvoId, mergeTeamId);

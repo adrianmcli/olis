@@ -16,7 +16,7 @@ export default function () {
       check(arguments[0], {
         noteId: String,
         text: String,
-        afterSectionId: Match.Optional(String)
+        afterSectionId: Match.Maybe(String)
       });
 
       const userId = this.userId;

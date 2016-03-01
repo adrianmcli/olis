@@ -7,7 +7,7 @@ export default function () {
   Meteor.publish(NOTIFICATIONS_LIST, function ({teamId, convoId}) {
     check(arguments[0], {
       teamId: String,
-      convoId: Match.Optional(String)
+      convoId: Match.Maybe(String)
     });
 
     if (!this.userId) {
