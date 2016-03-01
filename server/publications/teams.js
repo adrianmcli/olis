@@ -12,7 +12,7 @@ import R from 'ramda';
 export default function () {
   const TEAMS_LIST = 'teams.list';
   Meteor.publish(TEAMS_LIST, function (args) {
-    check(args, Match.Optional(Match.OneOf(undefined, null, Object)));
+    check(args, Match.Optional(Match.OneOf(undefined, null, Object))); // Use this until Match.Maybe works, https://github.com/meteor/meteor/issues/3876
     if (args) {
       check(args, {
         teamId: Match.Optional(Match.OneOf(undefined, null, String)),
