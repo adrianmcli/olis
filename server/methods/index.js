@@ -5,6 +5,7 @@ import convos from './convos';
 import msgs from './msgs';
 import sections from './sections';
 import notifications from './notifications';
+import images from './images';
 
 export default function () {
   test();
@@ -14,4 +15,5 @@ export default function () {
   msgs();
   sections();
   notifications();
+  images();
 }
