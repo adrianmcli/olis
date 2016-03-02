@@ -42,7 +42,8 @@ export const composer = ({context}, onData) => {
         ]};
       }
       selector[`roles.${teamId}`] = {$exists: true};
-      teamSearchResultUsers = Meteor.users.find(selector).fetch();
+      teamSearchResultUsers = R.filter(other => other._id !== user._id,
+        Meteor.users.find(selector).fetch());
 
       const teamSelector = {
         [`roles.${teamId}`]: {$exists: true}
