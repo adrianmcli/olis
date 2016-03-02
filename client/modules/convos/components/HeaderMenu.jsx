@@ -5,7 +5,7 @@ import Menu from 'material-ui/lib/menus/menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Divider from 'material-ui/lib/divider';
 
-import AvatarWithDefault from '/client/modules/chat/components/AvatarWithDefault.jsx';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
 import AddPersonIcon from 'material-ui/lib/svg-icons/social/person-add';
 import TeamDirIcon from 'material-ui/lib/svg-icons/action/list';
