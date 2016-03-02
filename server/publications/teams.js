@@ -61,6 +61,9 @@ export default function () {
       throw new Meteor.Error(TEAMS_SINGLE, 'Must be a member of team to get team info.');
     }
 
-    return Teams.find(teamId);
+    return [
+      Meteor.users.find({_id: {$in: team.userIds}}),
+      Teams.find(teamId)
+    ];
   });
 }

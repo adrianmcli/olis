@@ -3,7 +3,7 @@ import _ from 'lodash';
 import R from 'ramda';
 
 import HeaderMenu from '../containers/header_menu';
-import HeaderNewConversation from './HeaderNewConversation.jsx';
+import HeaderNewConversation from '../containers/header_new_conversation';
 import HeaderSearch from './HeaderSearch.jsx';
 import HeaderNotifications from '/client/modules/notifications/containers/header_notifications';
 
@@ -11,18 +11,14 @@ import ConversationItem from './ConversationItem.jsx';
 
 export default class Sidebar extends React.Component {
   render() {
-    const {convos, selectConvo, convoId, addConvo,
-      lastTimeInConvo, teamSearchResultUsers, searchTeamUsers, teamUsers, user} = this.props;
+    const {convos, selectConvo, convoId,
+      lastTimeInConvo, teamUsers, user} = this.props;
 
     return (
       <div id="sidebar-container">
         <div id="sidebar-header">
-          <HeaderMenu/>
-          <HeaderNewConversation
-            teamSearchResultUsers={teamSearchResultUsers}
-            addConvo={addConvo}
-            searchTeamUsers={searchTeamUsers}
-          />
+          <HeaderMenu />
+          <HeaderNewConversation />
           <HeaderSearch />
           <HeaderNotifications />
         </div>
