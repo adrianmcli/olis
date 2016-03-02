@@ -21,7 +21,7 @@ export default class MyAccountProfile extends React.Component {
         <AvatarWithDefault
           size={200}
           username={username}
-          src={profileImageUrl}
+          avatarSrc={profileImageUrl}
         />
 
         <div>
