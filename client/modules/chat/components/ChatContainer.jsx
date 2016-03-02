@@ -5,6 +5,9 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
+import FilledStarIcon from 'material-ui/lib/svg-icons/toggle/star';
+import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
+
 import TextField from 'material-ui/lib/text-field';
 import ChatMessageItem from './ChatMessageItem.jsx';
 
@@ -17,45 +20,20 @@ export default class ChatContainer extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    // before the new props come in, save the current scroll position
+  componentWillReceiveProps() {
     const ele = $(this._container);
     const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
     const distanceFromTop = ele.scrollTop();
-
-    const {msgs} = this.props;
-    const nextMsgs = nextProps.msgs;
-
-    // console.log('-----');
-    // console.log(`msgs ${msgs.length}`);
-    // console.log(`nextMsgs ${nextMsgs.length}`);
-    // console.log(`componentWillReceiveProps distanceFromBottom ${distanceFromBottom}`);
-    // console.log(`componentWillReceiveProps distanceFromTop ${distanceFromTop}`);
-    // console.log('-----');
-
     this.setState({
       distanceFromBottom,
-      distanceFromTop
+      distanceFromTop,
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const ele = $(this._container);
-    // setting scrollTop is how we can programatically change the scroll position of a div
-    // in order to find out what value to use, we rearrange the above equation to isolate for scrollTop
-    const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - this.state.distanceFromBottom;
-
-    const prevMsgs = prevProps.msgs;
-    const {msgs} = this.props;
-
-    // console.log('-----');
-    // console.log(`prevMsgs ${prevMsgs.length}`);
-    // console.log(`msgs ${msgs.length}`);
-    // console.log(`componentDidUpdate distanceFromBottom ${this.state.distanceFromBottom}`);
-    // console.log(`componentWillReceiveProps distanceFromTop ${this.state.distanceFromTop}`);
-    // console.log('-----');
-    
+  componentDidUpdate() {
     const {distanceFromBottom, distanceFromTop} = this.state;
+    const ele = $(this._container);
+    const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
     if (distanceFromBottom === 0 || distanceFromTop === 0) {
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
     }
@@ -64,7 +42,7 @@ export default class ChatContainer extends React.Component {
   handleEnterKeyDown(e) {
     const {addMsg} = this.props;
     if (e.shiftKey === true) {
-      console.log('shift-key has been pressed');
+      // shift key pressed, do nothing
     } else {
       e.preventDefault();
       const text = e.target.value;
@@ -76,19 +54,6 @@ export default class ChatContainer extends React.Component {
   scrollToBottom() {
     const ele = $(this._container);
     ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
-  }
-
-  scrollHandler() {
-    // Get the element
-    const ele = $(this._container);
-
-    // Compare these two metrics to get the distance scrolled from the bottom
-    const metricA = ele[0].scrollHeight - ele.scrollTop();
-    const metricB = ele.outerHeight();
-
-    const distanceFromBottom = metricA - metricB;
-    console.log(`distanceFromBottom: ${distanceFromBottom}`);
-    return distanceFromBottom;
   }
 
   render() {
@@ -105,6 +70,11 @@ export default class ChatContainer extends React.Component {
             </div>
           </div>
           <div className="header-icon">
+            <IconButton tooltip="Star this conversation">
+              <EmptyStarIcon color="#FFC107"/>
+            </IconButton>
+          </div>
+          <div className="header-icon">
             <IconMenu
               iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
               anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
@@ -112,6 +82,7 @@ export default class ChatContainer extends React.Component {
             >
               <MenuItem primaryText="Add people to chat" />
               <MenuItem primaryText="Change chat title" />
+              <MenuItem primaryText="Archive chat" />
               <MenuItem primaryText="Chat info" />
             </IconMenu>
           </div>
