@@ -6,7 +6,7 @@ import ChatIcon from 'material-ui/lib/svg-icons/action/question-answer';
 import InfoIcon from 'material-ui/lib/svg-icons/action/info';
 import NoteIcon from 'material-ui/lib/svg-icons/action/note-add';
 
-import AvatarWithDefault from './AvatarWithDefault.jsx';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
 export default class AvatarWithInfo extends React.Component {
 

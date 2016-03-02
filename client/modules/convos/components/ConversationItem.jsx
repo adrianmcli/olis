@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AvatarWithDefault from '/client/modules/chat/components/AvatarWithDefault.jsx';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import Badge from 'material-ui/lib/badge';
 import StarIcon from 'material-ui/lib/svg-icons/toggle/star';
 

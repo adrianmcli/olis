@@ -26,5 +26,6 @@ export default class AvatarWithDefault extends React.Component {
   }
 }
 AvatarWithDefault.defaultProps = {
-  username: 'Nicky Cage'
+  username: 'Nicky Cage',
+  onClick: () => console.log('avatar has been clicked')
 };
