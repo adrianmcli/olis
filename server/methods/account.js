@@ -24,6 +24,7 @@ export default function () {
 
       const password = Random.secret(15);
       const userId = Accounts.createUser({username, email, password});
+      Meteor.users.update(userId, { $set: {isRegistering: true} });
 
       // Add users to team and set roles
       const team = new Team();
