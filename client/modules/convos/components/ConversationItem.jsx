@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Avatar from 'material-ui/lib/avatar';
+import AvatarWithDefault from '/client/modules/chat/components/AvatarWithDefault.jsx';
 import Badge from 'material-ui/lib/badge';
 import StarIcon from 'material-ui/lib/svg-icons/toggle/star';
 
@@ -34,8 +34,7 @@ export default class ConversationItem extends React.Component {
   }
 
   renderStar() {
-    if (this.props.starred) 
-    return (<StarIcon color="#FFC107" />);
+    if (this.props.starred) { return (<StarIcon color="#FFC107" />); }
   }
 
   render() {
@@ -48,6 +47,7 @@ export default class ConversationItem extends React.Component {
       unreadCount,
       active,
       starred,
+      username
     } = this.props;
 
     const badgeStyle = {
@@ -71,10 +71,10 @@ export default class ConversationItem extends React.Component {
                 style={{padding: '0',display: 'block'}}
                 badgeStyle={badgeStyle}
               >
-              <Avatar size={51} src={avatarSrc} />
+              <AvatarWithDefault size={51} username={username} avatarSrc={avatarSrc} />
             </Badge>
             :
-            <Avatar size={51} src={avatarSrc} />
+            <AvatarWithDefault size={51} username={username} avatarSrc={avatarSrc} />
           }
         </div>
         <div className="chat-body">
@@ -100,7 +100,6 @@ ConversationItem.defaultProps = {
   title: 'Chat Title',
   lastUpdated: null,
   previewText: 'Today\'s meeting minutes has been summarized into the notes on the side of this conversation.',
-  avatarSrc: 'http://www.placecage.com/200/200',
   unread: false,
   unreadCount: 2,
   active: false,

@@ -32,8 +32,15 @@ export default function () {
       msg.save();
 
       // Update convo with last msg text
+      const uniqueRecentUserIds = R.uniq(convo.recentUserIds);
+      const oldRecentUserIds = uniqueRecentUserIds.length >= 2 ?
+        R.takeLast(2, uniqueRecentUserIds) : R.takeLast(2, convo.userIds);
+
+      const recentUserIds = R.takeLast(2, R.uniq([ ...oldRecentUserIds, userId ]));
+
       convo.set({
         lastMsgText: text,
+        recentUserIds, // SERVER ONLY
         numMsgs: Messages.find({convoId}).count() // SERVER ONLY
       });
       convo.save();

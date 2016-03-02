@@ -1,6 +1,7 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import Sidebar from '../components/Sidebar.jsx';
 import {buildRegExp} from '/client/modules/core/libs/search';
+import R from 'ramda';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
@@ -20,9 +21,9 @@ export const composer = ({context}, onData) => {
   let lastTimeInConvo;
   let teamSearchResultUsers = [];
   let teamName;
+  let teamUsers = [];
 
   const user = Meteor.user();
-  const username = user ? user.username : undefined;
 
   if (teamId) {
     if (Meteor.subscribe('teams.list').ready()) {
@@ -35,10 +36,19 @@ export const composer = ({context}, onData) => {
       let selector = {};
       if (searchText) {
         const regExp = buildRegExp(searchText);
-        selector.username = regExp;
+        selector = {$or: [
+          {username: regExp},
+          {'emails.address': regExp}
+        ]};
       }
       selector[`roles.${teamId}`] = {$exists: true};
       teamSearchResultUsers = Meteor.users.find(selector).fetch();
+
+      const teamSelector = {
+        [`roles.${teamId}`]: {$exists: true}
+      };
+      const teamUsersArr = Meteor.users.find(teamSelector).fetch();
+      teamUsers = R.zipObj(teamUsersArr.map(item => item._id), teamUsersArr);
     }
 
     if (Meteor.subscribe('convos.list', {teamId}).ready()) {
@@ -58,8 +68,9 @@ export const composer = ({context}, onData) => {
     convoId,
     lastTimeInConvo,
     teamSearchResultUsers,
+    teamUsers,
     teamName,
-    username
+    user
   });
 };
 

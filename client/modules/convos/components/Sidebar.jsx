@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import R from 'ramda';
 
 import HeaderMenu from '../containers/header_menu';
 import HeaderNewConversation from './HeaderNewConversation.jsx';
@@ -11,7 +12,7 @@ import ConversationItem from './ConversationItem.jsx';
 export default class Sidebar extends React.Component {
   render() {
     const {convos, selectConvo, convoId, addConvo,
-      lastTimeInConvo, teamSearchResultUsers, searchTeamUsers} = this.props;
+      lastTimeInConvo, teamSearchResultUsers, searchTeamUsers, teamUsers, user} = this.props;
 
     return (
       <div id="sidebar-container">
@@ -29,6 +30,9 @@ export default class Sidebar extends React.Component {
         {/* Conversation List */}
         <div id="conversation-list">
           {convos.map(convo => {
+            const otherRecentUserIds = R.filter(id => id !== user._id, convo.recentUserIds);
+            const lastUserId = R.last(otherRecentUserIds);
+            const lastUser = teamUsers[lastUserId];
 
             let unread = true;
             let unreadCount = 0;
@@ -47,7 +51,8 @@ export default class Sidebar extends React.Component {
                 title={convo.name}
                 lastUpdated={convo.updatedAt}
                 previewText={convo.lastMsgText}
-                avatarSrc='http://www.placecage.com/200/200'
+                username={lastUser.username}
+                avatarSrc={lastUser.profileImageUrl}
                 unread={unread}
                 unreadCount={unreadCount}
                 selectConvo={selectConvo.bind(null , convo._id)}

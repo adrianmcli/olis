@@ -77,7 +77,7 @@ export default function () {
 
       const invitedUserIds = filteredEmails.map(inviteEmail => {
         console.log(`inviteEmail ${inviteEmail}`);
-        const invitedUserId = Accounts.createUser({email: inviteEmail});
+        const invitedUserId = Accounts.createUser({username: inviteEmail, email: inviteEmail});
         Meteor.users.update(invitedUserId, { $set: {invitedBy: invitedByName} });
         return invitedUserId;
       });

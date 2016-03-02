@@ -5,7 +5,7 @@ import Menu from 'material-ui/lib/menus/menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Divider from 'material-ui/lib/divider';
 
-import Avatar from 'material-ui/lib/avatar';
+import AvatarWithDefault from '/client/modules/chat/components/AvatarWithDefault.jsx';
 
 import AddPersonIcon from 'material-ui/lib/svg-icons/social/person-add';
 import TeamDirIcon from 'material-ui/lib/svg-icons/action/list';
@@ -75,7 +75,7 @@ class HeaderMenu extends React.Component {
           >
             <MenuItem style={{paddingTop: '12px',paddingBottom: '12px'}} onClick={goToMyAccount}>
               <div style={{display: 'flex'}}>
-                <Avatar size={72} src={profileImageUrl} />
+                <AvatarWithDefault size={72} avatarSrc={profileImageUrl} username={username} />
                 <div style={{padding: '12px'}}>
                   <div className="menu-name">{username}</div>
                   <div className="menu-my-account">My Account</div>
