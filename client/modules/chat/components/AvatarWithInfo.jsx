@@ -1,15 +1,12 @@
 import React from 'react';
-import R from 'ramda';
 
-import Avatar from 'material-ui/lib/avatar';
 import Popover from 'material-ui/lib/popover/popover';
-
 import IconButton from 'material-ui/lib/icon-button';
 import ChatIcon from 'material-ui/lib/svg-icons/action/question-answer';
 import InfoIcon from 'material-ui/lib/svg-icons/action/info';
 import NoteIcon from 'material-ui/lib/svg-icons/action/note-add';
 
-import AccountUtils from '/client/modules/core/libs/account';
+import AvatarWithDefault from './AvatarWithDefault.jsx';
 
 export default class AvatarWithInfo extends React.Component {
 
@@ -36,20 +33,14 @@ export default class AvatarWithInfo extends React.Component {
       avatarSrc, username
     } = this.props;
 
-    const avatarString = avatarSrc ? null : R.take(2, username);
-
     return (
       <div>
-        <Avatar
+        <AvatarWithDefault
           size={51}
-          src={avatarSrc}
+          username={username}
+          avatarSrc={avatarSrc}
           onClick={this.handleOpen.bind(this)}
-          style={{cursor: 'pointer'}}
-          backgroundColor={AccountUtils.convertStringToColor(username)}
-        >
-          {avatarString}
-        </Avatar>
-
+        />
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -59,15 +50,12 @@ export default class AvatarWithInfo extends React.Component {
           onRequestClose={this.handleClose.bind(this)}
         >
           <div style={{padding: '32px', textAlign: 'center', width: '200px'}}>
-            <Avatar
+            <AvatarWithDefault
               size={128}
-              src={avatarSrc}
-              onClick={this.handleOpen.bind(this)}
-              style={{cursor: 'pointer'}}
-              backgroundColor={AccountUtils.convertStringToColor(username)}
-            >
-              {avatarString}
-            </Avatar>
+              username={username}
+              avatarSrc={avatarSrc}
+              onClick={this.handleClose.bind(this)}
+            />
             <div style={{fontSize: '18px',lineHeight: '24px'}}>Nicky Cage</div>
             <div style={{fontSize: '12px',lineHeight: '16px'}}>I like tuna sandwiches.</div>
             <div style={{display: 'flex'}}>
@@ -87,6 +75,3 @@ export default class AvatarWithInfo extends React.Component {
     );
   }
 }
-AvatarWithInfo.defaultProps = {
-  username: 'Nicky Cage'
-};
