@@ -104,7 +104,7 @@ export default class ChatMessageItem extends React.Component {
         <div className="chat-author">{authorName}</div>
         <div className="chat-primary">
           <div className="chat-avatar">
-            <AvatarWithInfo username={authorName} />
+            <AvatarWithInfo username={authorName} avatarSrc={avatarSrc} />
           </div>
           <div className="chat-body">
             <div className="chat-bubble">

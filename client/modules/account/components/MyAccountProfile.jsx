@@ -34,8 +34,10 @@ export default class MyAccountProfile extends React.Component {
 
         <div>
           Change profile pic
-          <input type="file" onChange={this.handleFileChange.bind(this)} />
-          <button onClick={uploadImage.bind(null, files)}>UPLOAD</button>
+          <div>
+            <input type="file" onChange={this.handleFileChange.bind(this)} />
+            <div><button onClick={uploadImage.bind(null, files)}>UPLOAD</button></div>
+          </div>
         </div>
       </div>
     );
