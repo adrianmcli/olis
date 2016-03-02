@@ -83,7 +83,6 @@ active-bg-color = primary + 50%
     font-size 12px
     line-height 19px
     margin-top 3px
-    margin-right 24px
     font-weight 300
     display flex
     display -webkit-flex
@@ -93,6 +92,11 @@ active-bg-color = primary + 50%
       white-space nowrap
       overflow hidden
       text-overflow ellipsis
+      flex-grow 1
+    
+    .chat-star-icon
+      min-width 24px
+      transform scale(0.8) translateY(-4px)
     
     .chat-badge
       min-width 36px

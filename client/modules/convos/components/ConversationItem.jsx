@@ -2,6 +2,7 @@ import React from 'react';
 
 import Avatar from 'material-ui/lib/avatar';
 import Badge from 'material-ui/lib/badge';
+import StarIcon from 'material-ui/lib/svg-icons/toggle/star';
 
 import TimeAgo from 'react-timeago';
 
@@ -14,6 +15,29 @@ export default class ConversationItem extends React.Component {
     this.props.selectConvo();
   }
 
+  _timestampFormatter(value, unit, suffix) {
+    let timeStr = '';
+    let resultingUnit = unit;
+
+    if (unit === 'minute') { resultingUnit = 'min'; }
+    if (unit === 'hour') { resultingUnit = 'hr'; }
+
+    if (unit === 'second') {
+      timeStr = 'Just now';
+    } else {
+      if (value !== 1) {
+        resultingUnit += 's';
+      }
+      return value + ' ' + resultingUnit + ' ' + suffix;
+    }
+    return timeStr;
+  }
+
+  renderStar() {
+    if (this.props.starred) 
+    return (<StarIcon color="#FFC107" />);
+  }
+
   render() {
     const {
       title,
@@ -23,6 +47,7 @@ export default class ConversationItem extends React.Component {
       unread,
       unreadCount,
       active,
+      starred,
     } = this.props;
 
     const badgeStyle = {
@@ -30,7 +55,6 @@ export default class ConversationItem extends React.Component {
       right: '-6px',
       pointerEvents: 'none',
       transform: 'scale(0.8)',
-      // backgroundColor: 'blue', // badge color
     };
     const unreadClass = unread ? ' unread' : '';
     const activeClass = active ? ' active' : '';
@@ -57,11 +81,14 @@ export default class ConversationItem extends React.Component {
           <div className="chat-main">
             <div className="chat-title">{title}</div>
             <div className="chat-time">
-              <TimeAgo date={lastUpdated} />
+              <TimeAgo date={lastUpdated} formatter={this._timestampFormatter}/>
             </div>
           </div>
           <div className="chat-secondary">
             <div className="chat-status">{previewText}</div>
+            <div className="chat-star-icon">
+              { starred ? <StarIcon color="#FFC107" /> : null }
+            </div>
           </div>
         </div>
       </div>
@@ -77,4 +104,5 @@ ConversationItem.defaultProps = {
   unread: false,
   unreadCount: 2,
   active: false,
+  starred: false,
 };
