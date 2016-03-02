@@ -29,7 +29,12 @@ export default function ({Meteor, Collections, Models}) {
       const convo = new Models.Convo();
       const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
-      convo.set({name, userIds: uniqueUserIds, teamId});
+      const recentUserIds = R.takeLast(2, uniqueUserIds);
+      convo.set({
+        name,
+        userIds: uniqueUserIds,
+        recentUserIds,
+        teamId});
       convo.save();
 
       // Insert a note
