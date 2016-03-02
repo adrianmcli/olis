@@ -87,3 +87,6 @@ export default class AvatarWithInfo extends React.Component {
     );
   }
 }
+AvatarWithInfo.defaultProps = {
+  username: 'Nicky Cage'
+};

@@ -91,11 +91,12 @@ export default class ChatContainer extends React.Component {
         <div id="chat-msg-area" ref={(x) => this._container = x}>
           <button onClick={loadMore}>Load more messages</button>
           {msgs.map(msg => {
+            const otherUser = convoUsers[msg.userId];
             return (
               <ChatMessageItem
                 key={msg._id}
-                authorName={convoUsers[msg.userId].username}
-                avatarSrc='http://www.placecage.com/200/200'
+                authorName={otherUser.username}
+                avatarSrc={otherUser.profileImageUrl}
                 content={msg.text}
                 timestamp={msg.createdAt}
                 selfAuthor={msg.userId === userId}
@@ -124,4 +125,3 @@ ChatContainer.defaultProps = {
   title: 'Default title',
   usersListString: 'Default users list string'
 };
-

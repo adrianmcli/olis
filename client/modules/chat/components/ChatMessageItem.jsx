@@ -126,8 +126,6 @@ export default class ChatMessageItem extends React.Component {
 }
 
 ChatMessageItem.defaultProps = {
-  authorName: 'Nicky Cage',
-  avatarSrc: 'http://www.placecage.com/200/200',
   content: 'Form inputs offer a great opportunity to add some subtle and interesting effects to a web page.',
   timestamp: '5 minutes ago',
   selfAuthor: false,
