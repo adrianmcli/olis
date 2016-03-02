@@ -10,17 +10,24 @@ const depsMapper = (context, actions) => ({
 export const composer = ({context}, onData) => {
   const {Meteor, LocalState, Collections} = context();
 
-  const username = Meteor.user() ? Meteor.user().username : '';
+  const user = Meteor.user();
+  const username = user ? user.username : undefined;
+  const profileImageUrl = user ? user.profileImageUrl : undefined;
 
   const teamId = LocalState.get('teamId');
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
-      onData(null, {username, teamName: team.name});
+
+      onData(null, {
+        username,
+        profileImageUrl,
+        teamName: team.name
+      });
     }
   }
   else {
-    onData(null, {username, teamName: ''});
+    onData(null, {username, profileImageUrl, teamName: ''});
   }
 };
 

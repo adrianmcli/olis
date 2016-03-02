@@ -52,7 +52,7 @@ class HeaderMenu extends React.Component {
   }
 
   render() {
-    const {username, teamName, logout, goToMyAccount} = this.props;
+    const {username, profileImageUrl, teamName, logout, goToMyAccount} = this.props;
     return (
       <div style={{flexGrow: '1'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
@@ -75,7 +75,7 @@ class HeaderMenu extends React.Component {
           >
             <MenuItem style={{paddingTop: '12px',paddingBottom: '12px'}} onClick={goToMyAccount}>
               <div style={{display: 'flex'}}>
-                <Avatar size={72} src={'http://www.fillmurray.com/200/201'} />
+                <Avatar size={72} src={profileImageUrl} />
                 <div style={{padding: '12px'}}>
                   <div className="menu-name">{username}</div>
                   <div className="menu-my-account">My Account</div>
