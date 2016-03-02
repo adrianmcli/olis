@@ -72,7 +72,7 @@ export default class Teams extends React.Component {
           }
 
           {/* Add Team Button */}
-          {/*<div className="team-item add-team">
+          {/* <div className="team-item add-team">
             <IconButton
               onClick={this.handleOpen.bind(this)}
               iconClassName="material-icons"
@@ -110,12 +110,12 @@ export default class Teams extends React.Component {
         </div>
 
         {/* Add Team Dialog/Modal */}
-        <AddTeamModal
+        {/* <AddTeamModal
           title="Add Team"
           open={this.state.addTeamDialogOpen}
           onRequestClose={this.handleClose.bind(this)}
           addTeam={addTeam}
-        />
+        />*/}
       </div>
     );
   }
