@@ -30,17 +30,22 @@ export default class Sidebar extends React.Component {
             const lastUserId = R.last(otherRecentUserIds);
             const lastUser = teamUsers[lastUserId];
 
-            let unread = true;
+            let unread = false;
             let unreadCount = 0;
             if (convoId === convo._id) {
-              unread = false;
               unreadCount = 0;
             }
             else {
-              unreadCount = convo.numMsgs && _.has(lastTimeInConvo, `${convo._id}.numMsgs`) ?
-                Math.max(convo.numMsgs - lastTimeInConvo[convo._id].numMsgs, 0) : 0;
-              unread = unreadCount > 0;
+              if (convo.numMsgs && !_.has(lastTimeInConvo, `${convo._id}.numMsgs`)) {
+                unreadCount = convo.numMsgs;
+              }
+              else if (convo.numMsgs && _.has(lastTimeInConvo, `${convo._id}.numMsgs`)) {
+                unreadCount = convo.numMsgs - lastTimeInConvo[convo._id].numMsgs;
+              }
             }
+            unread = unreadCount > 0;
+            console.log(`unreadCount ${convo._id} ${unreadCount}`);
+
             return (
               <ConversationItem
                 key={convo._id}
