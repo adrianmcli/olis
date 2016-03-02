@@ -1,7 +1,6 @@
-@import '/client/modules/core/components/application'
-
 header-height = 64px
 side-padding = 36px
+bg-color = #EFEFEF
 
 #chat-container
   width 100%
@@ -11,24 +10,31 @@ side-padding = 36px
   flex-direction column
   background-repeat repeat
   background-image url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/diamond_upholstery.png')
-  // background blue
   
   #chat-header
     height 64px
     width 100%
     flex-grow 0
     flex-shrink 0
-    padding-left 12px
     display flex
     display -webkit-flex
     z-index 1
-    background grey
+    background bg-color
     border-bottom 1px solid rgba(0,0,0,0.08)
-    // box-shadow 0 2px 6px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.12)
-    // background red
+    box-sizing content-box
     
     .header-body
       flex-grow 1
+      padding-left 12px
+      transition background 0.15s
+      
+      &:hover
+        background bg-color - 20%
+        color white
+        cursor pointer
+        
+        .chat-meta
+          color white
 
       .chat-title
         margin-top 12px
@@ -37,14 +43,13 @@ side-padding = 36px
         font-weight 700
       
       .chat-meta
-        // margin-top 4px
         line-height 14px
         font-size 12px
-        color grey - 50%
+        color bg-color - 50%
     
     .header-icon
       padding 8px
-      color grey - 50%
+      color bg-color - 50%
     
   #chat-msg-area
     flex-grow 1
@@ -55,7 +60,7 @@ side-padding = 36px
     min-height 64px
     flex-shrink 0
     z-index 1
-    background grey
+    background bg-color
     border-top 1px solid rgba(0,0,0,0.08)
     display flex
     display -webkit-flex
