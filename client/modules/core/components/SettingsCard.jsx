@@ -60,6 +60,7 @@ export default class SettingsCard extends React.Component {
     const defaultStyle = {marginBottom: '25px'};
     const cardStyle = style ? Object.assign(defaultStyle, style) : defaultStyle;
     const cardTextStyle = {
+      background: '#efefef',
       borderTop: '1px solid rgba(0,0,0,0.05)',
       borderBottom: '1px solid rgba(0,0,0,0.05)',
     };
