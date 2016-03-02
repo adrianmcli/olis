@@ -11,21 +11,20 @@ export default class AvatarWithDefault extends React.Component {
     const avatarString = avatarSrc ? null : R.take(2, username);
 
     return (
-      <div>
-        <Avatar
-          size={size}
-          src={avatarSrc}
-          onClick={onClick}
-          style={{cursor: 'pointer'}}
-          backgroundColor={AccountUtils.convertStringToColor(username)}
-        >
-          {avatarString}
-        </Avatar>
-      </div>
+      <Avatar
+        size={size}
+        src={avatarSrc}
+        onClick={onClick}
+        style={{cursor: 'pointer'}}
+        backgroundColor={AccountUtils.convertStringToColor(username)}
+      >
+        {avatarString}
+      </Avatar>
     );
   }
 }
 AvatarWithDefault.defaultProps = {
+  size: 40,
   username: 'Nicky Cage',
   onClick: () => console.log('avatar has been clicked')
 };

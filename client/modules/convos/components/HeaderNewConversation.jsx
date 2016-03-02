@@ -9,9 +9,9 @@ import FlatButton from 'material-ui/lib/flat-button';
 import TextField from 'material-ui/lib/text-field';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
-import Avatar from 'material-ui/lib/avatar';
-import Divider from 'material-ui/lib/divider';
 import Checkbox from 'material-ui/lib/checkbox';
+
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
 export default class HeaderNewConversation extends React.Component {
 
@@ -153,7 +153,12 @@ export default class HeaderNewConversation extends React.Component {
                       key={user._id}
                       rightToggle={<Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>}
                       primaryText={user.username}
-                      leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
+                      leftAvatar={
+                        <AvatarWithDefault
+                          username={user.username}
+                          avatarSrc={user.profileImageUrl}
+                        />
+                      }
                     />
                   );
                 })
