@@ -57,7 +57,15 @@ export default class ChatContainer extends React.Component {
   }
 
   render() {
-    const {msgs, userId, convoUsers, title, usersListString, loadMore} = this.props;
+    const {
+      msgs,
+      userId,
+      convoUsers,
+      title,
+      usersListString,
+      loadMore,
+      starred,
+    } = this.props;
     return (
       <div id="chat-container">
         <div id="chat-header">
@@ -71,7 +79,7 @@ export default class ChatContainer extends React.Component {
           </div>
           <div className="header-icon">
             <IconButton tooltip="Star this conversation">
-              <EmptyStarIcon color="#FFC107"/>
+              { starred ? <FilledStarIcon color="#FFC107"/> : <EmptyStarIcon color="#FFC107"/> }
             </IconButton>
           </div>
           <div className="header-icon">
@@ -125,5 +133,6 @@ export default class ChatContainer extends React.Component {
 }
 ChatContainer.defaultProps = {
   title: 'Default title',
-  usersListString: 'Default users list string'
+  usersListString: 'Default users list string',
+  starred: false,
 };
