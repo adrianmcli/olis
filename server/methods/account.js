@@ -6,6 +6,7 @@ import {Random} from 'meteor/random';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
 import GetEmails from 'get-emails';
+import {Cloudinary} from 'meteor/lepozepo:cloudinary';
 
 export default function () {
   const ACCOUNT_REGISTER = 'account.register';
@@ -57,14 +58,17 @@ export default function () {
 
       const user = Meteor.users.findOne(invitedById);
       if (!user) {
-        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must be a registered user to invite other users.');
+        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS,
+          'Must be a registered user to invite other users.');
       }
       const team = Teams.findOne(teamId);
       if (!team) {
-        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must invite users to existing team.');
+        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS,
+          'Must invite users to existing team.');
       }
       if (!team.isUserInTeam(invitedById)) {
-        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must be a member of team to invite new users to it.');
+        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS,
+          'Must be a member of team to invite new users to it.');
       }
       const filteredEmails = R.filter(email => GetEmails(email).length === 1, inviteEmails);
       if (R.isEmpty(filteredEmails)) {
@@ -155,7 +159,8 @@ export default function () {
       }
       const user = Accounts.findUserByEmail(emails[0]);
       if (user) {
-        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, `The email ${emails[0]} is taken. Please enter another one.`);
+        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL,
+          `The email ${emails[0]} is taken. Please enter another one.`);
       }
     }
   });
@@ -169,11 +174,13 @@ export default function () {
 
       const nameTrim = username.trim();
       if (nameTrim === '') {
-        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, 'Please enter a non-blank username.');
+        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME,
+          'Please enter a non-blank username.');
       }
       const user = Accounts.findUserByUsername(username);
       if (user) {
-        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, `The username ${username} is taken. Please enter another one.`);
+        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME,
+          `The username ${username} is taken. Please enter another one.`);
       }
     }
   });
@@ -205,6 +212,29 @@ export default function () {
       }
 
       // Other things we want to validate...
+    }
+  });
+
+  const ACCOUNT_PROFILE_PIC = 'account.addProfilePic';
+  Meteor.methods({
+    'account.addProfilePic'({cloudinaryPublicId}) {
+      check(arguments[0], {
+        cloudinaryPublicId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_PROFILE_PIC, 'Must be logged in to change profile picture.');
+      }
+      if (R.isEmpty(cloudinaryPublicId)) {
+        throw new Meteor.Error(ACCOUNT_PROFILE_PIC,
+          'cloudinaryPublicId cannot be an empty string.'
+        );
+      }
+
+      Meteor.users.update(userId, {
+        $set: {profileImageUrl: Cloudinary.url(cloudinaryPublicId)}
+      });
     }
   });
 }

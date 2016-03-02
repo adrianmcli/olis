@@ -3,7 +3,7 @@ import MyAccount from '../components/MyAccount.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  uploadImage: actions.images.add
+  goToChat: actions.msgs.goToChat
 });
 
 export const composer = ({context}, onData) => {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Paper from 'material-ui/lib/paper';
 import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
 import FontIcon from 'material-ui/lib/font-icon';
@@ -8,12 +7,11 @@ import FontIcon from 'material-ui/lib/font-icon';
 import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 import MyAccountSettings from './MyAccountSettings.jsx';
 import MyAccountNotifications from './MyAccountNotifications.jsx';
-import MyAccountProfile from './MyAccountProfile.jsx';
+import MyAccountProfile from '../containers/my_account_profile';
 
 export default class MyAccount extends React.Component {
   render() {
-    const {uploadImage} = this.props;
-
+    const {goToChat} = this.props;
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
     const tabStyle = {
@@ -23,6 +21,7 @@ export default class MyAccount extends React.Component {
       <PageWrapper
         title="My Account"
         backButton
+        handleBackButtonPress={goToChat}
         >
         <Tabs
           style={{margin: '0 -25px'}}
@@ -48,7 +47,7 @@ export default class MyAccount extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>face</FontIcon>}
             label="Profile"
           >
-            <MyAccountProfile uploadImage={uploadImage} />
+            <MyAccountProfile />
           </Tab>
         </Tabs>
       </PageWrapper>

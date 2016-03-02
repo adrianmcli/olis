@@ -4,7 +4,6 @@ export default function () {
   Meteor.methods({
     'images.add'() {
       console.log('cloudinary haha');
-      
     }
   });
 }

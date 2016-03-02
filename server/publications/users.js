@@ -4,13 +4,15 @@ import {check} from 'meteor/check';
 
 const selfFields = {
   lastTimeInConvo: 1,
-  lastTimeInTeam: 1
+  lastTimeInTeam: 1,
+  profileImageUrl: 1
 };
 
 const othersFields = {
   username: 1,
   email: 1,
-  roles: 1
+  roles: 1,
+  profileImageUrl: 1
 };
 
 export default function () {
