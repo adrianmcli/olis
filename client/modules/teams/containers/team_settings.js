@@ -7,11 +7,20 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {LocalState} = context();
+  const {Meteor, LocalState, Collections} = context();
+
+  let teamName;
   const teamId = LocalState.get('teamId');
 
+  if (teamId) {
+    if (Meteor.subscribe('teams.single', {teamId}).ready()) {
+      const team = Collections.Teams.findOne(teamId);
+      teamName = team.name;
+    }
+  }
+
   onData(null, {
-    teamId
+    teamName
   });
 };
 

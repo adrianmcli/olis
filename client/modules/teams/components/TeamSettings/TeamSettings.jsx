@@ -12,14 +12,14 @@ import InviteTeammates from './InviteTeammates.jsx';
 
 export default class TeamSettings extends React.Component {
   render() {
-    const {goToChat} = this.props;
+    const {teamName, goToChat} = this.props;
 
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
     const tabStyle = {
       color: highlightColor,
     };
-    const teamName = 'The A Team';
+
     return (
       <PageWrapper
         title={'Team Settings: ' + teamName}
@@ -57,3 +57,6 @@ export default class TeamSettings extends React.Component {
     );
   }
 }
+TeamSettings.defaultProps = {
+  teamName: 'Default team name'
+};
