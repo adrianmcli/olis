@@ -88,7 +88,7 @@ export default function () {
       if (!team) {
         throw new Meteor.Error(TEAMS_SET_NAME, 'Must change name of existing team.');
       }
-      if (!Roles.userIsInRole(userId, 'admin', teamId)) {
+      if (!team.isUserAdmin(userId)) {
         throw new Meteor.Error(TEAMS_SET_NAME, 'Must be admin to change name of team.');
       }
 
