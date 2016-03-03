@@ -3,7 +3,8 @@ import TeamSettings from '../components/TeamSettings/TeamSettings.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  goToChat: actions.msgs.goToChat
+  goToChat: actions.msgs.goToChat,
+  setTeamName: actions.teams.setName
 });
 
 export const composer = ({context}, onData) => {

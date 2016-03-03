@@ -12,7 +12,7 @@ import InviteTeammates from './InviteTeammates.jsx';
 
 export default class TeamSettings extends React.Component {
   render() {
-    const {teamName, goToChat} = this.props;
+    const {teamName, goToChat, setTeamName} = this.props;
 
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
@@ -36,7 +36,7 @@ export default class TeamSettings extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>settings</FontIcon>}
             label="General"
           >
-            <ChangeTeamName />
+            <ChangeTeamName setTeamName={setTeamName} />
           </Tab>
           <Tab
             style={tabStyle}

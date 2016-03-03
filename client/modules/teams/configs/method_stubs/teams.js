@@ -51,7 +51,8 @@ export default function ({Meteor, Collections, Models}) {
         throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must add members to an existing team.');
       }
       if (!team.isUserInTeam(userId)) {
-        throw new Meteor.Error(TEAMS_ADD_MEMBERS, 'Must be a part of team to add new members to it.');
+        throw new Meteor.Error(TEAMS_ADD_MEMBERS,
+          'Must be a part of team to add new members to it.');
       }
 
       Roles.addUsersToRoles(userIds, [ 'member' ], teamId);
@@ -60,6 +61,31 @@ export default function ({Meteor, Collections, Models}) {
       const uniqueUserIds = R.uniq(newUserIds);
 
       team.set({userIds: uniqueUserIds});
+      team.save();
+    }
+  });
+
+  const TEAMS_SET_NAME = 'teams.setName';
+  Meteor.methods({
+    'teams.setName'({teamId, name}) {
+      check(arguments[0], {
+        teamId: String,
+        name: String
+      });
+
+      const userId = Meteor.userId();
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_SET_NAME, 'Must be logged in to change team name.');
+      }
+      const team = Collections.Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_SET_NAME, 'Must change name of existing team.');
+      }
+      if (!Roles.userIsInRole(userId, 'admin', teamId)) {
+        throw new Meteor.Error(TEAMS_SET_NAME, 'Must be admin to change name of team.');
+      }
+
+      team.set({name});
       team.save();
     }
   });

@@ -32,5 +32,13 @@ export default {
     TeamUtils.select({Meteor, LocalState}, teamId);
     LocalState.set('ignoreDefaultTeamAndConvo', true);
     FlowRouter.go('/home');
+  },
+
+  setName({Meteor, LocalState}, name) {
+    const teamId = LocalState.get('teamId');
+    Meteor.call('teams.setName', {teamId, name}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };

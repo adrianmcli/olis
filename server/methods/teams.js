@@ -71,4 +71,29 @@ export default function () {
       return team;
     }
   });
+
+  const TEAMS_SET_NAME = 'teams.setName';
+  Meteor.methods({
+    'teams.setName'({teamId, name}) {
+      check(arguments[0], {
+        teamId: String,
+        name: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_SET_NAME, 'Must be logged in to change team name.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_SET_NAME, 'Must change name of existing team.');
+      }
+      if (!Roles.userIsInRole(userId, 'admin', teamId)) {
+        throw new Meteor.Error(TEAMS_SET_NAME, 'Must be admin to change name of team.');
+      }
+
+      team.set({name});
+      team.save();
+    }
+  });
 }
