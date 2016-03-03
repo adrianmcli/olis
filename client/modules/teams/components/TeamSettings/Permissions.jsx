@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Avatar from 'material-ui/lib/avatar';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -19,30 +20,38 @@ export default class Permissions extends React.Component {
   }
 
   render() {
-    const userRowItems = this.props.users.map(user => {
+    const {teamId, users} = this.props;
+    const userRowItems = users.map(user => {
       const {
-        id,
+        _id,
         username,
-        avatarSrc,
-        role,
+        profileImageUrl,
+        roles
       } = user;
+
+      const role = roles[teamId][0] ? roles[teamId][0] : 'Default role';
+
       return (
         <TableRow
-          key={id}
+          key={_id}
           displayBorder={false}
           style={{lineHeight: '64px'}}
         >
-            <TableRowColumn style={{width: '72px'}}>
-              <Avatar style={{verticalAlign: 'inherit'}} src={ avatarSrc } />
-            </TableRowColumn>
-            <TableRowColumn>{ username }</TableRowColumn>
-            <TableRowColumn>
-              <SelectField value={ role } onChange={this.handleRoleChange.bind(this, id)}>
-                <MenuItem value={1} primaryText="Member"/>
-                <MenuItem value={2} primaryText="Admin"/>
-              </SelectField>
-            </TableRowColumn>
-          </TableRow>
+          <TableRowColumn style={{width: '72px'}}>
+            <AvatarWithDefault
+              style={{verticalAlign: 'inherit'}}
+              username={username}
+              avatarSrc={profileImageUrl}
+              />
+          </TableRowColumn>
+          <TableRowColumn>{username}</TableRowColumn>
+          <TableRowColumn>
+            <SelectField value={role} onChange={this.handleRoleChange.bind(this, _id)}>
+              <MenuItem value="member" primaryText="Member" />
+              <MenuItem value="admin" primaryText="Admin" />
+            </SelectField>
+          </TableRowColumn>
+        </TableRow>
       );
     });
 
@@ -60,9 +69,7 @@ export default class Permissions extends React.Component {
               <TableHeaderColumn>Role</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody
-            displayRowCheckbox={false}
-          >
+          <TableBody displayRowCheckbox={false}>
             { userRowItems }
           </TableBody>
         </Table>
@@ -73,8 +80,8 @@ export default class Permissions extends React.Component {
 
 Permissions.defaultProps = {
   users: [
-    {id: 1, username: 'NickyC', avatarSrc: 'https://www.placecage.com/100/101', role: 1},
-    {id: 2, username: 'BillM', avatarSrc: 'https://www.placecage.com/101/101', role: 2},
-    {id: 3, username: 'ClintonD', avatarSrc: 'https://www.placecage.com/102/101', role: 2},
+    {_id: 1, username: 'NickyC', avatarSrc: 'https://www.placecage.com/100/101', role: 1},
+    {_id: 2, username: 'BillM', avatarSrc: 'https://www.placecage.com/101/101', role: 2},
+    {_id: 3, username: 'ClintonD', avatarSrc: 'https://www.placecage.com/102/101', role: 2},
   ],
 };

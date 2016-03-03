@@ -19,7 +19,7 @@ export default function () {
     if (!convo.isUserInConvo(this.userId)) {
       throw new Meteor.Error(NOTES_SINGLE, 'Must be a member of convo to get the convo\'s note.');
     }
-    
+
     return Notes.find({convoId});
   });
 }

@@ -26,7 +26,7 @@ export const composer = ({context}, onData) => {
         [`roles.${teamId}`]: {$exists: true}
       };
       const teamUsersArr = Meteor.users.find(teamSelector).fetch();
-      teamUsers = R.zipObj(teamUsersArr.map(item => item._id), teamUsersArr);
+      teamUsers = R.zipObj(teamUsersArr.map(teamUser => teamUser._id), teamUsersArr);
     }
 
     if (Meteor.subscribe('convos.list', {teamId}).ready()) {

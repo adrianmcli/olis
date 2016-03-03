@@ -10,7 +10,7 @@ const selfFields = {
 
 const othersFields = {
   username: 1,
-  email: 1,
+  emails: 1,
   roles: 1,
   profileImageUrl: 1
 };
