@@ -15,9 +15,6 @@ import TableBody from 'material-ui/lib/table/table-body';
 
 export default class Permissions extends React.Component {
   handleRoleChange(userId, event, index, value) {
-    console.log(`Change user w/ userId: ${userId}`);
-    console.log(`to role w/ roleId: ${value}`);
-
     const {setUserRole} = this.props;
     setUserRole(userId, value);
   }
