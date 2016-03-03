@@ -40,5 +40,13 @@ export default {
       if (err) { alert(err); }
       else { console.log(res); }
     });
+  },
+
+  setUserRole({Meteor, LocalState}, userId, role) {
+    const teamId = LocalState.get('teamId');
+    Meteor.call('teams.setUserRole', {teamId, changeUserId: userId, role}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };
