@@ -89,4 +89,59 @@ export default function ({Meteor, Collections, Models}) {
       team.save();
     }
   });
+
+  const TEAMS_SET_USER_ROLE = 'teams.setUserRole';
+  Meteor.methods({
+    'teams.setUserRole'({teamId, changeUserId, role}) {
+      check(arguments[0], {
+        teamId: String,
+        changeUserId: String,
+        role: String
+      });
+
+      const userId = Meteor.userId();
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_SET_USER_ROLE, 'Must be logged in to change user roles.');
+      }
+      const team = Collections.Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_SET_USER_ROLE,
+          'Must change of role of user in existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(TEAMS_SET_USER_ROLE,
+          'Must be admin to change roles of team members.');
+      }
+      if (!team.isUserInTeam(changeUserId)) {
+        throw new Meteor.Error(TEAMS_SET_USER_ROLE,
+          'Must change role of existing user.');
+      }
+
+      const cleanRole = R.toLower(role);
+      const rolesList = [ 'admin', 'member' ];
+      if (!R.contains(cleanRole, rolesList)) {
+        throw new Meteor.Error(TEAMS_SET_USER_ROLE,
+          `Must change role to acceptable role. (${rolesList})`);
+      }
+
+      const teamUsers = Meteor.users.find({_id: {$in: team.userIds}}).fetch();
+      const getCurrentNumAdmins = () => {
+        const roles = teamUsers.map(teamUser => teamUser.roles[teamId]);
+        const count = R.countBy(_role => _role)(roles);
+        return count['admin'];
+      };
+      const changeUser = Meteor.users.findOne(changeUserId);
+      const wrongNumAdminsAfterRoleChange = () => {
+        return getCurrentNumAdmins() <= 1 && team.isUserAdmin(changeUser._id) && role === 'member';
+      };
+      if (wrongNumAdminsAfterRoleChange()) {
+        throw new Meteor.Error(TEAMS_SET_USER_ROLE,
+          'Must have at least one admin.');
+      }
+
+      const oldRoles = team.getRolesForUser(changeUserId);
+      Roles.removeUsersFromRoles(changeUserId, oldRoles[0], teamId);
+      Roles.addUsersToRoles(changeUserId, role, teamId);
+    }
+  });
 }
