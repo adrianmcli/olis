@@ -12,6 +12,8 @@ import InviteTeammates from './InviteTeammates.jsx';
 
 export default class TeamSettings extends React.Component {
   render() {
+    const {goToChat} = this.props;
+
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
     const tabStyle = {
@@ -22,6 +24,7 @@ export default class TeamSettings extends React.Component {
       <PageWrapper
         title={'Team Settings: ' + teamName}
         backButton
+        handleBackButtonPress={goToChat}
         >
         <Tabs
           style={{margin: '0 -25px'}}
@@ -40,18 +43,14 @@ export default class TeamSettings extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>people</FontIcon>}
             label="Permissions"
           >
-
             <Permissions />
-
           </Tab>
           <Tab
             style={tabStyle}
             icon={<FontIcon className="material-icons" color={highlightColor}>person_add</FontIcon>}
             label="Invite Teammates"
           >
-
             <InviteTeammates />
-
           </Tab>
         </Tabs>
       </PageWrapper>

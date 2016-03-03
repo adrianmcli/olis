@@ -16,7 +16,6 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import LogoutIcon from 'material-ui/lib/svg-icons/action/exit-to-app';
 
 class HeaderMenu extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -52,7 +51,8 @@ class HeaderMenu extends React.Component {
   }
 
   render() {
-    const {username, profileImageUrl, teamName, logout, goToMyAccount} = this.props;
+    const {username, profileImageUrl, teamName, logout, 
+      goToMyAccount, goToTeamSettings} = this.props;
     return (
       <div style={{flexGrow: '1'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
@@ -86,7 +86,7 @@ class HeaderMenu extends React.Component {
             <MenuItem primaryText="Invite to team" leftIcon={<AddPersonIcon />}/>
             <MenuItem primaryText="Team directory" leftIcon={<TeamDirIcon />} disabled/>
             <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled/>
-            <MenuItem primaryText="Team settings" leftIcon={<TeamSettingsIcon />} disabled/>
+            <MenuItem primaryText="Team settings" leftIcon={<TeamSettingsIcon />} onClick={goToTeamSettings} />
             <Divider />
             <MenuItem innerDivStyle={{background: 'white'}}>
               <div style={{display: 'flex'}}>

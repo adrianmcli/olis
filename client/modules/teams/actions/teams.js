@@ -24,6 +24,10 @@ export default {
     FlowRouter.go('/home/teams');
   },
 
+  goToTeamSettings({FlowRouter}) {
+    FlowRouter.go('/home/team-settings');
+  },
+
   'manageTeams.selectAndGo'({Meteor, LocalState, FlowRouter}, teamId) {
     TeamUtils.select({Meteor, LocalState}, teamId);
     LocalState.set('ignoreDefaultTeamAndConvo', true);
