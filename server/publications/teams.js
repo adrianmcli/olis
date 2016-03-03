@@ -66,9 +66,12 @@ export default function () {
       [`roles.${teamId}`]: 1,
       emails: 1
     };
+    const userSelector = { // Have to do it this way since {_id: {$in: team.userIds}} isn't reactive
+      [`roles.${teamId}`]: {$exists: true}
+    };
 
     return [
-      Meteor.users.find({_id: {$in: team.userIds}}, {fields: userFields}),
+      Meteor.users.find(userSelector, {fields: userFields}),
       Teams.find(teamId)
     ];
   });

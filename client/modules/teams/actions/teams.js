@@ -48,5 +48,13 @@ export default {
       if (err) { alert(err); }
       else { console.log(res); }
     });
+  },
+
+  invite({Meteor, LocalState}, inviteEmails) {
+    const teamId = LocalState.get('teamId');
+    Meteor.call('teams.invite', {inviteEmails, teamId}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };

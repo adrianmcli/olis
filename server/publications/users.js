@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Convos, Teams} from '/lib/collections';
 import {check} from 'meteor/check';
+import R from 'ramda';
 
 const selfFields = {
   lastTimeInConvo: 1,
@@ -11,7 +12,6 @@ const selfFields = {
 const othersFields = {
   username: 1,
   emails: 1,
-  roles: 1,
   profileImageUrl: 1
 };
 
@@ -47,23 +47,12 @@ export default function () {
       throw new Meteor.Error(USERS_TEAM, 'Must be a part of team to get team users list.');
     }
 
-    return Meteor.users.find({_id: {$in: team.userIds}}, {fields: othersFields});
-  });
-
-  const USERS_CONVO = 'users.convo';
-  Meteor.publish(USERS_CONVO, function ({convoId}) {
-    check(arguments[0], {
-      convoId: String
+    const fields = R.merge(othersFields, {
+      [`roles.${teamId}`]: 1
     });
-
-    if (!this.userId) {
-      throw new Meteor.Error(USERS_CONVO, 'Must be logged in to get convo users list.');
-    }
-    const convo = Convos.findOne(convoId);
-    if (!convo) {
-      throw new Meteor.Error(USERS_CONVO, 'Must be a part of convo to get convo users list.');
-    }
-
-    return Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields});
+    const selector = {
+      [`roles.${teamId}`]: {$exists: true}
+    };
+    return Meteor.users.find(selector, {fields});
   });
 }

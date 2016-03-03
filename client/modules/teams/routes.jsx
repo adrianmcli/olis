@@ -2,6 +2,7 @@ import React from 'react';
 import {mount} from 'react-mounter';
 
 import MainLayout from '/client/modules/core/components/main_layout.jsx';
+import ManageTeams from './containers/manage_teams';
 import TeamSettings from './containers/team_settings';
 
 export default function (injectDeps, {FlowRouter}) {

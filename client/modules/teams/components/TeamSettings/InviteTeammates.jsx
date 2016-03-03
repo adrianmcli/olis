@@ -19,8 +19,9 @@ export default class InviteTeammates extends React.Component {
 
   submitHandler() {
     this.setState({submitted: true});
+    const {invite} = this.props;
     const inviteEmails = R.keys(this.refs).map(key => this.refs[key].getValue());
-    console.log(inviteEmails);
+    invite(inviteEmails);
   }
 
   addInvite() {
@@ -35,7 +36,7 @@ export default class InviteTeammates extends React.Component {
     for (let i = 0; i < numInviteInputs; i++) {
       const ref = `${this.refBase}${i}`;
       const input = (
-        <div>
+        <div key={ref}>
           <TextField
             hintText="your.name@example.com"
             floatingLabelText="Email"

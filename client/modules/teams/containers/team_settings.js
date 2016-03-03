@@ -5,7 +5,8 @@ const depsMapper = (context, actions) => ({
   context: () => context,
   goToChat: actions.msgs.goToChat,
   setTeamName: actions.teams.setName,
-  setUserRole: actions.teams.setUserRole
+  setUserRole: actions.teams.setUserRole,
+  invite: actions.teams.invite
 });
 
 export const composer = ({context}, onData) => {
@@ -13,20 +14,25 @@ export const composer = ({context}, onData) => {
 
   let teamName;
   let teamUsers = [];
+  let pendingInviteIds = [];
   const teamId = LocalState.get('teamId');
 
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
       teamName = team.name;
-      teamUsers = Meteor.users.find({_id: {$in: team.userIds}}).fetch();
+      pendingInviteIds = team.pendingInviteIds;
+
+      const options = {sort: [ [ 'username', 'asc' ] ]};
+      teamUsers = Meteor.users.find({_id: {$in: team.userIds}}, options).fetch();
     }
   }
 
   onData(null, {
     teamName,
     teamUsers,
-    teamId
+    teamId,
+    pendingInviteIds
   });
 };
 

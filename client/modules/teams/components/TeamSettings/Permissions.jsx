@@ -1,6 +1,6 @@
 import React from 'react';
+import R from 'ramda';
 
-import Avatar from 'material-ui/lib/avatar';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
 import SelectField from 'material-ui/lib/select-field';
@@ -20,13 +20,14 @@ export default class Permissions extends React.Component {
   }
 
   render() {
-    const {teamId, users} = this.props;
+    const {teamId, users, pendingInviteIds} = this.props;
     const userRowItems = users.map(user => {
       const {
         _id,
         username,
         profileImageUrl,
-        roles
+        roles,
+        emails
       } = user;
 
       const role = roles[teamId][0] ? roles[teamId][0] : 'Default role';
@@ -39,12 +40,15 @@ export default class Permissions extends React.Component {
         >
           <TableRowColumn style={{width: '72px'}}>
             <AvatarWithDefault
-              style={{verticalAlign: 'inherit'}}
               username={username}
               avatarSrc={profileImageUrl}
-              />
+            />
           </TableRowColumn>
-          <TableRowColumn>{username}</TableRowColumn>
+          <TableRowColumn>
+            {username}
+            {emails[0].address}
+            {R.contains(_id, pendingInviteIds) ? 'Invited' : null}
+          </TableRowColumn>
           <TableRowColumn>
             <SelectField value={role} onChange={this.handleRoleChange.bind(this, _id)}>
               <MenuItem value="member" primaryText="Member" />

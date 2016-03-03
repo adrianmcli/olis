@@ -4,6 +4,7 @@ import Team from '/lib/team';
 import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
+import GetEmails from 'get-emails';
 
 export default function () {
   const TEAMS_ADD = 'teams.add';
@@ -149,6 +150,70 @@ export default function () {
       const oldRoles = team.getRolesForUser(changeUserId);
       Roles.removeUsersFromRoles(changeUserId, oldRoles[0], teamId);
       Roles.addUsersToRoles(changeUserId, role, teamId);
+    }
+  });
+
+  // SERVER ONLY
+  const TEAMS_INVITE = 'teams.invite';
+  Meteor.methods({
+    'teams.invite'({inviteEmails, teamId}) {
+      check(arguments[0], {
+        inviteEmails: [ String ],
+        teamId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_INVITE, 'Must be logged in to invite people.');
+      }
+      const user = Meteor.users.findOne(userId);
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_INVITE, 'Must invite people to an existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
+      }
+      const filteredEmails = R.filter(email => GetEmails(email).length === 1, inviteEmails);
+      if (R.isEmpty(filteredEmails)) {
+        throw new Meteor.Error(TEAMS_INVITE, 'Must provide proper invite emails.');
+      }
+
+      const existingEmails = R.filter(email => {
+        const existingUser = Accounts.findUserByEmail(email);
+        return existingUser;
+      }, filteredEmails);
+
+      const newEmails = R.difference(filteredEmails, existingEmails);
+
+      const existingUserIds = existingEmails.map(email => {
+        const existingUser = Accounts.findUserByEmail(email);
+        return existingUser._id;
+      });
+
+      const newUserIds = newEmails.map(email => {
+        const newId = Accounts.createUser({username: email, email});
+        Meteor.users.update(newId, { $set: {invitedBy: user.username} });
+        return newId;
+      });
+
+      team.set({
+        userIds: R.uniq([ ...team.userIds, ...newUserIds, ...existingUserIds ]),
+        pendingInviteIds: R.uniq([ ...team.pendingInviteIds, ...newUserIds, ...existingUserIds ])
+      });
+      team.save();
+      Roles.addUsersToRoles([ ...newUserIds, ...existingUserIds ], [ 'member' ], teamId);
+
+      newUserIds.forEach(id => Accounts.sendEnrollmentEmail(id));
+      existingEmails.forEach(email => {
+        Email.send({
+          from: 'Olis <contact.aheadstudios@gmail.com>',
+          to: email,
+          subject: 'You have been invited to a new Olis Team.',
+          text: `${user.username} has invited you to join their Olis team ${team.name}!\n\n
+            Sign in and accept their invite.`,
+        });
+      });
     }
   });
 }
