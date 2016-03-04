@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import RegisterEmail from '../components/RegisterEmail.jsx';
+import CreateAcccountEmail from '../components/on-boarding/CreateAccountEmail.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -18,4 +18,4 @@ export const composer = ({context}, onData) => {
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(RegisterEmail);
+)(CreateAcccountEmail);
