@@ -1,5 +1,5 @@
 import {useDeps, composeAll} from 'mantra-core';
-import Login from '../components/login.jsx';
+import Login from '../components/Login.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,

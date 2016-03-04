@@ -6,7 +6,7 @@ import R from 'ramda';
 import LangCodes from '/lib/constants/lang_codes';
 
 export default {
-  login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
+  login({Meteor, LocalState, FlowRouter}, usernameOrEmail, password) {
     Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
       if (err) { alert(err); }
       else { FlowRouter.go('/home'); }
