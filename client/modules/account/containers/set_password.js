@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import SetPasswordPage from '../components/SetPasswordPage.jsx';
+import SetPassword from '../components/on-boarding/SetPassword.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -9,4 +9,4 @@ export const depsMapper = (context, actions) => ({
 
 export default composeAll(
   useDeps(depsMapper)
-)(SetPasswordPage);
+)(SetPassword);

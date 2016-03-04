@@ -2,6 +2,7 @@ import AccountUtils from '/client/modules/core/libs/account';
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
 import EmailValidator from 'email-validator';
+import R from 'ramda';
 
 export default {
   login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
@@ -66,7 +67,7 @@ export default {
   setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails) {
     try {
       inviteEmails.forEach(email => {
-        if (!EmailValidator.validate(email)) {
+        if (!EmailValidator.validate(email) && !R.isEmpty(email)) {
           throw new Meteor.Error('actions.account.setRegisterInviteEmails', 'Enter proper emails.');
         }
       });
@@ -99,17 +100,17 @@ export default {
     });
   },
 
-  resetPassword({Meteor, FlowRouter}, token, newPassword) {
-    function _validate() {
+  resetPassword({Meteor, FlowRouter}, token, pwd1, pwd2) {
+    function _validate(password) {
       return new Promise((resolve, reject) => {
-        Meteor.call('account.validatePassword', {password: newPassword}, (err) => {
+        Meteor.call('account.validatePassword', {password}, (err) => {
           if (err) { reject(err); }
-          else { resolve(); }
+          else { resolve(password); }
         });
       });
     }
 
-    function _reset() {
+    function _reset(newPassword) {
       return new Promise((resolve, reject) => {
         Accounts.resetPassword(token, newPassword, (err) => {
           if (err) { reject(err); }
@@ -118,10 +119,18 @@ export default {
       });
     }
 
-    _validate()
-    .then(_reset)
-    .then(() => FlowRouter.go('/home'))
-    .catch((err) => alert(err));
+    try {
+      if (pwd1 !== pwd2) {
+        throw new Meteor.Error('actions.account.resetPassword', 'Your passwords must match.');
+      }
+
+      const newPassword = pwd1;
+      _validate(newPassword)
+      .then(_reset)
+      .then(() => FlowRouter.go('/home'))
+      .catch((err) => alert(err));
+    }
+    catch (e) { alert(e); }
   },
 
   goToMyAccount({FlowRouter}) {
