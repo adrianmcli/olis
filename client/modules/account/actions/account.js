@@ -54,7 +54,7 @@ export default {
     const nameTrim = teamName.trim();
     try {
       if (nameTrim === '') {
-        throw new Meteor.Error('actions.account.setRegisterTeamName', 'Enter a non-blank username.');
+        throw new Meteor.Error('actions.account.setRegisterTeamName', 'Enter a non-blank team name.');
       }
 
       LocalState.set('register.teamName', teamName);
