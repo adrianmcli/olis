@@ -83,6 +83,12 @@ export default class MyAccountSettings extends React.Component {
     changePassword(oldPassword, newPassword1, newPassword2);
   }
 
+  submitEmail() {
+    const {setEmail} = this.props;
+    const email = this.email.getValue();
+    setEmail(email);
+  }
+
   resetUsername() {
     this.setState({username: this.props.username});
   }
@@ -161,6 +167,8 @@ export default class MyAccountSettings extends React.Component {
           title="Change Email"
           subtitle="This is the email that you will be contacted with."
           submitButtonText="Change Email"
+          handleSubmit={this.submitEmail.bind(this)}
+          // handleReset={this.resetEmail.bind(this)}
         >
           <p>Your current email is: {this.props.email}</p>
           <TextField

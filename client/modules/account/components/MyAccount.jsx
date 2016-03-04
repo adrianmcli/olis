@@ -12,11 +12,11 @@ import MyAccountProfile from './MyAccountProfile.jsx';
 export default class MyAccount extends React.Component {
   render() {
     const {
-      goToChat, username,
-      setUsername,
+      goToChat,
+      username, setUsername,
       uploadImage, profileImageUrl,
       changePassword,
-      email
+      email, setEmail
     } = this.props;
 
     const backgroundColor = '#efefef';
@@ -45,6 +45,7 @@ export default class MyAccount extends React.Component {
               setUsername={setUsername}
               changePassword={changePassword}
               email={email}
+              setEmail={setEmail}
             />
           </Tab>
           <Tab

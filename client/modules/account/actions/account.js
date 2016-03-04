@@ -185,5 +185,19 @@ export default {
       });
     }
     catch (e) { alert(e); }
+  },
+
+  setEmail({Meteor}, email) {
+    try {
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error('actions.account.setEmail', 'Enter a proper email.');
+      }
+
+      Meteor.call('account.setEmail', {email}, err => {
+        if (err) { alert(err); }
+        else { alert('Email changed!'); }
+      });
+    }
+    catch (e) { alert(e); }
   }
 };

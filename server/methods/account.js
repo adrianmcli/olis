@@ -224,4 +224,22 @@ export default function () {
       });
     }
   });
+
+  const ACCOUNT_SET_EMAIL = 'account.setEmail';
+  Meteor.methods({
+    'account.setEmail'({email}) {
+      check(arguments[0], {
+        email: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_SET_EMAIL, 'Must be logged in to change email.');
+      }
+      const user = Meteor.users.findOne(userId);
+      Meteor.call('account.validateEmail', {email});
+      Accounts.removeEmail(userId, user.emails[0].address);
+      Accounts.addEmail(userId, email); // This does not check for proper email form, only existence in DB
+    }
+  });
 }
