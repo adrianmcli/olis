@@ -7,26 +7,44 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import IconButton from 'material-ui/lib/icon-button';
 import AddIcon from 'material-ui/lib/svg-icons/content/add-box';
 
+import GetEmails from 'get-emails';
+import EmailValidator from 'email-validator';
+
 export default class InviteTeammates extends React.Component {
   constructor(props) {
     super(props);
     this.refBase = 'input';
     this.state = {
-      submitted: false,
-      numInviteInputs: 3
+      // submitted: false,
+      numInviteInputs: 3,
+      showErrorText: [ false, false, false ]
     };
   }
 
+  handleChange(ref, i) {
+    const input = this.refs[ref].getValue();
+    let showErrorText = this.state.showErrorText;
+
+    if (!R.isEmpty(input) && GetEmails(input).length !== 1) {
+      showErrorText[i] = true;
+    }
+    else {
+      showErrorText[i] = false;
+    }
+    this.setState({showErrorText});
+  }
+
   submitHandler() {
-    this.setState({submitted: true});
     const {invite} = this.props;
     const inviteEmails = R.keys(this.refs).map(key => this.refs[key].getValue());
     invite(inviteEmails);
+    // this.setState({submitted: true});
   }
 
   addInvite() {
     this.setState({
-      numInviteInputs: this.state.numInviteInputs + 1
+      numInviteInputs: this.state.numInviteInputs + 1,
+      showErrorText: [ ...this.state.showErrorText, false ]
     });
   }
 
@@ -41,6 +59,8 @@ export default class InviteTeammates extends React.Component {
             hintText="your.name@example.com"
             floatingLabelText="Email"
             ref={ref}
+            onChange={this.handleChange.bind(this, ref, i)}
+            errorText={this.state.showErrorText[i] ? 'Enter a proper email.' : null}
           />
           {
             i === numInviteInputs - 1 ?
@@ -75,10 +95,3 @@ export default class InviteTeammates extends React.Component {
     }
   }
 }
-
-//        <div>
-// -            <TextField
-// -              hintText="your.name@example.com"
-// -              floatingLabelText="Email"
-// -            />
-// -          </div>
