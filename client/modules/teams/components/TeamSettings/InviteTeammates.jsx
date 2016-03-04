@@ -7,7 +7,6 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import IconButton from 'material-ui/lib/icon-button';
 import AddIcon from 'material-ui/lib/svg-icons/content/add-box';
 
-import GetEmails from 'get-emails';
 import EmailValidator from 'email-validator';
 
 export default class InviteTeammates extends React.Component {
@@ -15,7 +14,7 @@ export default class InviteTeammates extends React.Component {
     super(props);
     this.refBase = 'input';
     this.state = {
-      // submitted: false,
+      submitted: false,
       numInviteInputs: 3,
       showErrorText: [ false, false, false ]
     };
@@ -23,9 +22,7 @@ export default class InviteTeammates extends React.Component {
 
   handleChange(ref, i) {
     const input = this.refs[ref].getValue();
-    const emails = GetEmails(input);
-    const email = emails[0]; // can be undefined
-    const isValidEmail = EmailValidator.validate(email); // will return false on undefined
+    const isValidEmail = EmailValidator.validate(input);
 
     let showErrorText = this.state.showErrorText;
     if (!R.isEmpty(input) && !isValidEmail) {
@@ -41,7 +38,7 @@ export default class InviteTeammates extends React.Component {
     const {invite} = this.props;
     const inviteEmails = R.keys(this.refs).map(key => this.refs[key].getValue());
     invite(inviteEmails);
-    // this.setState({submitted: true});
+    this.setState({submitted: true});
   }
 
   addInvite() {
@@ -84,7 +81,7 @@ export default class InviteTeammates extends React.Component {
     else {
       return (
         <div>
-          <p>Enter in the email addresses of the teammates you would like to invite to use Olis with you:</p>
+          <p>Enter in the email addresses of the people you would like to invite to your team:</p>
           {inputs}
           <div style={{margin: '14px 0'}}>
             <RaisedButton

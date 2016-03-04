@@ -4,7 +4,7 @@ import Team from '/lib/team';
 import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
-import GetEmails from 'get-emails';
+import EmailValidator from 'email-validator';
 
 export default function () {
   const TEAMS_ADD = 'teams.add';
@@ -174,7 +174,7 @@ export default function () {
       if (!team.isUserAdmin(userId)) {
         throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
       }
-      const filteredEmails = R.filter(email => GetEmails(email).length === 1, inviteEmails);
+      const filteredEmails = R.filter(email => EmailValidator.validate(email), inviteEmails);
       if (R.isEmpty(filteredEmails)) {
         throw new Meteor.Error(TEAMS_INVITE, 'Must provide proper invite emails.');
       }
