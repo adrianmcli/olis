@@ -12,14 +12,15 @@ import InviteTeammates from './InviteTeammates.jsx';
 
 export default class TeamSettings extends React.Component {
   render() {
-    const {goToChat} = this.props;
+    const {teamId, teamName, goToChat, invite,
+      setTeamName, setUserRole, teamUsers, pendingInviteIds} = this.props;
 
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
     const tabStyle = {
       color: highlightColor,
     };
-    const teamName = 'The A Team';
+
     return (
       <PageWrapper
         title={'Team Settings: ' + teamName}
@@ -36,24 +37,28 @@ export default class TeamSettings extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>settings</FontIcon>}
             label="General"
           >
-            <ChangeTeamName />
+            <ChangeTeamName setTeamName={setTeamName} />
           </Tab>
           <Tab
             style={tabStyle}
             icon={<FontIcon className="material-icons" color={highlightColor}>people</FontIcon>}
             label="Permissions"
           >
-            <Permissions />
+            <Permissions users={teamUsers} teamId={teamId} setUserRole={setUserRole} pendingInviteIds={pendingInviteIds} />
           </Tab>
           <Tab
             style={tabStyle}
             icon={<FontIcon className="material-icons" color={highlightColor}>person_add</FontIcon>}
             label="Invite Teammates"
           >
-            <InviteTeammates />
+            <InviteTeammates invite={invite} />
           </Tab>
         </Tabs>
       </PageWrapper>
     );
   }
 }
+TeamSettings.defaultProps = {
+  teamName: 'Default team name',
+  teamId: 'noTeamId'
+};

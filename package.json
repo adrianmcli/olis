@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "domready": "^1.0.8",
+    "email-validator": "^1.0.4",
     "get-emails": "^1.0.1",
     "lodash": "^4.5.1",
     "mantra-core": "^1.2.0",

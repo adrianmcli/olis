@@ -14,21 +14,27 @@ export const composer = ({context}, onData) => {
   const user = Meteor.user();
   const username = user ? user.username : undefined;
   const profileImageUrl = user ? user.profileImageUrl : undefined;
+  let teamName;
+  let isAdmin = false;
 
   const teamId = LocalState.get('teamId');
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
 
+      teamName = team.name;
+      isAdmin = team.isUserAdmin(Meteor.userId());
+
       onData(null, {
         username,
         profileImageUrl,
-        teamName: team.name
+        teamName,
+        isAdmin
       });
     }
   }
   else {
-    onData(null, {username, profileImageUrl, teamName: ''});
+    onData(null, {username, profileImageUrl, teamName, isAdmin});
   }
 };
 

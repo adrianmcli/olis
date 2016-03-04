@@ -38,7 +38,6 @@ export default function () {
 
     const othersFields = {
       username: 1,
-      email: 1,
       roles: 1
     };
 

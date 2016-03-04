@@ -52,7 +52,7 @@ class HeaderMenu extends React.Component {
 
   render() {
     const {username, profileImageUrl, teamName, logout, 
-      goToMyAccount, goToTeamSettings} = this.props;
+      goToMyAccount, goToTeamSettings, isAdmin} = this.props;
     return (
       <div style={{flexGrow: '1'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
@@ -86,7 +86,15 @@ class HeaderMenu extends React.Component {
             <MenuItem primaryText="Invite to team" leftIcon={<AddPersonIcon />}/>
             <MenuItem primaryText="Team directory" leftIcon={<TeamDirIcon />} disabled/>
             <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled/>
-            <MenuItem primaryText="Team settings" leftIcon={<TeamSettingsIcon />} onClick={goToTeamSettings} />
+            {isAdmin ?
+              <MenuItem
+                primaryText="Team settings"
+                leftIcon={<TeamSettingsIcon />}
+                onClick={goToTeamSettings}
+              />
+              :
+              null
+            }
             <Divider />
             <MenuItem innerDivStyle={{background: 'white'}}>
               <div style={{display: 'flex'}}>

@@ -32,5 +32,29 @@ export default {
     TeamUtils.select({Meteor, LocalState}, teamId);
     LocalState.set('ignoreDefaultTeamAndConvo', true);
     FlowRouter.go('/home');
+  },
+
+  setName({Meteor, LocalState}, name) {
+    const teamId = LocalState.get('teamId');
+    Meteor.call('teams.setName', {teamId, name}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
+  },
+
+  setUserRole({Meteor, LocalState}, userId, role) {
+    const teamId = LocalState.get('teamId');
+    Meteor.call('teams.setUserRole', {teamId, changeUserId: userId, role}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
+  },
+
+  invite({Meteor, LocalState}, inviteEmails) {
+    const teamId = LocalState.get('teamId');
+    Meteor.call('teams.invite', {inviteEmails, teamId}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };

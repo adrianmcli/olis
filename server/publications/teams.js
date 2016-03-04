@@ -61,8 +61,17 @@ export default function () {
       throw new Meteor.Error(TEAMS_SINGLE, 'Must be a member of team to get team info.');
     }
 
+    const userFields = {
+      username: 1,
+      [`roles.${teamId}`]: 1,
+      emails: 1
+    };
+    const userSelector = { // Have to do it this way since {_id: {$in: team.userIds}} isn't reactive
+      [`roles.${teamId}`]: {$exists: true}
+    };
+
     return [
-      Meteor.users.find({_id: {$in: team.userIds}}),
+      Meteor.users.find(userSelector, {fields: userFields}),
       Teams.find(teamId)
     ];
   });

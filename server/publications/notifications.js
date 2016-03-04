@@ -15,7 +15,8 @@ export default function () {
     }
     const team = Teams.findOne(teamId);
     if (!team) {
-      throw new Meteor.Error(NOTIFICATIONS_LIST, 'Must be a member of team to get notifications from it.');
+      throw new Meteor.Error(NOTIFICATIONS_LIST,
+        'Must be a member of team to get notifications from it.');
     }
 
     return Notifications.find({

@@ -5,8 +5,9 @@ import TextField from 'material-ui/lib/text-field';
 
 export default class ChangeTeamName extends React.Component {
   submitHandler() {
+    const {setTeamName} = this.props;
     const input = this._textField.getValue();
-    console.log(input + 'is the new name to be set');
+    setTeamName(input);
   }
 
   render() {
