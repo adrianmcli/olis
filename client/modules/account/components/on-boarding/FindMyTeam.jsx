@@ -1,20 +1,33 @@
 import React from 'react';
+import EmailValidator from 'email-validator';
 
 import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class FindMyTeam extends React.Component {
-  
   constructor(props) {
     super(props);
     this.state = {
       submitted: false,
+      showErrorText: false
     };
   }
 
   submitHandler() {
-    this.setState({submitted: true});
+    const {submitEmail} = this.props;
+    const email = this.input.getValue();
+    submitEmail(email, () => this.setState({submitted: true}));
+  }
+
+  handleChange() {
+    const value = this.input.getValue();
+    if (EmailValidator.validate(value)) {
+      this.setState({showErrorText: false});
+    }
+    else {
+      this.setState({showErrorText: true});
+    }
   }
 
   render() {
@@ -27,7 +40,6 @@ export default class FindMyTeam extends React.Component {
           fullHeight={false}
           width="420px"
         >
-          
         </PageWrapper>
       );
     } else {
@@ -44,9 +56,12 @@ export default class FindMyTeam extends React.Component {
             hintText="your.name@example.com"
             floatingLabelText="Email"
             fullWidth
+            ref={(ref) => this.input = ref}
+            errorText={this.state.showErrorText ? 'Enter a proper email.' : null}
+            onChange={this.handleChange.bind(this)}
           />
 
-          <div style={{margin:'14px 0'}}>
+          <div style={{margin: '14px 0'}}>
             <RaisedButton
               onClick={this.submitHandler.bind(this)}
               label="Submit"

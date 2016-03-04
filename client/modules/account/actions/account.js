@@ -147,5 +147,23 @@ export default {
 
   goToCreateAccountUsername({FlowRouter}) {
     FlowRouter.go('/register/username');
+  },
+
+  submitFindMyTeamEmail({Meteor}, email, callback) {
+    try {
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error('actions.account.submitFindMyTeamEmail', 'Enter a proper email.');
+      }
+
+      Meteor.call('account.findMyTeam', {email}, (err, res) => {
+        if (err) { alert(err); }
+        else {
+          console.log(res);
+          callback();
+        }
+      });
+    }
+    catch (e) { alert(e); }
+
   }
 };

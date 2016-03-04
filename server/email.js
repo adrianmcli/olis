@@ -47,7 +47,27 @@ export default function () {
       ${url}`;
 
     if (user.invitedBy) {
-      const text = `You have been invited by ${user.invitedBy} to participate in their team, ${team.name}! ${append}`;
+      Meteor.users.update(user._id, {
+        $unset: {invitedBy: ''}
+      });
+      const text = `You have been invited by ${user.invitedBy} to participate in their team, ${team.name}!\n\n${append}`;
+      return text;
+    }
+
+    if (user.findingMyTeam) {
+      Meteor.users.update(user._id, {
+        $unset: {findingMyTeam: ''}
+      });
+
+      const teams = Teams.find({userIds: user._id}).fetch();
+      const teamsList = teams.reduce((prev, curr) => {
+        if (prev === '') { return `${curr.name}\n`; }
+        return `${prev}\n${curr.name}\n`;
+      }, '');
+
+      const text = `Here are a list of the teams you belong to:\n\n
+        ${teamsList}\n
+        ${append}`;
       return text;
     }
     return append;
@@ -64,7 +84,9 @@ export default function () {
     console.log(user);
 
     if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
-      Meteor.users.update(user._id, {$set: {isRegistering: false}});
+      Meteor.users.update(user._id, {
+        $unset: {isRegistering: ''}
+      });
 
       const text = `To setup your password so that you can log into your account, click the link below:\n\n
         ${url}`;
