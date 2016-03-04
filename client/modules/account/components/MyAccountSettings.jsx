@@ -38,8 +38,8 @@ export default class MyAccountSettings extends React.Component {
   }
 
   handleNewPasswordTextChange() {
-    const pwd1 = this.password1.getValue();
-    const pwd2 = this.password2.getValue();
+    const pwd1 = this.newPassword1.getValue();
+    const pwd2 = this.newPassword2.getValue();
 
     this.setState({
       newPassword1: pwd1,
@@ -61,7 +61,11 @@ export default class MyAccountSettings extends React.Component {
   }
 
   submitPassword() {
-    console.log('submitPassword');
+    const {changePassword} = this.props;
+    const oldPassword = this.oldPassword.getValue();
+    const newPassword1 = this.newPassword1.getValue();
+    const newPassword2 = this.newPassword2.getValue();
+    changePassword(oldPassword, newPassword1, newPassword2);
   }
 
   resetUsername() {
@@ -121,7 +125,7 @@ export default class MyAccountSettings extends React.Component {
             hintText="Something hard to guess!"
             floatingLabelText="New Password"
             type="password"
-            ref={(ref) => this.password1 = ref}
+            ref={(ref) => this.newPassword1 = ref}
             onChange={this.handleNewPasswordTextChange.bind(this)}
             errorText={this.state.showErrorTextNewPassword ? 'New passwords must match.' : null}
             value={this.state.newPassword1}
@@ -130,7 +134,7 @@ export default class MyAccountSettings extends React.Component {
             hintText="Type it again"
             floatingLabelText="Confirm New Password"
             type="password"
-            ref={(ref) => this.password2 = ref}
+            ref={(ref) => this.newPassword2 = ref}
             onChange={this.handleNewPasswordTextChange.bind(this)}
             errorText={this.state.showErrorTextNewPassword ? 'New passwords must match.' : null}
             value={this.state.newPassword2}

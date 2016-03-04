@@ -167,9 +167,23 @@ export default {
   },
 
   setUsername({Meteor}, username) {
-    Meteor.call('account.setUsername', {username}, (err, res) => {
+    Meteor.call('account.setUsername', {username}, (err) => {
       if (err) { alert(err); }
-      else { console.log(res); }
+      else { alert('Username changed!'); }
     });
+  },
+
+  changePassword({Meteor}, oldPassword, newPassword1, newPassword2) {
+    try {
+      if (newPassword1 !== newPassword2) {
+        throw new Meteor.Error('actions.account.changePassword', 'New passwords must match.');
+      }
+
+      Accounts.changePassword(oldPassword, newPassword1, (err) => {
+        if (err) { alert(err); }
+        else { alert('Password changed!'); }
+      });
+    }
+    catch (e) { alert(e); }
   }
 };

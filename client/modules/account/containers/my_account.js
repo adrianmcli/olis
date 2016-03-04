@@ -5,7 +5,8 @@ const depsMapper = (context, actions) => ({
   context: () => context,
   goToChat: actions.msgs.goToChat,
   uploadImage: actions.images.add,
-  setUsername: actions.account.setUsername
+  setUsername: actions.account.setUsername,
+  changePassword: actions.account.changePassword
 });
 
 export const composer = ({context}, onData) => {

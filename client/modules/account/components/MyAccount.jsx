@@ -14,7 +14,8 @@ export default class MyAccount extends React.Component {
     const {
       goToChat, username,
       setUsername,
-      uploadImage, profileImageUrl
+      uploadImage, profileImageUrl,
+      changePassword
     } = this.props;
 
     const backgroundColor = '#efefef';
@@ -38,7 +39,7 @@ export default class MyAccount extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>settings</FontIcon>}
             label="Settings"
           >
-            <MyAccountSettings username={username} setUsername={setUsername} />
+            <MyAccountSettings username={username} setUsername={setUsername} changePassword={changePassword} />
           </Tab>
           <Tab
             style={tabStyle}
