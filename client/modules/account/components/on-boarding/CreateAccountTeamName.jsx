@@ -5,7 +5,23 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class CreateAccountTeamName extends React.Component {
+  componentDidMount() {
+    this.input.focus();
+  }
+
+  handleClick() {
+    const inputValue = this.input.getValue();
+    const {setRegisterTeamName} = this.props;
+    setRegisterTeamName(inputValue);
+  }
+
+  handleEnterKeyDown(e) {
+    e.preventDefault();
+    this.handleClick();
+  }
+
   render() {
+    const {registerTeamName} = this.props;
     return (
       <PageWrapper
         title="Create a Team"
@@ -20,11 +36,15 @@ export default class CreateAccountTeamName extends React.Component {
           hintText="Big Corporation Inc."
           floatingLabelText="Team Name"
           fullWidth
+          defaultValue={registerTeamName}
+          ref={(ref) => this.input = ref}
+          onEnterKeyDown={this.handleEnterKeyDown.bind(this)}
         />
-        <div style={{margin:'14px 0'}}>
+        <div style={{margin: '14px 0'}}>
           <RaisedButton
             label="Next Step"
             secondary={true}
+            onClick={this.handleClick.bind(this)}
           />
         </div>
       </PageWrapper>
