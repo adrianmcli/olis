@@ -83,9 +83,9 @@ class HeaderMenu extends React.Component {
               </div>
             </MenuItem>
             <Divider />
-            <MenuItem primaryText="Invite to team" leftIcon={<AddPersonIcon />}/>
-            <MenuItem primaryText="Team directory" leftIcon={<TeamDirIcon />} disabled/>
-            <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled/>
+            <MenuItem primaryText="Invite to team" leftIcon={<AddPersonIcon />} />
+            <MenuItem primaryText="Team directory" leftIcon={<TeamDirIcon />} disabled />
+            <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled />
             {isAdmin ?
               <MenuItem
                 primaryText="Team settings"
