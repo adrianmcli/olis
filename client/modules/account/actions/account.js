@@ -164,6 +164,12 @@ export default {
       });
     }
     catch (e) { alert(e); }
+  },
 
+  setUsername({Meteor}, username) {
+    Meteor.call('account.setUsername', {username}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };

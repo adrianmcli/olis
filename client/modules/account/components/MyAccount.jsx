@@ -7,11 +7,16 @@ import FontIcon from 'material-ui/lib/font-icon';
 import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 import MyAccountSettings from './MyAccountSettings.jsx';
 import MyAccountNotifications from './MyAccountNotifications.jsx';
-import MyAccountProfile from '../containers/my_account_profile';
+import MyAccountProfile from './MyAccountProfile.jsx';
 
 export default class MyAccount extends React.Component {
   render() {
-    const {goToChat} = this.props;
+    const {
+      goToChat, username,
+      setUsername,
+      uploadImage, profileImageUrl
+    } = this.props;
+
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
     const tabStyle = {
@@ -33,7 +38,7 @@ export default class MyAccount extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>settings</FontIcon>}
             label="Settings"
           >
-            <MyAccountSettings />
+            <MyAccountSettings username={username} setUsername={setUsername} />
           </Tab>
           <Tab
             style={tabStyle}
@@ -47,7 +52,11 @@ export default class MyAccount extends React.Component {
             icon={<FontIcon className="material-icons" color={highlightColor}>face</FontIcon>}
             label="Profile"
           >
-            <MyAccountProfile />
+            <MyAccountProfile
+              username={username}
+              uploadImage={uploadImage}
+              profileImageUrl={profileImageUrl}
+            />
           </Tab>
         </Tabs>
       </PageWrapper>

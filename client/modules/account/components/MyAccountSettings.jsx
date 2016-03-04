@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 
 import SettingsCard from '/client/modules/core/components/SettingsCard.jsx';
 import TextField from 'material-ui/lib/text-field';
@@ -6,20 +7,50 @@ import TextField from 'material-ui/lib/text-field';
 import TranslationSettings from './TranslationSettings.jsx';
 
 export default class MyAccountSettings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showErrorTextUsername: false
+    };
+  }
+
+
+  handleUsernameTextChange() {
+    const username = this.username.getValue();
+    if (R.isEmpty(username)) {
+      this.setState({showErrorTextUsername: true});
+    }
+    else {
+      this.setState({showErrorTextUsername: false});
+    }
+  }
+
+  submitUsername() {
+    const {setUsername} = this.props;
+    const username = this.username.getValue();
+    setUsername(username);
+  }
+
   render() {
+    const {
+      username
+    } = this.props;
     return (
       <div>
-
         <SettingsCard
           title="Change Username"
           subtitle="This is the name that other users will see."
           submitButtonText="Change Username"
+          handleSubmit={this.submitUsername.bind(this)}
         >
           <p>Your current username is: </p>
           <TextField
-            defaultValue="CurrentUserName"
+            defaultValue={username}
             hintText="Choose a recognizable username"
             floatingLabelText="New Username"
+            ref={(ref) => this.username = ref}
+            onChange={this.handleUsernameTextChange.bind(this)}
+            errorText={this.state.showErrorTextUsername ? 'Enter a non-blank username.' : null}
           />
         </SettingsCard>
 

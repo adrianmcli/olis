@@ -3,11 +3,21 @@ import MyAccount from '../components/MyAccount.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  goToChat: actions.msgs.goToChat
+  goToChat: actions.msgs.goToChat,
+  uploadImage: actions.images.add,
+  setUsername: actions.account.setUsername
 });
 
 export const composer = ({context}, onData) => {
-  onData(null, {});
+  const {Meteor} = context();
+  const user = Meteor.user();
+  if (user) {
+    onData(null, {
+      username: user.username,
+      profileImageUrl: user.profileImageUrl ? user.profileImageUrl : null
+    });
+  }
+  else { onData(null, {}); }
 };
 
 export default composeAll(

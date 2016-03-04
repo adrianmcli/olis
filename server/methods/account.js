@@ -161,6 +161,29 @@ export default function () {
     }
   });
 
+  const ACCOUNT_FIND_MY_TEAM = 'account.findMyTeam';
+  Meteor.methods({
+    'account.findMyTeam'({email}) {
+      check(arguments[0], {
+        email: String
+      });
+
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM, 'Enter a proper email.');
+      }
+      const existingUser = Accounts.findUserByEmail(email);
+      if (!existingUser) {
+        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM,
+          `No teams found for ${email}. Create an account`);
+      }
+
+      Meteor.users.update(existingUser._id, {
+        $set: {findingMyTeam: true}
+      });
+      Accounts.sendEnrollmentEmail(existingUser._id);
+    }
+  });
+
   const ACCOUNT_PROFILE_PIC = 'account.addProfilePic';
   Meteor.methods({
     'account.addProfilePic'({cloudinaryPublicId}) {
@@ -184,26 +207,21 @@ export default function () {
     }
   });
 
-  const ACCOUNT_FIND_MY_TEAM = 'account.findMyTeam';
+  const ACCOUNT_SET_USERNAME = 'account.setUsername';
   Meteor.methods({
-    'account.findMyTeam'({email}) {
+    'account.setUsername'({username}) {
       check(arguments[0], {
-        email: String
+        username: String
       });
 
-      if (!EmailValidator.validate(email)) {
-        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM, 'Enter a proper email.');
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_SET_USERNAME, 'Must be logged in to change username.');
       }
-      const existingUser = Accounts.findUserByEmail(email);
-      if (!existingUser) {
-        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM,
-          `No teams found for ${email}. Create an account`);
-      }
-
-      Meteor.users.update(existingUser._id, {
-        $set: {findingMyTeam: true}
+      Meteor.call('account.validateUsername', {username});
+      Meteor.users.update(userId, {
+        $set: {username}
       });
-      Accounts.sendEnrollmentEmail(existingUser._id);
     }
   });
 }
