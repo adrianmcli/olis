@@ -23,9 +23,12 @@ export default class InviteTeammates extends React.Component {
 
   handleChange(ref, i) {
     const input = this.refs[ref].getValue();
-    let showErrorText = this.state.showErrorText;
+    const emails = GetEmails(input);
+    const email = emails[0]; // can be undefined
+    const isValidEmail = EmailValidator.validate(email); // will return false on undefined
 
-    if (!R.isEmpty(input) && GetEmails(input).length !== 1) {
+    let showErrorText = this.state.showErrorText;
+    if (!R.isEmpty(input) && !isValidEmail) {
       showErrorText[i] = true;
     }
     else {
