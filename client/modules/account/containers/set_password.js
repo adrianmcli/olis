@@ -1,4 +1,4 @@
-import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
+import {useDeps, composeAll} from 'mantra-core';
 import SetPassword from '../components/on-boarding/SetPassword.jsx';
 
 export const depsMapper = (context, actions) => ({
