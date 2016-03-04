@@ -21,7 +21,7 @@ export default class CreateAccountUsername extends React.Component {
   }
 
   render() {
-    const {registerUsername} = this.props;
+    const {registerUsername, goBack} = this.props;
     return (
       <PageWrapper
         title="Create a Username"
@@ -31,6 +31,7 @@ export default class CreateAccountUsername extends React.Component {
         backButtonLabel='Back'
         fullHeight={false}
         width="420px"
+        handleBackButtonPress={goBack}
       >
         <TextField
           hintText="UserName123"

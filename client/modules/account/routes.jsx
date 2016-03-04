@@ -6,7 +6,8 @@ import RegisterEmail from './containers/register_email';
 import RegisterUsername from './containers/register_username';
 import RegisterTeamName from './containers/register_team-name';
 import RegisterInvite from './containers/register_invite';
-import SetPasswordPage from './containers/set_password';
+import SetPassword from './containers/set_password';
+import FindMyTeam from './containers/find_my_team';
 import Login from './containers/login';
 import MyAccount from './containers/my_account';
 
@@ -49,6 +50,15 @@ export default function (injectDeps, {FlowRouter}) {
     }
   });
 
+  FlowRouter.route('/find-my-team', {
+    name: 'find-my-team',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<FindMyTeam />)
+      });
+    }
+  });
+
   FlowRouter.route('/login', {
     name: 'login',
     action() {
@@ -62,7 +72,7 @@ export default function (injectDeps, {FlowRouter}) {
     name: 'enroll-account',
     action(params) {
       mount(MainLayoutCtx, {
-        content: () => (<SetPasswordPage token={params.token} />)
+        content: () => (<SetPassword token={params.token} />)
       });
     }
   });
@@ -71,7 +81,7 @@ export default function (injectDeps, {FlowRouter}) {
     name: 'reset-password',
     action(params) {
       mount(MainLayoutCtx, {
-        content: () => (<SetPasswordPage token={params.token} />)
+        content: () => (<SetPassword token={params.token} />)
       });
     }
   });

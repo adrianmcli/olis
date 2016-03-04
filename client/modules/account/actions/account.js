@@ -1,6 +1,8 @@
 import AccountUtils from '/client/modules/core/libs/account';
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
+import EmailValidator from 'email-validator';
+import R from 'ramda';
 
 export default {
   login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
@@ -50,18 +52,30 @@ export default {
   },
 
   setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
-    Meteor.call('account.validateTeamName', {teamName}, (err, res) => {
-      if (err) { alert(err); }
-      else {
-        LocalState.set('register.teamName', teamName);
-        FlowRouter.go('/register/invite');
+    const nameTrim = teamName.trim();
+    try {
+      if (nameTrim === '') {
+        throw new Meteor.Error('actions.account.setRegisterTeamName', 'Enter a non-blank team name.');
       }
-    });
+
+      LocalState.set('register.teamName', teamName);
+      FlowRouter.go('/register/invite');
+    }
+    catch (e) { alert(e); }
   },
 
   setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails) {
-    LocalState.set('register.inviteEmails', inviteEmails);
-    AccountUtils.register({Meteor, LocalState, FlowRouter});
+    try {
+      inviteEmails.forEach(email => {
+        if (!EmailValidator.validate(email) && !R.isEmpty(email)) {
+          throw new Meteor.Error('actions.account.setRegisterInviteEmails', 'Enter proper emails.');
+        }
+      });
+
+      LocalState.set('register.inviteEmails', inviteEmails);
+      AccountUtils.register({Meteor, LocalState, FlowRouter});
+    }
+    catch (e) { alert(e); }
   },
 
   skipInvites({Meteor, LocalState, FlowRouter}) {
@@ -86,17 +100,17 @@ export default {
     });
   },
 
-  resetPassword({Meteor, FlowRouter}, token, newPassword) {
-    function _validate() {
+  resetPassword({Meteor, FlowRouter}, token, pwd1, pwd2) {
+    function _validate(password) {
       return new Promise((resolve, reject) => {
-        Meteor.call('account.validatePassword', {password: newPassword}, (err) => {
+        Meteor.call('account.validatePassword', {password}, (err) => {
           if (err) { reject(err); }
-          else { resolve(); }
+          else { resolve(password); }
         });
       });
     }
 
-    function _reset() {
+    function _reset(newPassword) {
       return new Promise((resolve, reject) => {
         Accounts.resetPassword(token, newPassword, (err) => {
           if (err) { reject(err); }
@@ -105,13 +119,51 @@ export default {
       });
     }
 
-    _validate()
-    .then(_reset)
-    .then(() => FlowRouter.go('/home'))
-    .catch((err) => alert(err));
+    try {
+      if (pwd1 !== pwd2) {
+        throw new Meteor.Error('actions.account.resetPassword', 'Your passwords must match.');
+      }
+
+      const newPassword = pwd1;
+      _validate(newPassword)
+      .then(_reset)
+      .then(() => FlowRouter.go('/home'))
+      .catch((err) => alert(err));
+    }
+    catch (e) { alert(e); }
   },
 
   goToMyAccount({FlowRouter}) {
     FlowRouter.go('/home/account');
+  },
+
+  goToCreateAccountTeamName({FlowRouter}) {
+    FlowRouter.go('/register/team-name');
+  },
+
+  goToCreateAccountEmail({FlowRouter}) {
+    FlowRouter.go('/register/email');
+  },
+
+  goToCreateAccountUsername({FlowRouter}) {
+    FlowRouter.go('/register/username');
+  },
+
+  submitFindMyTeamEmail({Meteor}, email, callback) {
+    try {
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error('actions.account.submitFindMyTeamEmail', 'Enter a proper email.');
+      }
+
+      Meteor.call('account.findMyTeam', {email}, (err, res) => {
+        if (err) { alert(err); }
+        else {
+          console.log(res);
+          callback();
+        }
+      });
+    }
+    catch (e) { alert(e); }
+
   }
 };

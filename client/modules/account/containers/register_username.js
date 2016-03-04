@@ -4,7 +4,8 @@ import CreateAccountUsername from '../components/on-boarding/CreateAccountUserna
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  setRegisterUsername: actions.account.setRegisterUsername
+  setRegisterUsername: actions.account.setRegisterUsername,
+  goBack: actions.account.goToCreateAccountEmail
 });
 
 export const composer = ({context}, onData) => {
