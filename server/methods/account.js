@@ -161,6 +161,29 @@ export default function () {
     }
   });
 
+  const ACCOUNT_FIND_MY_TEAM = 'account.findMyTeam';
+  Meteor.methods({
+    'account.findMyTeam'({email}) {
+      check(arguments[0], {
+        email: String
+      });
+
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM, 'Enter a proper email.');
+      }
+      const existingUser = Accounts.findUserByEmail(email);
+      if (!existingUser) {
+        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM,
+          `No teams found for ${email}. Create an account`);
+      }
+
+      Meteor.users.update(existingUser._id, {
+        $set: {findingMyTeam: true}
+      });
+      Accounts.sendEnrollmentEmail(existingUser._id);
+    }
+  });
+
   const ACCOUNT_PROFILE_PIC = 'account.addProfilePic';
   Meteor.methods({
     'account.addProfilePic'({cloudinaryPublicId}) {
@@ -184,26 +207,55 @@ export default function () {
     }
   });
 
-  const ACCOUNT_FIND_MY_TEAM = 'account.findMyTeam';
+  const ACCOUNT_SET_USERNAME = 'account.setUsername';
   Meteor.methods({
-    'account.findMyTeam'({email}) {
+    'account.setUsername'({username}) {
+      check(arguments[0], {
+        username: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_SET_USERNAME, 'Must be logged in to change username.');
+      }
+      Meteor.call('account.validateUsername', {username});
+      Accounts.setUsername(userId, username);
+    }
+  });
+
+  const ACCOUNT_SET_EMAIL = 'account.setEmail';
+  Meteor.methods({
+    'account.setEmail'({email}) {
       check(arguments[0], {
         email: String
       });
 
-      if (!EmailValidator.validate(email)) {
-        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM, 'Enter a proper email.');
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_SET_EMAIL, 'Must be logged in to change email.');
       }
-      const existingUser = Accounts.findUserByEmail(email);
-      if (!existingUser) {
-        throw new Meteor.Error(ACCOUNT_FIND_MY_TEAM,
-          `No teams found for ${email}. Create an account`);
-      }
+      const user = Meteor.users.findOne(userId);
+      Meteor.call('account.validateEmail', {email});
+      Accounts.removeEmail(userId, user.emails[0].address);
+      Accounts.addEmail(userId, email); // This does not check for proper email form, only existence in DB
+    }
+  });
 
-      Meteor.users.update(existingUser._id, {
-        $set: {findingMyTeam: true}
+  const ACCOUNT_SET_TRANSLATION_LANG = 'account.setTranslationLanguage';
+  Meteor.methods({
+    'account.setTranslationLanguage'({langCode}) {
+      check(arguments[0], {
+        langCode: String
       });
-      Accounts.sendEnrollmentEmail(existingUser._id);
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_SET_TRANSLATION_LANG,
+          'Must be logged in to change translation language.');
+      }
+      Meteor.users.update(userId, {
+        $set: {translationLangCode: langCode}
+      });
     }
   });
 }

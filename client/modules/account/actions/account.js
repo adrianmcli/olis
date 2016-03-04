@@ -3,13 +3,24 @@ import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
 import EmailValidator from 'email-validator';
 import R from 'ramda';
+import LangCodes from '/lib/constants/lang_codes';
 
 export default {
-  login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
-    Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
-      if (err) { alert(err); }
-      else { FlowRouter.go('/home'); }
-    });
+  login({Meteor, LocalState, FlowRouter}, usernameOrEmail, password) {
+    try {
+      if (R.isEmpty(usernameOrEmail)) {
+        throw new Meteor.Error('actions.account.login', 'Username or email must not be empty.');
+      }
+      if (R.isEmpty(password)) {
+        throw new Meteor.Error('actions.account.login', 'Password must not be empty.');
+      }
+
+      Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
+        if (err) { alert(err); }
+        else { FlowRouter.go('/home'); }
+      });
+    }
+    catch (e) { alert(e); }
   },
 
   logout({Meteor, LocalState, FlowRouter}) {
@@ -164,6 +175,55 @@ export default {
       });
     }
     catch (e) { alert(e); }
+  },
 
+  setUsername({Meteor}, username) {
+    Meteor.call('account.setUsername', {username}, (err) => {
+      if (err) { alert(err); }
+      else { alert('Username changed!'); }
+    });
+  },
+
+  changePassword({Meteor}, oldPassword, newPassword1, newPassword2) {
+    try {
+      if (newPassword1 !== newPassword2) {
+        throw new Meteor.Error('actions.account.changePassword', 'New passwords must match.');
+      }
+
+      Accounts.changePassword(oldPassword, newPassword1, (err) => {
+        if (err) { alert(err); }
+        else { alert('Password changed!'); }
+      });
+    }
+    catch (e) { alert(e); }
+  },
+
+  setEmail({Meteor}, email) {
+    try {
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error('actions.account.setEmail', 'Enter a proper email.');
+      }
+
+      Meteor.call('account.setEmail', {email}, err => {
+        if (err) { alert(err); }
+        else { alert('Email changed!'); }
+      });
+    }
+    catch (e) { alert(e); }
+  },
+
+  setTranslationLanguage({Meteor}, langCode) {
+    try {
+      if (!R.contains(langCode, R.keys(LangCodes))) {
+        throw new Meteor.Error(
+          'actions.account.setTranslationLanguage', 'Select a proper language code.');
+      }
+
+      Meteor.call('account.setTranslationLanguage', {langCode}, err => {
+        if (err) { alert(err); }
+        else { console.log('Translation language changed.'); }
+      });
+    }
+    catch (e) { alert(e); }
   }
 };

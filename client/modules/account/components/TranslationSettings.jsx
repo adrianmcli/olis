@@ -1,19 +1,23 @@
 import React from 'react';
+import R from 'ramda';
+import LangCodes from '/lib/constants/lang_codes';
 
 import SettingsCard from '/client/modules/core/components/SettingsCard.jsx';
 
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 
-export default class MyAccountSettings extends React.Component {
+export default class TranslationSettings extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: 'English'};
+    this.state = {value: this.props.translationLangCode};
+    this.langCodeArr = R.keys(LangCodes);
   }
 
   handleChange(event, index, value) {
     this.setState({value});
-    console.log(`Change default translation language to ${value}`);
+    const {setTranslationLanguage} = this.props;
+    setTranslationLanguage(value);
   }
 
   render() {
@@ -32,11 +36,14 @@ export default class MyAccountSettings extends React.Component {
       >
         <p>Select one of the following languages that you understand best:</p>
         <SelectField value={this.state.value} onChange={this.handleChange.bind(this)}>
-          <MenuItem value="English" primaryText="English"/>
-          <MenuItem value="French" primaryText="French"/>
-          <MenuItem value="Spanish" primaryText="Spanish"/>
+          {this.langCodeArr.map(code => {
+            return <MenuItem key={code} value={code} primaryText={LangCodes[code]} />;
+          })}
         </SelectField>
       </SettingsCard>
     );
   }
 }
+TranslationSettings.defaultProps = {
+  translationLangCode: 'en'
+};
