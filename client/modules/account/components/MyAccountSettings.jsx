@@ -110,6 +110,7 @@ export default class MyAccountSettings extends React.Component {
       username, oldPassword, newPassword1, newPassword2, email,
       showErrorTextUsername, showErrorTextNewPassword, showErrorTextEmail
     } = this.state;
+    const {setTranslationLanguage, translationLangCode} = this.props;
     return (
       <div>
         <SettingsCard
@@ -184,8 +185,10 @@ export default class MyAccountSettings extends React.Component {
           />
         </SettingsCard>
 
-        <TranslationSettings />
-
+        <TranslationSettings
+          setTranslationLanguage={setTranslationLanguage}
+          translationLangCode={translationLangCode}
+        />
       </div>
     );
   }

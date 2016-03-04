@@ -7,7 +7,8 @@ const depsMapper = (context, actions) => ({
   uploadImage: actions.images.add,
   setUsername: actions.account.setUsername,
   changePassword: actions.account.changePassword,
-  setEmail: actions.account.setEmail
+  setEmail: actions.account.setEmail,
+  setTranslationLanguage: actions.account.setTranslationLanguage
 });
 
 export const composer = ({context}, onData) => {
@@ -19,7 +20,8 @@ export const composer = ({context}, onData) => {
     onData(null, {
       username: user.username,
       profileImageUrl: user.profileImageUrl ? user.profileImageUrl : null,
-      email
+      email,
+      translationLangCode: user.translationLangCode
     });
   }
   else { onData(null, {}); }

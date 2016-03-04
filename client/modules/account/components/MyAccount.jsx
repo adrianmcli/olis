@@ -16,7 +16,8 @@ export default class MyAccount extends React.Component {
       username, setUsername,
       uploadImage, profileImageUrl,
       changePassword,
-      email, setEmail
+      email, setEmail,
+      setTranslationLanguage, translationLangCode
     } = this.props;
 
     const backgroundColor = '#efefef';
@@ -46,6 +47,8 @@ export default class MyAccount extends React.Component {
               changePassword={changePassword}
               email={email}
               setEmail={setEmail}
+              setTranslationLanguage={setTranslationLanguage}
+              translationLangCode={translationLangCode}
             />
           </Tab>
           <Tab

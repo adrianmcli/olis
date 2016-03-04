@@ -240,4 +240,22 @@ export default function () {
       Accounts.addEmail(userId, email); // This does not check for proper email form, only existence in DB
     }
   });
+
+  const ACCOUNT_SET_TRANSLATION_LANG = 'account.setTranslationLanguage';
+  Meteor.methods({
+    'account.setTranslationLanguage'({langCode}) {
+      check(arguments[0], {
+        langCode: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_SET_TRANSLATION_LANG,
+          'Must be logged in to change translation language.');
+      }
+      Meteor.users.update(userId, {
+        $set: {translationLangCode: langCode}
+      });
+    }
+  });
 }

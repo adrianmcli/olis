@@ -3,6 +3,7 @@ import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
 import EmailValidator from 'email-validator';
 import R from 'ramda';
+import LangCodes from '/lib/constants/lang_codes';
 
 export default {
   login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
@@ -196,6 +197,21 @@ export default {
       Meteor.call('account.setEmail', {email}, err => {
         if (err) { alert(err); }
         else { alert('Email changed!'); }
+      });
+    }
+    catch (e) { alert(e); }
+  },
+
+  setTranslationLanguage({Meteor}, langCode) {
+    try {
+      if (!R.contains(langCode, R.keys(LangCodes))) {
+        throw new Meteor.Error(
+          'actions.account.setTranslationLanguage', 'Select a proper language code.');
+      }
+
+      Meteor.call('account.setTranslationLanguage', {langCode}, err => {
+        if (err) { alert(err); }
+        else { console.log('Translation language changed.'); }
       });
     }
     catch (e) { alert(e); }

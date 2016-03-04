@@ -6,7 +6,8 @@ import R from 'ramda';
 const selfFields = {
   lastTimeInConvo: 1,
   lastTimeInTeam: 1,
-  profileImageUrl: 1
+  profileImageUrl: 1,
+  translationLangCode: 1
 };
 
 const othersFields = {
