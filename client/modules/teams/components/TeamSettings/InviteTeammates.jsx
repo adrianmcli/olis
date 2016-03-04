@@ -37,8 +37,11 @@ export default class InviteTeammates extends React.Component {
   submitHandler() {
     const {invite} = this.props;
     const inviteEmails = R.keys(this.refs).map(key => this.refs[key].getValue());
-    invite(inviteEmails);
-    this.setState({submitted: true});
+    if (!R.contains(true, this.state.showErrorText)) {
+      invite(inviteEmails);
+      this.setState({submitted: true});
+    }
+    else { alert('Enter a proper email.'); }
   }
 
   addInvite() {
