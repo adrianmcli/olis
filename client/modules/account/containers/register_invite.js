@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import RegisterInvite from '../components/RegisterInvite.jsx';
+import CreateAccountInviteTeammates from '../components/on-boarding/CreateAccountInviteTeammates.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -7,7 +7,8 @@ export const depsMapper = (context, actions) => ({
   setRegisterInviteEmails: actions.account.setRegisterInviteEmails,
   skipInvites: actions.account.skipInvites,
   addMoreInvites: actions.account.addMoreInvites,
-  validateEmail: actions.account.validateEmail
+  validateEmail: actions.account.validateEmail,
+  goBack: actions.account.goToCreateAccountTeamName
 });
 
 export const composer = ({context}, onData) => {
@@ -22,4 +23,4 @@ export const composer = ({context}, onData) => {
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(RegisterInvite);
+)(CreateAccountInviteTeammates);

@@ -113,5 +113,17 @@ export default {
 
   goToMyAccount({FlowRouter}) {
     FlowRouter.go('/home/account');
+  },
+
+  goToCreateAccountTeamName({FlowRouter}) {
+    FlowRouter.go('/register/team-name');
+  },
+
+  goToCreateAccountEmail({FlowRouter}) {
+    FlowRouter.go('/register/email');
+  },
+
+  goToCreateAccountUsername({FlowRouter}) {
+    FlowRouter.go('/register/username');
   }
 };

@@ -21,7 +21,7 @@ export default class CreateAccountTeamName extends React.Component {
   }
 
   render() {
-    const {registerTeamName} = this.props;
+    const {registerTeamName, goBack} = this.props;
     return (
       <PageWrapper
         title="Create a Team"
@@ -31,6 +31,7 @@ export default class CreateAccountTeamName extends React.Component {
         backButtonLabel='Back'
         fullHeight={false}
         width="420px"
+        handleBackButtonPress={goBack}
       >
         <TextField
           hintText="Big Corporation Inc."

@@ -4,7 +4,8 @@ import CreateAccountTeamName from '../components/on-boarding/CreateAccountTeamNa
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  setRegisterTeamName: actions.account.setRegisterTeamName
+  setRegisterTeamName: actions.account.setRegisterTeamName,
+  goBack: actions.account.goToCreateAccountUsername
 });
 
 export const composer = ({context}, onData) => {
