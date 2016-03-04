@@ -7,10 +7,20 @@ import LangCodes from '/lib/constants/lang_codes';
 
 export default {
   login({Meteor, LocalState, FlowRouter}, usernameOrEmail, password) {
-    Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
-      if (err) { alert(err); }
-      else { FlowRouter.go('/home'); }
-    });
+    try {
+      if (R.isEmpty(usernameOrEmail)) {
+        throw new Meteor.Error('actions.account.login', 'Username or email must not be empty.');
+      }
+      if (R.isEmpty(password)) {
+        throw new Meteor.Error('actions.account.login', 'Password must not be empty.');
+      }
+
+      Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
+        if (err) { alert(err); }
+        else { FlowRouter.go('/home'); }
+      });
+    }
+    catch (e) { alert(e); }
   },
 
   logout({Meteor, LocalState, FlowRouter}) {
