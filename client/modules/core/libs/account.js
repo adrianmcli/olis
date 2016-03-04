@@ -8,6 +8,11 @@ export default {
     const teamName = LocalState.get('register.teamName');
     const inviteEmails = LocalState.get('register.inviteEmails');
 
+    console.log(email);
+    console.log(username);
+    console.log(teamName);
+    console.log(inviteEmails);
+
     LocalState.set('register.email', null);
     LocalState.set('register.username', null);
     LocalState.set('register.teamName', null);
@@ -15,7 +20,7 @@ export default {
 
     function _register() {
       return new Promise((resolve, reject) => {
-        Meteor.call('account.register', {email, username, teamName, inviteEmails}, (err, res) => {
+        Meteor.call('account.register', {email, username, teamName}, (err, res) => {
           if (err) { reject(err); }
           else { resolve(res); }
         });
@@ -31,8 +36,18 @@ export default {
       });
     }
 
+    function _sendInvites({teamId}) {
+      return new Promise((resolve, reject) => {
+        Meteor.call('teams.invite', {inviteEmails, teamId}, (err) => {
+          if (err) { reject(err); }
+          else { resolve({teamId}); }
+        });
+      });
+    }
+
     _register()
     .then(_login)
+    .then(_sendInvites)
     .then(({teamId}) => TeamUtils.select({Meteor, LocalState}, teamId))
     .then(() => FlowRouter.go('/home'))
     .catch((err) => {

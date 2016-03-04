@@ -1,6 +1,7 @@
 import AccountUtils from '/client/modules/core/libs/account';
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
+import EmailValidator from 'email-validator';
 
 export default {
   login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
@@ -50,18 +51,30 @@ export default {
   },
 
   setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
-    Meteor.call('account.validateTeamName', {teamName}, (err, res) => {
-      if (err) { alert(err); }
-      else {
-        LocalState.set('register.teamName', teamName);
-        FlowRouter.go('/register/invite');
+    const nameTrim = teamName.trim();
+    try {
+      if (nameTrim === '') {
+        throw new Meteor.Error('actions.account.setRegisterTeamName', 'Enter a non-blank username.');
       }
-    });
+
+      LocalState.set('register.teamName', teamName);
+      FlowRouter.go('/register/invite');
+    }
+    catch (e) { alert(e); }
   },
 
   setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails) {
-    LocalState.set('register.inviteEmails', inviteEmails);
-    AccountUtils.register({Meteor, LocalState, FlowRouter});
+    try {
+      inviteEmails.forEach(email => {
+        if (!EmailValidator.validate(email)) {
+          throw new Meteor.Error('actions.account.setRegisterInviteEmails', 'Enter proper emails.');
+        }
+      });
+
+      LocalState.set('register.inviteEmails', inviteEmails);
+      AccountUtils.register({Meteor, LocalState, FlowRouter});
+    }
+    catch (e) { alert(e); }
   },
 
   skipInvites({Meteor, LocalState, FlowRouter}) {

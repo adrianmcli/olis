@@ -175,9 +175,6 @@ export default function () {
         throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
       }
       const filteredEmails = R.filter(email => EmailValidator.validate(email), inviteEmails);
-      if (R.isEmpty(filteredEmails)) {
-        throw new Meteor.Error(TEAMS_INVITE, 'Must provide proper invite emails.');
-      }
 
       const existingEmails = R.filter(email => {
         const existingUser = Accounts.findUserByEmail(email);
@@ -197,6 +194,7 @@ export default function () {
         return newId;
       });
 
+      // Update team
       team.set({
         userIds: R.uniq([ ...team.userIds, ...newUserIds, ...existingUserIds ]),
         pendingInviteIds: R.uniq([ ...team.pendingInviteIds, ...newUserIds, ...existingUserIds ])
@@ -204,6 +202,7 @@ export default function () {
       team.save();
       Roles.addUsersToRoles([ ...newUserIds, ...existingUserIds ], [ 'member' ], teamId);
 
+      // Send out emails
       newUserIds.forEach(id => Accounts.sendEnrollmentEmail(id));
       existingEmails.forEach(email => {
         Email.send({

@@ -1,22 +1,21 @@
 import {Meteor} from 'meteor/meteor';
 import {Convos, Teams, Messages} from '/lib/collections';
 import Team from '/lib/team';
-import {check, Match} from 'meteor/check';
+import {check} from 'meteor/check';
 import {Random} from 'meteor/random';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
-import GetEmails from 'get-emails';
+import EmailValidator from 'email-validator';
 import {Cloudinary} from 'meteor/lepozepo:cloudinary';
 
 export default function () {
   const ACCOUNT_REGISTER = 'account.register';
   Meteor.methods({
-    'account.register'({email, username, teamName, inviteEmails}) {
+    'account.register'({email, username, teamName}) {
       check(arguments[0], {
         email: String,
         username: String,
         teamName: String,
-        inviteEmails: Match.Optional(Match.OneOf(undefined, null, [ String ]))
       });
       Meteor.call(ACCOUNT_VALIDATE_EMAIL, {email});
       Meteor.call(ACCOUNT_VALIDATE_USERNAME, {username});
@@ -36,58 +35,7 @@ export default function () {
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Accounts.sendResetPasswordEmail(userId);
 
-      // Create invite users and send invite emails
-      if (inviteEmails && !R.isEmpty(inviteEmails)) {
-        Meteor.call(ACCOUNT_CREATE_INVITE_USERS, {
-          inviteEmails, invitedByName: username, invitedById: userId, teamId: team._id
-        }, (err, res) => {});
-      }
-
       return {password, teamId: team._id};
-    }
-  });
-
-  const ACCOUNT_CREATE_INVITE_USERS = 'account.createInviteUsers';
-  Meteor.methods({
-    'account.createInviteUsers'({inviteEmails, invitedByName, invitedById, teamId}) {
-      check(arguments[0], {
-        inviteEmails: [ String ],
-        invitedByName: String,
-        invitedById: String,
-        teamId: String
-      });
-
-      const user = Meteor.users.findOne(invitedById);
-      if (!user) {
-        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS,
-          'Must be a registered user to invite other users.');
-      }
-      const team = Teams.findOne(teamId);
-      if (!team) {
-        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS,
-          'Must invite users to existing team.');
-      }
-      if (!team.isUserInTeam(invitedById)) {
-        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS,
-          'Must be a member of team to invite new users to it.');
-      }
-      const filteredEmails = R.filter(email => GetEmails(email).length === 1, inviteEmails);
-      if (R.isEmpty(filteredEmails)) {
-        throw new Meteor.Error(ACCOUNT_CREATE_INVITE_USERS, 'Must provide proper invite emails.');
-      }
-
-      const invitedUserIds = filteredEmails.map(inviteEmail => {
-        console.log(`inviteEmail ${inviteEmail}`);
-        const invitedUserId = Accounts.createUser({username: inviteEmail, email: inviteEmail});
-        Meteor.users.update(invitedUserId, { $set: {invitedBy: invitedByName} });
-        return invitedUserId;
-      });
-
-      team.set({userIds: [ ...team.userIds, ...invitedUserIds ]});
-      team.save();
-      Roles.addUsersToRoles(invitedUserIds, [ 'member' ], teamId);
-
-      invitedUserIds.forEach(id => Accounts.sendEnrollmentEmail(id));
     }
   });
 
@@ -152,16 +100,13 @@ export default function () {
       check(arguments[0], {
         email: String
       });
-
-      const emailTrim = email.trim();
-      const emails = GetEmails(emailTrim);
-      if (emails.length !== 1) {
+      if (!EmailValidator.validate(email)) {
         throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, 'Please enter a proper email.');
       }
-      const user = Accounts.findUserByEmail(emails[0]);
+      const user = Accounts.findUserByEmail(email);
       if (user) {
         throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL,
-          `The email ${emails[0]} is taken. Please enter another one.`);
+          `The email ${email} is taken. Please enter another one.`);
       }
     }
   });
