@@ -15,7 +15,8 @@ export const composer = ({context}, onData) => {
   if (user) {
     onData(null, {
       username: user.username,
-      profileImageUrl: user.profileImageUrl ? user.profileImageUrl : null
+      profileImageUrl: user.profileImageUrl ? user.profileImageUrl : null,
+      email: user.emails[0].address
     });
   }
   else { onData(null, {}); }

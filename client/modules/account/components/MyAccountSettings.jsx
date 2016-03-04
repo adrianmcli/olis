@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import EmailValidator from 'email-validator';
 
 import SettingsCard from '/client/modules/core/components/SettingsCard.jsx';
 import TextField from 'material-ui/lib/text-field';
@@ -12,10 +13,12 @@ export default class MyAccountSettings extends React.Component {
     this.state = {
       showErrorTextUsername: false,
       showErrorTextNewPassword: false,
+      showErrorTextEmail: false,
       username: this.props.username,
       oldPassword: null,
       newPassword1: null,
-      newPassword2: null
+      newPassword2: null,
+      email: this.props.email
     };
   }
 
@@ -54,6 +57,18 @@ export default class MyAccountSettings extends React.Component {
     }
   }
 
+  handleEmailTextChange() {
+    const email = this.email.getValue();
+    this.setState({email});
+
+    if (EmailValidator.validate(email)) {
+      this.setState({showErrorTextEmail: false});
+    }
+    else {
+      this.setState({showErrorTextEmail: true});
+    }
+  }
+
   submitUsername() {
     const {setUsername} = this.props;
     const username = this.username.getValue();
@@ -82,8 +97,9 @@ export default class MyAccountSettings extends React.Component {
 
   render() {
     const {
-      username
-    } = this.props;
+      username, oldPassword, newPassword1, newPassword2, email,
+      showErrorTextUsername, showErrorTextNewPassword, showErrorTextEmail
+    } = this.state;
     return (
       <div>
         <SettingsCard
@@ -93,15 +109,15 @@ export default class MyAccountSettings extends React.Component {
           handleSubmit={this.submitUsername.bind(this)}
           handleReset={this.resetUsername.bind(this)}
         >
-          <p>Your current username is: </p>
+          <p>Your current username is: {this.props.username}</p>
           <TextField
             defaultValue={username}
-            value={this.state.username}
+            value={username}
             hintText="Choose a recognizable username"
             floatingLabelText="New Username"
             onChange={this.handleUsernameTextChange.bind(this)}
-            errorText={this.state.showErrorTextUsername ? 'Enter a non-blank username.' : null}
-            ref={(ref) => this.username = ref}
+            errorText={showErrorTextUsername ? 'Enter a non-blank username.' : null}
+            ref={ref => this.username = ref}
           />
         </SettingsCard>
 
@@ -117,27 +133,27 @@ export default class MyAccountSettings extends React.Component {
           <TextField
             floatingLabelText="Old Password"
             type="password"
-            ref={(ref) => this.oldPassword = ref}
+            ref={ref => this.oldPassword = ref}
             onChange={this.handleOldPasswordTextChange.bind(this)}
-            value={this.state.oldPassword}
+            value={oldPassword}
           /><br/>
           <TextField
             hintText="Something hard to guess!"
             floatingLabelText="New Password"
             type="password"
-            ref={(ref) => this.newPassword1 = ref}
+            ref={ref => this.newPassword1 = ref}
             onChange={this.handleNewPasswordTextChange.bind(this)}
-            errorText={this.state.showErrorTextNewPassword ? 'New passwords must match.' : null}
-            value={this.state.newPassword1}
+            errorText={showErrorTextNewPassword ? 'New passwords must match.' : null}
+            value={newPassword1}
           /><br/>
           <TextField
             hintText="Type it again"
             floatingLabelText="Confirm New Password"
             type="password"
-            ref={(ref) => this.newPassword2 = ref}
+            ref={ref => this.newPassword2 = ref}
             onChange={this.handleNewPasswordTextChange.bind(this)}
-            errorText={this.state.showErrorTextNewPassword ? 'New passwords must match.' : null}
-            value={this.state.newPassword2}
+            errorText={showErrorTextNewPassword ? 'New passwords must match.' : null}
+            value={newPassword2}
           />
         </SettingsCard>
 
@@ -146,10 +162,14 @@ export default class MyAccountSettings extends React.Component {
           subtitle="This is the email that you will be contacted with."
           submitButtonText="Change Email"
         >
-          <p>Your current email is: </p>
+          <p>Your current email is: {this.props.email}</p>
           <TextField
             hintText="your_name@example.com"
             floatingLabelText="New Email"
+            ref={ref => this.email = ref}
+            onChange={this.handleEmailTextChange.bind(this)}
+            errorText={showErrorTextEmail ? 'Enter a proper email.' : null}
+            value={email}
           />
         </SettingsCard>
 
