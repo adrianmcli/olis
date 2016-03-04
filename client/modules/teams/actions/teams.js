@@ -1,4 +1,6 @@
 import TeamUtils from '/client/modules/core/libs/teams';
+import R from 'ramda';
+import EmailValidator from 'email-validator';
 
 export default {
   add({Meteor, LocalState}, name, userIds) {
@@ -50,11 +52,30 @@ export default {
     });
   },
 
-  invite({Meteor, LocalState}, inviteEmails) {
+  invite({Meteor, LocalState}, inviteEmails, callback) {
     const teamId = LocalState.get('teamId');
-    Meteor.call('teams.invite', {inviteEmails, teamId}, (err, res) => {
-      if (err) { alert(err); }
-      else { console.log(res); }
-    });
+
+    try {
+      let numNonEmpty = 0;
+      inviteEmails.forEach(email => {
+        if (!EmailValidator.validate(email) && !R.isEmpty(email)) {
+          throw new Meteor.Error('actions.teams.invite', 'Enter proper emails.');
+        }
+
+        if (!R.isEmpty(email)) { numNonEmpty++; }
+        if (numNonEmpty === 0) {
+          throw new Meteor.Error('actions.teams.invite', 'Enter at least one email.');
+        }
+      });
+
+      Meteor.call('teams.invite', {inviteEmails, teamId}, (err, res) => {
+        if (err) { alert(err); }
+        else {
+          console.log(res);
+          callback();
+        }
+      });
+    }
+    catch (e) { alert(e); }
   }
 };
