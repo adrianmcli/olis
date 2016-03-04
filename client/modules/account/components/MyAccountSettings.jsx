@@ -10,13 +10,16 @@ export default class MyAccountSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showErrorTextUsername: false
+      showErrorTextUsername: false,
+      username: this.props.username
     };
   }
 
 
-  handleUsernameTextChange() {
-    const username = this.username.getValue();
+  handleUsernameTextChange(e) {
+    const username = e.target.value;
+    this.setState({username});
+
     if (R.isEmpty(username)) {
       this.setState({showErrorTextUsername: true});
     }
@@ -31,6 +34,10 @@ export default class MyAccountSettings extends React.Component {
     setUsername(username);
   }
 
+  resetUsername() {
+    this.setState({username: this.props.username});
+  }
+
   render() {
     const {
       username
@@ -42,15 +49,17 @@ export default class MyAccountSettings extends React.Component {
           subtitle="This is the name that other users will see."
           submitButtonText="Change Username"
           handleSubmit={this.submitUsername.bind(this)}
+          handleReset={this.resetUsername.bind(this)}
         >
           <p>Your current username is: </p>
           <TextField
             defaultValue={username}
+            value={this.state.username}
             hintText="Choose a recognizable username"
             floatingLabelText="New Username"
-            ref={(ref) => this.username = ref}
             onChange={this.handleUsernameTextChange.bind(this)}
             errorText={this.state.showErrorTextUsername ? 'Enter a non-blank username.' : null}
+            ref={(ref) => this.username = ref}
           />
         </SettingsCard>
 
