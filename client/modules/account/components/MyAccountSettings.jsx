@@ -14,11 +14,11 @@ export default class MyAccountSettings extends React.Component {
       showErrorTextUsername: false,
       showErrorTextNewPassword: false,
       showErrorTextEmail: false,
-      username: this.props.username,
+      username: null,
       oldPassword: null,
       newPassword1: null,
       newPassword2: null,
-      email: this.props.email
+      email: null
     };
   }
 
@@ -117,7 +117,6 @@ export default class MyAccountSettings extends React.Component {
         >
           <p>Your current username is: {this.props.username}</p>
           <TextField
-            defaultValue={username}
             value={username}
             hintText="Choose a recognizable username"
             floatingLabelText="New Username"

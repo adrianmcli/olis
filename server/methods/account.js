@@ -219,9 +219,7 @@ export default function () {
         throw new Meteor.Error(ACCOUNT_SET_USERNAME, 'Must be logged in to change username.');
       }
       Meteor.call('account.validateUsername', {username});
-      Meteor.users.update(userId, {
-        $set: {username}
-      });
+      Accounts.setUsername(userId, username);
     }
   });
 
