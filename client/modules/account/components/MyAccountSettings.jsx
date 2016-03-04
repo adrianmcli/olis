@@ -11,7 +11,11 @@ export default class MyAccountSettings extends React.Component {
     super(props);
     this.state = {
       showErrorTextUsername: false,
-      username: this.props.username
+      showErrorTextNewPassword: false,
+      username: this.props.username,
+      oldPassword: null,
+      newPassword1: null,
+      newPassword2: null
     };
   }
 
@@ -28,14 +32,48 @@ export default class MyAccountSettings extends React.Component {
     }
   }
 
+  handleOldPasswordTextChange() {
+    const oldPassword = this.oldPassword.getValue();
+    this.setState({oldPassword});
+  }
+
+  handleNewPasswordTextChange() {
+    const pwd1 = this.password1.getValue();
+    const pwd2 = this.password2.getValue();
+
+    this.setState({
+      newPassword1: pwd1,
+      newPassword2: pwd2
+    });
+
+    if (pwd1 !== pwd2) { // Other validations...
+      this.setState({showErrorTextNewPassword: true});
+    }
+    else {
+      this.setState({showErrorTextNewPassword: false});
+    }
+  }
+
   submitUsername() {
     const {setUsername} = this.props;
     const username = this.username.getValue();
     setUsername(username);
   }
 
+  submitPassword() {
+    console.log('submitPassword');
+  }
+
   resetUsername() {
     this.setState({username: this.props.username});
+  }
+
+  resetPassword() {
+    this.setState({
+      oldPassword: null,
+      newPassword1: null,
+      newPassword2: null
+    });
   }
 
   render() {
@@ -68,21 +106,34 @@ export default class MyAccountSettings extends React.Component {
           subtitle="This is the password that you use to login."
           resetButtonText="Clear Fields"
           submitButtonText="Change Password"
+          handleSubmit={this.submitPassword.bind(this)}
+          handleReset={this.resetPassword.bind(this)}
         >
           <p>If you would like to change your password, you may do so by filling out these three fields:</p>
           <TextField
             floatingLabelText="Old Password"
             type="password"
+            ref={(ref) => this.oldPassword = ref}
+            onChange={this.handleOldPasswordTextChange.bind(this)}
+            value={this.state.oldPassword}
           /><br/>
           <TextField
             hintText="Something hard to guess!"
             floatingLabelText="New Password"
             type="password"
+            ref={(ref) => this.password1 = ref}
+            onChange={this.handleNewPasswordTextChange.bind(this)}
+            errorText={this.state.showErrorTextNewPassword ? 'New passwords must match.' : null}
+            value={this.state.newPassword1}
           /><br/>
           <TextField
             hintText="Type it again"
             floatingLabelText="Confirm New Password"
             type="password"
+            ref={(ref) => this.password2 = ref}
+            onChange={this.handleNewPasswordTextChange.bind(this)}
+            errorText={this.state.showErrorTextNewPassword ? 'New passwords must match.' : null}
+            value={this.state.newPassword2}
           />
         </SettingsCard>
 
