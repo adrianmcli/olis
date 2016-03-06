@@ -5,6 +5,7 @@ import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
 import EmailValidator from 'email-validator';
+import Invite from '/lib/invite';
 
 export default function () {
   const TEAMS_ADD = 'teams.add';
@@ -174,30 +175,45 @@ export default function () {
       if (!team.isUserAdmin(userId)) {
         throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
       }
-      const filteredEmails = R.filter(email => EmailValidator.validate(email), inviteEmails);
+
+      const validatedEmails = R.filter(email => EmailValidator.validate(email), inviteEmails);
 
       const existingEmails = R.filter(email => {
         const existingUser = Accounts.findUserByEmail(email);
         return existingUser;
-      }, filteredEmails);
+      }, validatedEmails);
 
-      const newEmails = R.difference(filteredEmails, existingEmails);
+      const newEmails = R.difference(validatedEmails, existingEmails);
 
       const existingUserIds = existingEmails.map(email => {
         const existingUser = Accounts.findUserByEmail(email);
         return existingUser._id;
       });
 
-      const newUserIds = newEmails.map(email => {
+      function _create(email) {
         const newId = Accounts.createUser({username: email, email});
-        Meteor.users.update(newId, { $set: {invitedBy: user.username} });
+        Meteor.users.update(newId, { $set: {invitedBy: user.username} }); // This is so we can send the proper email
+        return newId;
+      }
+      function _invite(newId) {
+        const invite = new Invite();
+        invite.set({
+          userId: newId,
+          teamId,
+          invitedBy: user.username
+        });
+        invite.save();
+      }
+
+      const newUserIds = newEmails.map(email => {
+        const newId = _create(email);
+        _invite(newId);
         return newId;
       });
 
       // Update team
       team.set({
         userIds: R.uniq([ ...team.userIds, ...newUserIds, ...existingUserIds ]),
-        pendingInviteIds: R.uniq([ ...team.pendingInviteIds, ...newUserIds, ...existingUserIds ])
       });
       team.save();
       Roles.addUsersToRoles([ ...newUserIds, ...existingUserIds ], [ 'member' ], teamId);

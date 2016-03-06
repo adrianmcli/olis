@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import _ from 'lodash';
 
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
@@ -30,7 +31,7 @@ export default class Permissions extends React.Component {
         emails
       } = user;
 
-      const role = roles[teamId][0] ? roles[teamId][0] : 'Default role';
+      const role = _.has(user, `roles.${teamId}`) ? roles[teamId][0] : 'Default role';
 
       return (
         <TableRow

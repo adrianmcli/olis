@@ -5,18 +5,48 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class SetPassword extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showErrorTextNewPassword: false,
+      newPassword1: null,
+      newPassword2: null
+    };
+  }
+
   submit() {
     const {token, resetPassword} = this.props;
 
-    const pwd1 = this.input1.getValue();
-    const pwd2 = this.input2.getValue();
+    const pwd1 = this.newPassword1.getValue();
+    const pwd2 = this.newPassword2.getValue();
 
     if (token) {
       resetPassword(token, pwd1, pwd2);
     }
   }
 
+  handleNewPasswordTextChange() {
+    const pwd1 = this.newPassword1.getValue();
+    const pwd2 = this.newPassword2.getValue();
+
+    this.setState({
+      newPassword1: pwd1,
+      newPassword2: pwd2
+    });
+
+    if (pwd1 !== pwd2) { // Other validations...
+      this.setState({showErrorTextNewPassword: true});
+    }
+    else {
+      this.setState({showErrorTextNewPassword: false});
+    }
+  }
+
   render() {
+    const {
+      newPassword1, newPassword2,
+      showErrorTextNewPassword
+    } = this.state;
     return (
       <PageWrapper
         title="Set Your Password"
@@ -30,7 +60,10 @@ export default class SetPassword extends React.Component {
           type="password"
           floatingLabelText="Password"
           fullWidth
-          ref={(ref) => this.input1 = ref}
+          ref={(ref) => this.newPassword1 = ref}
+          value={newPassword1}
+          onChange={this.handleNewPasswordTextChange.bind(this)}
+          errorText={showErrorTextNewPassword ? 'New passwords must match.' : null}
         />
         </div>
 
@@ -39,7 +72,10 @@ export default class SetPassword extends React.Component {
           type="password"
           floatingLabelText="Confirm Password"
           fullWidth
-          ref={(ref) => this.input2 = ref}
+          ref={(ref) => this.newPassword2 = ref}
+          value={newPassword2}
+          onChange={this.handleNewPasswordTextChange.bind(this)}
+          errorText={showErrorTextNewPassword ? 'New passwords must match.' : null}
         />
         </div>
 

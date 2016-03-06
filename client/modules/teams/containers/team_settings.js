@@ -14,17 +14,19 @@ export const composer = ({context}, onData) => {
 
   let teamName;
   let teamUsers = [];
-  let pendingInviteIds = [];
   const teamId = LocalState.get('teamId');
+  let pendingInviteIds = [];
 
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
       teamName = team.name;
-      pendingInviteIds = team.pendingInviteIds;
 
       const options = {sort: [ [ 'username', 'asc' ] ]};
       teamUsers = Meteor.users.find({_id: {$in: team.userIds}}, options).fetch();
+
+      const invites = Collections.Invites.find({teamId}).fetch();
+      pendingInviteIds = invites.map(invite => invite.userId);
     }
   }
 

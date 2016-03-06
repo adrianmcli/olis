@@ -13,8 +13,12 @@ export const composer = ({context}, onData) => {
 
   let teams = [];
   let teamConvos = {};
+  let invites = [];
+
+  const userId = Meteor.userId();
   if (Meteor.subscribe('teams.list').ready()) {
-    teams = Collections.Teams.find({userIds: Meteor.userId()}).fetch();
+    teams = Collections.Teams.find({userIds: userId}).fetch();
+    invites = Collections.Invites.find({userId}).fetch();
 
     const teamIds = teams.map(team => team._id);
     if (Meteor.subscribe('convos.list.multi', {teamIds}).ready()) {
@@ -22,7 +26,7 @@ export const composer = ({context}, onData) => {
       teamConvos = R.groupBy(R.prop('teamId'), convos);
     }
   }
-  onData(null, {teams, teamConvos});
+  onData(null, {teams, teamConvos, invites});
 };
 
 export default composeAll(

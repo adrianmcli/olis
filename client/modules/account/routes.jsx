@@ -14,6 +14,13 @@ import MyAccount from './containers/my_account';
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
+  FlowRouter.route('/register', {
+    name: 'register',
+    triggersEnter: [ function (context, redirect) {
+      redirect('/register/email');
+    } ]
+  });
+
   FlowRouter.route('/register/email', {
     name: 'register-email',
     action() {

@@ -1,10 +1,7 @@
 import React from 'react';
 import IconButton from 'material-ui/lib/icon-button';
 import TeamIcon from './TeamIcon.jsx';
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
-import AddTeamModal from '../containers/add_team_modal';
-import _ from 'lodash';
+import InvitedToTeam from '../containers/invited_to_team';
 
 export default class Teams extends React.Component {
   constructor(props) {
@@ -116,6 +113,8 @@ export default class Teams extends React.Component {
           onRequestClose={this.handleClose.bind(this)}
           addTeam={addTeam}
         />*/}
+
+        <InvitedToTeam />
       </div>
     );
   }
