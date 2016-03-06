@@ -175,14 +175,14 @@ export default function () {
       if (!team.isUserAdmin(userId)) {
         throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
       }
-      const filteredEmails = R.filter(email => EmailValidator.validate(email), inviteEmails);
+      const validatedEmails = R.filter(email => EmailValidator.validate(email), inviteEmails);
 
       const existingEmails = R.filter(email => {
         const existingUser = Accounts.findUserByEmail(email);
         return existingUser;
-      }, filteredEmails);
+      }, validatedEmails);
 
-      const newEmails = R.difference(filteredEmails, existingEmails);
+      const newEmails = R.difference(validatedEmails, existingEmails);
 
       const existingUserIds = existingEmails.map(email => {
         const existingUser = Accounts.findUserByEmail(email);
