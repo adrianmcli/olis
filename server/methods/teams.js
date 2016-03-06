@@ -5,6 +5,7 @@ import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
 import EmailValidator from 'email-validator';
+import Invite from '/lib/invite';
 
 export default function () {
   const TEAMS_ADD = 'teams.add';
@@ -190,7 +191,16 @@ export default function () {
 
       const newUserIds = newEmails.map(email => {
         const newId = Accounts.createUser({username: email, email});
-        Meteor.users.update(newId, { $set: {invitedBy: user.username} });
+        Meteor.users.update(newId, { $set: {invitedBy: user.username} }); // This is so we can send the proper email
+        
+        const invite = new Invite();
+        invite.set({
+          userId: newId,
+          teamId,
+          invitedBy: user.username
+        });
+        invite.save();
+
         return newId;
       });
 

@@ -6,6 +6,7 @@ import users from './users';
 import notes from './notes';
 import sections from './sections';
 import notifications from './notifications';
+import invites from './invites';
 
 export default function () {
   test();
@@ -16,4 +17,5 @@ export default function () {
   notes();
   sections();
   notifications();
+  invites();
 }
