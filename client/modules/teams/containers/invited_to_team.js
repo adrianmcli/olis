@@ -4,7 +4,7 @@ import R from 'ramda';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  goToTeam: actions.teams.select
+  selectInvite: actions.invites.select
 });
 
 export const composer = ({context}, onData) => {

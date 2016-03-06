@@ -17,9 +17,9 @@ export default class InvitedToTeam extends React.Component {
   }
 
   handleTeamClick(teamId) {
-    const {goToTeam} = this.props;
+    const {selectInvite} = this.props;
     this.handleClose();
-    goToTeam(teamId);
+    selectInvite(teamId);
   }
 
   render() {
