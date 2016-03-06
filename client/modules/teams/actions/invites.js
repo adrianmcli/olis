@@ -3,7 +3,7 @@ import TeamUtils from '/client/modules/core/libs/teams';
 export default {
   select({Meteor, LocalState, FlowRouter}, teamId) {
     // Remove invite
-    Meteor.call('invites.select', {teamId}, err => {
+    Meteor.call('invites.remove', {teamId}, err => {
       if (err) { alert(err); }
     });
 
