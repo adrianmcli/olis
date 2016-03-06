@@ -1,4 +1,4 @@
-import {Teams, Notifications} from '/lib/collections';
+import {Teams, Notifications, Invites} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check, Match} from 'meteor/check';
 import R from 'ramda';
@@ -25,6 +25,7 @@ export default function () {
       throw new Meteor.Error(TEAMS_LIST, 'Must be logged in to get teams list.');
     }
 
+    // Notifications
     function mergeTeamId(selectObj) {
       if (!args) { return selectObj; }
       if (args.teamId) { return R.merge(selectObj, {teamId: {$ne: args.teamId}}); }
@@ -36,13 +37,13 @@ export default function () {
       return selectObj;
     }
     const getSelector = R.compose(mergeConvoId, mergeTeamId);
-
     const selectUserId = {userId};
-    const selector = getSelector(selectUserId);
+    const notifsSelector = getSelector(selectUserId);
 
     return [
       Teams.find({userIds: userId}),
-      Notifications.find(selector)
+      Notifications.find(notifsSelector),
+      Invites.find()
     ];
   });
 
@@ -72,7 +73,8 @@ export default function () {
 
     return [
       Meteor.users.find(userSelector, {fields: userFields}),
-      Teams.find(teamId)
+      Teams.find(teamId),
+      Invites.find({teamId})
     ];
   });
 }
