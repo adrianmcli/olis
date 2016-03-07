@@ -30,6 +30,19 @@ export const composer = ({context}, onData) => {
     const options = {sort: [ [ 'createdAt', 'asc' ] ]};
     if (currentNumMsgs > 0) {
       msgs = Collections.Messages.find({convoId}, options).fetch();
+
+      const convo = Collections.Convos.findOne(convoId);
+      if (convo) {
+        const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
+        convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
+        title = convo.name;
+
+        usersListString = convoUsersArr.reduce((prev, curr, index) => {
+          if (index > 0) { return `${prev}, ${curr.username}`; }
+          return `${curr.username}`;
+        }, '');
+      }
+
     }
     if (MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs}).ready()) {
       msgs = Collections.Messages.find({convoId}, options).fetch();
