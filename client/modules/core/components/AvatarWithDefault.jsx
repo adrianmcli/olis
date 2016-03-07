@@ -7,15 +7,19 @@ import AccountUtils from '/client/modules/core/libs/account';
 
 export default class AvatarWithDefault extends React.Component {
   render() {
-    const {avatarSrc, username, onClick, size} = this.props;
+    const {avatarSrc, username, onClick, size, pointer} = this.props;
     const avatarString = avatarSrc ? null : R.take(2, username);
+
+    const avatarStyle = {
+      cursor: pointer ? 'pointer' : 'inherit',
+    };
 
     return (
       <Avatar
         size={size}
         src={avatarSrc}
         onClick={onClick}
-        style={{cursor: 'pointer'}}
+        style={avatarStyle}
         backgroundColor={AccountUtils.convertStringToColor(username)}
       >
         {avatarString}
@@ -26,5 +30,6 @@ export default class AvatarWithDefault extends React.Component {
 AvatarWithDefault.defaultProps = {
   size: 40,
   username: 'Nicky Cage',
-  onClick: () => console.log('avatar has been clicked')
+  onClick: () => console.log('avatar has been clicked'),
+  pointer: true,
 };

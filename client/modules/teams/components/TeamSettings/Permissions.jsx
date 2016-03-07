@@ -39,16 +39,21 @@ export default class Permissions extends React.Component {
           displayBorder={false}
           style={{lineHeight: '64px'}}
         >
-          <TableRowColumn style={{width: '72px'}}>
+          <TableRowColumn style={{width: '72px', lineHeight: '0'}}>
             <AvatarWithDefault
               username={username}
               avatarSrc={profileImageUrl}
+              pointer={false}
             />
           </TableRowColumn>
           <TableRowColumn>
             {username}
+          </TableRowColumn>
+          <TableRowColumn>
             {emails[0].address}
-            {R.contains(_id, pendingInviteIds) ? 'Invited' : null}
+          </TableRowColumn>
+          <TableRowColumn>
+            {R.contains(_id, pendingInviteIds) ? 'Invited' : 'Joined'}
           </TableRowColumn>
           <TableRowColumn>
             <SelectField value={role} onChange={this.handleRoleChange.bind(this, _id)}>
@@ -71,6 +76,8 @@ export default class Permissions extends React.Component {
             <TableRow>
               <TableHeaderColumn style={{width: '72px'}}></TableHeaderColumn>
               <TableHeaderColumn>User</TableHeaderColumn>
+              <TableHeaderColumn>Email</TableHeaderColumn>
+              <TableHeaderColumn>Status</TableHeaderColumn>
               <TableHeaderColumn>Role</TableHeaderColumn>
             </TableRow>
           </TableHeader>
