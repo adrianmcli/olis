@@ -1,12 +1,11 @@
 import React from 'react';
 
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
-import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
 import FilledStarIcon from 'material-ui/lib/svg-icons/toggle/star';
 import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
+
+import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
 import ChatMessageItem from './ChatMessageItem.jsx';
@@ -83,16 +82,7 @@ export default class ChatContainer extends React.Component {
             </IconButton>
           </div>
           <div className="header-icon">
-            <IconMenu
-              iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            >
-              <MenuItem primaryText="Add people to chat" />
-              <MenuItem primaryText="Change chat title" />
-              <MenuItem primaryText="Archive chat" />
-              <MenuItem primaryText="Chat info" />
-            </IconMenu>
+            <ChatMenu />
           </div>
         </div>
 
