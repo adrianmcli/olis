@@ -41,7 +41,7 @@ export default class ChatMenu extends React.Component {
           onTouchTap={this.openAddPeople.bind(this)}
         />
         <MenuItem
-          primaryText="Change chat title"
+          primaryText="Change title"
           onTouchTap={this.openChangeTitle.bind(this)}
         />
         <MenuItem

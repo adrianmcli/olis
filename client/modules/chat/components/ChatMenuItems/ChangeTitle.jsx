@@ -7,7 +7,7 @@ import TextField from 'material-ui/lib/text-field';
 export default class ChangeTitle extends React.Component {
   handleSubmit() {
     const input = this._textField.getValue();
-    console.log(input); // TODO - fire off an action
+    console.log(input); // TODO - fire off an action to change the title
     this.handleClose();
   }
 
