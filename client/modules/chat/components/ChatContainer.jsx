@@ -95,8 +95,8 @@ export default class ChatContainer extends React.Component {
           <div id="load-more-btn" onClick={loadMore}>Load more messages</div>
           {msgs.map(msg => {
             const otherUser = convoUsers[msg.userId];
-            const authorName = otherUser ? otherUser.username : undefined;
-            const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
+            const authorName = otherUser.username;
+            const avatarSrc = otherUser.profileImageUrl;
             return (
               <ChatMessageItem
                 key={msg._id}
