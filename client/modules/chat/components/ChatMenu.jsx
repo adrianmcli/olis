@@ -44,21 +44,21 @@ export default class ChatMenu extends React.Component {
         <MenuItem
           primaryText="Add people"
           onTouchTap={this.openAddPeople.bind(this)}
-          rightIcon={<PersonAdd />}
+          leftIcon={<PersonAdd />}
         />
         <MenuItem
           primaryText="Change title"
           onTouchTap={this.openChangeTitle.bind(this)}
-          rightIcon={<EditTitle />}
+          leftIcon={<EditTitle />}
         />
         <MenuItem
           primaryText="Chat info"
           onTouchTap={this.openChatInfo.bind(this)}
-          rightIcon={<InfoIcon />}
+          leftIcon={<InfoIcon />}
         />
         <MenuItem
           primaryText="Archive chat"
-          rightIcon={<ArchiveIcon />}
+          leftIcon={<ArchiveIcon />}
           disabled
         />
       </IconMenu>

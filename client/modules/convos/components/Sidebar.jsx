@@ -7,6 +7,7 @@ import HeaderNewConversation from '../containers/header_new_conversation';
 import HeaderSearch from './HeaderSearch.jsx';
 import HeaderNotifications from '/client/modules/notifications/containers/header_notifications';
 
+import FlipMove from 'react-flip-move';
 import ConversationItem from './ConversationItem.jsx';
 
 export default class Sidebar extends React.Component {
@@ -25,6 +26,7 @@ export default class Sidebar extends React.Component {
 
         {/* Conversation List */}
         <div id="conversation-list">
+          <FlipMove>
           {convos.map(convo => {
             const otherRecentUserIds = R.filter(id => id !== user._id, convo.recentUserIds);
             const lastUserId = R.last(otherRecentUserIds);
@@ -61,7 +63,7 @@ export default class Sidebar extends React.Component {
               />
             );
           })}
-
+          </FlipMove>
         </div>
       </div>
     );
