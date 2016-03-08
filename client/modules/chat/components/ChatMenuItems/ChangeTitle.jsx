@@ -35,7 +35,7 @@ export default class ChangeTitle extends React.Component {
         onRequestClose={this.handleClose.bind(this)}
         actions={actions}
       >
-      <p>Enter in a new chat title below:</p>
+      <p>Enter a new chat title below:</p>
       <TextField
         hintText="Describe the conversation topic"
         floatingLabelText="Chat Title"

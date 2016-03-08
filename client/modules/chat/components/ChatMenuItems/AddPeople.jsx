@@ -33,7 +33,7 @@ export default class AddPeople extends React.Component {
         onRequestClose={this.handleClose.bind(this)}
         actions={actions}
       >
-      <p>Add people to conversation here.</p>
+      <p>Add people to the conversation here.</p>
       </Dialog>
     );
   }

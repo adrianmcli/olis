@@ -9,6 +9,11 @@ import AddPeople from './ChatMenuItems/AddPeople.jsx';
 import ChangeTitle from './ChatMenuItems/ChangeTitle.jsx';
 import ChatInfo from './ChatMenuItems/ChatInfo.jsx';
 
+import PersonAdd from 'material-ui/lib/svg-icons/social/person-add';
+import EditTitle from 'material-ui/lib/svg-icons/content/create';
+import InfoIcon from 'material-ui/lib/svg-icons/action/info';
+import ArchiveIcon from 'material-ui/lib/svg-icons/content/archive';
+
 export default class ChatMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -37,18 +42,25 @@ export default class ChatMenu extends React.Component {
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
       >
         <MenuItem
-          primaryText="Add people to chat"
+          primaryText="Add people"
           onTouchTap={this.openAddPeople.bind(this)}
+          rightIcon={<PersonAdd />}
         />
         <MenuItem
           primaryText="Change title"
           onTouchTap={this.openChangeTitle.bind(this)}
+          rightIcon={<EditTitle />}
         />
         <MenuItem
           primaryText="Chat info"
           onTouchTap={this.openChatInfo.bind(this)}
+          rightIcon={<InfoIcon />}
         />
-        <MenuItem primaryText="Archive chat" disabled/>
+        <MenuItem
+          primaryText="Archive chat"
+          rightIcon={<ArchiveIcon />}
+          disabled
+        />
       </IconMenu>
 
         {/* Place all modal components here */}
