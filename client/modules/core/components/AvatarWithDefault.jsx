@@ -7,7 +7,7 @@ import AccountUtils from '/client/modules/core/libs/account';
 
 export default class AvatarWithDefault extends React.Component {
   render() {
-    const {avatarSrc, username, onClick, size, pointer, isInListItem} = this.props;
+    const {avatarSrc, username, onClick, size, pointer, isInListItem, style} = this.props;
     const avatarString = avatarSrc ? null : R.take(2, username);
 
     const defaultStyle = {
@@ -20,7 +20,8 @@ export default class AvatarWithDefault extends React.Component {
       left: '16px',
     };
 
-    const avatarStyle = isInListItem ? R.merge(defaultStyle, inListStyle) : defaultStyle;
+    const initAvatarStyle = isInListItem ? R.merge(defaultStyle, inListStyle) : defaultStyle;
+    const avatarStyle = R.merge(initAvatarStyle, style);
 
     return (
       <Avatar

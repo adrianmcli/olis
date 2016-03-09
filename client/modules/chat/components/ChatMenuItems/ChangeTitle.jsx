@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MyDialog from '/client/modules/core/components/Dialog.jsx';
+import Dialog from '/client/modules/core/components/Dialog.jsx';
 import TextField from 'material-ui/lib/text-field';
 
 export default class ChangeTitle extends React.Component {
@@ -16,12 +16,12 @@ export default class ChangeTitle extends React.Component {
 
   render() {
     return (
-      <MyDialog
+      <Dialog
         title="Change Chat Title"
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
         width={360}
-        submitText="Change Title"
+        submitLabel="Change Title"
         onShow={() => {this._textField.focus();}}
       >
         <p>Enter a new chat title below:</p>
@@ -32,7 +32,7 @@ export default class ChangeTitle extends React.Component {
           ref={(x) => this._textField = x}
           fullWidth
         />
-      </MyDialog>
+      </Dialog>
     );
   }
 }

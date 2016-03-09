@@ -1,7 +1,6 @@
 import React from 'react';
 
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
+import Dialog from '/client/modules/core/components/Dialog.jsx';
 
 export default class ChatInfo extends React.Component {
 
@@ -10,19 +9,12 @@ export default class ChatInfo extends React.Component {
   }
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Close"
-        secondary={true}
-        onClick={this.handleClose.bind(this)}
-      />,
-    ];
     return (
       <Dialog
         title="Chat Info"
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
-        actions={actions}
+        closeActionOnly
       >
       <p>Chat Info Here</p>
       </Dialog>

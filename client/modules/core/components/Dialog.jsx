@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/lib/flat-button';
 
 export default class Dialog extends React.Component {
   handleSubmit() {
-    this.handleClose();
+    this.props.onSubmit();
   }
 
   handleClose() {
@@ -16,33 +16,56 @@ export default class Dialog extends React.Component {
     if (!prevProps.open && this.props.open) {
       setTimeout(() => {
         this.props.onShow();
-      },500);
+      },250);
     }
   }
 
   render() {
-    const { open, title, width, submitText, cancelText, children } = this.props;
+    const {
+      open,
+      title,
+      width,
+      submitLabel,
+      cancelLabel,
+      closeActionOnly,
+      noActions,
+      actions,
+      children,
+      ...other
+    } = this.props;
 
-    const actions = [
+    const defaultActions = [
       <FlatButton
-      label={ cancelText }
+      label={ cancelLabel }
       secondary={true}
       onClick={this.handleClose.bind(this)}
       />,
       <FlatButton
-        label={ submitText }
+        label={ submitLabel }
         primary={true}
         onClick={this.handleSubmit.bind(this)}
       />,
     ];
 
+    const closeAction = [
+      <FlatButton
+        label="Close"
+        secondary={true}
+        onClick={this.handleClose.bind(this)}
+      />,
+    ];
+
+    let _actions = defaultActions;
+
+    if (closeActionOnly) {
+      _actions = closeAction;
+    } else if (actions) {
+      _actions = actions;
+    }
+
     const titleStyle = {
       color: 'white',
       backgroundColor: '#2F3F70',
-      fontSize: '24px',
-      lineHeight: '32px',
-      fontWeight: '400',
-      margin: '-24px -24px 0',
       padding: '24px 24px 16px',
     };
 
@@ -50,12 +73,12 @@ export default class Dialog extends React.Component {
       <MuiDialog
         open={ open }
         onRequestClose={ this.handleClose.bind(this) }
-        actions={ actions }
+        actions={ noActions ? undefined : _actions }
         contentStyle={{ width: `${width}px` }}
+        title={ title }
+        titleStyle={ titleStyle }
+        {...other}
       >
-      <h3 style={titleStyle}>
-        { title }
-      </h3>
         { children }
       </MuiDialog>
     );
@@ -67,6 +90,9 @@ Dialog.defaultProps = {
   title: 'My Modal',
   onRequestClose() {console.log('onRequestClose()');},
   onShow() {console.log('onShow()');},
-  submitText: 'Submit',
-  cancelText: 'Cancel',
+  submitLabel: 'Submit',
+  cancelLabel: 'Cancel',
+  onSubmit() {console.log('onSubmit()');},
+  closeActionOnly: false,
+  noActions: false,
 };

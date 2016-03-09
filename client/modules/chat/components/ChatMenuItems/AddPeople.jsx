@@ -1,7 +1,6 @@
 import React from 'react';
 
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
+import Dialog from '/client/modules/core/components/Dialog.jsx';
 
 export default class AddPeople extends React.Component {
 
@@ -14,24 +13,12 @@ export default class AddPeople extends React.Component {
   }
 
   render() {
-    const actions = [
-      <FlatButton
-      label="Cancel"
-      secondary={true}
-      onClick={this.handleClose.bind(this)}
-      />,
-      <FlatButton
-        label="Add to Conversation"
-        primary={true}
-        onClick={this.handleSubmit.bind(this)}
-      />,
-    ];
     return (
       <Dialog
         title="Add People"
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
-        actions={actions}
+        submitLabel="Add to Conversation"
       >
       <p>Add people to the conversation here.</p>
       </Dialog>
