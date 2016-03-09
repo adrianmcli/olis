@@ -42,6 +42,7 @@ export default class PeoplePicker extends React.Component {
   renderList() {
     return (
       <div style={{
+        borderRight: '1px solid rgba(0,0,0,0.15)',
         height: '360px',
         overflowY: 'scroll',
         position: 'relative',
