@@ -11,6 +11,7 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Checkbox from 'material-ui/lib/checkbox';
 
+import Avatar from 'material-ui/lib/avatar';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
 export default class HeaderNewConversation extends React.Component {
@@ -137,14 +138,14 @@ export default class HeaderNewConversation extends React.Component {
           </div>
           <div>
             <div className="modal-step">
-            2. Choose who should be included in this conversation.
-              <TextField
-                hintText="Username, Email, etc."
-                floatingLabelText="Type here to search"
-                onChange={this.handleSearchTextChange.bind(this)}
-              />
+            2. Choose who should be included in this conversation.<br />
+            <TextField
+              hintText="Username, Email, etc."
+              floatingLabelText="Type here to search"
+              onChange={this.handleSearchTextChange.bind(this)}
+            />
             </div>
-            <div style={{maxHeight: '420px', overflowY: 'scroll', width: '420px'}}>
+            <div style={{maxHeight: '420px', overflowY: 'scroll'}}>
               <List>
               {
                 teamUsersSearchResult.map(user => {
@@ -159,7 +160,24 @@ export default class HeaderNewConversation extends React.Component {
                         <AvatarWithDefault
                           username={user.username}
                           avatarSrc={user.profileImageUrl}
+                          isInListItem
                         />
+                      }
+                    />
+                  );
+                })
+              }
+                            {
+                teamUsersSearchResult.map(user => {
+                  return (
+                    <ListItem
+                      key={user._id}
+                      rightToggle={
+                        <Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>
+                      }
+                      primaryText={user.username}
+                      leftAvatar={
+                        <Avatar>A</Avatar>
                       }
                     />
                   );

@@ -38,17 +38,30 @@ export default class ChangeTitle extends React.Component {
     ];
     return (
       <Dialog
-        title="Change Chat Title"
+        // title="Change Chat Title"
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
         actions={actions}
+        contentStyle={{width: '360px'}}
       >
+      <h3 style={{
+        color: 'white',
+        backgroundColor: '#2F3F70',
+        fontSize: '24px',
+        lineHeight: '32px',
+        fontWeight: '400',
+        margin: '-24px -24px 0',
+        padding: '24px 24px 16px',
+      }}>
+        Change Chat Title
+      </h3>
       <p>Enter a new chat title below:</p>
       <TextField
         hintText="Describe the conversation topic"
         floatingLabelText="Chat Title"
         onEnterKeyDown={this.handleSubmit.bind(this)}
         ref={(x) => this._textField = x}
+        fullWidth
       />
       </Dialog>
     );

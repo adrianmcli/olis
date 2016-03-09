@@ -7,12 +7,20 @@ import AccountUtils from '/client/modules/core/libs/account';
 
 export default class AvatarWithDefault extends React.Component {
   render() {
-    const {avatarSrc, username, onClick, size, pointer} = this.props;
+    const {avatarSrc, username, onClick, size, pointer, isInListItem} = this.props;
     const avatarString = avatarSrc ? null : R.take(2, username);
 
-    const avatarStyle = {
+    const defaultStyle = {
       cursor: pointer ? 'pointer' : 'inherit',
     };
+
+    const inListStyle = {
+      position: 'absolute',
+      top: '8px',
+      left: '16px',
+    };
+
+    const avatarStyle = isInListItem ? R.merge(defaultStyle, inListStyle) : defaultStyle;
 
     return (
       <Avatar
@@ -32,4 +40,5 @@ AvatarWithDefault.defaultProps = {
   username: 'Nicky Cage',
   onClick: () => console.log('avatar has been clicked'),
   pointer: true,
+  isInListItem: false,
 };
