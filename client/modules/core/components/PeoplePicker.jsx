@@ -42,9 +42,9 @@ export default class PeoplePicker extends React.Component {
   renderList() {
     return (
       <div style={{
-        borderRight: '1px solid rgba(0,0,0,0.15)',
         height: '360px',
         overflowY: 'scroll',
+        position: 'relative',
       }}>
         <List style={{paddingTop: '0'}}>
           { this.renderListItems() }
@@ -71,7 +71,7 @@ export default class PeoplePicker extends React.Component {
   }
 
   renderChipsContainer() {
-    const numSelected = 12;
+    const numSelected = 0;
     if (numSelected === 0) {
       return (
         <div style={{
@@ -121,7 +121,7 @@ export default class PeoplePicker extends React.Component {
   render() {
     return (
       <div style={{display: 'flex'}}>
-        <div style={{width: '360px'}}>
+        <div style={{width: '360px', position: 'relative'}}>
           { this.renderSearchBar() }
           { this.renderList() }
         </div>

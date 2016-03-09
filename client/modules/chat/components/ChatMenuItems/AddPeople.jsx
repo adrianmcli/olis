@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
+import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
 export default class AddPeople extends React.Component {
 
@@ -15,12 +16,16 @@ export default class AddPeople extends React.Component {
   render() {
     return (
       <Dialog
-        title="Add People"
+        title="Add People to Conversation"
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
         submitLabel="Add to Conversation"
+        onShow={() => {this._peoplePicker.focusSearchBar();}}
+        bodyStyle={{padding: '0'}}
+        width={540}
+        actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
       >
-      <p>Add people to the conversation here.</p>
+        <PeoplePicker ref={ x => this._peoplePicker = x }/>
       </Dialog>
     );
   }

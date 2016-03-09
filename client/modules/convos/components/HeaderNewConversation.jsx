@@ -4,9 +4,9 @@ import IconButton from 'material-ui/lib/icon-button';
 import ActionQuestionAnswer from 'material-ui/lib/svg-icons/action/question-answer';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
-import TextField from 'material-ui/lib/text-field';
-import PeoplePicker from './PeoplePicker.jsx';
+import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
+import TextField from 'material-ui/lib/text-field';
 
 export default class HeaderNewConversation extends React.Component {
 
@@ -63,18 +63,23 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   render() {
+
+    // first stage settings
     let width = 360;
     let submitFunc = this.handleNext.bind(this);
     let submitLabel = 'Next';
     let title = 'Choose Conversation Name';
     let bodyStyle = {padding: '24px'};
+    let actionsContainerStyle = {};
 
+    // second stage settings
     if (this.state.stage !== 0) {
       width = 540;
       submitFunc = () => {alert('complete');};  // TODO - create the conversation
       submitLabel = 'Create';
       title = 'Add Participants';
       bodyStyle = {padding: '0'};
+      actionsContainerStyle = {borderTop: '1px solid rgba(0,0,0,0.15)'};
     }
     return (
       <div>
@@ -95,7 +100,7 @@ export default class HeaderNewConversation extends React.Component {
           onSubmit={submitFunc}
           onShow={() => {this._textField.focus();}}
           width={width}
-          actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
+          actionsContainerStyle={actionsContainerStyle}
           bodyStyle={bodyStyle}
         >
           { this.state.stage === 0 ? this.renderFirstStep() : this.renderSecondStep() }

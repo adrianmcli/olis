@@ -3,7 +3,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import ActionSearch from 'material-ui/lib/svg-icons/action/search';
 import RaisedButton from 'material-ui/lib/raised-button';
 
-import Dialog from 'material-ui/lib/dialog';
+import Dialog from '/client/modules/core/components/Dialog.jsx';
 import FlatButton from 'material-ui/lib/flat-button';
 
 import TextField from 'material-ui/lib/text-field';
