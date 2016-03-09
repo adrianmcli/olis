@@ -15,6 +15,14 @@ export default class ChangeTitle extends React.Component {
     this.props.onRequestClose();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.open && this.props.open) {
+      setTimeout(() => {
+        this._textField.focus();
+      },500);
+    }
+  }
+
   render() {
     const actions = [
       <FlatButton
