@@ -5,7 +5,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import FilledStarIcon from 'material-ui/lib/svg-icons/toggle/star';
 import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
 
-import ChatInfo from './ChatMenuItems/ChatInfo.jsx';
+import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
 import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
@@ -17,7 +17,7 @@ export default class ChatContainer extends React.Component {
     this.state = {
       distanceFromBottom: 0,
       distanceFromTop: 0,
-      chatInfoOpen: false,
+      chatMembersOpen: false,
     };
   }
 
@@ -52,8 +52,8 @@ export default class ChatContainer extends React.Component {
     }
   }
 
-  openChatInfo() {this.setState({chatInfoOpen: true});}
-  closeChatInfo() {this.setState({chatInfoOpen: false});}
+  openChatMembers() {this.setState({chatMembersOpen: true});}
+  closeChatMembers() {this.setState({chatMembersOpen: false});}
 
   scrollToBottom() {
     const ele = $(this._container);
@@ -73,7 +73,7 @@ export default class ChatContainer extends React.Component {
     return (
       <div id="chat-container">
         <div id="chat-header">
-          <div className="header-body" onClick={this.openChatInfo.bind(this)}>
+          <div className="header-body" onClick={this.openChatMembers.bind(this)}>
             <div className="chat-title">
               {title}
             </div>
@@ -123,9 +123,9 @@ export default class ChatContainer extends React.Component {
           </div>
         </div>
 
-        <ChatInfo
-          open={this.state.chatInfoOpen}
-          onRequestClose={this.closeChatInfo.bind(this)}
+        <ChatMembers
+          open={this.state.chatMembersOpen}
+          onRequestClose={this.closeChatMembers.bind(this)}
         />
       </div>
     );

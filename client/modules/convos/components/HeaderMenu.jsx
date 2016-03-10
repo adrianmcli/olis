@@ -11,12 +11,11 @@ import AddPersonIcon from 'material-ui/lib/svg-icons/social/person-add';
 import TeamDirIcon from 'material-ui/lib/svg-icons/action/list';
 import TeamInfoIcon from 'material-ui/lib/svg-icons/action/info';
 import TeamSettingsIcon from 'material-ui/lib/svg-icons/action/settings';
-
-import RaisedButton from 'material-ui/lib/raised-button';
 import LogoutIcon from 'material-ui/lib/svg-icons/action/exit-to-app';
 
 import InviteToTeam from './HeaderMenuItems/InviteToTeam.jsx';
 import TeamDirectory from './HeaderMenuItems/TeamDirectory.jsx';
+import TeamInfo from './HeaderMenuItems/TeamInfo.jsx';
 
 class HeaderMenu extends React.Component {
   constructor(props) {
@@ -25,14 +24,24 @@ class HeaderMenu extends React.Component {
       open: false,
       inviteToTeamOpen: false,
       teamDirectoryOpen: false,
+      teamInfoOpen: false,
     };
   }
 
-  openInviteToTeam() {this.setState({inviteToTeamOpen: true});}
+  openInviteToTeam() {setTimeout(() => {
+    this.setState({inviteToTeamOpen: true});
+  }, 200);}
   closeInviteToTeam() {this.setState({inviteToTeamOpen: false});}
 
-  openTeamDirectory() {this.setState({teamDirectoryOpen: true});}
+  openTeamDirectory() {setTimeout(() => {
+    this.setState({teamDirectoryOpen: true});
+  }, 200);}
   closeTeamDirectory() {this.setState({teamDirectoryOpen: false});}
+
+  openTeamInfo() {setTimeout(() => {
+    this.setState({teamInfoOpen: true});
+  }, 200);}
+  closeTeamInfo() {this.setState({teamInfoOpen: false});}
 
   handleOpen(event) {
     this.setState({
@@ -72,21 +81,28 @@ class HeaderMenu extends React.Component {
 
   renderLogout() {
     const { logout } = this.props;
+    // return (
+    //   <MenuItem innerDivStyle={{background: 'white'}}>
+    //     <div style={{display: 'flex'}}>
+    //       <RaisedButton
+    //         label="Logout"
+    //         primary={true}
+    //         style={{lineHeight: '36px'}}
+    //         labelStyle={{verticalAlign: 'middle'}}
+    //         labelPosition="before"
+    //         icon={<LogoutIcon />}
+    //         fullWidth
+    //         onClick={logout}
+    //       />
+    //     </div>
+    //   </MenuItem>
+    // );
     return (
-      <MenuItem innerDivStyle={{background: 'white'}}>
-        <div style={{display: 'flex'}}>
-          <RaisedButton
-            label="Logout"
-            primary={true}
-            style={{lineHeight: '36px'}}
-            labelStyle={{verticalAlign: 'middle'}}
-            labelPosition="before"
-            icon={<LogoutIcon />}
-            fullWidth
-            onClick={logout}
-          />
-        </div>
-      </MenuItem>
+      <MenuItem
+        primaryText="Logout"
+        leftIcon={<LogoutIcon />}
+        onClick={ logout }
+      />
     );
   }
 
@@ -100,6 +116,10 @@ class HeaderMenu extends React.Component {
         <TeamDirectory
           open={this.state.teamDirectoryOpen}
           onRequestClose={this.closeTeamDirectory.bind(this)}
+        />
+        <TeamInfo
+          open={this.state.teamInfoOpen}
+          onRequestClose={this.closeTeamInfo.bind(this)}
         />
       </div>
     );
@@ -126,15 +146,17 @@ class HeaderMenu extends React.Component {
           leftIcon={<TeamDirIcon />}
           onClick={this.openTeamDirectory.bind(this)}
         />
-        <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled />
+        <MenuItem
+          primaryText="Team info"
+          leftIcon={<TeamInfoIcon />}
+          onClick={this.openTeamInfo.bind(this)}
+        />
         {isAdmin ?
           <MenuItem
             primaryText="Team settings"
             leftIcon={<TeamSettingsIcon />}
             onClick={goToTeamSettings}
-          />
-          :
-          null
+          /> : null
         }
         <Divider />
         { this.renderLogout() }

@@ -7,11 +7,11 @@ import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
 import AddPeople from './ChatMenuItems/AddPeople.jsx';
 import ChangeTitle from './ChatMenuItems/ChangeTitle.jsx';
-import ChatInfo from './ChatMenuItems/ChatInfo.jsx';
+import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
 
 import PersonAdd from 'material-ui/lib/svg-icons/social/person-add';
 import EditTitle from 'material-ui/lib/svg-icons/content/create';
-import InfoIcon from 'material-ui/lib/svg-icons/action/info';
+import ChatMembersIcon from 'material-ui/lib/svg-icons/social/people';
 import ArchiveIcon from 'material-ui/lib/svg-icons/content/archive';
 
 export default class ChatMenu extends React.Component {
@@ -20,7 +20,7 @@ export default class ChatMenu extends React.Component {
     this.state = {
       addPeopleOpen: false,
       changeTitleOpen: false,
-      chatInfoOpen: false,
+      chatMembersOpen: false,
     };
   }
 
@@ -30,8 +30,27 @@ export default class ChatMenu extends React.Component {
   openChangeTitle() {this.setState({changeTitleOpen: true});}
   closeChangeTitle() {this.setState({changeTitleOpen: false});}
 
-  openChatInfo() {this.setState({chatInfoOpen: true});}
-  closeChatInfo() {this.setState({chatInfoOpen: false});}
+  openChatMembers() {this.setState({chatMembersOpen: true});}
+  closeChatMembers() {this.setState({chatMembersOpen: false});}
+
+  renderDialogs() {
+    return (
+      <div>
+        <AddPeople
+          open={this.state.addPeopleOpen}
+          onRequestClose={this.closeAddPeople.bind(this)}
+        />
+        <ChangeTitle
+          open={this.state.changeTitleOpen}
+          onRequestClose={this.closeChangeTitle.bind(this)}
+        />
+        <ChatMembers
+          open={this.state.chatMembersOpen}
+          onRequestClose={this.closeChatMembers.bind(this)}
+        />
+      </div>
+    );
+  }
 
   render() {
     return (
@@ -52,9 +71,9 @@ export default class ChatMenu extends React.Component {
           leftIcon={<EditTitle />}
         />
         <MenuItem
-          primaryText="Chat info"
-          onTouchTap={this.openChatInfo.bind(this)}
-          leftIcon={<InfoIcon />}
+          primaryText="Chat members"
+          onTouchTap={this.openChatMembers.bind(this)}
+          leftIcon={<ChatMembersIcon />}
         />
         <MenuItem
           primaryText="Archive chat"
@@ -63,19 +82,8 @@ export default class ChatMenu extends React.Component {
         />
       </IconMenu>
 
-        {/* Place all modal components here */}
-        <AddPeople
-          open={this.state.addPeopleOpen}
-          onRequestClose={this.closeAddPeople.bind(this)}
-        />
-        <ChangeTitle
-          open={this.state.changeTitleOpen}
-          onRequestClose={this.closeChangeTitle.bind(this)}
-        />
-        <ChatInfo
-          open={this.state.chatInfoOpen}
-          onRequestClose={this.closeChatInfo.bind(this)}
-        />
+        { this.renderDialogs() }
+
       </div>
     );
   }

@@ -5,12 +5,15 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 
-import PeopleIcon from 'material-ui/lib/svg-icons/social/people';
-
 import Avatar from 'material-ui/lib/avatar';
-import Chip from './Chip.jsx';
 
-export default class PeoplePicker extends React.Component {
+import IconButton from 'material-ui/lib/icon-button';
+import ChatIcon from 'material-ui/lib/svg-icons/action/question-answer';
+import InfoIcon from 'material-ui/lib/svg-icons/action/info';
+import NoteIcon from 'material-ui/lib/svg-icons/action/note-add';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
+
+export default class PeopleList extends React.Component {
 
   focusSearchBar() {
     this._searchField.focus();
@@ -63,7 +66,7 @@ export default class PeoplePicker extends React.Component {
             primaryText={`nickyCage ${x}`}
             secondaryText={'iamsocool@gmail.com'}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-            onClick={() => {alert(`add me. my name is: nickyCage${x}`);}}
+            onClick={() => {alert(`fire an action to show me: nickyCage${x}`);}}
           />
           <Divider inset={true} />
         </div>
@@ -71,53 +74,47 @@ export default class PeoplePicker extends React.Component {
     });
   }
 
-  renderChipsContainer() {
-    const numSelected = 0;
-    if (numSelected === 0) {
-      return (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          position: 'absolute',
-          top: '0',
-          right: '0',
-          bottom: '0',
-          left: '0',
-          color: '#aaa',
-          padding: '16px',
-        }}>
-          <PeopleIcon
-            style={{width: '64px', height: '64px'}}
-            color="#aaa"
-          />
-          <h5>Selected participants will appear here!</h5>
-        </div>
-      );
-    }
+  renderUserInfo() {
+    const containerStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+      position: 'absolute',
+      top: '0',
+      right: '0',
+      bottom: '0',
+      left: '0',
+      color: '#aaa',
+    };
+    // <Avatar src="https://www.placecage.com/100/100" />
+    const username = 'nickyCage';
+    const avatarSrc = 'https://www.placecage.com/100/100';
     return (
-      <div style={{padding: '12px'}}>
-        { this.renderChips() }
+      <div style={containerStyle}>
+        <div style={{padding: '32px', textAlign: 'center', width: '200px'}}>
+          <AvatarWithDefault
+            size={128}
+            username={username}
+            avatarSrc={avatarSrc}
+          />
+          <div style={{fontSize: '18px',lineHeight: '24px'}}>Nicky Cage</div>
+          <div style={{fontSize: '12px',lineHeight: '16px'}}>I like tuna sandwiches.</div>
+          <div style={{display: 'flex'}}>
+            <IconButton tooltip="Private Message">
+              <ChatIcon color="rgba(0,0,0,0.7)"/>
+            </IconButton>
+            <IconButton tooltip="More Info">
+              <InfoIcon color="rgba(0,0,0,0.7)"/>
+            </IconButton>
+            <IconButton tooltip="Notes">
+              <NoteIcon color="rgba(0,0,0,0.7)"/>
+            </IconButton>
+          </div>
+        </div>
       </div>
     );
-  }
-
-  renderChips() {
-    const input = [ 1, 2, 3, 4, 5, 6, 7 , 8, 9, 10, 12, 13, 14, 15 ];
-    return input.map( x => {
-      return (
-        <div style={{marginBottom: '6px'}}>
-          <Chip
-            // NOTE: avatarSrc is optional, Chip can generate an avatar w/ the username alone
-            avatarSrc='https://www.placecage.com/100/100'
-            username={`nickyCage${x}`}
-            onRemoveClick={() => {alert(`remove nickCage${x}`);}}
-          />
-        </div>
-      );
-    });
   }
 
   render() {
@@ -128,12 +125,12 @@ export default class PeoplePicker extends React.Component {
           { this.renderList() }
         </div>
         <div style={{
-          width: '240px',
+          width: '280px',
           height: '432px',
           position: 'relative',
           overflowY: 'scroll',
         }}>
-          { this.renderChipsContainer() }
+          { this.renderUserInfo() }
         </div>
       </div>
     );
