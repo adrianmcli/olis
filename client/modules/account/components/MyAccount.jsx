@@ -38,22 +38,22 @@ export default class MyAccount extends React.Component {
           nestedItems={[
             <ListItem
               key={1}
-              primaryText="Change username"
+              primaryText="Username"
               innerDivStyle={{color: 'white'}}
             />,
             <ListItem
               key={2}
-              primaryText="Change password"
+              primaryText="Password"
               innerDivStyle={{color: 'white'}}
             />,
             <ListItem
               key={3}
-              primaryText="Change email"
+              primaryText="Email"
               innerDivStyle={{color: 'white'}}
             />,
             <ListItem
               key={4}
-              primaryText="Change translation language"
+              primaryText="Translation Language"
               innerDivStyle={{color: 'white'}}
             />,
           ]}
@@ -77,12 +77,12 @@ export default class MyAccount extends React.Component {
           nestedItems={[
             <ListItem
               key={1}
-              primaryText="Email notifications"
+              primaryText="Email Settings"
               innerDivStyle={{color: 'white'}}
             />,
             <ListItem
               key={2}
-              primaryText="Mute Notifications"
+              primaryText="Mute Alerts"
               innerDivStyle={{color: 'white'}}
             />,
           ]}
@@ -106,12 +106,12 @@ export default class MyAccount extends React.Component {
           nestedItems={[
             <ListItem
               key={1}
-              primaryText="Change Profile Picture"
+              primaryText="Profile Picture"
               innerDivStyle={{color: 'white'}}
             />,
             <ListItem
               key={2}
-              primaryText="Edit Blurb"
+              primaryText="Blurb"
               innerDivStyle={{color: 'white'}}
             />,
           ]}
