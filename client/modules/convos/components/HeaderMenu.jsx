@@ -15,13 +15,24 @@ import TeamSettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import RaisedButton from 'material-ui/lib/raised-button';
 import LogoutIcon from 'material-ui/lib/svg-icons/action/exit-to-app';
 
+import InviteToTeam from './HeaderMenuItems/InviteToTeam.jsx';
+import TeamDirectory from './HeaderMenuItems/TeamDirectory.jsx';
+
 class HeaderMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      inviteToTeamOpen: false,
+      teamDirectoryOpen: false,
     };
   }
+
+  openInviteToTeam() {this.setState({inviteToTeamOpen: true});}
+  closeInviteToTeam() {this.setState({inviteToTeamOpen: false});}
+
+  openTeamDirectory() {this.setState({teamDirectoryOpen: true});}
+  closeTeamDirectory() {this.setState({teamDirectoryOpen: false});}
 
   handleOpen(event) {
     this.setState({
@@ -34,20 +45,29 @@ class HeaderMenu extends React.Component {
     this.setState({open: false});
   }
 
-  componentWillUnmount() {
-    if (this.timerCloseId) {
-      clearTimeout(this.timerCloseId);
-    }
-  }
-
   handleItemTouchTap(event, child) {
-    this.timerCloseId = setTimeout(() => {
+    setTimeout(() => {
       this.handleClose.bind(this)();
       // TODO - do the thing the user wants
       console.log('You have selected: ' + child.props.primaryText);
 
       if (child.props.onClick) { child.props.onClick(); }
     }, 200);
+  }
+
+  renderDialogs() {
+    return (
+      <div>
+        <InviteToTeam
+          open={this.state.inviteToTeamOpen}
+          onRequestClose={this.closeInviteToTeam.bind(this)}
+        />
+        <TeamDirectory
+          open={this.state.teamDirectoryOpen}
+          onRequestClose={this.closeTeamDirectory.bind(this)}
+        />
+      </div>
+    );
   }
 
   render() {
@@ -58,7 +78,7 @@ class HeaderMenu extends React.Component {
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
           <span>{teamName}<i className="fa fa-fw fa-caret-down" /></span>
         </div>
-
+        { this.renderDialogs() }
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -83,8 +103,16 @@ class HeaderMenu extends React.Component {
               </div>
             </MenuItem>
             <Divider />
-            <MenuItem primaryText="Invite to team" leftIcon={<AddPersonIcon />} />
-            <MenuItem primaryText="Team directory" leftIcon={<TeamDirIcon />} disabled />
+            <MenuItem
+              primaryText="Invite to team"
+              leftIcon={<AddPersonIcon />}
+              onClick={this.openInviteToTeam.bind(this)}
+            />
+            <MenuItem
+              primaryText="Team directory"
+              leftIcon={<TeamDirIcon />}
+              onClick={this.openTeamDirectory.bind(this)}
+            />
             <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled />
             {isAdmin ?
               <MenuItem
