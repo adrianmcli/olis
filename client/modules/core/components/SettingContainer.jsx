@@ -22,7 +22,7 @@ export default class SettingContainer extends React.Component {
 
     const titleStyle = {
       fontWeight: '300',
-      marginTop: '20px',
+      marginTop: '30px',
     };
 
     return (

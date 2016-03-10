@@ -1,0 +1,21 @@
+triangle-height = 500px
+triangle-width = 50px
+fill-color = #2f3f70
+
+.settings-sidebar
+  position relative
+  &:after
+    content ''
+    width 0
+    height 0
+    position absolute
+    top 0
+    right -(triangle-width)
+    border-style solid
+    border-width triangle-height triangle-width 0 0
+    border-color fill-color transparent transparent transparent
+    // border-width triangle-height 0 0 triangle-width
+    // border-color transparent transparent transparent fill-color
+
+.settings-main
+  margin-left triangle-width + 20px

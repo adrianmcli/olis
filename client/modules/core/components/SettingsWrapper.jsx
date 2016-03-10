@@ -121,13 +121,13 @@ export default class SettingsWrapper extends React.Component {
     return (
       <div style={containerStyle}>
         <Paper style={paperStyle} zDepth={3}>
-          <div style={sidebarStyle}>
-            <h1 style={{margin: '20px 24px'}}>{ title }</h1>
+          <div style={sidebarStyle} className="settings-sidebar">
+            <h1 style={{margin: '30px 24px 20px'}}>{ title }</h1>
             <div style={{flexGrow: '1', overflowY: 'scroll'}}>
               { this.generateListFromData.bind(this)(dataSrc) }
             </div>
           </div>
-          <div style={mainSettingsStyle}>
+          <div style={mainSettingsStyle} className="settings-main">
             { this.state.mainContent() }
           </div>
         </Paper>
