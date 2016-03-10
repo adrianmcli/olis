@@ -1,43 +1,93 @@
 import React from 'react';
 
 import Paper from 'material-ui/lib/paper';
-// import FlatButton from 'material-ui/lib/flat-button';
-// import BackIcon from 'material-ui/lib/svg-icons/navigation/arrow-back';
-
+import FontIcon from 'material-ui/lib/font-icon';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
-import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
-import ContentInbox from 'material-ui/lib/svg-icons/content/inbox';
-import ContentDrafts from 'material-ui/lib/svg-icons/content/drafts';
-import ContentSend from 'material-ui/lib/svg-icons/content/send';
 
-import DownIcon from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
+// import DownIcon from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 
 export default class SettingsWrapper extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      mainContent: () => this.defaultContent(),
+    };
+  }
+
+  defaultContent() {
+    const containerStyle = {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: '#9e9e9e',
+    };
+    return (
+      <div style={containerStyle}>
+        <FontIcon
+          className="material-icons"
+          style={{fontSize: '72px', color: '#9e9e9e'}}
+        >
+          settings_applications
+        </FontIcon>
+        <p>Please select an option on your left.</p>
+      </div>
+    );
+  }
+
+  renderMenuItemIcon(iconString) {
+    return (
+      <FontIcon
+        className="material-icons"
+        color="white"
+        style={{left: '12px'}}
+      >
+        { iconString }
+      </FontIcon>
+    );
+  }
+
+  generateListFromData(sourceData) {
+
+    const _renderListItems = (srcArray) => {
+      return srcArray.map((listItem, j) => {
+        return (
+          <ListItem
+            key={ j }
+            primaryText={ listItem.label }
+            innerDivStyle={{color: 'white'}}
+            onClick={() => this.setState({mainContent: () => listItem.content})}
+          />
+        );
+      });
+    };
+
+    const result = sourceData.map( (category, i) => {
+      const { label, icon, listItems } = category;
+      return (
+        <ListItem
+          key={ i }
+          primaryText={ label }
+          leftIcon={ this.renderMenuItemIcon.bind(this)( icon ) }
+          innerDivStyle={{color: 'white'}}
+          nestedListStyle={{background: 'transparent'}}
+          primaryTogglesNestedList={true}
+          autoGenerateNestedIndicator={false}
+          nestedItems={ _renderListItems(listItems) }
+        />
+      );
+    });
+
+    return (<List style={{backgroundColor: 'transparent'}}>{result}</List>);
+  }
+
   render() {
 
-    // const {
-    //   title,
-    //   backButton,
-    //   backButtonLabel,
-    //   handleBackButtonPress,
-    //   showDescription,
-    //   lightDescription,
-    //   description,
-    //   children,
-    // } = this.props;
-
-    // const backgroundColor = "url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/geometry.png')";
-    // const neutralColor = "#efefef"
-    // const highlightColor = "#9e9e9e";
-
-    // const descriptionStyle = {
-    //   margin:'25px -25px',
-    //   padding:'25px',
-    //   color: lightDescription ? highlightColor : "white",
-    //   background: lightDescription ? neutralColor : highlightColor,
-    // }
+    const { title, dataSrc } = this.props;
 
     const containerStyle = {
       background: "url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/geometry.png')",
@@ -72,41 +122,16 @@ export default class SettingsWrapper extends React.Component {
       <div style={containerStyle}>
         <Paper style={paperStyle} zDepth={3}>
           <div style={sidebarStyle}>
-            <h1 style={{margin: '24px'}}>My Account</h1>
+            <h1 style={{margin: '20px 24px'}}>{ title }</h1>
             <div style={{flexGrow: '1', overflowY: 'scroll'}}>
-              { this.props.listNode }
+              { this.generateListFromData.bind(this)(dataSrc) }
             </div>
           </div>
           <div style={mainSettingsStyle}>
+            { this.state.mainContent() }
           </div>
         </Paper>
       </div>
     );
   }
 }
-
-// PageWrapper.defaultProps = {
-//   title: "My Title",
-//   backButton: false,
-//   backButtonLabel: "Back to Chat",
-//   handleBackButtonPress: function(){console.log('handleBackButtonPress')},
-//   showDescription: false,
-//   lightDescription: true,
-//   description: "This is where you can describe the purpose of this page.",
-// };
-
-
-// <div style={{height:'100%',overflow:'auto',background:backgroundColor}}>
-//         <div style={{
-//           width: '920px',
-//           minHeight: '100%',
-//           margin: 'auto',
-//           padding: '36px 0',
-//           display: 'table',
-//           height: 'inherit',
-//         }}>
-//           <Paper style={{height:'100%',padding:'25px',display:'table-cell'}} zDepth={2}>
-            
-//           </Paper>
-//         </div>
-//       </div>
