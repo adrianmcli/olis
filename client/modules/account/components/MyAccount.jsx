@@ -2,29 +2,55 @@ import React from 'react';
 
 import SettingsWrapper from '/client/modules/core/components/SettingsWrapper.jsx';
 
+import { Username, Password, Email, TranslateLanguage } from './MyAccountSettings.jsx';
+
 export default class MyAccount extends React.Component {
 
-  dataSource() {
-    return [
+  render() {
+    const {
+      goToChat,
+      username, setUsername,
+      uploadImage, profileImageUrl,
+      changePassword,
+      email, setEmail,
+      setTranslationLanguage, translationLangCode
+    } = this.props;
+
+    const dataSource = [
       {
         label: 'Settings',
         icon: 'settings',
         listItems: [
           {
             label: 'Username',
-            content: <div>Change Username</div>,
+            content:
+              <Username
+                username={username}
+                setUsername={setUsername}
+              />,
           },
           {
             label: 'Password',
-            content: <div>Change Password</div>,
+            content:
+              <Password
+                changePassword={changePassword}
+              />,
           },
           {
             label: 'Email',
-            content: <div>Change Email</div>,
+            content:
+              <Email
+                email={email}
+                setEmail={setEmail}
+              />,
           },
           {
             label: 'Translation Language',
-            content: <div>Change Translation Language</div>,
+            content:
+              <TranslateLanguage
+                setTranslationLanguage={setTranslationLanguage}
+                translationLangCode={translationLangCode}
+              />,
           },
         ],
       },
@@ -57,13 +83,11 @@ export default class MyAccount extends React.Component {
         ],
       },
     ];
-  }
 
-  render() {
     return (
       <SettingsWrapper
         title="My Account"
-        dataSrc={this.dataSource()}
+        dataSrc={dataSource}
       />
     );
   }

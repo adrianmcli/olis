@@ -1,3 +1,5 @@
+// Deprecated as of 2016-03-11
+
 import React from 'react';
 import R from 'ramda';
 import LangCodes from '/lib/constants/lang_codes';

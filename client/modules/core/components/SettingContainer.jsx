@@ -2,6 +2,13 @@ import React from 'react';
 
 export default class SettingContainer extends React.Component {
 
+  componentDidMount() {
+    // setTimeout(() => {
+    const { onShow } = this.props;
+    if (onShow) {onShow();}
+    // }, 250);
+  }
+
   render() {
 
     const { title, children } = this.props;
@@ -9,7 +16,7 @@ export default class SettingContainer extends React.Component {
     const containerStyle = {
       width: '100%',
       height: '100%',
-      padding: '0 20px 20px',
+      padding: '0 28px 20px',
       color: '#9e9e9e',
     };
 
