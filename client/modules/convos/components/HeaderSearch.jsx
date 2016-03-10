@@ -19,7 +19,10 @@ export default class HeaderSearch extends React.Component {
   }
 
   handleOpen() {
-    this.setState({open: true});
+    this.setState({
+      open: true,
+      emptyQuery: true,
+    });
   }
 
   handleClose() {
@@ -115,7 +118,7 @@ export default class HeaderSearch extends React.Component {
             ref={ x => this._searchField = x }
           />
         </div>
-        <div style={{marginTop: '72px'}}>
+        <div style={{marginTop: '72px', height: '200px'}}>
           { this.state.emptyQuery ? renderEmptyPlaceholder() : this.renderResultsContainer() }
         </div>
       </Dialog>
