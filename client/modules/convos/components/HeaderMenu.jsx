@@ -55,6 +55,41 @@ class HeaderMenu extends React.Component {
     }, 200);
   }
 
+  renderMyAccountMenuItem() {
+    const { username, goToMyAccount, profileImageUrl } = this.props;
+    return (
+      <MenuItem style={{paddingTop: '12px',paddingBottom: '12px'}} onClick={goToMyAccount}>
+        <div style={{display: 'flex'}}>
+          <AvatarWithDefault size={72} avatarSrc={profileImageUrl} username={username} />
+          <div style={{padding: '12px'}}>
+            <div className="menu-name">{username}</div>
+            <div className="menu-my-account">My Account</div>
+          </div>
+        </div>
+      </MenuItem>
+    );
+  }
+
+  renderLogout() {
+    const { logout } = this.props;
+    return (
+      <MenuItem innerDivStyle={{background: 'white'}}>
+        <div style={{display: 'flex'}}>
+          <RaisedButton
+            label="Logout"
+            primary={true}
+            style={{lineHeight: '36px'}}
+            labelStyle={{verticalAlign: 'middle'}}
+            labelPosition="before"
+            icon={<LogoutIcon />}
+            fullWidth
+            onClick={logout}
+          />
+        </div>
+      </MenuItem>
+    );
+  }
+
   renderDialogs() {
     return (
       <div>
@@ -70,9 +105,45 @@ class HeaderMenu extends React.Component {
     );
   }
 
+  renderMenu() {
+    const { isAdmin, goToTeamSettings } = this.props;
+    return (
+      <Menu
+        className="header-menu"
+        style={{position: 'relative'}}
+        zDepth={0}
+        onItemTouchTap={this.handleItemTouchTap.bind(this)}
+      >
+        { this.renderMyAccountMenuItem() }
+        <Divider />
+        <MenuItem
+          primaryText="Invite to team"
+          leftIcon={<AddPersonIcon />}
+          onClick={this.openInviteToTeam.bind(this)}
+        />
+        <MenuItem
+          primaryText="Team directory"
+          leftIcon={<TeamDirIcon />}
+          onClick={this.openTeamDirectory.bind(this)}
+        />
+        <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled />
+        {isAdmin ?
+          <MenuItem
+            primaryText="Team settings"
+            leftIcon={<TeamSettingsIcon />}
+            onClick={goToTeamSettings}
+          />
+          :
+          null
+        }
+        <Divider />
+        { this.renderLogout() }
+      </Menu>
+    );
+  }
+
   render() {
-    const {username, profileImageUrl, teamName, logout, 
-      goToMyAccount, goToTeamSettings, isAdmin} = this.props;
+    const { teamName } = this.props;
     return (
       <div style={{flexGrow: '1'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
@@ -87,58 +158,7 @@ class HeaderMenu extends React.Component {
           useLayerForClickAway={false}
           onRequestClose={this.handleClose.bind(this)}
         >
-          <Menu
-            className="header-menu"
-            style={{position: 'relative'}}
-            zDepth={0}
-            onItemTouchTap={this.handleItemTouchTap.bind(this)}
-          >
-            <MenuItem style={{paddingTop: '12px',paddingBottom: '12px'}} onClick={goToMyAccount}>
-              <div style={{display: 'flex'}}>
-                <AvatarWithDefault size={72} avatarSrc={profileImageUrl} username={username} />
-                <div style={{padding: '12px'}}>
-                  <div className="menu-name">{username}</div>
-                  <div className="menu-my-account">My Account</div>
-                </div>
-              </div>
-            </MenuItem>
-            <Divider />
-            <MenuItem
-              primaryText="Invite to team"
-              leftIcon={<AddPersonIcon />}
-              onClick={this.openInviteToTeam.bind(this)}
-            />
-            <MenuItem
-              primaryText="Team directory"
-              leftIcon={<TeamDirIcon />}
-              onClick={this.openTeamDirectory.bind(this)}
-            />
-            <MenuItem primaryText="Team info" leftIcon={<TeamInfoIcon />} disabled />
-            {isAdmin ?
-              <MenuItem
-                primaryText="Team settings"
-                leftIcon={<TeamSettingsIcon />}
-                onClick={goToTeamSettings}
-              />
-              :
-              null
-            }
-            <Divider />
-            <MenuItem innerDivStyle={{background: 'white'}}>
-              <div style={{display: 'flex'}}>
-                <RaisedButton
-                  label="Logout"
-                  primary={true}
-                  style={{lineHeight: '36px'}}
-                  labelStyle={{verticalAlign: 'middle'}}
-                  labelPosition="before"
-                  icon={<LogoutIcon />}
-                  fullWidth
-                  onClick={logout}
-                />
-              </div>
-            </MenuItem>
-          </Menu>
+          { this.renderMenu() }
         </Popover>
       </div>
     );
