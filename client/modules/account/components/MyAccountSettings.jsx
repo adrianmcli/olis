@@ -266,7 +266,7 @@ export class TranslateLanguage extends React.Component {
     return (
       <SettingContainer title='Translation Language'>
         <p>Select one of the following languages that you understand best:</p>
-        <SelectField value={this.state.value} onChange={this.handleChange.bind(this)}>
+        <SelectField value={this.state.value} onChange={this.handleChange.bind(this)} maxHeight={300}>
           {this.langCodeArr.map(code => {
             return <MenuItem key={code} value={code} primaryText={LangCodes[code]} />;
           })}
