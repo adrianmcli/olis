@@ -96,6 +96,7 @@ export default class MyAccount extends React.Component {
       <SettingsWrapper
         title="My Account"
         dataSrc={dataSource}
+        handleBack={goToChat}
       />
     );
   }

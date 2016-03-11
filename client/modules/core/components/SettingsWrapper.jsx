@@ -104,7 +104,7 @@ export default class SettingsWrapper extends React.Component {
 
   render() {
 
-    const { title, dataSrc } = this.props;
+    const { title, dataSrc, handleBack } = this.props;
 
     const containerStyle = {
       background: "url('http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/geometry.png')",
@@ -162,6 +162,7 @@ export default class SettingsWrapper extends React.Component {
             label="Back"
             secondary={true}
             icon={ <BackIcon /> }
+            onTouchTap={ handleBack }
           />
         </div>
       </div>

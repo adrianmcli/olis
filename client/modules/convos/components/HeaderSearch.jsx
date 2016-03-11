@@ -4,6 +4,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import ActionSearch from 'material-ui/lib/svg-icons/action/search';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
+import Loading from '/client/modules/core/components/Loading.jsx';
 
 import TextField from 'material-ui/lib/text-field';
 import CircularProgress from 'material-ui/lib/circular-progress';
@@ -55,7 +56,7 @@ export default class HeaderSearch extends React.Component {
           alignItems: 'center',
           paddingTop: '36px',
         }}>
-          <CircularProgress />
+          <Loading spinnerName='cube-grid' />
           <h4 style={{fontWeight: '400', lineHeight: '1.6em', color: '#00BCD4'}}>
             Searching...
           </h4>
