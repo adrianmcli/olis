@@ -40,6 +40,6 @@ AvatarWithDefault.defaultProps = {
   size: 40,
   username: 'Nicky Cage',
   onClick: () => console.log('avatar has been clicked'),
-  pointer: true,
+  pointer: false,
   isInListItem: false,
 };

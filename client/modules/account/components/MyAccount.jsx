@@ -3,6 +3,7 @@ import React from 'react';
 import SettingsWrapper from '/client/modules/core/components/SettingsWrapper.jsx';
 
 import { Username, Password, Email, TranslateLanguage } from './MyAccountSettings.jsx';
+import { ProfilePic } from './MyAccountProfile.jsx';
 
 export default class MyAccount extends React.Component {
 
@@ -81,7 +82,12 @@ export default class MyAccount extends React.Component {
           {
             label: 'Profile Picture',
             icon: 'face',
-            content: <div>Change Profile Picture</div>,
+            content:
+              <ProfilePic
+                username={username}
+                uploadImage={uploadImage}
+                profileImageUrl={profileImageUrl}
+              />,
           },
           {
             label: 'Blurb',
