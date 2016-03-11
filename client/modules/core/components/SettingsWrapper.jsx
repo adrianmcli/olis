@@ -119,6 +119,8 @@ export default class SettingsWrapper extends React.Component {
       width: '770px',
       height: '500px',
       display: 'flex',
+      position: 'relative',
+      overflow: 'hidden'
     };
 
     const sidebarStyle = {
@@ -153,6 +155,7 @@ export default class SettingsWrapper extends React.Component {
               { this.generateListFromData.bind(this)(dataSrc) }
             </div>
           </div>
+          <div className="settings-shadow-container"></div>
           <div style={mainSettingsStyle} className="settings-main">
             { this.renderMainComponent.bind(this)() }
           </div>
