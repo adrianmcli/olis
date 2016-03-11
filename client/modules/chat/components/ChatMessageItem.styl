@@ -18,7 +18,6 @@ meta-font-color = #efefef - 50%
     display flex
     display -webkit-flex
     position relative
-    // background green
   .chat-avatar
     padding 0 6px 6px
     flex-shrink 0
@@ -29,8 +28,14 @@ meta-font-color = #efefef - 50%
     font-size 14px
     font-weight 300
     background bubble-color
-    & > *
-      margin 0
+    & > div > *
+      
+      &:first-child
+        margin-top 0
+      
+      &:last-child
+        margin-bottom 0
+
     &:after
       content ''
       position absolute
@@ -52,6 +57,19 @@ meta-font-color = #efefef - 50%
     position absolute
     left 0
     white-space no-wrap
+  
+  // p
+  //   margin-top 0px
+  //   margin-bottom 8px
+    
+  //   &:first-of-type
+  //     margin-bottom 0
+    
+  //   &:only-of-type
+  //     margin 0
+    
+  //   &:last-of-type
+  //     margin-bottom 0
     
   
   &.you

@@ -49,6 +49,7 @@ export default class ChatContainer extends React.Component {
       const text = e.target.value;
       addMsg(text);
       e.target.value = '';
+      setTimeout(this.scrollToBottom(), 100);
     }
   }
 
