@@ -15,7 +15,8 @@ export default class SettingsWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mainContent: () => this.defaultContent(),
+      i: null,
+      j: null,
     };
   }
 
@@ -56,7 +57,7 @@ export default class SettingsWrapper extends React.Component {
 
   generateListFromData(sourceData) {
 
-    const _renderListItems = (srcArray) => {
+    const _renderListItems = (srcArray, i) => {
       return srcArray.map((listItem, j) => {
         const { label, icon, content } = listItem;
         return (
@@ -65,7 +66,8 @@ export default class SettingsWrapper extends React.Component {
             primaryText={ label }
             innerDivStyle={{color: 'white'}}
             leftIcon={ this.renderMenuItemIcon.bind(this)( icon ) }
-            onClick={() => this.setState({mainContent: () => content})}
+            onClick={() => this.setState({i, j})}
+            // onClick={() => this.setState({mainContent: content})}
           />
         );
       });
@@ -82,12 +84,23 @@ export default class SettingsWrapper extends React.Component {
           nestedListStyle={{background: 'transparent'}}
           primaryTogglesNestedList={true}
           autoGenerateNestedIndicator={false}
-          nestedItems={ _renderListItems(listItems) }
+          nestedItems={ _renderListItems(listItems, i) }
         />
       );
     });
 
     return (<List style={{backgroundColor: 'transparent'}}>{result}</List>);
+  }
+
+  renderMainComponent() {
+    const { dataSrc } = this.props;
+    const i = this.state.i;
+    const j = this.state.j;
+
+    if (i !== null) {
+      return dataSrc[i].listItems[j].content;
+    }
+    return this.defaultContent();
   }
 
   render() {
@@ -142,7 +155,7 @@ export default class SettingsWrapper extends React.Component {
             </div>
           </div>
           <div style={mainSettingsStyle} className="settings-main">
-            { this.state.mainContent() }
+            { this.renderMainComponent.bind(this)() }
           </div>
         </Paper>
         <div style={backButtonStyle}>
