@@ -5,6 +5,9 @@ import FontIcon from 'material-ui/lib/font-icon';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 
+import RaisedButton from 'material-ui/lib/raised-button';
+import BackIcon from 'material-ui/lib/svg-icons/navigation/arrow-back';
+
 // import DownIcon from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 
 export default class SettingsWrapper extends React.Component {
@@ -55,12 +58,14 @@ export default class SettingsWrapper extends React.Component {
 
     const _renderListItems = (srcArray) => {
       return srcArray.map((listItem, j) => {
+        const { label, icon, content } = listItem;
         return (
           <ListItem
             key={ j }
-            primaryText={ listItem.label }
+            primaryText={ label }
             innerDivStyle={{color: 'white'}}
-            onClick={() => this.setState({mainContent: () => listItem.content})}
+            leftIcon={ this.renderMenuItemIcon.bind(this)( icon ) }
+            onClick={() => this.setState({mainContent: () => content})}
           />
         );
       });
@@ -99,18 +104,20 @@ export default class SettingsWrapper extends React.Component {
     };
 
     const paperStyle = {
-      width: '720px',
+      width: '770px',
       height: '500px',
       display: 'flex',
     };
 
     const sidebarStyle = {
-      width: '280px',
+      width: '330px',
       height: '100%',
       backgroundColor: '#2f3f70',
       color: 'white',
       display: 'flex',
       flexDirection: 'column',
+      paddingLeft: '25px',
+      paddingRight: '25px',
     };
 
     const mainSettingsStyle = {
@@ -118,11 +125,18 @@ export default class SettingsWrapper extends React.Component {
       height: '100%',
     };
 
+    const backButtonStyle = {
+      position: 'fixed',
+      top: '30px',
+      left: '40px',
+    };
+
     return (
       <div style={containerStyle}>
         <Paper style={paperStyle} zDepth={3}>
           <div style={sidebarStyle} className="settings-sidebar">
             <h1 style={{margin: '30px 24px 20px'}}>{ title }</h1>
+            <hr className="fancy-line" />
             <div style={{flexGrow: '1', overflowY: 'scroll'}}>
               { this.generateListFromData.bind(this)(dataSrc) }
             </div>
@@ -131,6 +145,13 @@ export default class SettingsWrapper extends React.Component {
             { this.state.mainContent() }
           </div>
         </Paper>
+        <div style={backButtonStyle}>
+          <RaisedButton
+            label="Back"
+            secondary={true}
+            icon={ <BackIcon /> }
+          />
+        </div>
       </div>
     );
   }

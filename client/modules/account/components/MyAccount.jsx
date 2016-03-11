@@ -23,6 +23,7 @@ export default class MyAccount extends React.Component {
         listItems: [
           {
             label: 'Username',
+            icon: 'person',
             content:
               <Username
                 username={username}
@@ -31,6 +32,7 @@ export default class MyAccount extends React.Component {
           },
           {
             label: 'Password',
+            icon: 'lock',
             content:
               <Password
                 changePassword={changePassword}
@@ -38,6 +40,7 @@ export default class MyAccount extends React.Component {
           },
           {
             label: 'Email',
+            icon: 'email',
             content:
               <Email
                 email={email}
@@ -45,7 +48,8 @@ export default class MyAccount extends React.Component {
               />,
           },
           {
-            label: 'Translation Language',
+            label: 'Translation',
+            icon: 'language',
             content:
               <TranslateLanguage
                 setTranslationLanguage={setTranslationLanguage}
@@ -60,24 +64,28 @@ export default class MyAccount extends React.Component {
         listItems: [
           {
             label: 'Email Settings',
+            icon: 'mail_outline',
             content: <div>Email Notification Settings</div>,
           },
           {
             label: 'Mute Alerts',
+            icon: 'volume_off',
             content: <div>Mute Alerts</div>,
           },
         ],
       },
       {
         label: 'Profile',
-        icon: 'face',
+        icon: 'account_box',
         listItems: [
           {
             label: 'Profile Picture',
+            icon: 'face',
             content: <div>Change Profile Picture</div>,
           },
           {
             label: 'Blurb',
+            icon: 'chat_bubble',
             content: <div>Edit Blurb</div>,
           },
         ],
