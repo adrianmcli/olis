@@ -7,7 +7,6 @@ import Dialog from '/client/modules/core/components/Dialog.jsx';
 import Loading from '/client/modules/core/components/Loading.jsx';
 
 import TextField from 'material-ui/lib/text-field';
-import CircularProgress from 'material-ui/lib/circular-progress';
 
 export default class HeaderSearch extends React.Component {
 
