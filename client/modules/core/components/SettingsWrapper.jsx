@@ -59,15 +59,14 @@ export default class SettingsWrapper extends React.Component {
 
     const _renderListItems = (srcArray, i) => {
       return srcArray.map((listItem, j) => {
-        const { label, icon, content } = listItem;
+        const { label, icon } = listItem;
         return (
           <ListItem
             key={ j }
             primaryText={ label }
             innerDivStyle={{color: 'white'}}
             leftIcon={ this.renderMenuItemIcon.bind(this)( icon ) }
-            onClick={() => this.setState({i, j})}
-            // onClick={() => this.setState({mainContent: content})}
+            onTouchTap={() => this.setState({i, j})}
           />
         );
       });
