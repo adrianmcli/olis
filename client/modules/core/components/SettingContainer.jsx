@@ -15,7 +15,7 @@ export default class SettingContainer extends React.Component {
 
     const containerStyle = {
       width: '100%',
-      height: '100%',
+      // height: '100%',
       padding: '0 28px 20px',
       color: '#9e9e9e',
     };

@@ -137,6 +137,7 @@ export default class SettingsWrapper extends React.Component {
     const mainSettingsStyle = {
       width: '440px',
       height: '100%',
+      overflowY: 'scroll',
     };
 
     const backButtonStyle = {

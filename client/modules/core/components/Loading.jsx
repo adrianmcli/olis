@@ -4,7 +4,7 @@ export default class Loading extends React.Component {
 
   renderFoldingCube() {
     return (
-      <div className="sk-folding-cube">
+      <div className="sk-folding-cube" style={this.props.style}>
         <div className="sk-cube1 sk-cube"></div>
         <div className="sk-cube2 sk-cube"></div>
         <div className="sk-cube4 sk-cube"></div>
@@ -15,7 +15,7 @@ export default class Loading extends React.Component {
 
   renderCubeGrid() {
     return (
-      <div className="sk-cube-grid">
+      <div className="sk-cube-grid" style={this.props.style}>
         <div className="sk-cube sk-cube1"></div>
         <div className="sk-cube sk-cube2"></div>
         <div className="sk-cube sk-cube3"></div>
@@ -35,13 +35,13 @@ export default class Loading extends React.Component {
 
     switch (spinnerName) {
       case 'cube-grid':
-        result = this.renderCubeGrid();
+        result = this.renderCubeGrid.bind(this)();
         break;
       case 'folding-cube':
-        result = this.renderFoldingCube();
+        result = this.renderFoldingCube.bind(this)();
         break;
       default:
-        result = this.renderCubeGrid();
+        result = this.renderCubeGrid.bind(this)();
     }
 
     return result;
