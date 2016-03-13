@@ -14,22 +14,22 @@ export default class Registration extends React.Component {
       {
         title: 'Your Email Address',
         description: 'Enter an email address',
-        content: <CreateAccountEmail />,
+        content: <CreateAccountEmail key={1} />,
       },
       {
         title: 'Your User Name',
         description: 'Choose a user name',
-        content: <CreateAccountUsername />,
+        content: <CreateAccountUsername key={2} />,
       },
       {
         title: 'Your Team',
         description: 'Choose a team name',
-        content: <CreateAccountTeamName />,
+        content: <CreateAccountTeamName key={3} />,
       },
       {
         title: 'Invite Teammates',
         description: 'Invite teammates',
-        content: <CreateAccountInviteTeammates />,
+        content: <CreateAccountInviteTeammates key={4} />,
       },
       {
         title: 'Get Ready',

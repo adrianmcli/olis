@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Paper from 'material-ui/lib/paper';
+import ReactCSSTransitionReplace from 'react-css-transition-replace';
 
 export default class OnboardingWrapper extends React.Component {
 
@@ -80,7 +81,10 @@ export default class OnboardingWrapper extends React.Component {
           <div className="onboarding-main">
             <div style={contentContainerStyle}>
               <h1 style={titleStyle}> { title } </h1>
-              { content }
+              <ReactCSSTransitionReplace transitionName="fade-wait" 
+                               transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
+                { content }
+              </ReactCSSTransitionReplace>
             </div>
           </div>
         </Paper>
