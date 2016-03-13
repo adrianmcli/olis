@@ -78,26 +78,18 @@ export default class CreateAccountInviteTeammates extends React.Component {
     }
 
     return (
-      <PageWrapper
-        title="Invite Teammates"
-        description="Enter the email addresses of the teammates you want to invite. You can always invite more teammates later."
-        showDescription={true}
-        backButton={true}
-        backButtonLabel='Back'
-        fullHeight={false}
-        width="420px"
-        handleBackButtonPress={goBack}
-      >
+      <div>
+        <p>Enter the email addresses of teammates you want to invite. You can always invite more teammates later.</p>
         {inputs}
         <p style={{opacity: '0.5'}}><em>This step is optional, you can always do this later.</em></p>
-        <div style={{margin: '14px 0'}}>
+        <div style={{margin: '24px 0'}}>
           <RaisedButton
             label="Finish"
             primary={true}
             onClick={this.handleInviteClick.bind(this)}
           />
         </div>
-      </PageWrapper>
+      </div>
     );
   }
 }

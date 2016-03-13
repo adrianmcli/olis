@@ -27,6 +27,7 @@ export default class MyAccount extends React.Component {
             icon: 'person',
             content:
               <Username
+                key={1}
                 username={username}
                 setUsername={setUsername}
               />,
@@ -36,6 +37,7 @@ export default class MyAccount extends React.Component {
             icon: 'lock',
             content:
               <Password
+                key={2}
                 changePassword={changePassword}
               />,
           },
@@ -44,6 +46,7 @@ export default class MyAccount extends React.Component {
             icon: 'email',
             content:
               <Email
+                key={3}
                 email={email}
                 setEmail={setEmail}
               />,
@@ -53,6 +56,7 @@ export default class MyAccount extends React.Component {
             icon: 'language',
             content:
               <TranslateLanguage
+                key={4}
                 setTranslationLanguage={setTranslationLanguage}
                 translationLangCode={translationLangCode}
               />,

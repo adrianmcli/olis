@@ -11,15 +11,26 @@ import FindMyTeam from './containers/find_my_team';
 import Login from './containers/login';
 import MyAccount from './containers/my_account';
 
+import Registration from './components/onboarding/Registration.jsx';
+
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
   FlowRouter.route('/register', {
     name: 'register',
-    triggersEnter: [ function (context, redirect) {
-      redirect('/register/email');
-    } ]
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Registration />)
+      });
+    }
   });
+
+  // FlowRouter.route('/register', {
+  //   name: 'register',
+  //   triggersEnter: [ function (context, redirect) {
+  //     redirect('/register/email');
+  //   } ]
+  // });
 
   FlowRouter.route('/register/email', {
     name: 'register-email',

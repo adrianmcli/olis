@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import CreateAccountTeamName from '../components/on-boarding/CreateAccountTeamName.jsx';
+import CreateAccountTeamName from '../components/onboarding/CreateAccountTeamName.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,

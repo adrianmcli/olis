@@ -8,6 +8,8 @@ import ListItem from 'material-ui/lib/lists/list-item';
 import RaisedButton from 'material-ui/lib/raised-button';
 import BackIcon from 'material-ui/lib/svg-icons/navigation/arrow-back';
 
+import ReactCSSTransitionReplace from 'react-css-transition-replace';
+
 // import DownIcon from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 
 export default class SettingsWrapper extends React.Component {
@@ -158,7 +160,10 @@ export default class SettingsWrapper extends React.Component {
           </div>
           <div className="settings-shadow-container"></div>
           <div style={mainSettingsStyle} className="settings-main">
+          <ReactCSSTransitionReplace transitionName="fade-wait" 
+                               transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
             { this.renderMainComponent.bind(this)() }
+            </ReactCSSTransitionReplace>
           </div>
         </Paper>
         <div style={backButtonStyle}>
