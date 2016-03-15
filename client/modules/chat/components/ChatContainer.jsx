@@ -1,12 +1,12 @@
 import React from 'react';
 
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
-import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
 import FilledStarIcon from 'material-ui/lib/svg-icons/toggle/star';
 import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
+
+import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
+import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
 import ChatMessageItem from './ChatMessageItem.jsx';
@@ -16,7 +16,8 @@ export default class ChatContainer extends React.Component {
     super(props);
     this.state = {
       distanceFromBottom: 0,
-      distanceFromTop: 0
+      distanceFromTop: 0,
+      chatMembersOpen: false,
     };
   }
 
@@ -51,6 +52,9 @@ export default class ChatContainer extends React.Component {
     }
   }
 
+  openChatMembers() {this.setState({chatMembersOpen: true});}
+  closeChatMembers() {this.setState({chatMembersOpen: false});}
+
   scrollToBottom() {
     const ele = $(this._container);
     ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
@@ -69,7 +73,7 @@ export default class ChatContainer extends React.Component {
     return (
       <div id="chat-container">
         <div id="chat-header">
-          <div className="header-body">
+          <div className="header-body" onClick={this.openChatMembers.bind(this)}>
             <div className="chat-title">
               {title}
             </div>
@@ -83,21 +87,12 @@ export default class ChatContainer extends React.Component {
             </IconButton>
           </div>
           <div className="header-icon">
-            <IconMenu
-              iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            >
-              <MenuItem primaryText="Add people to chat" />
-              <MenuItem primaryText="Change chat title" />
-              <MenuItem primaryText="Archive chat" />
-              <MenuItem primaryText="Chat info" />
-            </IconMenu>
+            <ChatMenu />
           </div>
         </div>
 
         <div id="chat-msg-area" ref={(x) => this._container = x}>
-          <button onClick={loadMore}>Load more messages</button>
+          <div id="load-more-btn" onClick={loadMore}>Load more messages</div>
           {msgs.map(msg => {
             const otherUser = convoUsers[msg.userId];
             const authorName = otherUser ? otherUser.username : undefined;
@@ -127,6 +122,11 @@ export default class ChatContainer extends React.Component {
           />
           </div>
         </div>
+
+        <ChatMembers
+          open={this.state.chatMembersOpen}
+          onRequestClose={this.closeChatMembers.bind(this)}
+        />
       </div>
     );
   }

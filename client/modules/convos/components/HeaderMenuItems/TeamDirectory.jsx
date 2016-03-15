@@ -1,0 +1,25 @@
+import React from 'react';
+
+import Dialog from '/client/modules/core/components/Dialog.jsx';
+import PeopleList from '/client/modules/core/components/PeopleList.jsx';
+
+export default class TeamDirectory extends React.Component {
+
+
+  render() {
+    return (
+      <Dialog
+        title="Team Directory"
+        open={this.props.open}
+        onRequestClose={this.props.onRequestClose}
+        closeActionOnly
+        width={600}
+        actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
+        bodyStyle={{padding: '0'}}
+        onShow={() => {this._peopleList.focusSearchBar();}}
+      >
+        <PeopleList ref={ x => this._peopleList = x }/>
+      </Dialog>
+    );
+  }
+}
