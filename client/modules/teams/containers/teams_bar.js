@@ -10,7 +10,7 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, Collections, LocalState} = context();
+  const {Meteor, Collections, LocalState, FlowRouter} = context();
 
   const teamId = LocalState.get('teamId');
   const convoId = LocalState.get('convoId');
@@ -35,7 +35,7 @@ export const composer = ({context}, onData) => {
 
     onData(null, {
       teams,
-      teamId: LocalState.get('teamId'),
+      teamId: FlowRouter.getParam('teamId'),
       notificationsByTeam
     });
   }

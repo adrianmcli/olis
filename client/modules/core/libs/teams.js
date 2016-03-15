@@ -1,21 +1,19 @@
 import ConvoUtils from '/client/modules/core/libs/convos';
 
 export default {
-  select({LocalState, Meteor}, teamId) {
-    const prevTeamId = LocalState.get('teamId');
-    if (prevTeamId) {
-      Meteor.call('account.setLastTimeInTeam', {teamId: prevTeamId}, (err) => {
-        if (err) { alert(err); }
-      });
-    }
+  // select({FlowRouter}, teamId) {
+  //   // Set last time in prev team
+  //   // Set last time in new team
+  //   // Select null convo
 
-    LocalState.set('teamId', teamId);
+  //   FlowRouter.go(`/team/${teamId}`);
+  // },
+
+  setLastTimeInTeam({Meteor}, teamId) {
     if (teamId) {
       Meteor.call('account.setLastTimeInTeam', {teamId}, (err) => {
         if (err) { alert(err); }
       });
     }
-
-    ConvoUtils.select({Meteor, LocalState}, null);
   }
 };
