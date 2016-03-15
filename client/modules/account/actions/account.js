@@ -112,15 +112,6 @@ export default {
   },
 
   resetPassword({Meteor, FlowRouter}, token, pwd1, pwd2) {
-    function _validate(password) {
-      return new Promise((resolve, reject) => {
-        Meteor.call('account.validatePassword', {password}, (err) => {
-          if (err) { reject(err); }
-          else { resolve(password); }
-        });
-      });
-    }
-
     function _reset(newPassword) {
       return new Promise((resolve, reject) => {
         Accounts.resetPassword(token, newPassword, (err) => {
@@ -136,8 +127,7 @@ export default {
       }
 
       const newPassword = pwd1;
-      _validate(newPassword)
-      .then(_reset)
+      _reset(newPassword)
       .then(() => FlowRouter.go('/home'))
       .catch((err) => alert(err));
     }
