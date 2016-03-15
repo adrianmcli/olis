@@ -39,10 +39,6 @@ export const composer = ({context}, onData) => {
       notificationsByTeam
     });
   }
-  else {
-    onData(null, {
-    });
-  }
 };
 
 export default composeAll(
