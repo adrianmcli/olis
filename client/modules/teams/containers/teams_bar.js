@@ -10,10 +10,10 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, Collections, LocalState, FlowRouter} = context();
+  const {Meteor, Collections, FlowRouter} = context();
 
-  const teamId = LocalState.get('teamId');
-  const convoId = LocalState.get('convoId');
+  const teamId = FlowRouter.getParam('teamId');
+  const convoId = FlowRouter.getParam('convoId');
 
   function mergeTeamId(selectObj) {
     if (teamId) { return R.merge(selectObj, {teamId: {$ne: teamId}}); }
@@ -35,7 +35,7 @@ export const composer = ({context}, onData) => {
 
     onData(null, {
       teams,
-      teamId: FlowRouter.getParam('teamId'),
+      teamId,
       notificationsByTeam
     });
   }

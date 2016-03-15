@@ -11,8 +11,8 @@ export const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context, actions}, onData) => {
-  const {Meteor, LocalState, Collections} = context();
-  const convoId = LocalState.get('convoId');
+  const {Meteor, FlowRouter, Collections} = context();
+  const convoId = FlowRouter.getParam('convoId');
 
   let note = {};
   let sections = [];

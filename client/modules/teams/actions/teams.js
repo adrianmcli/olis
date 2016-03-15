@@ -37,16 +37,16 @@ export default {
     FlowRouter.go('/home');
   },
 
-  setName({Meteor, LocalState}, name) {
-    const teamId = LocalState.get('teamId');
+  setName({Meteor, FlowRouter}, name) {
+    const teamId = FlowRouter.getParam('teamId');
     Meteor.call('teams.setName', {teamId, name}, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
     });
   },
 
-  setUserRole({Meteor, LocalState}, userId, role) {
-    const teamId = LocalState.get('teamId');
+  setUserRole({Meteor, FlowRouter}, userId, role) {
+    const teamId = FlowRouter.getParam('teamId');
     Meteor.call('teams.setUserRole', {teamId, changeUserId: userId, role}, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
