@@ -53,8 +53,8 @@ export default {
     });
   },
 
-  invite({Meteor, LocalState}, inviteEmails, callback) {
-    const teamId = LocalState.get('teamId');
+  invite({Meteor, LocalState, FlowRouter}, inviteEmails, callback) {
+    const teamId = FlowRouter.getParam('teamId');
 
     try {
       let numNonEmpty = 0;
