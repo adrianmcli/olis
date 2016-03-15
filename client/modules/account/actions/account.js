@@ -17,7 +17,10 @@ export default {
 
       Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
         if (err) { alert(err); }
-        else { FlowRouter.go('/home'); }
+        else {
+          const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+          FlowRouter.go(`/team/${teamId}`);
+        }
       });
     }
     catch (e) { alert(e); }

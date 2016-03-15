@@ -60,7 +60,9 @@ export default {
   getMostRecentTeamId({Meteor}) {
     const user = Meteor.user();
     if (!user) { return null; }
-    if (!user.lastTimeInTeam) { return null; }
+    if (!user.lastTimeInTeam) {
+      return null;
+    }
 
     const pairs = R.toPairs(user.lastTimeInTeam);
     const sortByDate = R.sortBy(R.prop(1));

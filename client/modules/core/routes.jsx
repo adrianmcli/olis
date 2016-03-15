@@ -15,17 +15,20 @@ export default function (injectDeps, {Meteor, LocalState, FlowRouter}) {
     if (!Meteor.userId()) { redirect('/login'); }
   }
 
-  FlowRouter.route('/home', {
-    name: 'home',
+  FlowRouter.route('/team/:teamId', {
+    name: 'team',
     triggersEnter: [ ensureSignedIn ],
-    action() {
-      if (!LocalState.get('ignoreDefaultTeamAndConvo')) {
-        const teamId = AccountUtils.getMostRecentTeamId({Meteor});
-        const convoId = AccountUtils.getMostRecentConvoId({Meteor});
+    action(params) {
+      // if (!LocalState.get('ignoreDefaultTeamAndConvo')) {
+      //   const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+      //   const convoId = AccountUtils.getMostRecentConvoId({Meteor});
 
-        if (teamId) { TeamUtils.select({LocalState, Meteor}, teamId); }
-        if (convoId) { ConvoUtils.select({LocalState, Meteor}, convoId); }
-      }
+      //   if (teamId) { TeamUtils.select({LocalState, Meteor}, teamId); }
+      //   if (convoId) { ConvoUtils.select({LocalState, Meteor}, convoId); }
+      // }
+
+      TeamUtils.select({LocalState, Meteor}, params.teamId);
+
       mount(MainLayoutCtx, {
         content: () => (<Home />)
       });
