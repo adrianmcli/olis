@@ -21,9 +21,8 @@ export default {
     });
   },
 
-  goToManageTeams({Meteor, LocalState, FlowRouter}) {
-    TeamUtils.select({Meteor, LocalState}, null);
-    FlowRouter.go('/home/teams');
+  goToManageTeams({FlowRouter}) {
+    FlowRouter.go('/teams');
   },
 
   goToTeamSettings({FlowRouter}) {
@@ -32,12 +31,6 @@ export default {
 
     if (convoId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}/settings`); }
     else { FlowRouter.go(`/team/${teamId}/settings`); }
-  },
-
-  'manageTeams.selectAndGo'({Meteor, LocalState, FlowRouter}, teamId) {
-    TeamUtils.select({Meteor, LocalState}, teamId);
-    LocalState.set('ignoreDefaultTeamAndConvo', true);
-    FlowRouter.go('/home');
   },
 
   setName({Meteor, FlowRouter}, name) {

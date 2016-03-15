@@ -8,7 +8,7 @@ import TeamSettings from './containers/team_settings';
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
-  FlowRouter.route('/home/teams', {
+  FlowRouter.route('/teams', {
     name: 'teams',
     action() {
       mount(MainLayoutCtx, {

@@ -4,7 +4,7 @@ import R from 'ramda';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  selectTeamAndGo: actions.teams['manageTeams.selectAndGo'],
+  selectTeam: actions.teams.select,
   goToChat: actions.msgs.goToChat
 });
 

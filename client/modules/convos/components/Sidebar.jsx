@@ -46,7 +46,7 @@ export default class Sidebar extends React.Component {
               }
             }
             unread = unreadCount > 0;
-            console.log(`unreadCount ${convo._id} ${unreadCount}`);
+            // console.log(`unreadCount ${convo._id} ${unreadCount}`);
 
             return (
               <ConversationItem
