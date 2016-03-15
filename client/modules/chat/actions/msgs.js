@@ -15,6 +15,9 @@ export default {
 
   goToChat({FlowRouter}) {
     const teamId = FlowRouter.getParam('teamId');
-    FlowRouter.go(`/team/${teamId}`);
+    const convoId = FlowRouter.getParam('convoId');
+    
+    if (convoId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
+    else { FlowRouter.go(`/team/${teamId}`); }
   }
 };

@@ -25,4 +25,13 @@ export default function (injectDeps, {FlowRouter}) {
       });
     }
   });
+
+  FlowRouter.route('/team/:teamId/convo/:convoId/settings', {
+    name: 'team-settings',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<TeamSettings />)
+      });
+    }
+  });
 }
