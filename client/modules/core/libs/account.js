@@ -48,8 +48,7 @@ export default {
     _register()
     .then(_login)
     .then(_sendInvites)
-    .then(({teamId}) => TeamUtils.select({Meteor, LocalState}, teamId))
-    .then(() => FlowRouter.go('/home'))
+    .then(({teamId}) => FlowRouter.go(`/team/${teamId}`))
     .catch((err) => {
       console.log('REGISTRATION_ERROR');
       console.log(err);
