@@ -13,8 +13,8 @@ export const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, LocalState, Collections} = context();
-  const convoId = LocalState.get('convoId');
+  const {Meteor, LocalState, Collections, FlowRouter} = context();
+  const convoId = FlowRouter.getParam('convoId');
 
   // If you only see loading, make sure you added the collection to the index
   let msgs = [];
