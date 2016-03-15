@@ -13,6 +13,8 @@ import InfoIcon from 'material-ui/lib/svg-icons/action/info';
 import NoteIcon from 'material-ui/lib/svg-icons/action/note-add';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
+import RaisedButton from 'material-ui/lib/raised-button';
+
 export default class PeopleList extends React.Component {
 
   focusSearchBar() {
@@ -51,7 +53,7 @@ export default class PeopleList extends React.Component {
         position: 'relative',
       }}>
         <List style={{paddingTop: '0'}}>
-          { this.renderListItems() }
+          { this.renderListItems.bind(this)() }
         </List>
       </div>
     );
@@ -64,6 +66,7 @@ export default class PeopleList extends React.Component {
         <div>
           <ListItem
             primaryText={`nickyCage ${x}`}
+            rightIcon={x === 3 ? this.renderBadge('Admin') : null}
             secondaryText={'iamsocool@gmail.com'}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
             onClick={() => {alert(`fire an action to show me: nickyCage${x}`);}}
@@ -72,6 +75,23 @@ export default class PeopleList extends React.Component {
         </div>
       );
     });
+  }
+
+  renderBadge(text, bgColor, color) {
+    const style = {
+      width: 'auto',
+      height: 'auto',
+      position: 'absolute',
+      right: '4px',
+      padding: '4px 6px',
+      backgroundColor: bgColor ? bgColor : '#00BCD4',
+      color: color ? color : 'white',
+      borderRadius: '3px',
+      fontSize: '12px',
+    };
+    return (
+      <div style={style}>{ text }</div>
+    );
   }
 
   renderUserInfo() {
@@ -93,7 +113,7 @@ export default class PeopleList extends React.Component {
     const avatarSrc = 'https://www.placecage.com/100/100';
     return (
       <div style={containerStyle}>
-        <div style={{padding: '32px', textAlign: 'center', width: '200px'}}>
+        <div style={{padding: '32px', textAlign: 'center'}}>
           <AvatarWithDefault
             size={128}
             username={username}
@@ -101,17 +121,16 @@ export default class PeopleList extends React.Component {
           />
           <div style={{fontSize: '18px',lineHeight: '24px'}}>Nicky Cage</div>
           <div style={{fontSize: '12px',lineHeight: '16px'}}>I like tuna sandwiches.</div>
-          <div style={{display: 'flex'}}>
-            <IconButton tooltip="Private Message">
-              <ChatIcon color="rgba(0,0,0,0.7)"/>
-            </IconButton>
-            <IconButton tooltip="More Info">
-              <InfoIcon color="rgba(0,0,0,0.7)"/>
-            </IconButton>
-            <IconButton tooltip="Notes">
-              <NoteIcon color="rgba(0,0,0,0.7)"/>
-            </IconButton>
-          </div>
+          <RaisedButton
+            label="Make Admin"
+            secondary={true}
+            style={{marginTop: '12px', width: '100%'}}
+          />
+          <RaisedButton
+            label="Remove"
+            primary={true}
+            style={{marginTop: '12px', width: '100%'}}
+          />
         </div>
       </div>
     );
