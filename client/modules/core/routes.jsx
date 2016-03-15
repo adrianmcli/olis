@@ -16,11 +16,11 @@ export default function (injectDeps, {Meteor, LocalState, FlowRouter}) {
   }
 
   function setLastTimeInTeam({params}) {
-    TeamUtils.setLastTimeInTeam(params.teamId);
+    TeamUtils.setLastTimeInTeam({Meteor}, params.teamId);
   }
 
   function setLastTimeInConvo({params}) {
-    ConvoUtils.setLastTimeInConvo(params.convoId);
+    ConvoUtils.setLastTimeInConvo({Meteor}, params.convoId);
   }
 
   FlowRouter.route('/team/:teamId', {
