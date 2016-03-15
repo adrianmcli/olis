@@ -1,6 +1,7 @@
 export default {
   add({Meteor, Collections, FlowRouter}, text) {
-    Meteor.call('msgs.add', {text, convoId: FlowRouter.getParam('convoId')}, (err, res) => {
+    const convoId = FlowRouter.getParam('convoId');
+    Meteor.call('msgs.add', {text, convoId}, (err, res) => {
       if (err) { alert(err); }
       // else { console.log(res); }
     });
