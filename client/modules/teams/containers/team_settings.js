@@ -10,11 +10,11 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, LocalState, Collections} = context();
+  const {Meteor, FlowRouter, Collections} = context();
 
   let teamName;
   let teamUsers = [];
-  const teamId = LocalState.get('teamId');
+  const teamId = FlowRouter.getParam('teamId');
   let pendingInviteIds = [];
 
   if (teamId) {

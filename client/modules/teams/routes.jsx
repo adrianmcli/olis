@@ -17,7 +17,7 @@ export default function (injectDeps, {FlowRouter}) {
     }
   });
 
-  FlowRouter.route('/home/team-settings', {
+  FlowRouter.route('/team/:teamId/settings', {
     name: 'team-settings',
     action() {
       mount(MainLayoutCtx, {

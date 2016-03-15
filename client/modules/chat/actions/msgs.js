@@ -13,6 +13,7 @@ export default {
   },
 
   goToChat({FlowRouter}) {
-    FlowRouter.go('/home');
+    const teamId = FlowRouter.getParam('teamId');
+    FlowRouter.go(`/team/${teamId}`);
   }
 };

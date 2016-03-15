@@ -27,7 +27,8 @@ export default {
   },
 
   goToTeamSettings({FlowRouter}) {
-    FlowRouter.go('/home/team-settings');
+    const teamId = FlowRouter.getParam('teamId');
+    FlowRouter.go(`/team/${teamId}/settings`);
   },
 
   'manageTeams.selectAndGo'({Meteor, LocalState, FlowRouter}, teamId) {
