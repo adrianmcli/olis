@@ -60,7 +60,8 @@ export default {
     const user = Meteor.user();
     if (!user) { return null; }
     if (!user.lastTimeInTeam) {
-      return null;
+      const teamIds = R.keys(user.roles);
+      return teamIds[0];
     }
 
     const pairs = R.toPairs(user.lastTimeInTeam);
