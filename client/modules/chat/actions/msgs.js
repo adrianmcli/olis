@@ -1,3 +1,6 @@
+import MsgUtils from '/client/modules/core/libs/msgs';
+import AccountUtils from '/client/modules/core/libs/account';
+
 export default {
   add({Meteor, Collections, FlowRouter}, text) {
     const convoId = FlowRouter.getParam('convoId');
@@ -13,11 +16,12 @@ export default {
     LocalState.set('loadMore.convoNumMsgs', convoNumMsgs);
   },
 
-  goToChat({FlowRouter}) {
-    const teamId = FlowRouter.getParam('teamId');
-    const convoId = FlowRouter.getParam('convoId');
-    
-    if (convoId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
-    else { FlowRouter.go(`/team/${teamId}`); }
-  }
+  goToChat({Meteor, FlowRouter}) {
+    const teamId = FlowRouter.getParam('teamId') ?
+      FlowRouter.getParam('teamId') : AccountUtils.getMostRecentTeamId({Meteor});
+    const convoId = FlowRouter.getParam('convoId') ?
+      FlowRouter.getParam('convoId') : AccountUtils.getMostRecentConvoId({Meteor});
+
+    MsgUtils.routeToChat({FlowRouter}, teamId, convoId);
+  },
 };

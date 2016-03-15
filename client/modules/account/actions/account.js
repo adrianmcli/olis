@@ -140,8 +140,9 @@ export default {
     catch (e) { alert(e); }
   },
 
-  goToMyAccount({FlowRouter}) {
-    FlowRouter.go('/home/account');
+  goToMyAccount({Meteor, FlowRouter}) {
+    const user = Meteor.user();
+    if (user) { FlowRouter.go(`/account/${user.username}`); }
   },
 
   goToCreateAccountTeamName({FlowRouter}) {
