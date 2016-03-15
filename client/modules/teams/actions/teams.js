@@ -10,8 +10,8 @@ export default {
     });
   },
 
-  select({Meteor, LocalState}, teamId) {
-    TeamUtils.select({Meteor, LocalState}, teamId);
+  select({FlowRouter}, teamId) {
+    FlowRouter.go(`/team/${teamId}`);
   },
 
   addMembers({Meteor, LocalState}, teamId, userIds) {
