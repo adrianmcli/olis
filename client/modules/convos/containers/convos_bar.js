@@ -9,8 +9,8 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, LocalState, Collections} = context();
-  const teamId = LocalState.get('teamId');
+  const {Meteor, LocalState, Collections, FlowRouter} = context();
+  const teamId = FlowRouter.getParam('teamId');
 
   // If you only see loading, make sure you added the collection to the index
   let convos = [];
@@ -37,7 +37,7 @@ export const composer = ({context}, onData) => {
       const options = {sort: [ [ 'updatedAt', 'desc' ] ]};
 
       convos = Collections.Convos.find(selector, options).fetch();
-      convoId = LocalState.get('convoId');
+      convoId = FlowRouter.getParam('convoId');
       lastTimeInConvo = Meteor.user().lastTimeInConvo;
     }
   }

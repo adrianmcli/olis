@@ -9,7 +9,7 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, LocalState, Collections} = context();
+  const {Meteor, Collections, FlowRouter} = context();
 
   const user = Meteor.user();
   const username = user ? user.username : undefined;
@@ -17,7 +17,7 @@ export const composer = ({context}, onData) => {
   let teamName;
   let isAdmin = false;
 
-  const teamId = LocalState.get('teamId');
+  const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);

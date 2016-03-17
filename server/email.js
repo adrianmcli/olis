@@ -75,13 +75,16 @@ export default function () {
 
   // Reset password email
   Accounts.emailTemplates.resetPassword.subject = function (user) {
-    console.log('resetPassword subject');
-    console.log(user);
-    return `Olis Account Password Reset`;
+    // console.log('resetPassword subject');
+    // console.log(user);
+    if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
+      return `Set Your Olis Account Password`;
+    }
+    return `Reset Your Olis Account Password`;
   };
   Accounts.emailTemplates.resetPassword.text = function (user, url) {
-    console.log('resetPassword text');
-    console.log(user);
+    // console.log('resetPassword text');
+    // console.log(user);
 
     if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
       Meteor.users.update(user._id, {

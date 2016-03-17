@@ -1,6 +1,5 @@
 import AccountUtils from '/client/modules/core/libs/account';
-import TeamUtils from '/client/modules/core/libs/teams';
-import ConvoUtils from '/client/modules/core/libs/convos';
+import MsgUtils from '/client/modules/core/libs/msgs';
 import EmailValidator from 'email-validator';
 import R from 'ramda';
 import LangCodes from '/lib/constants/lang_codes';
@@ -17,7 +16,11 @@ export default {
 
       Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
         if (err) { alert(err); }
-        else { FlowRouter.go('/home'); }
+        else {
+          const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+          const convoId = AccountUtils.getMostRecentConvoId({Meteor});
+          MsgUtils.routeToChat({FlowRouter}, teamId, convoId);
+        }
       });
     }
     catch (e) { alert(e); }
@@ -25,8 +28,8 @@ export default {
 
   logout({Meteor, LocalState, FlowRouter}) {
     // Must be logged in to do these 2
-    TeamUtils.select({LocalState, Meteor}, null);
-    ConvoUtils.select({LocalState, Meteor}, null);
+    // TeamUtils.select({LocalState, Meteor}, null);
+    // ConvoUtils.select({LocalState, Meteor}, null);
     FlowRouter.go('/login');
 
     Meteor.logout(err => {
@@ -112,15 +115,6 @@ export default {
   },
 
   resetPassword({Meteor, FlowRouter}, token, pwd1, pwd2) {
-    function _validate(password) {
-      return new Promise((resolve, reject) => {
-        Meteor.call('account.validatePassword', {password}, (err) => {
-          if (err) { reject(err); }
-          else { resolve(password); }
-        });
-      });
-    }
-
     function _reset(newPassword) {
       return new Promise((resolve, reject) => {
         Accounts.resetPassword(token, newPassword, (err) => {
@@ -136,16 +130,19 @@ export default {
       }
 
       const newPassword = pwd1;
-      _validate(newPassword)
-      .then(_reset)
-      .then(() => FlowRouter.go('/home'))
+      _reset(newPassword)
+      .then(() => {
+        const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+        FlowRouter.go(`/team/${teamId}`);
+      })
       .catch((err) => alert(err));
     }
     catch (e) { alert(e); }
   },
 
-  goToMyAccount({FlowRouter}) {
-    FlowRouter.go('/home/account');
+  goToMyAccount({Meteor, FlowRouter}) {
+    const user = Meteor.user();
+    if (user) { FlowRouter.go(`/account/${user.username}`); }
   },
 
   goToCreateAccountTeamName({FlowRouter}) {

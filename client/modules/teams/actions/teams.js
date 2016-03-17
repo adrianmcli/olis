@@ -10,8 +10,8 @@ export default {
     });
   },
 
-  select({Meteor, LocalState}, teamId) {
-    TeamUtils.select({Meteor, LocalState}, teamId);
+  select({FlowRouter}, teamId) {
+    FlowRouter.go(`/team/${teamId}`);
   },
 
   addMembers({Meteor, LocalState}, teamId, userIds) {
@@ -21,39 +21,36 @@ export default {
     });
   },
 
-  goToManageTeams({Meteor, LocalState, FlowRouter}) {
-    TeamUtils.select({Meteor, LocalState}, null);
-    FlowRouter.go('/home/teams');
+  goToManageTeams({FlowRouter}) {
+    FlowRouter.go('/teams');
   },
 
   goToTeamSettings({FlowRouter}) {
-    FlowRouter.go('/home/team-settings');
+    const teamId = FlowRouter.getParam('teamId');
+    const convoId = FlowRouter.getParam('convoId');
+
+    if (convoId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}/settings`); }
+    else { FlowRouter.go(`/team/${teamId}/settings`); }
   },
 
-  'manageTeams.selectAndGo'({Meteor, LocalState, FlowRouter}, teamId) {
-    TeamUtils.select({Meteor, LocalState}, teamId);
-    LocalState.set('ignoreDefaultTeamAndConvo', true);
-    FlowRouter.go('/home');
-  },
-
-  setName({Meteor, LocalState}, name) {
-    const teamId = LocalState.get('teamId');
+  setName({Meteor, FlowRouter}, name) {
+    const teamId = FlowRouter.getParam('teamId');
     Meteor.call('teams.setName', {teamId, name}, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
     });
   },
 
-  setUserRole({Meteor, LocalState}, userId, role) {
-    const teamId = LocalState.get('teamId');
+  setUserRole({Meteor, FlowRouter}, userId, role) {
+    const teamId = FlowRouter.getParam('teamId');
     Meteor.call('teams.setUserRole', {teamId, changeUserId: userId, role}, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
     });
   },
 
-  invite({Meteor, LocalState}, inviteEmails, callback) {
-    const teamId = LocalState.get('teamId');
+  invite({Meteor, LocalState, FlowRouter}, inviteEmails, callback) {
+    const teamId = FlowRouter.getParam('teamId');
 
     try {
       let numNonEmpty = 0;

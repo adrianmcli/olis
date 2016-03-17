@@ -15,17 +15,35 @@ export default function (injectDeps, {Meteor, LocalState, FlowRouter}) {
     if (!Meteor.userId()) { redirect('/login'); }
   }
 
-  FlowRouter.route('/home', {
-    name: 'home',
-    triggersEnter: [ ensureSignedIn ],
-    action() {
-      if (!LocalState.get('ignoreDefaultTeamAndConvo')) {
-        const teamId = AccountUtils.getMostRecentTeamId({Meteor});
-        const convoId = AccountUtils.getMostRecentConvoId({Meteor});
+  function setLastTimeInTeam({params}) {
+    TeamUtils.setLastTimeInTeam({Meteor}, params.teamId);
+  }
 
-        if (teamId) { TeamUtils.select({LocalState, Meteor}, teamId); }
-        if (convoId) { ConvoUtils.select({LocalState, Meteor}, convoId); }
-      }
+  function setLastTimeInConvo({params}) {
+    ConvoUtils.setLastTimeInConvo({Meteor}, params.convoId);
+  }
+
+  FlowRouter.route('/team/:teamId', {
+    name: 'team',
+    triggersEnter: [ ensureSignedIn ],
+    triggersExit: [ setLastTimeInTeam ],
+    action(params) {
+      setLastTimeInTeam({params});
+
+      mount(MainLayoutCtx, {
+        content: () => (<Home />)
+      });
+    }
+  });
+
+  FlowRouter.route('/team/:teamId/convo/:convoId', {
+    name: 'team',
+    triggersEnter: [ ensureSignedIn ],
+    triggersExit: [ setLastTimeInTeam, setLastTimeInConvo ],
+    action(params) {
+      setLastTimeInTeam({params});
+      setLastTimeInConvo({params});
+
       mount(MainLayoutCtx, {
         content: () => (<Home />)
       });

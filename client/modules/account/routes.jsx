@@ -93,7 +93,7 @@ export default function (injectDeps, {FlowRouter}) {
     }
   });
 
-  FlowRouter.route('/home/account', {
+  FlowRouter.route('/account/:username', {
     name: 'account',
     action() {
       mount(MainLayoutCtx, {

@@ -7,10 +7,10 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, LocalState, Collections} = context();
+  const {Meteor, Collections, FlowRouter} = context();
 
-  const teamId = LocalState.get('teamId');
-  const convoId = LocalState.get('convoId') ? LocalState.get('convoId') : undefined;
+  const teamId = FlowRouter.getParam('teamId');
+  const convoId = FlowRouter.getParam('convoId') ? FlowRouter.getParam('convoId') : undefined;
   if (teamId) {
     if (Meteor.subscribe('notifications.list', {teamId, convoId}).ready()) {
       const userId = Meteor.userId();

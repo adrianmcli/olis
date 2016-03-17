@@ -1,18 +1,17 @@
 import ConvoUtils from '/client/modules/core/libs/convos';
 
 export default {
-  add({Meteor, LocalState}, name, userIds) {
-    console.log('actions.convos.add');
-    Meteor.call('convos.add', {
-      name, userIds, teamId: LocalState.get('teamId')
-    }, (err, convoId) => {
+  add({Meteor, LocalState, FlowRouter}, name, userIds) {
+    const teamId = FlowRouter.getParam('teamId');
+    Meteor.call('convos.add', {name, userIds, teamId}, (err, convoId) => {
       if (err) { alert(err); }
-      else { ConvoUtils.select({Meteor, LocalState}, convoId); }
+      else { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
     });
   },
 
-  select({Meteor, LocalState}, convoId) {
-    ConvoUtils.select({Meteor, LocalState}, convoId);
+  select({FlowRouter}, convoId) {
+    const teamId = FlowRouter.getParam('teamId');
+    FlowRouter.go(`/team/${teamId}/convo/${convoId}`);
   },
 
   addMembers({Meteor}, convoId, userIds) {

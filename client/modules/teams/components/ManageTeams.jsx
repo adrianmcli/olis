@@ -25,8 +25,8 @@ export default class ManageTeams extends React.Component {
   }
 
   handleTeamNameClick(teamId, event) {
-    const {selectTeamAndGo} = this.props;
-    selectTeamAndGo(teamId);
+    const {selectTeam} = this.props;
+    selectTeam(teamId);
   }
 
   render() {

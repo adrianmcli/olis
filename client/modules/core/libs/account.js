@@ -48,8 +48,7 @@ export default {
     _register()
     .then(_login)
     .then(_sendInvites)
-    .then(({teamId}) => TeamUtils.select({Meteor, LocalState}, teamId))
-    .then(() => FlowRouter.go('/home'))
+    .then(({teamId}) => FlowRouter.go(`/team/${teamId}`))
     .catch((err) => {
       console.log('REGISTRATION_ERROR');
       console.log(err);
@@ -60,7 +59,10 @@ export default {
   getMostRecentTeamId({Meteor}) {
     const user = Meteor.user();
     if (!user) { return null; }
-    if (!user.lastTimeInTeam) { return null; }
+    if (!user.lastTimeInTeam) {
+      const teamIds = R.keys(user.roles);
+      return teamIds[0];
+    }
 
     const pairs = R.toPairs(user.lastTimeInTeam);
     const sortByDate = R.sortBy(R.prop(1));
