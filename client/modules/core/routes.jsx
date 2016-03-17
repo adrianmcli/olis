@@ -7,7 +7,7 @@ import Home from './components/home.jsx';
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
 
-export default function (injectDeps, {Meteor, FlowRouter}) {
+export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
   function ensureSignedIn(context, redirect) {
@@ -19,7 +19,7 @@ export default function (injectDeps, {Meteor, FlowRouter}) {
   }
 
   function setLastTimeInConvo({params}) {
-    ConvoUtils.setLastTimeInConvo({Meteor}, params.convoId);
+    ConvoUtils.setLastTimeInConvo({Meteor, Collections}, params.convoId);
   }
 
   function removeNotifications({params}) {
