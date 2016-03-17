@@ -1,15 +1,12 @@
 import React from 'react';
 
-import Tabs from 'material-ui/lib/tabs/tabs';
-import Tab from 'material-ui/lib/tabs/tab';
-import FontIcon from 'material-ui/lib/font-icon';
+import SettingsWrapper from '/client/modules/core/components/SettingsWrapper.jsx';
 
-import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
-import MyAccountSettings from './MyAccountSettings.jsx';
-import MyAccountNotifications from './MyAccountNotifications.jsx';
-import MyAccountProfile from './MyAccountProfile.jsx';
+import { Username, Password, Email, TranslateLanguage } from './MyAccountSettings.jsx';
+import { ProfilePic } from './MyAccountProfile.jsx';
 
 export default class MyAccount extends React.Component {
+
   render() {
     const {
       goToChat,
@@ -20,57 +17,97 @@ export default class MyAccount extends React.Component {
       setTranslationLanguage, translationLangCode
     } = this.props;
 
-    const backgroundColor = '#efefef';
-    const highlightColor = '#9e9e9e';
-    const tabStyle = {
-      color: highlightColor,
-    };
+    const dataSource = [
+      {
+        label: 'Settings',
+        icon: 'settings',
+        listItems: [
+          {
+            label: 'Username',
+            icon: 'person',
+            content:
+              <Username
+                key={1}
+                username={username}
+                setUsername={setUsername}
+              />,
+          },
+          {
+            label: 'Password',
+            icon: 'lock',
+            content:
+              <Password
+                key={2}
+                changePassword={changePassword}
+              />,
+          },
+          {
+            label: 'Email',
+            icon: 'email',
+            content:
+              <Email
+                key={3}
+                email={email}
+                setEmail={setEmail}
+              />,
+          },
+          {
+            label: 'Translation',
+            icon: 'language',
+            content:
+              <TranslateLanguage
+                key={4}
+                setTranslationLanguage={setTranslationLanguage}
+                translationLangCode={translationLangCode}
+              />,
+          },
+        ],
+      },
+      {
+        label: 'Notifications',
+        icon: 'notifications',
+        listItems: [
+          {
+            label: 'Email Settings',
+            icon: 'mail_outline',
+            content: <div>Email Notification Settings</div>,
+          },
+          {
+            label: 'Mute Alerts',
+            icon: 'volume_off',
+            content: <div>Mute Alerts</div>,
+          },
+        ],
+      },
+      {
+        label: 'Profile',
+        icon: 'account_box',
+        listItems: [
+          {
+            label: 'Profile Picture',
+            icon: 'face',
+            content:
+              <ProfilePic
+                username={username}
+                uploadImage={uploadImage}
+                profileImageUrl={profileImageUrl}
+              />,
+          },
+          {
+            label: 'Blurb',
+            icon: 'chat_bubble',
+            content: <div>Edit Blurb</div>,
+          },
+        ],
+      },
+    ];
+
     return (
-      <PageWrapper
+      <SettingsWrapper
         title="My Account"
-        backButton
-        handleBackButtonPress={goToChat}
-        >
-        <Tabs
-          style={{margin: '0 -25px'}}
-          tabItemContainerStyle={{background: backgroundColor}}
-          contentContainerStyle={{padding: '25px 25px 0'}}
-        >
-          <Tab
-            style={tabStyle}
-            icon={<FontIcon className="material-icons" color={highlightColor}>settings</FontIcon>}
-            label="Settings"
-          >
-            <MyAccountSettings
-              username={username}
-              setUsername={setUsername}
-              changePassword={changePassword}
-              email={email}
-              setEmail={setEmail}
-              setTranslationLanguage={setTranslationLanguage}
-              translationLangCode={translationLangCode}
-            />
-          </Tab>
-          <Tab
-            style={tabStyle}
-            icon={<FontIcon className="material-icons" color={highlightColor}>notifications</FontIcon>}
-            label="Notifications"
-          >
-            <MyAccountNotifications />
-          </Tab>
-          <Tab
-            style={tabStyle}
-            icon={<FontIcon className="material-icons" color={highlightColor}>face</FontIcon>}
-            label="Profile"
-          >
-            <MyAccountProfile
-              username={username}
-              uploadImage={uploadImage}
-              profileImageUrl={profileImageUrl}
-            />
-          </Tab>
-        </Tabs>
-      </PageWrapper>
+        dataSrc={dataSource}
+        handleBack={goToChat}
+      />
     );
   }
 }

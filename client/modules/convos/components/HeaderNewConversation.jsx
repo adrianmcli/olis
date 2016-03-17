@@ -22,15 +22,15 @@ export default class HeaderNewConversation extends React.Component {
     this.setState({
       open: true,
       stage: 0,
-      convoName: '',
-      usersToAdd: [],
+      convoName: ''
     });
   }
 
   handleClose() {
-    const {searchTeamUsers} = this.props;
+    const {searchTeamUsers, clearAddedUsers} = this.props;
     this.setState({open: false, stage: 0});
     searchTeamUsers(null);
+    clearAddedUsers();
   }
 
   handleNext() {
@@ -41,6 +41,13 @@ export default class HeaderNewConversation extends React.Component {
     setTimeout(() => {
       this._peoplePicker.focusSearchBar();
     }, 500);
+  }
+
+  handleSubmit() {
+    const {addConvo, usersToAdd} = this.props;
+    const {convoName} = this.state;
+    addConvo(convoName, usersToAdd.map(x => x._id));
+    this.handleClose();
   }
 
   renderFirstStep() {
@@ -59,11 +66,22 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   renderSecondStep() {
-    return <PeoplePicker ref={ x => this._peoplePicker = x }/>;
+    const {
+      teamUsersSearchResult, usersToAdd, addUser, removeUser, searchTeamUsers
+    } = this.props;
+    return (
+      <PeoplePicker
+        ref={ x => this._peoplePicker = x }
+        usersNotAdded={teamUsersSearchResult}
+        usersToAdd={usersToAdd}
+        addUser={addUser}
+        removeUser={removeUser}
+        search={searchTeamUsers}
+      />
+    );
   }
 
   render() {
-
     // first stage settings
     let width = 360;
     let submitFunc = this.handleNext.bind(this);
@@ -75,7 +93,7 @@ export default class HeaderNewConversation extends React.Component {
     // second stage settings
     if (this.state.stage !== 0) {
       width = 540;
-      submitFunc = () => {alert('complete');};  // TODO - create the conversation
+      submitFunc = this.handleSubmit.bind(this);
       submitLabel = 'Create';
       title = 'Add Participants';
       bodyStyle = {padding: '0'};
@@ -110,9 +128,6 @@ export default class HeaderNewConversation extends React.Component {
     );
   }
 }
-HeaderNewConversation.defaultProps = {
-  teamSearchResultUsers: []
-};
 
 // import React from 'react';
 

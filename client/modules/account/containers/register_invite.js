@@ -1,5 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import CreateAccountInviteTeammates from '../components/on-boarding/CreateAccountInviteTeammates.jsx';
+import CreateAccountInviteTeammates from '../components/onboarding/CreateAccountInviteTeammates.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,

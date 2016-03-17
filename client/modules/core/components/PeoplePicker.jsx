@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 
 import TextField from 'material-ui/lib/text-field';
 import List from 'material-ui/lib/lists/list';
@@ -11,6 +12,12 @@ import Avatar from 'material-ui/lib/avatar';
 import Chip from './Chip.jsx';
 
 export default class PeoplePicker extends React.Component {
+
+  _search(event) {
+    const {search} = this.props;
+    const value = event.target.value;
+    search(value);
+  }
 
   focusSearchBar() {
     this._searchField.focus();
@@ -33,6 +40,7 @@ export default class PeoplePicker extends React.Component {
             hintText="Search with Username, Email, etc."
             ref={ x => this._searchField = x }
             fullWidth
+            onChange={this._search.bind(this)}
           />
         </div>
       </div>
@@ -55,15 +63,16 @@ export default class PeoplePicker extends React.Component {
   }
 
   renderListItems() {
-    const input = [ 1, 2, 3, 4, 5, 6, 7 , 8, 9, 10 ];
-    return input.map( x => {
+    const {usersNotAdded, addUser} = this.props;
+
+    return usersNotAdded.map( user => {
       return (
-        <div>
+        <div key={user._id}>
           <ListItem
-            primaryText={`nickyCage ${x}`}
-            secondaryText={'iamsocool@gmail.com'}
+            primaryText={user.username}
+            secondaryText={user.emails[0].address}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-            onClick={() => {alert(`add me. my name is: nickyCage${x}`);}}
+            onClick={addUser.bind(null, user)}
           />
           <Divider inset={true} />
         </div>
@@ -72,8 +81,8 @@ export default class PeoplePicker extends React.Component {
   }
 
   renderChipsContainer() {
-    const numSelected = 0;
-    if (numSelected === 0) {
+    const {usersToAdd} = this.props;
+    if (R.isEmpty(usersToAdd)) {
       return (
         <div style={{
           display: 'flex',
@@ -105,15 +114,15 @@ export default class PeoplePicker extends React.Component {
   }
 
   renderChips() {
-    const input = [ 1, 2, 3, 4, 5, 6, 7 , 8, 9, 10, 12, 13, 14, 15 ];
-    return input.map( x => {
+    const {usersToAdd, removeUser} = this.props;
+    return usersToAdd.map( user => {
       return (
-        <div style={{marginBottom: '6px'}}>
+        <div key={user._id} style={{marginBottom: '6px'}}>
           <Chip
             // NOTE: avatarSrc is optional, Chip can generate an avatar w/ the username alone
             avatarSrc='https://www.placecage.com/100/100'
-            username={`nickyCage${x}`}
-            onRemoveClick={() => {alert(`remove nickCage${x}`);}}
+            username={user.username}
+            onRemoveClick={removeUser.bind(null, user)}
           />
         </div>
       );
@@ -139,3 +148,7 @@ export default class PeoplePicker extends React.Component {
     );
   }
 }
+PeoplePicker.defaultProps = {
+  usersNotAdded: [],
+  usersToAdd: []
+};

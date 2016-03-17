@@ -1,5 +1,5 @@
 import {useDeps, composeAll} from 'mantra-core';
-import FindMyTeam from '../components/on-boarding/FindMyTeam.jsx';
+import FindMyTeam from '../components/onboarding/FindMyTeam.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,

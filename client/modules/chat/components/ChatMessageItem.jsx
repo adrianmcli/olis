@@ -9,6 +9,8 @@ import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
 import AvatarWithInfo from './AvatarWithInfo.jsx';
 
+import ReactMarkdown from 'react-markdown';
+
 export default class ChatMessageItem extends React.Component {
 
   constructor(props) {
@@ -108,7 +110,11 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
-              <p>{content}</p>
+              <ReactMarkdown
+                source={content}
+                softBreak="br"
+                escapeHtml
+              />
             </div>
             <div className="chat-timestamp">
               <div className="chat-timestamp-string">
