@@ -1,6 +1,5 @@
 import AccountUtils from '/client/modules/core/libs/account';
-import TeamUtils from '/client/modules/core/libs/teams';
-import ConvoUtils from '/client/modules/core/libs/convos';
+import MsgUtils from '/client/modules/core/libs/msgs';
 import EmailValidator from 'email-validator';
 import R from 'ramda';
 import LangCodes from '/lib/constants/lang_codes';
@@ -19,7 +18,8 @@ export default {
         if (err) { alert(err); }
         else {
           const teamId = AccountUtils.getMostRecentTeamId({Meteor});
-          FlowRouter.go(`/team/${teamId}`);
+          const convoId = AccountUtils.getMostRecentConvoId({Meteor});
+          MsgUtils.routeToChat({FlowRouter}, teamId, convoId);
         }
       });
     }
