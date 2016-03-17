@@ -21,13 +21,16 @@ export default {
     });
   },
 
-  'newConvo.addUserId'({LocalState}, userId) {
-    const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd');
-    LocalState.set('newConvo.usersToAdd', [ ...userIdsToAdd, userId ]);
+  'newConvo.addUser'({LocalState}, user) {
+    const usersToAdd = LocalState.get('newConvo.usersToAdd') ?
+      LocalState.get('newConvo.usersToAdd') : [];
+    LocalState.set('newConvo.usersToAdd', [ ...usersToAdd, user ]);
   },
 
-  'newConvo.removeUserId'({LocalState}, userId) {
-    const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd');
-    LocalState.set('newConvo.usersToAdd', R.filter(x => x !== userId, userIdsToAdd));
+  'newConvo.removeUser'({LocalState}, userToRemove) {
+    const usersToAdd = LocalState.get('newConvo.usersToAdd') ?
+      LocalState.get('newConvo.usersToAdd') : [];
+    LocalState.set('newConvo.usersToAdd',
+      R.filter(user => user._id !== userToRemove._id, usersToAdd));
   }
 };

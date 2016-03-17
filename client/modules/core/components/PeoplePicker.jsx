@@ -63,16 +63,16 @@ export default class PeoplePicker extends React.Component {
   }
 
   renderListItems() {
-    const {users, addUserId} = this.props;
+    const {usersNotAdded, addUser} = this.props;
 
-    return users.map( user => {
+    return usersNotAdded.map( user => {
       return (
         <div key={user._id}>
           <ListItem
             primaryText={user.username}
             secondaryText={user.emails[0].address}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-            onClick={addUserId.bind(null, user._id)}
+            onClick={addUser.bind(null, user)}
           />
           <Divider inset={true} />
         </div>
@@ -81,8 +81,8 @@ export default class PeoplePicker extends React.Component {
   }
 
   renderChipsContainer() {
-    const numSelected = 0;
-    if (numSelected === 0) {
+    const {usersToAdd} = this.props;
+    if (R.isEmpty(usersToAdd)) {
       return (
         <div style={{
           display: 'flex',
@@ -114,16 +114,15 @@ export default class PeoplePicker extends React.Component {
   }
 
   renderChips() {
-    const {users, userIdsToAdd, removeUserId} = this.props;
-    const addedUsers = R.filter(user => R.contains(user._id, userIdsToAdd), users);
-    return addedUsers.map( user => {
+    const {usersToAdd, removeUser} = this.props;
+    return usersToAdd.map( user => {
       return (
         <div key={user._id} style={{marginBottom: '6px'}}>
           <Chip
             // NOTE: avatarSrc is optional, Chip can generate an avatar w/ the username alone
             avatarSrc='https://www.placecage.com/100/100'
             username={user.username}
-            onRemoveClick={removeUserId.bind(null, user._id)}
+            onRemoveClick={removeUser.bind(null, user)}
           />
         </div>
       );
@@ -150,6 +149,6 @@ export default class PeoplePicker extends React.Component {
   }
 }
 PeoplePicker.defaultProps = {
-  users: [],
+  usersNotAdded: [],
   usersToAdd: []
 };

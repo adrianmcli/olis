@@ -59,22 +59,22 @@ export default class HeaderNewConversation extends React.Component {
 
   renderSecondStep() {
     const {
-      teamUsersSearchResult, userIdsToAdd, addUserId, removeUserId, searchTeamUsers
+      teamUsersSearchResult, usersToAdd, addUser, removeUser, searchTeamUsers
     } = this.props;
     return (
       <PeoplePicker
         ref={ x => this._peoplePicker = x }
-        users={teamUsersSearchResult}
-        userIdsToAdd={userIdsToAdd}
-        addUserId={addUserId}
-        removeUserId={removeUserId}
+        usersNotAdded={teamUsersSearchResult}
+        usersToAdd={usersToAdd}
+        addUser={addUser}
+        removeUser={removeUser}
         search={searchTeamUsers}
       />
     );
   }
 
   render() {
-    const {addConvo, userIdsToAdd} = this.props;
+    const {addConvo, usersToAdd} = this.props;
     const {convoName} = this.state;
 
     // first stage settings
@@ -88,7 +88,7 @@ export default class HeaderNewConversation extends React.Component {
     // second stage settings
     if (this.state.stage !== 0) {
       width = 540;
-      submitFunc = () => { addConvo(convoName, userIdsToAdd); };
+      submitFunc = () => { addConvo(convoName, usersToAdd.map(x => x._id)); };
       submitLabel = 'Create';
       title = 'Add Participants';
       bodyStyle = {padding: '0'};
