@@ -26,10 +26,7 @@ export default {
     catch (e) { alert(e); }
   },
 
-  logout({Meteor, LocalState, FlowRouter}) {
-    // Must be logged in to do these 2
-    // TeamUtils.select({LocalState, Meteor}, null);
-    // ConvoUtils.select({LocalState, Meteor}, null);
+  logout({Meteor, FlowRouter}) {
     FlowRouter.go('/login');
 
     Meteor.logout(err => {

@@ -4,11 +4,10 @@ import {mount} from 'react-mounter';
 import MainLayout from './components/main_layout.jsx';
 import Home from './components/home.jsx';
 
-import AccountUtils from '/client/modules/core/libs/account';
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
 
-export default function (injectDeps, {Meteor, LocalState, FlowRouter}) {
+export default function (injectDeps, {Meteor, FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
   function ensureSignedIn(context, redirect) {
@@ -21,6 +20,13 @@ export default function (injectDeps, {Meteor, LocalState, FlowRouter}) {
 
   function setLastTimeInConvo({params}) {
     ConvoUtils.setLastTimeInConvo({Meteor}, params.convoId);
+  }
+
+  function removeNotifications({params}) {
+    const {convoId} = params;
+    Meteor.call('notifications.remove', {convoId}, (err) => {
+      if (err) { alert(err); }
+    });
   }
 
   FlowRouter.route('/team/:teamId', {
@@ -38,8 +44,8 @@ export default function (injectDeps, {Meteor, LocalState, FlowRouter}) {
 
   FlowRouter.route('/team/:teamId/convo/:convoId', {
     name: 'team',
-    triggersEnter: [ ensureSignedIn ],
-    triggersExit: [ setLastTimeInTeam, setLastTimeInConvo ],
+    triggersEnter: [ ensureSignedIn, removeNotifications ],
+    triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications ],
     action(params) {
       setLastTimeInTeam({params});
       setLastTimeInConvo({params});
