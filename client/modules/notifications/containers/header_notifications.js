@@ -14,7 +14,13 @@ export const composer = ({context}, onData) => {
   if (teamId) {
     if (Meteor.subscribe('notifications.list', {teamId, convoId}).ready()) {
       const userId = Meteor.userId();
-      const notifications = Collections.Notifications.find({userId}).fetch();
+      const selector = {
+        userId,
+        teamId,
+        convoId: {$ne: convoId}
+      };
+
+      const notifications = Collections.Notifications.find(selector).fetch();
       onData(null, {notifications});
     }
     else { onData(null, {notifications: []}); }

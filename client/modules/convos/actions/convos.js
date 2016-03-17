@@ -9,7 +9,7 @@ export default {
     });
   },
 
-  select({FlowRouter}, convoId) {
+  select({Meteor, FlowRouter}, convoId) {
     const teamId = FlowRouter.getParam('teamId');
     FlowRouter.go(`/team/${teamId}/convo/${convoId}`);
   },
