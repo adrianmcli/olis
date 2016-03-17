@@ -1,5 +1,6 @@
 export default {
   setTeamUsersSearchText({LocalState}, searchText) {
+    console.log(searchText);
     LocalState.set('teamUsersSearchText', searchText);
   },
 

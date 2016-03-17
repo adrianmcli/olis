@@ -1,4 +1,4 @@
-import ConvoUtils from '/client/modules/core/libs/convos';
+import R from 'ramda';
 
 export default {
   add({Meteor, LocalState, FlowRouter}, name, userIds) {
@@ -19,5 +19,15 @@ export default {
       if (err) { alert(err); }
       else { console.log(res); }
     });
+  },
+
+  'newConvo.addUserId'({LocalState}, userId) {
+    const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd');
+    LocalState.set('newConvo.usersToAdd', [ ...userIdsToAdd, userId ]);
+  },
+
+  'newConvo.removeUserId'({LocalState}, userId) {
+    const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd');
+    LocalState.set('newConvo.usersToAdd', R.filter(x => x !== userId, userIdsToAdd));
   }
 };

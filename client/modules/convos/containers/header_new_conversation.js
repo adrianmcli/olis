@@ -6,7 +6,9 @@ import R from 'ramda';
 const depsMapper = (context, actions) => ({
   context: () => context,
   addConvo: actions.convos.add,
-  searchTeamUsers: actions.search.setTeamUsersSearchText
+  searchTeamUsers: actions.search.setTeamUsersSearchText,
+  addUserId: actions.convos['newConvo.addUserId'],
+  removeUserId: actions.convos['newConvo.removeUserId']
 });
 
 export const composer = ({context}, onData) => {
@@ -15,6 +17,8 @@ export const composer = ({context}, onData) => {
   const user = Meteor.user();
   const profileImageUrl = user ? user.profileImageUrl : undefined;
   let teamUsersSearchResult = [];
+  const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd') ?
+    LocalState.get('newConvo.userIdsToAdd') : [];
 
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
@@ -31,13 +35,16 @@ export const composer = ({context}, onData) => {
         ]};
       }
       selector[`roles.${teamId}`] = {$exists: true};
-      teamUsersSearchResult = R.filter(other => other._id !== user._id,
+
+      const excludeFromSearchResult = [ user._id, ...userIdsToAdd ];
+      teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
         Meteor.users.find(selector).fetch());
 
       onData(null, {
         profileImageUrl,
         teamName: team.name,
-        teamUsersSearchResult
+        teamUsersSearchResult,
+        userIdsToAdd
       });
     }
   }
@@ -45,7 +52,8 @@ export const composer = ({context}, onData) => {
     onData(null, {
       profileImageUrl,
       teamName: '',
-      teamUsersSearchResult
+      teamUsersSearchResult,
+      userIdsToAdd
     });
   }
 };
