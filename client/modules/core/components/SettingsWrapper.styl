@@ -1,0 +1,69 @@
+triangle-height = 500px
+triangle-width = 50px
+fill-color = #2f3f70
+
+.settings-sidebar
+  position relative
+  z-index 1
+  &:after
+    content ''
+    width 0
+    height 0
+    position absolute
+    top 0
+    right -(triangle-width)
+    border-style solid
+    border-width triangle-height triangle-width 0 0
+    border-color fill-color transparent transparent transparent
+
+.settings-shadow-container
+  width 302.781px
+  height 550px
+  background transparent
+  position absolute
+  bottom 0
+  left 0px
+  z-index 0
+  transform-origin 100% 100%
+  transform rotate(5.71059314deg)
+  box-shadow 3px 0 6px rgba(0,0,0,0.16), 3px 0 6px rgba(0,0,0,0.23)
+  // filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.19)) drop-shadow(0 3.6px 1.8px rgba(0, 0, 0, 0.23));
+
+.settings-main
+  margin-left triangle-width + 20px
+
+hr.fancy-line {
+    transform rotate(180deg)
+    border: 0; 
+    height: 1px;
+    position: relative;
+    margin: 0.5em 0; /* Keep other elements away from pseudo elements*/
+}
+hr.fancy-line:before {
+    top: -0.5em;
+    height: 1em;
+}
+hr.fancy-line:after {
+    content:'';
+    height: 0.5em;   /* half the height of :before */
+    top: 1px;        /* height of hr*/
+}
+
+hr.fancy-line:before, hr.fancy-line:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+}
+
+hr.fancy-line, hr.fancy-line:before {
+    background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 75%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 75%, color-stop(0%,rgba(0,0,0,0.1)), color-stop(75%,rgba(0,0,0,0)));
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
+    background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
+    background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
+}
+
+hr.fancy-line:after {
+    background: fill-color;
+}

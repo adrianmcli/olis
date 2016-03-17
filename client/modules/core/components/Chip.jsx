@@ -47,7 +47,7 @@ export default class Chip extends React.Component {
   }
 
   render() {
-    const { avatarSrc, username } = this.props;
+    const { avatarSrc, username, noCloseButton } = this.props;
     const chipStyle = {
       height: '32px',
       lineHeight: '32px',
@@ -91,7 +91,7 @@ export default class Chip extends React.Component {
           {username}
         </span>
 
-        { this.renderRemoveButton() }
+        { noCloseButton ? null : this.renderRemoveButton() }
 
       </div>
     );
