@@ -13,14 +13,12 @@ export default function ({Meteor, Collections}) {
         throw new Meteor.Error(NOTIFICATIONS_REMOVE, 'Must be logged in to remove notifications.');
       }
       const notif = Collections.Notifications.findOne({userId, convoId});
-      if (!notif) {
-        throw new Meteor.Error(NOTIFICATIONS_REMOVE, 'Must remove an existing notification.');
+      if (notif) {
+        if (!notif.belongsToUser(userId)) {
+          throw new Meteor.Error(NOTIFICATIONS_REMOVE, 'Can only remove notifications that belong to yourself.');
+        }
+        else { notif.remove(); }
       }
-      if (!notif.belongsToUser(userId)) {
-        throw new Meteor.Error(NOTIFICATIONS_REMOVE, 'Can only remove notifications that belong to yourself.');
-      }
-
-      notif.remove();
     }
   });
 }
