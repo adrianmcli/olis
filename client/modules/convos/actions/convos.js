@@ -32,5 +32,9 @@ export default {
       LocalState.get('newConvo.usersToAdd') : [];
     LocalState.set('newConvo.usersToAdd',
       R.filter(user => user._id !== userToRemove._id, usersToAdd));
+  },
+
+  'newConvo.clearAddedUsers'({LocalState}) {
+    LocalState.set('newConvo.usersToAdd', []);
   }
 };

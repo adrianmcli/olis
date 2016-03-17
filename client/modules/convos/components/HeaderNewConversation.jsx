@@ -27,9 +27,10 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   handleClose() {
-    const {searchTeamUsers} = this.props;
+    const {searchTeamUsers, clearAddedUsers} = this.props;
     this.setState({open: false, stage: 0});
     searchTeamUsers(null);
+    clearAddedUsers();
   }
 
   handleNext() {
@@ -40,6 +41,13 @@ export default class HeaderNewConversation extends React.Component {
     setTimeout(() => {
       this._peoplePicker.focusSearchBar();
     }, 500);
+  }
+
+  handleSubmit() {
+    const {addConvo, usersToAdd} = this.props;
+    const {convoName} = this.state;
+    addConvo(convoName, usersToAdd.map(x => x._id));
+    this.handleClose();
   }
 
   renderFirstStep() {
@@ -74,9 +82,6 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   render() {
-    const {addConvo, usersToAdd} = this.props;
-    const {convoName} = this.state;
-
     // first stage settings
     let width = 360;
     let submitFunc = this.handleNext.bind(this);
@@ -88,7 +93,7 @@ export default class HeaderNewConversation extends React.Component {
     // second stage settings
     if (this.state.stage !== 0) {
       width = 540;
-      submitFunc = () => { addConvo(convoName, usersToAdd.map(x => x._id)); };
+      submitFunc = this.handleSubmit.bind(this);
       submitLabel = 'Create';
       title = 'Add Participants';
       bodyStyle = {padding: '0'};
