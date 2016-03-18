@@ -2,7 +2,7 @@ import React from 'react';
 
 import OnboardingWrapper from './OnboardingWrapper.jsx';
 
-import CreateAccountEmail from './CreateAccountEmail.jsx';
+import CreateAccountEmail from '../../containers/register_email';
 import CreateAccountUsername from './CreateAccountUsername.jsx';
 import CreateAccountTeamName from './CreateAccountTeamName.jsx';
 import CreateAccountInviteTeammates from './CreateAccountInviteTeammates.jsx';
