@@ -9,11 +9,14 @@ import FontIcon from 'material-ui/lib/font-icon';
 import ChangeTeamName from './ChangeTeamName.jsx';
 import Permissions from './Permissions.jsx';
 import InviteTeammates from './InviteTeammates.jsx';
+import TeamInfo from './TeamInfo.jsx';
 
 export default class TeamSettings extends React.Component {
   render() {
-    const {teamId, teamName, goToChat, invite,
-      setTeamName, setUserRole, teamUsers, pendingInviteIds} = this.props;
+    const {teamId, teamName, teamInfo,
+      goToChat, invite,
+      setTeamName, setTeamInfo, setUserRole,
+      teamUsers, pendingInviteIds} = this.props;
 
     const backgroundColor = '#efefef';
     const highlightColor = '#9e9e9e';
@@ -38,6 +41,7 @@ export default class TeamSettings extends React.Component {
             label="General"
           >
             <ChangeTeamName setTeamName={setTeamName} />
+            <TeamInfo teamInfo={teamInfo} setTeamInfo={setTeamInfo} />
           </Tab>
           <Tab
             style={tabStyle}

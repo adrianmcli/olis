@@ -41,6 +41,14 @@ export default {
     });
   },
 
+  setInfo({Meteor, FlowRouter}, info) {
+    const teamId = FlowRouter.getParam('teamId');
+    Meteor.call('teams.setInfo', {teamId, info}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
+  },
+
   setUserRole({Meteor, FlowRouter}, userId, role) {
     const teamId = FlowRouter.getParam('teamId');
     Meteor.call('teams.setUserRole', {teamId, changeUserId: userId, role}, (err, res) => {

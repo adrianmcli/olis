@@ -3,9 +3,8 @@ import React from 'react';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 
 export default class TeamInfo extends React.Component {
-
-
   render() {
+    const {teamName, teamInfo} = this.props;
     return (
       <Dialog
         title="Team Info"
@@ -14,10 +13,13 @@ export default class TeamInfo extends React.Component {
         closeActionOnly
         width={540}
       >
-        <h3>The A Team</h3>
-        <p>This is the A Team chat platform. Here, we will discuss things that have to do with our upcoming operations.</p>
-        <p>Please make sure to update the notes whenever a new decision has been made. This platform can only work if we keep the notes section up-to-date.</p>
+        <h3>{teamName}</h3>
+        <p>{teamInfo}</p>
       </Dialog>
     );
   }
 }
+TeamInfo.defaultProps = {
+  teamName: 'Default team name',
+  teamInfo: 'Default team info'
+};
