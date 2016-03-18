@@ -99,6 +99,31 @@ export default function () {
     }
   });
 
+  const TEAMS_SET_INFO = 'teams.setInfo';
+  Meteor.methods({
+    'teams.setInfo'({teamId, info}) {
+      check(arguments[0], {
+        teamId: String,
+        info: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_SET_INFO, 'Must be logged in to set team info.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_SET_INFO, 'Must set info of existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(TEAMS_SET_INFO, 'Must be admin to set info of team.');
+      }
+
+      team.set({info});
+      team.save();
+    }
+  });
+
   const TEAMS_SET_USER_ROLE = 'teams.setUserRole';
   Meteor.methods({
     'teams.setUserRole'({teamId, changeUserId, role}) {
