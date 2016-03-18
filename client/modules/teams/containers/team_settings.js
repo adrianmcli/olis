@@ -5,6 +5,7 @@ const depsMapper = (context, actions) => ({
   context: () => context,
   goToChat: actions.msgs.goToChat,
   setTeamName: actions.teams.setName,
+  setTeamInfo: actions.teams.setInfo,
   setUserRole: actions.teams.setUserRole,
   invite: actions.teams.invite
 });
@@ -13,6 +14,7 @@ export const composer = ({context}, onData) => {
   const {Meteor, FlowRouter, Collections} = context();
 
   let teamName;
+  let teamInfo;
   let teamUsers = [];
   const teamId = FlowRouter.getParam('teamId');
   let pendingInviteIds = [];
@@ -21,6 +23,7 @@ export const composer = ({context}, onData) => {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
       teamName = team.name;
+      teamInfo = team.info;
 
       const options = {sort: [ [ 'username', 'asc' ] ]};
       teamUsers = Meteor.users.find({_id: {$in: team.userIds}}, options).fetch();
@@ -32,6 +35,7 @@ export const composer = ({context}, onData) => {
 
   onData(null, {
     teamName,
+    teamInfo,
     teamUsers,
     teamId,
     pendingInviteIds
