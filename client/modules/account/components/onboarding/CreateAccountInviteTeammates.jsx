@@ -79,7 +79,7 @@ export default class CreateAccountInviteTeammates extends React.Component {
 
     return (
       <div>
-        <p>Enter the email addresses of teammates you want to invite. You can always invite more teammates later.</p>
+        <p>You can always invite more teammates later.</p>
         {inputs}
         <p style={{opacity: '0.5'}}><em>This step is optional, you can always do this later.</em></p>
         <div style={{margin: '24px 0'}}>

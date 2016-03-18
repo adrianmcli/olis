@@ -46,7 +46,10 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.email', email);
-        FlowRouter.go('/register/username');
+
+        const step = LocalState.get('register.step') ?
+          LocalState.get('register.step') : 0;
+        LocalState.set('register.step', step + 1);
       }
     });
   },
@@ -57,7 +60,10 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.username', username);
-        FlowRouter.go('/register/team-name');
+        
+        const step = LocalState.get('register.step') ?
+          LocalState.get('register.step') : 0;
+        LocalState.set('register.step', step + 1);
       }
     });
   },
@@ -70,7 +76,9 @@ export default {
       }
 
       LocalState.set('register.teamName', teamName);
-      FlowRouter.go('/register/invite');
+      const step = LocalState.get('register.step') ?
+        LocalState.get('register.step') : 0;
+      LocalState.set('register.step', step + 1);
     }
     catch (e) { alert(e); }
   },
