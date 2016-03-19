@@ -98,7 +98,7 @@ export default {
 
   removeUser({Meteor, FlowRouter}, userId) {
     const teamId = FlowRouter.getParam('teamId');
-    Meteor.call('teams.removeUser', {teamId, changeUserId: userId}, (err, res) => {
+    Meteor.call('teams.removeUser', {teamId, removeUserId: userId}, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
     });

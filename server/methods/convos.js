@@ -78,11 +78,13 @@ export default function () {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must add members to an existing convo.');
       }
       if (!convo.isUserInConvo(userId)) {
-        throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must already be a member of convo to add new members.');
+        throw new Meteor.Error(CONVOS_ADD_MEMBERS,
+          'Must already be a member of convo to add new members.');
       }
       const team = Teams.findOne(convo.teamId);
       if (!team.isUserInTeam(userIds)) {
-        throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Only users in the team can be added to the convo.');
+        throw new Meteor.Error(CONVOS_ADD_MEMBERS,
+          'Only users in the team can be added to the convo.');
       }
 
       const newUserIds = [ ...convo.userIds, ...userIds ];
@@ -92,6 +94,37 @@ export default function () {
       convo.save();
 
       return convo;
+    }
+  });
+
+  const CONVOS_REMOVE_USER_FROM_TEAM = 'convos.removeUserFromTeam';
+  Meteor.methods({
+    'convos.removeUser'({removeUserId, teamId}) {
+      check(arguments[0], {
+        removeUserId: String,
+        teamId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(CONVOS_REMOVE_USER_FROM_TEAM,
+          'Must be logged in to remove users from convo.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(CONVOS_REMOVE_USER_FROM_TEAM,
+          'Must remove users from existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(CONVOS_REMOVE_USER_FROM_TEAM,
+          'Must be an admin to remove users from all convos in team.');
+      }
+
+      const convos = Convos.find({userIds: removeUserId}).fetch();
+      convos.forEach(convo => {
+        convo.set({userIds: R.filter(id => id !== removeUserId, convo.userIds)});
+        convo.save();
+      });
     }
   });
 }

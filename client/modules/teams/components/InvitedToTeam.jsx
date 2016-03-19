@@ -12,6 +12,12 @@ export default class InvitedToTeam extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      open: !R.isEmpty(nextProps.invites)
+    });
+  }
+
   handleClose() {
     this.setState({open: false});
   }

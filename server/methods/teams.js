@@ -182,10 +182,10 @@ export default function () {
   // SERVER ONLY
   const TEAMS_REMOVE_USER = 'teams.removeUser';
   Meteor.methods({
-    'teams.removeUser'({teamId, changeUserId}) {
+    'teams.removeUser'({teamId, removeUserId}) {
       check(arguments[0], {
         teamId: String,
-        changeUserId: String
+        removeUserId: String
       });
 
       const userId = this.userId;
@@ -201,7 +201,7 @@ export default function () {
         throw new Meteor.Error(TEAMS_REMOVE_USER,
           'Must be admin to remove team members.');
       }
-      if (!team.isUserInTeam(changeUserId)) {
+      if (!team.isUserInTeam(removeUserId)) {
         throw new Meteor.Error(TEAMS_REMOVE_USER,
           'Must remove existing user.');
       }
@@ -212,7 +212,7 @@ export default function () {
         const count = R.countBy(_role => _role)(roles);
         return count['admin'];
       };
-      const changeUser = Meteor.users.findOne(changeUserId);
+      const changeUser = Meteor.users.findOne(removeUserId);
       const wrongNumAdminsAfterRemove = () => {
         return getCurrentNumAdmins() <= 1 && team.isUserAdmin(changeUser._id);
       };
@@ -221,10 +221,6 @@ export default function () {
           'Must have at least one admin.');
       }
 
-      // This only removes the role from the array. The team id key is still in the user obj.
-      // const oldRoles = team.getRolesForUser(changeUserId);
-      // Roles.removeUsersFromRoles(changeUserId, oldRoles[0], teamId);
-
       // Remove team from user
       Meteor.users.update(changeUser._id, {
         $unset: {[`roles.${teamId}`]: ''}
@@ -232,9 +228,12 @@ export default function () {
 
       // Remove user from team
       team.set({
-        userIds: R.filter(id => id !== changeUserId, team.userIds)
+        userIds: R.filter(id => id !== removeUserId, team.userIds)
       });
       team.save();
+
+      // Remove user from all convos in the team
+      // Meteor.call('convos.removeUserFromTeam', {removeUserId});
     }
   });
 
