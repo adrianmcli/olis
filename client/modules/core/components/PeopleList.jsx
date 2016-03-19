@@ -8,13 +8,13 @@ import SearchBar from '/client/modules/search/components/SearchBar.jsx';
 
 export default class PeopleList extends React.Component {
   renderListItems() {
-    const {users, userClickHandler} = this.props;
+    const {users, userClickHandler, team} = this.props;
     return users.map( user => {
       return (
         <div key={user._id}>
           <ListItem
             primaryText={user.username}
-            // rightIcon={x === 3 ? this.renderBadge('Admin') : null}
+            rightIcon={team.isUserAdmin(user._id) ? this.renderBadge('Admin') : null}
             secondaryText={user.emails[0].address}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
             onClick={userClickHandler.bind(this, user)}

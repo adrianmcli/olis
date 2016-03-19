@@ -12,12 +12,13 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
 
   let teamUsersSearchResult = [];
+  let team;
   const userShown = LocalState.get('teamDirectory.userShown');
 
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
-      const team = Collections.Teams.findOne(teamId);
+      team = Collections.Teams.findOne(teamId);
       const searchText = LocalState.get('teamUsersSearchText');
 
       let selector = {};
@@ -33,18 +34,11 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
       teamUsersSearchResult = Meteor.users.find(selector).fetch();
 
       onData(null, {
-        teamName: team.name,
+        team,
         teamUsersSearchResult,
         userShown
       });
     }
-  }
-  else {
-    onData(null, {
-      teamName: '',
-      teamUsersSearchResult,
-      userShown
-    });
   }
 
   const cleanup = () => {
