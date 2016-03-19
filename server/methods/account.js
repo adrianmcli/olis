@@ -281,16 +281,21 @@ export default function () {
       }
 
       const convos = Convos.find({teamId}).fetch();
-      const convoIds = convos.map(convo => convo._id);
+      const convoIdsToUnset = convos.reduce((prev, curr) => {
+        const convo = {
+          [`lastTimeInConvo.${curr._id}`]: ''
+        };
+        return R.merge(prev, convo);
+      }, {});
+
+      const unsetObj = R.merge({
+        [`roles.${teamId}`]: '',
+        [`lastTimeInTeam.${teamId}`]: '',
+      }, convoIdsToUnset);
 
       Meteor.users.update(removeUserId, {
-        $unset: {
-          [`roles.${teamId}`]: '',
-          [`lastTimeInTeam.${teamId}`]: '',
-        }
+        $unset: unsetObj
       });
-
-    // TODO remove last time in team, last time for all convos in team for user
     }
   });
 

@@ -221,16 +221,13 @@ export default function () {
           'Must have at least one admin.');
       }
 
-      // Remove team from user
-      Meteor.call('account.removeFromTeam', {removeUserId, teamId});
-
       // Remove user from team
       team.set({
         userIds: R.filter(id => id !== removeUserId, team.userIds)
       });
       team.save();
 
-      // Remove user from all convos in the team
+      Meteor.call('account.removeFromTeam', {removeUserId, teamId});
       Meteor.call('convos.removeUserFromTeam', {removeUserId, teamId});
     }
   });
