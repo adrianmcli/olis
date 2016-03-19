@@ -5,15 +5,18 @@ import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class UserInfo extends React.Component {
   renderButtons() {
-    const {user, makeTeamAdmin, removeFromTeam} = this.props;
+    const {user, makeTeamAdmin, removeFromTeam, showMakeAdminButton} = this.props;
     return (
       <div>
-        <RaisedButton
-          label="Make Admin"
-          secondary={true}
-          style={{marginTop: '12px', width: '100%'}}
-          onClick={makeTeamAdmin.bind(null, user._id)}
-        />
+        {showMakeAdminButton ?
+          <RaisedButton
+            label="Make Admin"
+            secondary={true}
+            style={{marginTop: '12px', width: '100%'}}
+            onClick={makeTeamAdmin.bind(null, user._id)}
+          />
+          :
+          null}
         <RaisedButton
           label="Remove"
           primary={true}

@@ -41,6 +41,7 @@ export default class TeamDirectory extends React.Component {
             <UserInfo
               user={userShown}
               showButtons={isAdmin}
+              showMakeAdminButton={userShown ? !team.isUserAdmin(userShown._id) : true}
               makeTeamAdmin={makeUserTeamAdmin}
               removeFromTeam={removeUserFromTeam}
             />
