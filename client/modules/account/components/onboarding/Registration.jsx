@@ -2,14 +2,14 @@ import React from 'react';
 
 import OnboardingWrapper from './OnboardingWrapper.jsx';
 
-import CreateAccountEmail from './CreateAccountEmail.jsx';
-import CreateAccountUsername from './CreateAccountUsername.jsx';
-import CreateAccountTeamName from './CreateAccountTeamName.jsx';
-import CreateAccountInviteTeammates from './CreateAccountInviteTeammates.jsx';
+import CreateAccountEmail from '../../containers/register_email';
+import CreateAccountUsername from '../../containers/register_username';
+import CreateAccountTeamName from '../../containers/register_team-name';
+import CreateAccountInviteTeammates from '../../containers/register_invite';
 
 export default class Registration extends React.Component {
-
   render() {
+    const {currentStep} = this.props;
     const data = [
       {
         title: 'Your Email Address',
@@ -37,6 +37,9 @@ export default class Registration extends React.Component {
         content: <div>Confirm and prepare to launch</div>,
       },
     ];
-    return <OnboardingWrapper dataSrc={data} currentStep={0}/>;
+    return <OnboardingWrapper dataSrc={data} currentStep={currentStep}/>;
   }
 }
+Registration.defaultProps = {
+  currentStep: 0
+};

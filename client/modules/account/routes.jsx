@@ -2,41 +2,30 @@ import React from 'react';
 import {mount} from 'react-mounter';
 
 import MainLayout from '../core/components/main_layout.jsx';
-import RegisterEmail from './containers/register_email';
-import RegisterUsername from './containers/register_username';
-import RegisterTeamName from './containers/register_team-name';
-import RegisterInvite from './containers/register_invite';
 import SetPassword from './containers/set_password';
 import FindMyTeam from './containers/find_my_team';
 import Login from './containers/login';
 import MyAccount from './containers/my_account';
 
-import Registration from './components/onboarding/Registration.jsx';
+import Registration from './containers/registration';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
+  function redirectToRegisterEmail(context, redirect) {
+    redirect('/register/email');
+  }
+
   FlowRouter.route('/register', {
     name: 'register',
-    action() {
-      mount(MainLayoutCtx, {
-        content: () => (<Registration />)
-      });
-    }
+    triggersEnter: [ redirectToRegisterEmail ]
   });
-
-  // FlowRouter.route('/register', {
-  //   name: 'register',
-  //   triggersEnter: [ function (context, redirect) {
-  //     redirect('/register/email');
-  //   } ]
-  // });
 
   FlowRouter.route('/register/email', {
     name: 'register-email',
     action() {
       mount(MainLayoutCtx, {
-        content: () => (<RegisterEmail />)
+        content: () => (<Registration />)
       });
     }
   });
@@ -45,7 +34,7 @@ export default function (injectDeps, {FlowRouter}) {
     name: 'register-username',
     action() {
       mount(MainLayoutCtx, {
-        content: () => (<RegisterUsername />)
+        content: () => (<Registration />)
       });
     }
   });
@@ -54,7 +43,7 @@ export default function (injectDeps, {FlowRouter}) {
     name: 'register-team-name',
     action() {
       mount(MainLayoutCtx, {
-        content: () => (<RegisterTeamName />)
+        content: () => (<Registration />)
       });
     }
   });
@@ -63,7 +52,7 @@ export default function (injectDeps, {FlowRouter}) {
     name: 'register-invite',
     action() {
       mount(MainLayoutCtx, {
-        content: () => (<RegisterInvite />)
+        content: () => (<Registration />)
       });
     }
   });
