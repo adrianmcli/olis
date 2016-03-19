@@ -45,6 +45,9 @@ export default function () {
     }
     const team = Teams.findOne(teamId);
     if (!team) {
+      throw new Meteor.Error(USERS_TEAM, 'Must get users from an existing team.');
+    }
+    if (!team.isUserInTeam(this.userId)) {
       throw new Meteor.Error(USERS_TEAM, 'Must be a part of team to get team users list.');
     }
 
