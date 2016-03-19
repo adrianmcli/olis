@@ -1,15 +1,14 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import {buildRegExp} from '/client/modules/core/libs/search';
-import R from 'ramda';
 import TeamDirectory from '../components/HeaderMenuItems/TeamDirectory.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
   searchTeamUsers: actions.search.setTeamUsersSearchText,
-  showUserInfo: actions.teams.showUserInfo
+  showUserInfo: actions.teams.setUserShown
 });
 
-export const composer = ({context}, onData) => {
+export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
 
   let teamUsersSearchResult = [];
@@ -47,6 +46,12 @@ export const composer = ({context}, onData) => {
       userShown
     });
   }
+
+  const cleanup = () => {
+    searchTeamUsers(undefined);
+    showUserInfo(undefined);
+  };
+  return cleanup;
 };
 
 export default composeAll(

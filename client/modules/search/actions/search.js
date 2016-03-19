@@ -6,10 +6,5 @@ export default {
 
   setAllUsersSearchText({LocalState}, searchText) {
     LocalState.set('allUsersSearchText', searchText);
-  },
-
-  clearSearchTexts({LocalState}) {
-    LocalState.set('teamUsersSearchText', null);
-    LocalState.set('allUsersSearchText', null);
   }
 };

@@ -84,7 +84,7 @@ export default {
     catch (e) { alert(e); }
   },
 
-  showUserInfo({LocalState}, userId) {
-    LocalState.set('teamDirectory.userShown', userId);
+  setUserShown({LocalState}, user) {
+    LocalState.set('teamDirectory.userShown', user);
   }
 };
