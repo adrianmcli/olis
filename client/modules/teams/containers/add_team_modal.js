@@ -5,20 +5,20 @@ import UsersSearchSource from '/client/usersSearchSource';
 const depsMapper = (context, actions) => ({
   context: () => context,
   search: actions.search.setAllUsersSearchText,
-  clearSearchTexts: actions.search.clearSearchTexts
+  setAllUsersSearchText: actions.search.setAllUsersSearchText
 });
 
-export const composer = ({context, clearSearchTexts}, onData) => {
+export const composer = ({context, setAllUsersSearchText}, onData) => {
   const {LocalState} = context();
 
-  const searchText = LocalState.get('allUsersSearchText');
+  const searchText = LocalState.get('searchText.allUsers');
   UsersSearchSource.search(searchText);
 
   onData(null, {
     searchResults: UsersSearchSource.getData()
   });
 
-  const cleanup = () => clearSearchTexts();
+  const cleanup = () => setAllUsersSearchText(undefined);
   return cleanup;
 };
 

@@ -258,4 +258,45 @@ export default function () {
       });
     }
   });
+
+  // SERVER ONLY
+  const ACCOUNT_REMOVE_FROM_TEAM = 'account.removeFromTeam';
+  Meteor.methods({
+    'account.removeFromTeam'({removeUserId, teamId}) {
+      check(arguments[0], {
+        removeUserId: String,
+        teamId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_REMOVE_FROM_TEAM, 'Must be logged in to remove user from team.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(ACCOUNT_REMOVE_FROM_TEAM, 'Must remove user from existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(ACCOUNT_REMOVE_FROM_TEAM, 'Must be an admin to remove user from team.');
+      }
+
+      const convos = Convos.find({teamId}).fetch();
+      const convoIdsToUnset = convos.reduce((prev, curr) => {
+        const convo = {
+          [`lastTimeInConvo.${curr._id}`]: ''
+        };
+        return R.merge(prev, convo);
+      }, {});
+
+      const unsetObj = R.merge({
+        [`roles.${teamId}`]: '',
+        [`lastTimeInTeam.${teamId}`]: '',
+      }, convoIdsToUnset);
+
+      Meteor.users.update(removeUserId, {
+        $unset: unsetObj
+      });
+    }
+  });
+
 }

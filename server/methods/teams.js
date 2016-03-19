@@ -180,6 +180,59 @@ export default function () {
   });
 
   // SERVER ONLY
+  const TEAMS_REMOVE_USER = 'teams.removeUser';
+  Meteor.methods({
+    'teams.removeUser'({teamId, removeUserId}) {
+      check(arguments[0], {
+        teamId: String,
+        removeUserId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER, 'Must be logged in to remove user.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must remove from existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must be admin to remove team members.');
+      }
+      if (!team.isUserInTeam(removeUserId)) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must remove existing user.');
+      }
+
+      const teamUsers = Meteor.users.find({_id: {$in: team.userIds}}).fetch();
+      const getCurrentNumAdmins = () => {
+        const roles = teamUsers.map(teamUser => teamUser.roles[teamId]);
+        const count = R.countBy(_role => _role)(roles);
+        return count['admin'];
+      };
+      const removeUser = Meteor.users.findOne(removeUserId);
+      const wrongNumAdminsAfterRemove = () => {
+        return getCurrentNumAdmins() <= 1 && team.isUserAdmin(removeUser._id);
+      };
+      if (wrongNumAdminsAfterRemove()) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must have at least one admin.');
+      }
+
+      // Remove user from team
+      team.set({
+        userIds: R.filter(id => id !== removeUserId, team.userIds)
+      });
+      team.save();
+
+      Meteor.call('account.removeFromTeam', {removeUserId, teamId});
+      Meteor.call('convos.removeUserFromTeam', {removeUserId, teamId});
+    }
+  });
+
+  // SERVER ONLY
   const TEAMS_INVITE = 'teams.invite';
   Meteor.methods({
     'teams.invite'({inviteEmails, teamId}) {
@@ -210,11 +263,6 @@ export default function () {
 
       const newEmails = R.difference(validatedEmails, existingEmails);
 
-      const existingUserIds = existingEmails.map(email => {
-        const existingUser = Accounts.findUserByEmail(email);
-        return existingUser._id;
-      });
-
       function _create(email) {
         const newId = Accounts.createUser({username: email, email});
         Meteor.users.update(newId, { $set: {invitedBy: user.username} }); // This is so we can send the proper email
@@ -229,6 +277,12 @@ export default function () {
         });
         invite.save();
       }
+
+      const existingUserIds = existingEmails.map(email => {
+        const existingUser = Accounts.findUserByEmail(email);
+        _invite(existingUser._id);
+        return existingUser._id;
+      });
 
       const newUserIds = newEmails.map(email => {
         const newId = _create(email);

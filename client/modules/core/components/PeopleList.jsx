@@ -1,75 +1,23 @@
 import React from 'react';
 
-import TextField from 'material-ui/lib/text-field';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
-
 import Avatar from 'material-ui/lib/avatar';
-
-import IconButton from 'material-ui/lib/icon-button';
-import ChatIcon from 'material-ui/lib/svg-icons/action/question-answer';
-import InfoIcon from 'material-ui/lib/svg-icons/action/info';
-import NoteIcon from 'material-ui/lib/svg-icons/action/note-add';
-import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
-
-import RaisedButton from 'material-ui/lib/raised-button';
+import SearchBar from '/client/modules/search/components/SearchBar.jsx';
 
 export default class PeopleList extends React.Component {
-
-  focusSearchBar() {
-    this._searchField.focus();
-  }
-
-  renderSearchBar() {
-    const containerStyle = {
-      background: '#efefef',
-      padding: '12px',
-    };
-    const inputBackgroundStyle = {
-      background: 'white',
-      borderRadius: '6px',
-      padding: '0 12px',
-    };
-    return (
-      <div style={ containerStyle }>
-        <div style={ inputBackgroundStyle }>
-          <TextField
-            hintText="Search with Username, Email, etc."
-            ref={ x => this._searchField = x }
-            fullWidth
-          />
-        </div>
-      </div>
-    );
-  }
-
-  renderList() {
-    return (
-      <div style={{
-        borderRight: '1px solid rgba(0,0,0,0.15)',
-        height: '360px',
-        overflowY: 'scroll',
-        position: 'relative',
-      }}>
-        <List style={{paddingTop: '0'}}>
-          { this.renderListItems.bind(this)() }
-        </List>
-      </div>
-    );
-  }
-
   renderListItems() {
-    const input = [ 1, 2, 3, 4, 5, 6, 7 , 8, 9, 10 ];
-    return input.map( x => {
+    const {users, userClickHandler, team} = this.props;
+    return users.map( user => {
       return (
-        <div>
+        <div key={user._id}>
           <ListItem
-            primaryText={`nickyCage ${x}`}
-            rightIcon={x === 3 ? this.renderBadge('Admin') : null}
-            secondaryText={'iamsocool@gmail.com'}
+            primaryText={user.username}
+            rightIcon={team.isUserAdmin(user._id) ? this.renderBadge('Admin') : null}
+            secondaryText={user.emails[0].address}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-            onClick={() => {alert(`fire an action to show me: nickyCage${x}`);}}
+            onClick={userClickHandler.bind(this, user._id)}
           />
           <Divider inset={true} />
         </div>
@@ -94,64 +42,29 @@ export default class PeopleList extends React.Component {
     );
   }
 
-  renderUserInfo() {
-    const containerStyle = {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      position: 'absolute',
-      top: '0',
-      right: '0',
-      bottom: '0',
-      left: '0',
-      color: '#aaa',
-    };
-    // <Avatar src="https://www.placecage.com/100/100" />
-    const username = 'nickyCage';
-    const avatarSrc = 'https://www.placecage.com/100/100';
-    return (
-      <div style={containerStyle}>
-        <div style={{padding: '32px', textAlign: 'center'}}>
-          <AvatarWithDefault
-            size={128}
-            username={username}
-            avatarSrc={avatarSrc}
-          />
-          <div style={{fontSize: '18px',lineHeight: '24px'}}>Nicky Cage</div>
-          <div style={{fontSize: '12px',lineHeight: '16px'}}>I like tuna sandwiches.</div>
-          <RaisedButton
-            label="Make Admin"
-            secondary={true}
-            style={{marginTop: '12px', width: '100%'}}
-          />
-          <RaisedButton
-            label="Remove"
-            primary={true}
-            style={{marginTop: '12px', width: '100%'}}
-          />
-        </div>
-      </div>
-    );
-  }
-
   render() {
+    const {search} = this.props;
     return (
-      <div style={{display: 'flex'}}>
-        <div style={{width: '360px', position: 'relative'}}>
-          { this.renderSearchBar() }
-          { this.renderList() }
-        </div>
+      <div>
+        <SearchBar search={search} />
         <div style={{
-          width: '280px',
-          height: '432px',
-          position: 'relative',
+          borderRight: '1px solid rgba(0,0,0,0.15)',
+          height: '360px',
           overflowY: 'scroll',
+          position: 'relative',
         }}>
-          { this.renderUserInfo() }
+          <List style={{paddingTop: '0'}}>
+            { this.renderListItems.bind(this)() }
+          </List>
         </div>
       </div>
     );
   }
 }
+PeopleList.defaultProps = {
+  users: [],
+  userClickHandler: user => console.log(`You clicked ${user.username}`),
+  team: {
+    isUserAdmin() { return false; }
+  }
+};

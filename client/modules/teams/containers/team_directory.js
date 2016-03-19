@@ -1,24 +1,17 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import HeaderNewConversation from '../components/HeaderNewConversation.jsx';
 import {buildRegExp} from '/client/modules/core/libs/search';
-import R from 'ramda';
+import TeamDirectory from '../components/HeaderMenuItems/TeamDirectory.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  addConvo: actions.convos.add,
   searchTeamUsers: actions.search.setTeamUsersSearchText,
-  addUser: actions.convos['newConvo.addUser'],
-  removeUser: actions.convos['newConvo.removeUser'],
-  clearAddedUsers: actions.convos['newConvo.clearAddedUsers']
+  showUserInfo: actions.teams.setUserIdShown,
+  makeUserTeamAdmin: actions.teams.makeUserAdmin,
+  removeUserFromTeam: actions.teams.removeUser
 });
 
-export const composer = ({context}, onData) => {
+export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
-
-  const user = Meteor.user();
-  let teamUsersSearchResult = [];
-  const usersToAdd = LocalState.get('newConvo.usersToAdd') ?
-    LocalState.get('newConvo.usersToAdd') : [];
 
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
@@ -35,29 +28,30 @@ export const composer = ({context}, onData) => {
         ]};
       }
       selector[`roles.${teamId}`] = {$exists: true};
+      const options = {sort: [ [ 'username', 'asc' ] ]};
 
-      const userIdsToAdd = usersToAdd.map(x => x._id);
-      const excludeFromSearchResult = [ user._id, ...userIdsToAdd ];
-      teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
-        Meteor.users.find(selector).fetch());
+      const teamUsersSearchResult = Meteor.users.find(selector, options).fetch();
+      const userIdShown = LocalState.get('teamDirectory.userIdShown');
+      const userShown = Meteor.users.findOne(userIdShown);
 
       onData(null, {
-        teamName: team.name,
+        team,
         teamUsersSearchResult,
-        usersToAdd
+        userShown,
+        isAdmin: team.isUserAdmin(Meteor.userId())
       });
     }
   }
-  else {
-    onData(null, {
-      teamName: '',
-      teamUsersSearchResult,
-      usersToAdd
-    });
-  }
+
+  const cleanup = () => {
+    console.log('team_directory cleanup'); // Not sure why this is called when stuff is updated
+    searchTeamUsers(undefined);
+    showUserInfo(undefined);
+  };
+  return cleanup;
 };
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(HeaderNewConversation);
+)(TeamDirectory);

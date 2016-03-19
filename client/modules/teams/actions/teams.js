@@ -82,5 +82,25 @@ export default {
       });
     }
     catch (e) { alert(e); }
+  },
+
+  setUserIdShown({LocalState}, userId) {
+    LocalState.set('teamDirectory.userIdShown', userId);
+  },
+
+  makeUserAdmin({Meteor, FlowRouter}, userId) {
+    const teamId = FlowRouter.getParam('teamId');
+    Meteor.call('teams.setUserRole', {teamId, changeUserId: userId, role: 'admin'}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
+  },
+
+  removeUser({Meteor, FlowRouter}, userId) {
+    const teamId = FlowRouter.getParam('teamId');
+    Meteor.call('teams.removeUser', {teamId, removeUserId: userId}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };

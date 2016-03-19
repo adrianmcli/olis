@@ -1,15 +1,9 @@
 export default {
   setTeamUsersSearchText({LocalState}, searchText) {
-    console.log(searchText);
-    LocalState.set('teamUsersSearchText', searchText);
+    LocalState.set('searchText.teamUsers', searchText);
   },
 
   setAllUsersSearchText({LocalState}, searchText) {
-    LocalState.set('allUsersSearchText', searchText);
-  },
-
-  clearSearchTexts({LocalState}) {
-    LocalState.set('teamUsersSearchText', null);
-    LocalState.set('allUsersSearchText', null);
+    LocalState.set('searchText.allUsers', searchText);
   }
 };
