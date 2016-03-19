@@ -179,6 +179,64 @@ export default function () {
     }
   });
 
+  const TEAMS_REMOVE_USER = 'teams.removeUser';
+  Meteor.methods({
+    'teams.removeUser'({teamId, changeUserId}) {
+      check(arguments[0], {
+        teamId: String,
+        changeUserId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER, 'Must be logged in to remove user.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must remove from existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must be admin to remove team members.');
+      }
+      if (!team.isUserInTeam(changeUserId)) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must remove existing user.');
+      }
+
+      const teamUsers = Meteor.users.find({_id: {$in: team.userIds}}).fetch();
+      const getCurrentNumAdmins = () => {
+        const roles = teamUsers.map(teamUser => teamUser.roles[teamId]);
+        const count = R.countBy(_role => _role)(roles);
+        return count['admin'];
+      };
+      const changeUser = Meteor.users.findOne(changeUserId);
+      const wrongNumAdminsAfterRemove = () => {
+        return getCurrentNumAdmins() <= 1 && team.isUserAdmin(changeUser._id);
+      };
+      if (wrongNumAdminsAfterRemove()) {
+        throw new Meteor.Error(TEAMS_REMOVE_USER,
+          'Must have at least one admin.');
+      }
+
+      // This only removes the role from the array. The team id key is still in the user obj.
+      // const oldRoles = team.getRolesForUser(changeUserId);
+      // Roles.removeUsersFromRoles(changeUserId, oldRoles[0], teamId);
+
+      // Remove team from user
+      Meteor.users.update(changeUser._id, {
+        $unset: {[`roles.${teamId}`]: ''}
+      });
+
+      // Remove user from team
+      team.set({
+        userIds: R.filter(id => id !== changeUserId, team.userIds)
+      });
+      team.save();
+    }
+  });
+
   // SERVER ONLY
   const TEAMS_INVITE = 'teams.invite';
   Meteor.methods({

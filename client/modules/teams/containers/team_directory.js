@@ -5,7 +5,9 @@ import TeamDirectory from '../components/HeaderMenuItems/TeamDirectory.jsx';
 const depsMapper = (context, actions) => ({
   context: () => context,
   searchTeamUsers: actions.search.setTeamUsersSearchText,
-  showUserInfo: actions.teams.setUserShown
+  showUserInfo: actions.teams.setUserShown,
+  makeUserTeamAdmin: actions.teams.makeUserAdmin,
+  removeUserFromTeam: actions.teams.removeUser
 });
 
 export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {

@@ -86,5 +86,21 @@ export default {
 
   setUserShown({LocalState}, user) {
     LocalState.set('teamDirectory.userShown', user);
+  },
+
+  makeUserAdmin({Meteor, FlowRouter}, userId) {
+    const teamId = FlowRouter.getParam('teamId');
+    Meteor.call('teams.setUserRole', {teamId, changeUserId: userId, role: 'admin'}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
+  },
+
+  removeUser({Meteor, FlowRouter}, userId) {
+    const teamId = FlowRouter.getParam('teamId');
+    Meteor.call('teams.removeUser', {teamId, changeUserId: userId}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   }
 };
