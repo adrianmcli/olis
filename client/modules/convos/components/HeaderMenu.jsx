@@ -14,7 +14,7 @@ import TeamSettingsIcon from 'material-ui/lib/svg-icons/action/settings';
 import LogoutIcon from 'material-ui/lib/svg-icons/action/exit-to-app';
 
 import InviteToTeam from '/client/modules/teams/components/HeaderMenuItems/InviteToTeam.jsx';
-import TeamDirectory from '/client/modules/teams/components/HeaderMenuItems/TeamDirectory.jsx';
+import TeamDirectory from '/client/modules/teams/containers/team_directory';
 import TeamInfo from '/client/modules/teams/containers/team_info';
 
 class HeaderMenu extends React.Component {

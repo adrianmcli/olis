@@ -6,9 +6,10 @@ import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class TeamDirectory extends React.Component {
   render() {
+    const {teamName, teamUsersSearchResult, searchTeamUsers} = this.props;
     return (
       <Dialog
-        title="Team Directory"
+        title={`${teamName}: Directory`}
         open={this.props.open}
         onRequestClose={this.props.onRequestClose}
         closeActionOnly
@@ -19,7 +20,11 @@ export default class TeamDirectory extends React.Component {
       >
         <div style={{display: 'flex'}}>
           <div style={{width: '360px', position: 'relative'}}>
-            <PeopleList ref={ x => this._peopleList = x }/>
+            <PeopleList
+              ref={ x => this._peopleList = x }
+              users={teamUsersSearchResult}
+              search={searchTeamUsers}
+            />
           </div>
           <div style={{
             width: '280px',
@@ -34,3 +39,6 @@ export default class TeamDirectory extends React.Component {
     );
   }
 }
+TeamDirectory.defaultProps = {
+  teamName: 'Default team name'
+};
