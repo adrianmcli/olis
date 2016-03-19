@@ -13,6 +13,8 @@ export default function ({Meteor, Collections, Models}) {
       if (!userId) {
         throw new Meteor.Error(MSGS_ADD, 'Must be logged in to insert msgs.');
       }
+      const user = Meteor.user();
+
       const convo = Collections.Convos.findOne(convoId);
       if (!convo) {
         throw new Meteor.Error(MSGS_ADD, 'Must post messages to an existing convo.');
@@ -22,7 +24,7 @@ export default function ({Meteor, Collections, Models}) {
       }
 
       const msg = new Models.Message();
-      msg.set({text, userId, convoId});
+      msg.set({text, userId, username: user.username, convoId});
       msg.save();
 
       // Update convo with last msg text
