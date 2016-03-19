@@ -212,9 +212,9 @@ export default function () {
         const count = R.countBy(_role => _role)(roles);
         return count['admin'];
       };
-      const changeUser = Meteor.users.findOne(removeUserId);
+      const removeUser = Meteor.users.findOne(removeUserId);
       const wrongNumAdminsAfterRemove = () => {
-        return getCurrentNumAdmins() <= 1 && team.isUserAdmin(changeUser._id);
+        return getCurrentNumAdmins() <= 1 && team.isUserAdmin(removeUser._id);
       };
       if (wrongNumAdminsAfterRemove()) {
         throw new Meteor.Error(TEAMS_REMOVE_USER,
@@ -222,11 +222,7 @@ export default function () {
       }
 
       // Remove team from user
-      Meteor.users.update(changeUser._id, {
-        $unset: {[`roles.${teamId}`]: ''}
-      });
-
-      // TODO remove last time in team, last time for all convos in team for user
+      Meteor.call('account.removeFromTeam', {removeUserId, teamId});
 
       // Remove user from team
       team.set({
