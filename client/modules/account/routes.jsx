@@ -12,8 +12,44 @@ import Registration from './containers/registration';
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
+  function redirectToRegisterEmail(context, redirect) {
+    redirect('/register/email');
+  }
+
   FlowRouter.route('/register', {
     name: 'register',
+    triggersEnter: [ redirectToRegisterEmail ]
+  });
+
+  FlowRouter.route('/register/email', {
+    name: 'register-email',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Registration />)
+      });
+    }
+  });
+
+  FlowRouter.route('/register/username', {
+    name: 'register-username',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Registration />)
+      });
+    }
+  });
+
+  FlowRouter.route('/register/team-name', {
+    name: 'register-team-name',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Registration />)
+      });
+    }
+  });
+
+  FlowRouter.route('/register/invite', {
+    name: 'register-invite',
     action() {
       mount(MainLayoutCtx, {
         content: () => (<Registration />)

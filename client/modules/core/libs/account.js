@@ -55,7 +55,6 @@ export default {
     });
   },
 
-
   getMostRecentTeamId({Meteor}) {
     const user = Meteor.user();
     if (!user) { return null; }

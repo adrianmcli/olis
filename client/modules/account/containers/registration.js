@@ -6,9 +6,27 @@ export const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {LocalState} = context();
+  const {FlowRouter} = context();
+
+  const path = FlowRouter.current().path;
+  let currentStep = 0;
+  switch (path) {
+    case '/register/email':
+      currentStep = 0;
+      break;
+    case '/register/username':
+      currentStep = 1;
+      break;
+    case '/register/team-name':
+      currentStep = 2;
+      break;
+    case '/register/invite':
+      currentStep = 3;
+      break;
+  }
+
   onData(null, {
-    currentStep: LocalState.get('register.step')
+    currentStep
   });
 };
 
