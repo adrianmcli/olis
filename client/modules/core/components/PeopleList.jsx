@@ -12,6 +12,12 @@ export default class PeopleList extends React.Component {
     this._searchField.focus();
   }
 
+  handleChange(e) {
+    const value = e.target.value;
+    const {search} = this.props;
+    search(value);
+  }
+
   renderSearchBar() {
     const containerStyle = {
       background: '#efefef',
@@ -29,6 +35,7 @@ export default class PeopleList extends React.Component {
             hintText="Search with Username, Email, etc."
             ref={ x => this._searchField = x }
             fullWidth
+            onChange={this.handleChange.bind(this)}
           />
         </div>
       </div>
@@ -51,16 +58,16 @@ export default class PeopleList extends React.Component {
   }
 
   renderListItems() {
-    const input = [ 1, 2, 3, 4, 5, 6, 7 , 8, 9, 10 ];
-    return input.map( x => {
+    const {users} = this.props;
+    return users.map( user => {
       return (
-        <div>
+        <div key={user._id}>
           <ListItem
-            primaryText={`nickyCage ${x}`}
-            rightIcon={x === 3 ? this.renderBadge('Admin') : null}
+            primaryText={user.username}
+            // rightIcon={x === 3 ? this.renderBadge('Admin') : null}
             secondaryText={'iamsocool@gmail.com'}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-            onClick={() => {alert(`fire an action to show me: nickyCage${x}`);}}
+            onClick={() => {alert(`fire an action to show me: ${user.username}`);}}
           />
           <Divider inset={true} />
         </div>
@@ -94,3 +101,6 @@ export default class PeopleList extends React.Component {
     );
   }
 }
+PeopleList.defaultProps = {
+  users: []
+};
