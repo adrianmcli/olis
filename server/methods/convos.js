@@ -97,6 +97,7 @@ export default function () {
     }
   });
 
+  // SERVER ONLY
   const CONVOS_REMOVE_USER_FROM_TEAM = 'convos.removeUserFromTeam';
   Meteor.methods({
     'convos.removeUserFromTeam'({removeUserId, teamId}) {
