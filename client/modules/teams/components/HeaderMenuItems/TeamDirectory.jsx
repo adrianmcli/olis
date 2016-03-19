@@ -2,10 +2,9 @@ import React from 'react';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import PeopleList from '/client/modules/core/components/PeopleList.jsx';
+import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class TeamDirectory extends React.Component {
-
-
   render() {
     return (
       <Dialog
@@ -18,7 +17,19 @@ export default class TeamDirectory extends React.Component {
         bodyStyle={{padding: '0'}}
         onShow={() => {this._peopleList.focusSearchBar();}}
       >
-        <PeopleList ref={ x => this._peopleList = x }/>
+        <div style={{display: 'flex'}}>
+          <div style={{width: '360px', position: 'relative'}}>
+            <PeopleList ref={ x => this._peopleList = x }/>
+          </div>
+          <div style={{
+            width: '280px',
+            height: '432px',
+            position: 'relative',
+            overflowY: 'scroll',
+          }}>
+            <UserInfo />
+          </div>
+        </div>
       </Dialog>
     );
   }

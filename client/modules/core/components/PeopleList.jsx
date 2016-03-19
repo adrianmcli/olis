@@ -5,7 +5,6 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 import Avatar from 'material-ui/lib/avatar';
-import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class PeopleList extends React.Component {
 
@@ -88,19 +87,9 @@ export default class PeopleList extends React.Component {
 
   render() {
     return (
-      <div style={{display: 'flex'}}>
-        <div style={{width: '360px', position: 'relative'}}>
-          { this.renderSearchBar() }
-          { this.renderList() }
-        </div>
-        <div style={{
-          width: '280px',
-          height: '432px',
-          position: 'relative',
-          overflowY: 'scroll',
-        }}>
-          <UserInfo />
-        </div>
+      <div>
+        { this.renderSearchBar() }
+        { this.renderList() }
       </div>
     );
   }
