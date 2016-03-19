@@ -1,8 +1,45 @@
-import {Posts, Comments} from '../../lib/collections';
+import {Posts, Comments, Messages, Teams, Convos, Notifications, Invites, Notes, Sections} from '../../lib/collections';
+import Team from '/lib/team';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 
 export default function () {
+  Meteor.methods({
+    'a.wipeDbAndInitialize'() {
+      Meteor.users.remove({});
+      Messages.remove({});
+      Teams.remove({});
+      Convos.remove({});
+      Notifications.remove({});
+      Invites.remove({});
+      Notes.remove({});
+      Sections.remove({});
+
+      const userId = Accounts.createUser({
+        email: 'firstUser@test.com',
+        username: 'firstUser',
+        password: '1'
+      });
+      const userId2 = Accounts.createUser({
+        email: 'invite@test.com',
+        username: 'invite',
+        password: '1'
+      });
+      const userId3 = Accounts.createUser({
+        email: 'invite2@test.com',
+        username: 'invite2',
+        password: '1'
+      });
+
+      const team = new Team();
+      team.set({name: 'my cool team', userIds: [ userId, userId2, userId3 ]});
+      team.save();
+
+      Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
+      Roles.addUsersToRoles([ userId2, userId3 ], [ 'member' ], team._id);
+    }
+  });
+
   Meteor.methods({
     'posts.create'(_id, title, content) {
       check(_id, String);
