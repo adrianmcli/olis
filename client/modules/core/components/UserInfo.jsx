@@ -4,9 +4,28 @@ import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault
 import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class UserInfo extends React.Component {
+  renderButtons() {
+    const {user, makeAdmin, removeFromTeam} = this.props;
+    return (
+      <div>
+        <RaisedButton
+          label="Make Admin"
+          secondary={true}
+          style={{marginTop: '12px', width: '100%'}}
+          onClick={makeAdmin.bind(null, user._id)}
+        />
+        <RaisedButton
+          label="Remove"
+          primary={true}
+          style={{marginTop: '12px', width: '100%'}}
+          onClick={removeFromTeam.bind(null, user._id)}
+        />
+      </div>
+    );
+  }
 
   renderUserInfo() {
-    const {user} = this.props;
+    const {user, showButtons} = this.props;
     return (
       <div>
         <AvatarWithDefault
@@ -15,16 +34,7 @@ export default class UserInfo extends React.Component {
           avatarSrc={user.profileImageUrl}
         />
         <div style={{fontSize: '18px',lineHeight: '24px'}}>{user.username}</div>
-        <RaisedButton
-          label="Make Admin"
-          secondary={true}
-          style={{marginTop: '12px', width: '100%'}}
-        />
-        <RaisedButton
-          label="Remove"
-          primary={true}
-          style={{marginTop: '12px', width: '100%'}}
-        />
+        {showButtons ? this.renderButtons() : null}
       </div>
     );
   }
@@ -59,3 +69,8 @@ export default class UserInfo extends React.Component {
     );
   }
 }
+UserInfo.defaultProps = {
+  showButtons: false,
+  makeAdmin(userId = 'defaultUserId') { console.log(`Make ${userId} an admin`); },
+  removeFromTeam(userId = 'defaultUserId') { console.log(`Remove ${userId} from team.`); }
+};

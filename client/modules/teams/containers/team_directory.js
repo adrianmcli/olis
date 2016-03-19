@@ -36,7 +36,8 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
       onData(null, {
         team,
         teamUsersSearchResult,
-        userShown
+        userShown,
+        isAdmin: team.isUserAdmin(Meteor.userId())
       });
     }
   }

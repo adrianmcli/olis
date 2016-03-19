@@ -63,5 +63,8 @@ export default class PeopleList extends React.Component {
 }
 PeopleList.defaultProps = {
   users: [],
-  userClickHandler: user => console.log(`You clicked ${user.username}`)
+  userClickHandler: user => console.log(`You clicked ${user.username}`),
+  team: {
+    isUserAdmin() { return false; }
+  }
 };
