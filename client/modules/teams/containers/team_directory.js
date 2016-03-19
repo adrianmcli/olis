@@ -28,8 +28,9 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
         ]};
       }
       selector[`roles.${teamId}`] = {$exists: true};
+      const options = {sort: [ [ 'username', 'asc' ] ]};
 
-      const teamUsersSearchResult = Meteor.users.find(selector).fetch();
+      const teamUsersSearchResult = Meteor.users.find(selector, options).fetch();
       const userIdShown = LocalState.get('teamDirectory.userIdShown');
       const userShown = Meteor.users.findOne(userIdShown);
 
