@@ -179,6 +179,7 @@ export default function () {
     }
   });
 
+  // SERVER ONLY
   const TEAMS_REMOVE_USER = 'teams.removeUser';
   Meteor.methods({
     'teams.removeUser'({teamId, changeUserId}) {
@@ -268,11 +269,6 @@ export default function () {
 
       const newEmails = R.difference(validatedEmails, existingEmails);
 
-      const existingUserIds = existingEmails.map(email => {
-        const existingUser = Accounts.findUserByEmail(email);
-        return existingUser._id;
-      });
-
       function _create(email) {
         const newId = Accounts.createUser({username: email, email});
         Meteor.users.update(newId, { $set: {invitedBy: user.username} }); // This is so we can send the proper email
@@ -287,6 +283,12 @@ export default function () {
         });
         invite.save();
       }
+
+      const existingUserIds = existingEmails.map(email => {
+        const existingUser = Accounts.findUserByEmail(email);
+        _invite(existingUser._id);
+        return existingUser._id;
+      });
 
       const newUserIds = newEmails.map(email => {
         const newId = _create(email);

@@ -17,7 +17,7 @@ export default class PeopleList extends React.Component {
             rightIcon={team.isUserAdmin(user._id) ? this.renderBadge('Admin') : null}
             secondaryText={user.emails[0].address}
             leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-            onClick={userClickHandler.bind(this, user)}
+            onClick={userClickHandler.bind(this, user._id)}
           />
           <Divider inset={true} />
         </div>

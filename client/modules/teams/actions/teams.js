@@ -84,8 +84,8 @@ export default {
     catch (e) { alert(e); }
   },
 
-  setUserShown({LocalState}, user) {
-    LocalState.set('teamDirectory.userShown', user);
+  setUserIdShown({LocalState}, userId) {
+    LocalState.set('teamDirectory.userIdShown', userId);
   },
 
   makeUserAdmin({Meteor, FlowRouter}, userId) {

@@ -5,7 +5,7 @@ import TeamDirectory from '../components/HeaderMenuItems/TeamDirectory.jsx';
 const depsMapper = (context, actions) => ({
   context: () => context,
   searchTeamUsers: actions.search.setTeamUsersSearchText,
-  showUserInfo: actions.teams.setUserShown,
+  showUserInfo: actions.teams.setUserIdShown,
   makeUserTeamAdmin: actions.teams.makeUserAdmin,
   removeUserFromTeam: actions.teams.removeUser
 });
@@ -13,14 +13,10 @@ const depsMapper = (context, actions) => ({
 export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
 
-  let teamUsersSearchResult = [];
-  let team;
-  const userShown = LocalState.get('teamDirectory.userShown');
-
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
-      team = Collections.Teams.findOne(teamId);
+      const team = Collections.Teams.findOne(teamId);
       const searchText = LocalState.get('searchText.teamUsers');
 
       let selector = {};
@@ -33,7 +29,9 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
       }
       selector[`roles.${teamId}`] = {$exists: true};
 
-      teamUsersSearchResult = Meteor.users.find(selector).fetch();
+      const teamUsersSearchResult = Meteor.users.find(selector).fetch();
+      const userIdShown = LocalState.get('teamDirectory.userIdShown');
+      const userShown = Meteor.users.findOne(userIdShown);
 
       onData(null, {
         team,
@@ -45,6 +43,7 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
   }
 
   const cleanup = () => {
+    console.log('team_directory cleanup'); // Not sure why this is called when stuff is updated
     searchTeamUsers(undefined);
     showUserInfo(undefined);
   };
