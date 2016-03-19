@@ -16,8 +16,8 @@ export default function () {
       Sections.remove({});
 
       const userId = Accounts.createUser({
-        email: 'firstUser@test.com',
-        username: 'firstUser',
+        email: 'test@test.com',
+        username: 'test',
         password: '1'
       });
       const userId2 = Accounts.createUser({
