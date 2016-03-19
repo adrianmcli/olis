@@ -11,7 +11,7 @@ const depsMapper = (context, actions) => ({
 export const composer = ({context, setAllUsersSearchText}, onData) => {
   const {LocalState} = context();
 
-  const searchText = LocalState.get('allUsersSearchText');
+  const searchText = LocalState.get('searchText.allUsers');
   UsersSearchSource.search(searchText);
 
   onData(null, {

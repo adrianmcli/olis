@@ -24,7 +24,7 @@ export const composer = ({context}, onData) => {
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
-      const searchText = LocalState.get('teamUsersSearchText');
+      const searchText = LocalState.get('searchText.teamUsers');
 
       let selector = {};
       if (searchText) {
