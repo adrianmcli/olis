@@ -68,6 +68,10 @@ export const composer = ({context}, onData) => {
     title,
     usersListString
   });
+
+  return () => {
+    MsgSubs.clear();
+  };
 };
 
 export default composeAll(

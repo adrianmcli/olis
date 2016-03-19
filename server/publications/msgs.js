@@ -1,4 +1,4 @@
-import {Convos, Messages} from '/lib/collections';
+import {Teams, Convos, Messages} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import R from 'ramda';
@@ -21,6 +21,13 @@ export default function () {
     }
     if (!convo.isUserInConvo(this.userId)) {
       throw new Meteor.Error(MSGS_LIST, 'Must be a member of convo to get convo\'s messages.');
+    }
+    const team = Teams.findOne(convo.teamId);
+    if (!team) {
+      throw new Meteor.Error(MSGS_LIST, 'Can only get messages from an existing team.');
+    }
+    if (!team.isUserInTeam(this.userId)) {
+      throw new Meteor.Error(MSGS_LIST, 'Must be a member of convo\'s team to get msgs.');
     }
 
     const selector = {convoId};
