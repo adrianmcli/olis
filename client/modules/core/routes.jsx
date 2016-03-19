@@ -2,7 +2,7 @@ import React from 'react';
 import {mount} from 'react-mounter';
 
 import MainLayout from './components/main_layout.jsx';
-import Home from './components/home.jsx';
+import Home from './containers/home';
 
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
@@ -28,6 +28,15 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
       if (err) { alert(err); }
     });
   }
+
+  FlowRouter.route('/team', {
+    name: 'no-team',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Home />)
+      });
+    }
+  });
 
   FlowRouter.route('/team/:teamId', {
     name: 'team',
