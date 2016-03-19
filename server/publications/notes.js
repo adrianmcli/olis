@@ -13,15 +13,15 @@ export default function () {
       throw new Meteor.Error(NOTES_SINGLE, 'Must be logged in to get note.');
     }
     const convo = Convos.findOne(convoId);
-    if (!convo) {
-      throw new Meteor.Error(NOTES_SINGLE, 'Must get a note from an existing convo.');
-    }
     const team = Teams.findOne(convo.teamId);
     if (!team) {
       throw new Meteor.Error(NOTES_SINGLE, 'Must get a note from a convo in an existing team.');
     }
     if (!team.isUserInTeam(this.userId)) {
       throw new Meteor.Error(NOTES_SINGLE, 'Must be a member of team to get note.');
+    }
+    if (!convo) {
+      throw new Meteor.Error(NOTES_SINGLE, 'Must get a note from an existing convo.');
     }
     if (!convo.isUserInConvo(this.userId)) {
       throw new Meteor.Error(NOTES_SINGLE, 'Must be a member of convo to get the convo\'s note.');
