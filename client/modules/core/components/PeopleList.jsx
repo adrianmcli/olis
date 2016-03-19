@@ -5,8 +5,6 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 import Avatar from 'material-ui/lib/avatar';
-import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
-import RaisedButton from 'material-ui/lib/raised-button';
 import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class PeopleList extends React.Component {
