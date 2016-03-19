@@ -16,7 +16,6 @@ export const composer = ({context}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
 
   const user = Meteor.user();
-  const profileImageUrl = user ? user.profileImageUrl : undefined;
   let teamUsersSearchResult = [];
   const usersToAdd = LocalState.get('newConvo.usersToAdd') ?
     LocalState.get('newConvo.usersToAdd') : [];
@@ -43,7 +42,6 @@ export const composer = ({context}, onData) => {
         Meteor.users.find(selector).fetch());
 
       onData(null, {
-        profileImageUrl,
         teamName: team.name,
         teamUsersSearchResult,
         usersToAdd
@@ -52,7 +50,6 @@ export const composer = ({context}, onData) => {
   }
   else {
     onData(null, {
-      profileImageUrl,
       teamName: '',
       teamUsersSearchResult,
       usersToAdd
