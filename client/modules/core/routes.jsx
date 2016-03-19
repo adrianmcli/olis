@@ -52,7 +52,7 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
   });
 
   FlowRouter.route('/team/:teamId/convo/:convoId', {
-    name: 'team',
+    name: 'team-convo',
     triggersEnter: [ ensureSignedIn, removeNotifications ],
     triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications ],
     action(params) {
