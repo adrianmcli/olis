@@ -52,7 +52,7 @@ export default class InvitedToTeam extends React.Component {
             const {_id, teamId} = invite;
             return (
               <div key={_id} onClick={this.handleTeamClick.bind(this, teamId)}>
-                {teams[teamId].name}
+                {teams[teamId] ? teams[teamId].name : 'Default team name'}
               </div>
             );
           })}
