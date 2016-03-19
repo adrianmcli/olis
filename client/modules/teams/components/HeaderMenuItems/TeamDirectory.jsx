@@ -6,7 +6,9 @@ import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class TeamDirectory extends React.Component {
   render() {
-    const {teamName, teamUsersSearchResult, searchTeamUsers} = this.props;
+    const {
+      teamName, teamUsersSearchResult, searchTeamUsers, showUserInfo, userShown
+    } = this.props;
     return (
       <Dialog
         title={`${teamName}: Directory`}
@@ -24,6 +26,7 @@ export default class TeamDirectory extends React.Component {
               ref={ x => this._peopleList = x }
               users={teamUsersSearchResult}
               search={searchTeamUsers}
+              userClickHandler={showUserInfo}
             />
           </div>
           <div style={{
@@ -32,7 +35,7 @@ export default class TeamDirectory extends React.Component {
             position: 'relative',
             overflowY: 'scroll',
           }}>
-            <UserInfo />
+            <UserInfo user={userShown} />
           </div>
         </div>
       </Dialog>

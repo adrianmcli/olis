@@ -5,14 +5,15 @@ import TeamDirectory from '../components/HeaderMenuItems/TeamDirectory.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  searchTeamUsers: actions.search.setTeamUsersSearchText
+  searchTeamUsers: actions.search.setTeamUsersSearchText,
+  showUserInfo: actions.teams.showUserInfo
 });
 
 export const composer = ({context}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
 
-  const user = Meteor.user();
   let teamUsersSearchResult = [];
+  const userShown = LocalState.get('teamDirectory.userShown');
 
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
@@ -30,20 +31,20 @@ export const composer = ({context}, onData) => {
       }
       selector[`roles.${teamId}`] = {$exists: true};
 
-      const excludeFromSearchResult = [ user._id ];
-      teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
-        Meteor.users.find(selector).fetch());
+      teamUsersSearchResult = Meteor.users.find(selector).fetch();
 
       onData(null, {
         teamName: team.name,
-        teamUsersSearchResult
+        teamUsersSearchResult,
+        userShown
       });
     }
   }
   else {
     onData(null, {
       teamName: '',
-      teamUsersSearchResult
+      teamUsersSearchResult,
+      userShown
     });
   }
 };

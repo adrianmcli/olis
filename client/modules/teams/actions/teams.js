@@ -82,5 +82,9 @@ export default {
       });
     }
     catch (e) { alert(e); }
+  },
+
+  showUserInfo({LocalState}, userId) {
+    LocalState.set('teamDirectory.userShown', userId);
   }
 };
