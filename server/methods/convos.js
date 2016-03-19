@@ -99,7 +99,7 @@ export default function () {
 
   const CONVOS_REMOVE_USER_FROM_TEAM = 'convos.removeUserFromTeam';
   Meteor.methods({
-    'convos.removeUser'({removeUserId, teamId}) {
+    'convos.removeUserFromTeam'({removeUserId, teamId}) {
       check(arguments[0], {
         removeUserId: String,
         teamId: String

@@ -226,6 +226,8 @@ export default function () {
         $unset: {[`roles.${teamId}`]: ''}
       });
 
+      // TODO remove last time in team, last time for all convos in team for user
+
       // Remove user from team
       team.set({
         userIds: R.filter(id => id !== removeUserId, team.userIds)
@@ -233,7 +235,7 @@ export default function () {
       team.save();
 
       // Remove user from all convos in the team
-      // Meteor.call('convos.removeUserFromTeam', {removeUserId});
+      Meteor.call('convos.removeUserFromTeam', {removeUserId, teamId});
     }
   });
 
