@@ -19,6 +19,8 @@ export default function () {
       if (!userId) {
         throw new Meteor.Error(MSGS_ADD, 'Must be logged in to insert msgs.');
       }
+      const user = Meteor.users.findOne(userId);
+
       const convo = Convos.findOne(convoId);
       if (!convo) {
         throw new Meteor.Error(MSGS_ADD, 'Must post messages to an existing convo.');
@@ -28,7 +30,7 @@ export default function () {
       }
 
       const msg = new Message();
-      msg.set({text, userId, convoId});
+      msg.set({text, userId, username: user.username, convoId});
       msg.save();
 
       // Update convo with last msg text
@@ -37,10 +39,13 @@ export default function () {
         R.takeLast(2, uniqueRecentUserIds) : R.takeLast(2, convo.userIds);
 
       const recentUserIds = R.takeLast(2, R.uniq([ ...oldRecentUserIds, userId ]));
+      const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}});
+      const recentUsernames = recentUsers.map(recentUser => recentUser.username);
 
       convo.set({
         lastMsgText: text,
-        recentUserIds, // SERVER ONLY
+        recentUserIds,
+        recentUsernames,
         numMsgs: Messages.find({convoId}).count() // SERVER ONLY
       });
       convo.save();
@@ -68,8 +73,8 @@ export default function () {
         }
         else {
           const oldRecentUsernames = oldNotif.recentUsernames;
-          const recentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
-          oldNotif.set({recentUsernames});
+          const notifRecentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
+          oldNotif.set({recentUsernames: notifRecentUsernames});
           oldNotif.save();
         }
       });

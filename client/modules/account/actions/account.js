@@ -130,7 +130,7 @@ export default {
       _reset(newPassword)
       .then(() => {
         const teamId = AccountUtils.getMostRecentTeamId({Meteor});
-        FlowRouter.go(`/team/${teamId}`);
+        FlowRouter.go(`/team/${teamId ? teamId : ''}`);
       })
       .catch((err) => alert(err));
     }

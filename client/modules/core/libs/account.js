@@ -58,10 +58,7 @@ export default {
   getMostRecentTeamId({Meteor}) {
     const user = Meteor.user();
     if (!user) { return null; }
-    if (!user.lastTimeInTeam) {
-      const teamIds = R.keys(user.roles);
-      return teamIds[0];
-    }
+    if (!user.lastTimeInTeam || R.isEmpty(user.lastTimeInTeam)) { return null; }
 
     const pairs = R.toPairs(user.lastTimeInTeam);
     const sortByDate = R.sortBy(R.prop(1));
@@ -74,7 +71,7 @@ export default {
   getMostRecentConvoId({Meteor}) {
     const user = Meteor.user();
     if (!user) { return null; }
-    if (!user.lastTimeInConvo) { return null; }
+    if (!user.lastTimeInConvo || R.isEmpty(user.lastTimeInConvo)) { return null; }
 
     const pairs = R.toPairs(user.lastTimeInConvo);
 
