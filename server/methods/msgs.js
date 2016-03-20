@@ -39,10 +39,13 @@ export default function () {
         R.takeLast(2, uniqueRecentUserIds) : R.takeLast(2, convo.userIds);
 
       const recentUserIds = R.takeLast(2, R.uniq([ ...oldRecentUserIds, userId ]));
+      const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}});
+      const recentUsernames = recentUsers.map(recentUser => recentUser.username);
 
       convo.set({
         lastMsgText: text,
-        recentUserIds, // SERVER ONLY
+        recentUserIds,
+        recentUsernames,
         numMsgs: Messages.find({convoId}).count() // SERVER ONLY
       });
       convo.save();
@@ -70,8 +73,8 @@ export default function () {
         }
         else {
           const oldRecentUsernames = oldNotif.recentUsernames;
-          const recentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
-          oldNotif.set({recentUsernames});
+          const notifRecentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
+          oldNotif.set({recentUsernames: notifRecentUsernames});
           oldNotif.save();
         }
       });

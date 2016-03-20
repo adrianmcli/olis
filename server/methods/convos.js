@@ -35,10 +35,14 @@ export default function () {
       const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
       const recentUserIds = R.takeLast(2, uniqueUserIds);
+      const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}}).fetch();
+      const recentUsernames = recentUsers.map(x => x.username);
+
       convo.set({
         name,
         userIds: uniqueUserIds,
         recentUserIds,
+        recentUsernames,
         teamId});
       convo.save();
 

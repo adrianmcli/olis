@@ -31,6 +31,15 @@ export default class Sidebar extends React.Component {
             const otherRecentUserIds = R.filter(id => id !== user._id, convo.recentUserIds);
             const lastUserId = R.last(otherRecentUserIds);
             const lastUser = teamUsers[lastUserId];
+            const avatarSrc = lastUser ? lastUser.profileImageUrl : undefined;
+
+            let lastUsername;
+            if (!lastUser) {
+              const otherRecentUsernames = R.filter(name => name !== user.username, 
+                convo.recentUsernames);
+              lastUsername = R.last(otherRecentUsernames);
+            }
+            else { lastUsername = lastUser.username; }
 
             let unread = false;
             let unreadCount = 0;
@@ -54,8 +63,8 @@ export default class Sidebar extends React.Component {
                 title={convo.name}
                 lastUpdated={convo.updatedAt}
                 previewText={convo.lastMsgText}
-                username={lastUser.username}
-                avatarSrc={lastUser.profileImageUrl}
+                username={lastUsername}
+                avatarSrc={avatarSrc}
                 unread={unread}
                 unreadCount={unreadCount}
                 selectConvo={selectConvo.bind(null , convo._id)}
