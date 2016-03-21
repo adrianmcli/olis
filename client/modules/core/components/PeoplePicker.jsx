@@ -3,7 +3,7 @@ import React from 'react';
 import PeopleList from './PeopleList.jsx';
 import ChipsContainer from './ChipsContainer.jsx';
 
-export default class PeoplePicker2 extends React.Component {
+export default class PeoplePicker extends React.Component {
   render() {
     const {usersNotAdded, usersToAdd, team, addUserId, removeUserId, search} = this.props;
 

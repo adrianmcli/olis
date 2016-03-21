@@ -5,7 +5,7 @@ import ActionQuestionAnswer from 'material-ui/lib/svg-icons/action/question-answ
 import TextField from 'material-ui/lib/text-field';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
-import PeoplePicker2 from '/client/modules/core/components/PeoplePicker2.jsx';
+import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
 export default class HeaderNewConversation extends React.Component {
 
@@ -71,7 +71,7 @@ export default class HeaderNewConversation extends React.Component {
     } = this.props;
 
     return (
-      <PeoplePicker2
+      <PeoplePicker
         usersNotAdded={teamUsersSearchResult}
         usersToAdd={usersToAdd}
         team={team}
