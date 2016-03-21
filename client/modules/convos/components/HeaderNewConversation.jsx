@@ -5,7 +5,7 @@ import ActionQuestionAnswer from 'material-ui/lib/svg-icons/action/question-answ
 import TextField from 'material-ui/lib/text-field';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
-import PeoplePicker2 from '/client/modules/core/components/PeoplePicker2.jsx';
+import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
 export default class HeaderNewConversation extends React.Component {
 
@@ -39,7 +39,7 @@ export default class HeaderNewConversation extends React.Component {
       convoName: this._textField.getValue(),
     });
     setTimeout(() => {
-      this._peoplePicker.focusSearchBar();
+      this._peoplePicker.focusSearchField();
     }, 500);
   }
 
@@ -65,13 +65,14 @@ export default class HeaderNewConversation extends React.Component {
     );
   }
 
-  renderSecondStep2() {
+  renderSecondStep() {
     const {
       teamUsersSearchResult, usersToAdd, team, addUserId, removeUserId, searchTeamUsers
     } = this.props;
 
     return (
-      <PeoplePicker2
+      <PeoplePicker
+        ref={x => this._peoplePicker = x}
         usersNotAdded={teamUsersSearchResult}
         usersToAdd={usersToAdd}
         team={team}
@@ -122,7 +123,7 @@ export default class HeaderNewConversation extends React.Component {
           actionsContainerStyle={actionsContainerStyle}
           bodyStyle={bodyStyle}
         >
-          { this.state.stage === 0 ? this.renderFirstStep() : this.renderSecondStep2() }
+          { this.state.stage === 0 ? this.renderFirstStep() : this.renderSecondStep() }
         </Dialog>
 
       </div>
