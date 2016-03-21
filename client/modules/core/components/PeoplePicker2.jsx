@@ -5,14 +5,14 @@ import ChipsContainer from './ChipsContainer.jsx';
 
 export default class PeoplePicker2 extends React.Component {
   render() {
-    const {usersNotAdded, usersToAdd, team, addUser, removeUser, search} = this.props;
+    const {usersNotAdded, usersToAdd, team, addUserId, removeUserId, search} = this.props;
 
     return (
       <div style={{display: 'flex'}}>
         <div style={{width: '360px', position: 'relative'}}>
           <PeopleList
             users={usersNotAdded}
-            userClickHandler={addUser}
+            userClickHandler={addUserId}
             team={team}
             search={search}
           />
@@ -25,7 +25,7 @@ export default class PeoplePicker2 extends React.Component {
         }}>
           <ChipsContainer
             usersToAdd={usersToAdd}
-            removeUser={removeUser}
+            removeUserId={removeUserId}
           />
         </div>
       </div>

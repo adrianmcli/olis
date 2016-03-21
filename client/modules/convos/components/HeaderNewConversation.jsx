@@ -27,10 +27,11 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   handleClose() {
-    const {searchTeamUsers, clearAddedUsers} = this.props;
+    const {clearAddedUserIds, clearTeamUsersSearchText} = this.props;
     this.setState({open: false, stage: 0});
-    searchTeamUsers(null);
-    clearAddedUsers();
+
+    clearAddedUserIds();
+    clearTeamUsersSearchText();
   }
 
   handleNext() {
@@ -83,7 +84,7 @@ export default class HeaderNewConversation extends React.Component {
 
   renderSecondStep2() {
     const {
-      teamUsersSearchResult, usersToAdd, team, addUser, removeUser, searchTeamUsers
+      teamUsersSearchResult, usersToAdd, team, addUserId, removeUserId, searchTeamUsers
     } = this.props;
 
     return (
@@ -91,8 +92,8 @@ export default class HeaderNewConversation extends React.Component {
         usersNotAdded={teamUsersSearchResult}
         usersToAdd={usersToAdd}
         team={team}
-        addUser={addUser}
-        removeUser={removeUser}
+        addUserId={addUserId}
+        removeUserId={removeUserId}
         search={searchTeamUsers}
       />
     );

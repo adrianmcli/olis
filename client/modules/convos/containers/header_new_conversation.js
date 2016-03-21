@@ -7,9 +7,10 @@ const depsMapper = (context, actions) => ({
   context: () => context,
   addConvo: actions.convos.add,
   searchTeamUsers: actions.search.setTeamUsersSearchText,
-  addUser: actions.convos['newConvo.addUser'],
-  removeUser: actions.convos['newConvo.removeUser'],
-  clearAddedUsers: actions.convos['newConvo.clearAddedUsers']
+  addUserId: actions.convos['newConvo.addUserId'],
+  removeUserId: actions.convos['newConvo.removeUserId'],
+  clearAddedUserIds: actions.convos['newConvo.clearAddedUserIds'],
+  clearTeamUsersSearchText: actions.search['searchText.teamUsers.clear']
 });
 
 export const composer = ({context}, onData) => {
@@ -17,8 +18,8 @@ export const composer = ({context}, onData) => {
 
   const user = Meteor.user();
   let teamUsersSearchResult = [];
-  const usersToAdd = LocalState.get('newConvo.usersToAdd') ?
-    LocalState.get('newConvo.usersToAdd') : [];
+  const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd') ?
+    LocalState.get('newConvo.userIdsToAdd') : [];
 
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
@@ -36,10 +37,12 @@ export const composer = ({context}, onData) => {
       }
       selector[`roles.${teamId}`] = {$exists: true};
 
-      const userIdsToAdd = usersToAdd.map(x => x._id);
+      const foundUsers = Meteor.users.find(selector).fetch();
       const excludeFromSearchResult = [ user._id, ...userIdsToAdd ];
       teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
-        Meteor.users.find(selector).fetch());
+        foundUsers);
+
+      const usersToAdd = Meteor.users.find({_id: {$in: userIdsToAdd}}).fetch();
 
       onData(null, {
         team,
@@ -48,6 +51,8 @@ export const composer = ({context}, onData) => {
       });
     }
   }
+
+  // Don't return a cleanup function here, since it's a dialog and is always mounted, but just not visible.
 };
 
 export default composeAll(

@@ -5,7 +5,7 @@ import Chip from '/client/modules/core/components/Chip.jsx';
 
 export default class ChipsContainer extends React.Component {
   renderChips() {
-    const {usersToAdd, removeUser} = this.props;
+    const {usersToAdd, removeUserId} = this.props;
     return usersToAdd.map( user => {
       return (
         <div key={user._id} style={{marginBottom: '6px'}}>
@@ -13,7 +13,7 @@ export default class ChipsContainer extends React.Component {
             // NOTE: avatarSrc is optional, Chip can generate an avatar w/ the username alone
             avatarSrc='https://www.placecage.com/100/100'
             username={user.username}
-            onRemoveClick={removeUser.bind(null, user)}
+            onRemoveClick={removeUserId.bind(null, user._id)}
           />
         </div>
       );
@@ -55,5 +55,5 @@ export default class ChipsContainer extends React.Component {
 }
 ChipsContainer.defaultProps = {
   usersToAdd: [],
-  removeUser(user = {username: 'UselessGuy'}) { console.log(`Remove user ${user.username}`); }
+  removeUser(userId = 'someFakeId') { console.log(`Remove user with ${userId}`); }
 };
