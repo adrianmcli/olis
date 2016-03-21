@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
-import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
 export default class AddPeople extends React.Component {
 
@@ -25,7 +24,6 @@ export default class AddPeople extends React.Component {
         width={540}
         actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
       >
-        <PeoplePicker ref={ x => this._peoplePicker = x }/>
       </Dialog>
     );
   }

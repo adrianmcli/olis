@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
-// import PeoplePicker from '../../containers/people_picker_team';
 
 export default class AddPeople extends React.Component {
 
