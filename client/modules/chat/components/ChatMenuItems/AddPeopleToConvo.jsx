@@ -1,18 +1,25 @@
 import React from 'react';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
+import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
-export default class AddPeople extends React.Component {
+export default class AddPeopleToConvo extends React.Component {
 
   handleSubmit() {
     console.log('submit');
   }
 
   handleClose() {
+    const {clearAddedUserIds, clearTeamUsersSearchText} = this.props;
     this.props.onRequestClose();
+    clearAddedUserIds();
+    clearTeamUsersSearchText();
   }
 
   render() {
+    const {
+      teamUsersSearchResult, usersToAdd, team, addUserId, removeUserId, searchTeamUsers
+    } = this.props;
     return (
       <Dialog
         title="Add People to Conversation"
@@ -24,6 +31,14 @@ export default class AddPeople extends React.Component {
         width={540}
         actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
       >
+        <PeoplePicker
+          usersNotAdded={teamUsersSearchResult}
+          usersToAdd={usersToAdd}
+          team={team}
+          addUserId={addUserId}
+          removeUserId={removeUserId}
+          search={searchTeamUsers}
+        />
       </Dialog>
     );
   }
