@@ -5,7 +5,7 @@ import R from 'ramda';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  // addConvo: actions.convos.add,
+  addUsersToConvo: actions.convos.addMembers,
   searchTeamUsers: actions.search.setTeamUsersSearchText,
   addUserId: actions.convos['newConvo.addUserId'],
   removeUserId: actions.convos['newConvo.removeUserId'],
@@ -22,9 +22,11 @@ export const composer = ({context}, onData) => {
     LocalState.get('newConvo.userIdsToAdd') : [];
 
   const teamId = FlowRouter.getParam('teamId');
-  if (teamId) {
+  const convoId = FlowRouter.getParam('convoId');
+  if (teamId && convoId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
+      const convo = Collections.Convos.findOne(convoId);
       const searchText = LocalState.get('searchText.teamUsers');
 
       let selector = {};
@@ -38,7 +40,7 @@ export const composer = ({context}, onData) => {
       selector[`roles.${teamId}`] = {$exists: true};
 
       const foundUsers = Meteor.users.find(selector).fetch();
-      const excludeFromSearchResult = [ user._id, ...userIdsToAdd ];
+      const excludeFromSearchResult = [ user._id, ...userIdsToAdd, ...convo.userIds ];
       teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
         foundUsers);
 
@@ -47,7 +49,8 @@ export const composer = ({context}, onData) => {
       onData(null, {
         team,
         teamUsersSearchResult,
-        usersToAdd
+        usersToAdd,
+        convoId
       });
     }
   }

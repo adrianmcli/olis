@@ -6,7 +6,9 @@ import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 export default class AddPeopleToConvo extends React.Component {
 
   handleSubmit() {
-    console.log('submit');
+    const {addUsersToConvo, usersToAdd, convoId, onRequestClose} = this.props;
+    addUsersToConvo(convoId, usersToAdd.map(user => user._id));
+    onRequestClose();
   }
 
   handleClose() {
@@ -26,6 +28,7 @@ export default class AddPeopleToConvo extends React.Component {
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
         submitLabel="Add to Conversation"
+        onSubmit={this.handleSubmit.bind(this)}
         onShow={() => {this._peoplePicker.focusSearchBar();}}
         bodyStyle={{padding: '0'}}
         width={540}
