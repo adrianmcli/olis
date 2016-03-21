@@ -2,11 +2,11 @@ import React from 'react';
 
 import IconButton from 'material-ui/lib/icon-button';
 import ActionQuestionAnswer from 'material-ui/lib/svg-icons/action/question-answer';
+import TextField from 'material-ui/lib/text-field';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
-import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
-
-import TextField from 'material-ui/lib/text-field';
+// import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
+import PeoplePicker2 from '/client/modules/core/components/PeoplePicker2.jsx';
 
 export default class HeaderNewConversation extends React.Component {
 
@@ -65,15 +65,32 @@ export default class HeaderNewConversation extends React.Component {
     );
   }
 
-  renderSecondStep() {
+  // renderSecondStep() {
+  //   const {
+  //     teamUsersSearchResult, usersToAdd, addUser, removeUser, searchTeamUsers
+  //   } = this.props;
+  //   return (
+  //     <PeoplePicker
+  //       ref={ x => this._peoplePicker = x }
+  //       usersNotAdded={teamUsersSearchResult}
+  //       usersToAdd={usersToAdd}
+  //       addUser={addUser}
+  //       removeUser={removeUser}
+  //       search={searchTeamUsers}
+  //     />
+  //   );
+  // }
+
+  renderSecondStep2() {
     const {
-      teamUsersSearchResult, usersToAdd, addUser, removeUser, searchTeamUsers
+      teamUsersSearchResult, usersToAdd, team, addUser, removeUser, searchTeamUsers
     } = this.props;
+
     return (
-      <PeoplePicker
-        ref={ x => this._peoplePicker = x }
+      <PeoplePicker2
         usersNotAdded={teamUsersSearchResult}
         usersToAdd={usersToAdd}
+        team={team}
         addUser={addUser}
         removeUser={removeUser}
         search={searchTeamUsers}
@@ -121,7 +138,7 @@ export default class HeaderNewConversation extends React.Component {
           actionsContainerStyle={actionsContainerStyle}
           bodyStyle={bodyStyle}
         >
-          { this.state.stage === 0 ? this.renderFirstStep() : this.renderSecondStep() }
+          { this.state.stage === 0 ? this.renderFirstStep() : this.renderSecondStep2() }
         </Dialog>
 
       </div>

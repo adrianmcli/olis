@@ -42,18 +42,11 @@ export const composer = ({context}, onData) => {
         Meteor.users.find(selector).fetch());
 
       onData(null, {
-        teamName: team.name,
+        team,
         teamUsersSearchResult,
         usersToAdd
       });
     }
-  }
-  else {
-    onData(null, {
-      teamName: '',
-      teamUsersSearchResult,
-      usersToAdd
-    });
   }
 };
 
