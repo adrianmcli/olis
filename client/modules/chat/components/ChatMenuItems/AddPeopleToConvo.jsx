@@ -29,12 +29,13 @@ export default class AddPeopleToConvo extends React.Component {
         onRequestClose={this.handleClose.bind(this)}
         submitLabel="Add to Conversation"
         onSubmit={this.handleSubmit.bind(this)}
-        onShow={() => {this._peoplePicker.focusSearchBar();}}
+        onShow={() => {this._peoplePicker.focusSearchField();}}
         bodyStyle={{padding: '0'}}
         width={540}
         actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
       >
         <PeoplePicker
+          ref={x => this._peoplePicker = x}
           usersNotAdded={teamUsersSearchResult}
           usersToAdd={usersToAdd}
           team={team}
