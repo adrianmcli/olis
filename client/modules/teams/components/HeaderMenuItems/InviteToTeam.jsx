@@ -21,6 +21,7 @@ export default class InviteToTeam extends React.Component {
           hintText="your.name@example.com"
           floatingLabelText="Email"
           ref={ x => this._textField = x }
+          fullWidth
           // onChange={this.handleChange.bind(this, ref, i)}
           // errorText={this.state.showErrorText[i] ? 'Enter a proper email.' : null}
         />
