@@ -78,7 +78,7 @@ export default function () {
     // console.log('resetPassword subject');
     // console.log(user);
     if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
-      return `Set Your Olis Account Password`;
+      return `Welcome to Olis ${user.username}! Set Your Olis Account Password.`;
     }
     return `Reset Your Olis Account Password`;
   };
