@@ -14,12 +14,12 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
     if (!Meteor.userId()) { redirect('/login'); }
   }
 
-  function setLastTimeInTeam(teamId) {
-    TeamUtils.setLastTimeInTeam({Meteor}, teamId);
+  function setLastTimeInTeam({params}) {
+    TeamUtils.setLastTimeInTeam({Meteor}, params.teamId);
   }
 
-  function setLastTimeInConvo(convoId) {
-    ConvoUtils.setLastTimeInConvo({Meteor, Collections}, convoId);
+  function setLastTimeInConvo({params}) {
+    ConvoUtils.setLastTimeInConvo({Meteor, Collections}, params.convoId);
   }
 
   function removeNotifications({params}) {
@@ -42,7 +42,8 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
     name: 'team',
     triggersEnter: [ ensureSignedIn ],
     triggersExit: [ setLastTimeInTeam ],
-    action({teamId}) {
+    action(params) {
+      const {teamId} = params;
       Meteor.call('teams.isMember', {teamId}, (err, res) => {
         if (err) {
           mount(MainLayoutCtx, {
@@ -50,7 +51,7 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
           });
         }
         else {
-          setLastTimeInTeam(teamId);
+          setLastTimeInTeam({params});
           mount(MainLayoutCtx, {
             content: () => (<Home />)
           });
@@ -63,7 +64,8 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
     name: 'team-convo',
     triggersEnter: [ ensureSignedIn, removeNotifications ],
     triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications ],
-    action({teamId, convoId}) {
+    action(params) {
+      const {convoId} = params;
       Meteor.call('convos.isMember', {convoId}, (err, res) => {
         if (err) {
           mount(MainLayoutCtx, {
@@ -71,8 +73,8 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
           });
         }
         else {
-          setLastTimeInTeam(teamId);
-          setLastTimeInConvo(convoId);
+          setLastTimeInTeam({params});
+          setLastTimeInConvo({params});
           mount(MainLayoutCtx, {
             content: () => (<Home />)
           });
