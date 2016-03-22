@@ -21,6 +21,14 @@ export default {
     });
   },
 
+  changeName({Meteor, FlowRouter}, name) {
+    const convoId = FlowRouter.getParam('convoId');
+    Meteor.call('convos.setName', {convoId, name}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
+  },
+
   'newConvo.addUserId'({LocalState}, userId) {
     const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd') ?
       LocalState.get('newConvo.userIdsToAdd') : [];
