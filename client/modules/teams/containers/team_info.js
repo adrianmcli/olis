@@ -19,6 +19,8 @@ export const composer = ({context}, onData) => {
       });
     }
   }
+
+  return () => console.log('team_info cleanup');
 };
 
 export default composeAll(

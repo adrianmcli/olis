@@ -132,4 +132,29 @@ export default function () {
       });
     }
   });
+
+  // SERVER ONLY
+  const CONVOS_IS_MEMBER = 'convos.isMember';
+  Meteor.methods({
+    'convos.isMember'({convoId}) {
+      check(arguments[0], {
+        convoId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(CONVOS_IS_MEMBER, 'Must be logged in to view convo.');
+      }
+      const convo = Convos.findOne(convoId);
+      if (!convo) {
+        throw new Meteor.Error(CONVOS_IS_MEMBER, 'Must be a member of existing convo.');
+      }
+      Meteor.call('teams.isMember', {teamId: convo.teamId});
+      if (!convo.isUserInConvo(userId)) {
+        throw new Meteor.Error(CONVOS_IS_MEMBER, 'User is not a member of convo.');
+      }
+
+      return convo.isUserInConvo(userId);
+    }
+  });
 }
