@@ -3,10 +3,11 @@ import React from 'react';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import TextField from 'material-ui/lib/text-field';
 
-export default class ChangeTitle extends React.Component {
+export default class ChangeConvoName extends React.Component {
   handleSubmit() {
+    const {changeConvoName} = this.props;
     const input = this._textField.getValue();
-    console.log(input); // TODO - fire off an action to change the title
+    changeConvoName(input);
     this.handleClose();
   }
 
@@ -17,17 +18,17 @@ export default class ChangeTitle extends React.Component {
   render() {
     return (
       <Dialog
-        title="Change Chat Title"
+        title="Change Chat Name"
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
         width={360}
-        submitLabel="Change Title"
+        submitLabel="Change Name"
         onShow={() => {this._textField.focus();}}
       >
         <p>Enter a new chat title below:</p>
         <TextField
-          hintText="Describe the conversation topic"
-          floatingLabelText="Chat Title"
+          hintText="Describe the chat topic"
+          floatingLabelText="Chat Name"
           onEnterKeyDown={this.handleSubmit.bind(this)}
           ref={(x) => this._textField = x}
           fullWidth

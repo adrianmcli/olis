@@ -79,4 +79,29 @@ export default function ({Meteor, Collections, Models}) {
       convo.save();
     }
   });
+
+  const CONVOS_SET_NAME = 'convos.setName';
+  Meteor.methods({
+    'convos.setName'({convoId, name}) {
+      check(arguments[0], {
+        convoId: String,
+        name: String
+      });
+
+      const userId = Meteor.userId();
+      if (!userId) {
+        throw new Meteor.Error(CONVOS_SET_NAME, 'Must be logged in to set chat name.');
+      }
+      const convo = Collections.Convos.findOne(convoId);
+      if (!convo) {
+        throw new Meteor.Error(CONVOS_SET_NAME, 'Must set the name of an existing chat.');
+      }
+      if (!convo.isUserAdmin(userId)) {
+        throw new Meteor.Error(CONVOS_SET_NAME, 'Must be an admin of chat to set the chat name.');
+      }
+
+      convo.set({name});
+      convo.save();
+    }
+  });
 }
