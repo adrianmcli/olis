@@ -19,7 +19,7 @@ export default class ChatMembers extends React.Component {
         width={600}
         actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
         bodyStyle={{padding: '0'}}
-        onShow={() => {this._peopleList.focusSearchBar();}}
+        onShow={() => {this._peopleList.focusSearchField();}}
       >
         <PeopleList ref={ x => this._peopleList = x }/>
       </Dialog>
