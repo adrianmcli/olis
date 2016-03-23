@@ -28,7 +28,8 @@ export default class Sidebar extends React.Component {
         <div id="conversation-list">
           <FlipMove>
           {convos.map(convo => {
-            const otherRecentUserIds = R.filter(id => id !== user._id, convo.recentUserIds);
+            const otherRecentUserIds = convo.recentUserIds.length > 1 ?
+              R.filter(id => id !== user._id, convo.recentUserIds) : [ user._id ]; // Show yourself if you are the only one in convo
             const lastUserId = R.last(otherRecentUserIds);
             const lastUser = teamUsers[lastUserId];
             const avatarSrc = lastUser ? lastUser.profileImageUrl : undefined;
