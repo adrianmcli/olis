@@ -64,6 +64,7 @@ export default class ChatContainer extends React.Component {
 
   render() {
     const {
+      convo,
       msgs,
       userId,
       convoUsers,
@@ -94,7 +95,8 @@ export default class ChatContainer extends React.Component {
         </div>
 
         <div id="chat-msg-area" ref={(x) => this._container = x}>
-          <div id="load-more-btn" onClick={loadMore}>Load more messages</div>
+          {convo && convo.numMsgs > msgs.length ?
+              <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
           {msgs.map(msg => {
             const otherUser = convoUsers[msg.userId];
             const authorName = otherUser ? otherUser.username : msg.username;

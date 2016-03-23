@@ -22,6 +22,7 @@ export const composer = ({context}, onData) => {
   let convoUsers = {};
   let title = null;
   let usersListString = null;
+  let convo;
 
   if (convoId) {
     const currentNumMsgs = LocalState.get('loadMore.convoNumMsgs') ?
@@ -31,7 +32,7 @@ export const composer = ({context}, onData) => {
     if (currentNumMsgs > 0) {
       msgs = Collections.Messages.find({convoId}, options).fetch();
 
-      const convo = Collections.Convos.findOne(convoId);
+      convo = Collections.Convos.findOne(convoId);
       if (convo) {
         const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
         convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
@@ -47,7 +48,7 @@ export const composer = ({context}, onData) => {
     if (MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs}).ready()) {
       msgs = Collections.Messages.find({convoId}, options).fetch();
 
-      const convo = Collections.Convos.findOne(convoId);
+      convo = Collections.Convos.findOne(convoId);
       if (convo) {
         const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
         convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
@@ -62,6 +63,7 @@ export const composer = ({context}, onData) => {
   }
 
   onData(null, {
+    convo,
     msgs,
     userId,
     convoUsers,
