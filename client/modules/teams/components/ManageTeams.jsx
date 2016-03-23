@@ -21,7 +21,8 @@ import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 
 export default class ManageTeams extends React.Component {
   handleTeamSettingsClick(teamId, event) {
-    console.log(`switch to team settings for team id: ${teamId}`);
+    const {goToTeamSettings} = this.props;
+    goToTeamSettings(teamId);
   }
 
   handleTeamNameClick(teamId, event) {

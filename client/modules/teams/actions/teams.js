@@ -33,6 +33,10 @@ export default {
     else { FlowRouter.go(`/team/${teamId}/settings`); }
   },
 
+  goToTeamSettingsFromManageTeams({FlowRouter}, teamId) {
+    FlowRouter.go(`/team/${teamId}/settings`);
+  },
+
   setName({Meteor, FlowRouter}, name) {
     const teamId = FlowRouter.getParam('teamId');
     Meteor.call('teams.setName', {teamId, name}, (err, res) => {
