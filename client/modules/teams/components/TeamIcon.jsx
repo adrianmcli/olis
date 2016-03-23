@@ -105,7 +105,7 @@ export default class TeamIcon extends React.Component {
 
 TeamIcon.defaultProps = {
   teamName: 'Team Name Here',
-  iconSrc: 'https://s3.amazonaws.com/uifaces/faces/twitter/getsocial_now/128.jpg',
+  // iconSrc: 'https://s3.amazonaws.com/uifaces/faces/twitter/getsocial_now/128.jpg',
   unread: false,
   unreadCount: 2,
   active: false,
