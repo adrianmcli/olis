@@ -5,12 +5,13 @@ import _ from 'lodash';
 
 export default function () {
   Meteor.startup(function () {
-    const username = encodeURIComponent(Meteor.settings.mailgun.address);
-    const password = encodeURIComponent(Meteor.settings.mailgun.password);
-    const host = encodeURIComponent(`smtp.mailgun.org`);
-    const port = 587;
+    const isLocalhost = Meteor.absoluteUrl().indexOf('localhost') > -1;
+    if (!isLocalhost) {
+      const username = encodeURIComponent(Meteor.settings.mailgun.address);
+      const password = encodeURIComponent(Meteor.settings.mailgun.password);
+      const host = encodeURIComponent(`smtp.mailgun.org`);
+      const port = 587;
 
-    if (!R.contains('localhost', Meteor.absoluteUrl())) {
       process.env.MAIL_URL = `smtp://${username}:${password}@${host}:${port}`;
     }
   });
