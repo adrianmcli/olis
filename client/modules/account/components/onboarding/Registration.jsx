@@ -4,7 +4,7 @@ import OnboardingWrapper from './OnboardingWrapper.jsx';
 
 import CreateAccountEmail from '../../containers/register_email';
 import CreateAccountUsername from '../../containers/register_username';
-// import CreateAccountPassword from '../../containers/register_password';
+import CreateAccountPassword from '../../containers/register_password';
 import CreateAccountTeamName from '../../containers/register_team-name';
 import CreateAccountInviteTeammates from '../../containers/register_invite';
 
@@ -22,11 +22,11 @@ export default class Registration extends React.Component {
         description: 'Choose a user name',
         content: <CreateAccountUsername key={2} />,
       },
-      // {
-      //   title: 'Your Password',
-      //   description: 'Choose a password',
-      //   content: <CreateAccountPassword key={3} />,
-      // },
+      {
+        title: 'Your Password',
+        description: 'Choose a password',
+        content: <CreateAccountPassword key={3} />,
+      },
       {
         title: 'Your Team',
         description: 'Choose a team name',

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
