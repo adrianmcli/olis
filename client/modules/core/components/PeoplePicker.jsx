@@ -1,140 +1,26 @@
 import React from 'react';
-import R from 'ramda';
 
-import TextField from 'material-ui/lib/text-field';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import Divider from 'material-ui/lib/divider';
-
-import PeopleIcon from 'material-ui/lib/svg-icons/social/people';
-
-import Avatar from 'material-ui/lib/avatar';
-import Chip from './Chip.jsx';
+import PeopleList from './PeopleList.jsx';
+import ChipsContainer from './ChipsContainer.jsx';
 
 export default class PeoplePicker extends React.Component {
-
-  _search(event) {
-    const {search} = this.props;
-    const value = event.target.value;
-    search(value);
-  }
-
-  focusSearchBar() {
-    this._searchField.focus();
-  }
-
-  renderSearchBar() {
-    const containerStyle = {
-      background: '#efefef',
-      padding: '12px',
-    };
-    const inputBackgroundStyle = {
-      background: 'white',
-      borderRadius: '6px',
-      padding: '0 12px',
-    };
-    return (
-      <div style={ containerStyle }>
-        <div style={ inputBackgroundStyle }>
-          <TextField
-            hintText="Search with Username, Email, etc."
-            ref={ x => this._searchField = x }
-            fullWidth
-            onChange={this._search.bind(this)}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  renderList() {
-    return (
-      <div style={{
-        borderRight: '1px solid rgba(0,0,0,0.15)',
-        height: '360px',
-        overflowY: 'scroll',
-        position: 'relative',
-      }}>
-        <List style={{paddingTop: '0'}}>
-          { this.renderListItems() }
-        </List>
-      </div>
-    );
-  }
-
-  renderListItems() {
-    const {usersNotAdded, addUser} = this.props;
-
-    return usersNotAdded.map( user => {
-      return (
-        <div key={user._id}>
-          <ListItem
-            primaryText={user.username}
-            secondaryText={user.emails[0].address}
-            leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
-            onClick={addUser.bind(null, user)}
-          />
-          <Divider inset={true} />
-        </div>
-      );
-    });
-  }
-
-  renderChipsContainer() {
-    const {usersToAdd} = this.props;
-    if (R.isEmpty(usersToAdd)) {
-      return (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textAlign: 'center',
-          position: 'absolute',
-          top: '0',
-          right: '0',
-          bottom: '0',
-          left: '0',
-          color: '#aaa',
-          padding: '16px',
-        }}>
-          <PeopleIcon
-            style={{width: '64px', height: '64px'}}
-            color="#aaa"
-          />
-          <h5>Selected participants will appear here!</h5>
-        </div>
-      );
-    }
-    return (
-      <div style={{padding: '12px'}}>
-        { this.renderChips() }
-      </div>
-    );
-  }
-
-  renderChips() {
-    const {usersToAdd, removeUser} = this.props;
-    return usersToAdd.map( user => {
-      return (
-        <div key={user._id} style={{marginBottom: '6px'}}>
-          <Chip
-            // NOTE: avatarSrc is optional, Chip can generate an avatar w/ the username alone
-            avatarSrc='https://www.placecage.com/100/100'
-            username={user.username}
-            onRemoveClick={removeUser.bind(null, user)}
-          />
-        </div>
-      );
-    });
+  focusSearchField() {
+    this._peopleList.focusSearchField();
   }
 
   render() {
+    const {usersNotAdded, usersToAdd, team, addUserId, removeUserId, search} = this.props;
+
     return (
       <div style={{display: 'flex'}}>
         <div style={{width: '360px', position: 'relative'}}>
-          { this.renderSearchBar() }
-          { this.renderList() }
+          <PeopleList
+            ref={x => this._peopleList = x}
+            users={usersNotAdded}
+            userClickHandler={addUserId}
+            team={team}
+            search={search}
+          />
         </div>
         <div style={{
           width: '240px',
@@ -142,13 +28,12 @@ export default class PeoplePicker extends React.Component {
           position: 'relative',
           overflowY: 'scroll',
         }}>
-          { this.renderChipsContainer() }
+          <ChipsContainer
+            usersToAdd={usersToAdd}
+            removeUserId={removeUserId}
+          />
         </div>
       </div>
     );
   }
 }
-PeoplePicker.defaultProps = {
-  usersNotAdded: [],
-  usersToAdd: []
-};

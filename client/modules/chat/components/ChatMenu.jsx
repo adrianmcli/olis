@@ -5,9 +5,9 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
-import AddPeople from './ChatMenuItems/AddPeople.jsx';
-import ChangeTitle from './ChatMenuItems/ChangeTitle.jsx';
-import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
+import AddPeople from '../containers/add_people';
+import ChangeConvoName from '../containers/change_convo_name';
+import ChatMembers from '../containers/chat_members';
 
 import PersonAdd from 'material-ui/lib/svg-icons/social/person-add';
 import EditTitle from 'material-ui/lib/svg-icons/content/create';
@@ -40,7 +40,7 @@ export default class ChatMenu extends React.Component {
           open={this.state.addPeopleOpen}
           onRequestClose={this.closeAddPeople.bind(this)}
         />
-        <ChangeTitle
+        <ChangeConvoName
           open={this.state.changeTitleOpen}
           onRequestClose={this.closeChangeTitle.bind(this)}
         />

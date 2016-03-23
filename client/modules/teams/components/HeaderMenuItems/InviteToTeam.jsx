@@ -4,7 +4,12 @@ import Dialog from '/client/modules/core/components/Dialog.jsx';
 import TextField from 'material-ui/lib/text-field';
 
 export default class InviteToTeam extends React.Component {
-
+  handleSubmit() {
+    const {invite, onRequestClose} = this.props;
+    const email = this._textField.getValue();
+    invite([ email ]);
+    onRequestClose();
+  }
 
   render() {
     return (
@@ -13,6 +18,7 @@ export default class InviteToTeam extends React.Component {
         open={this.props.open}
         onRequestClose={this.props.onRequestClose}
         submitLabel="Send Invitation"
+        onSubmit={this.handleSubmit.bind(this)}
         width={400}
         onShow={() => {this._textField.focus();}}
       >
@@ -21,6 +27,7 @@ export default class InviteToTeam extends React.Component {
           hintText="your.name@example.com"
           floatingLabelText="Email"
           ref={ x => this._textField = x }
+          fullWidth
           // onChange={this.handleChange.bind(this, ref, i)}
           // errorText={this.state.showErrorText[i] ? 'Enter a proper email.' : null}
         />

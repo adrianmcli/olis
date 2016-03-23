@@ -21,20 +21,32 @@ export default {
     });
   },
 
-  'newConvo.addUser'({LocalState}, user) {
-    const usersToAdd = LocalState.get('newConvo.usersToAdd') ?
-      LocalState.get('newConvo.usersToAdd') : [];
-    LocalState.set('newConvo.usersToAdd', [ ...usersToAdd, user ]);
+  changeName({Meteor, FlowRouter}, name) {
+    const convoId = FlowRouter.getParam('convoId');
+    Meteor.call('convos.setName', {convoId, name}, (err, res) => {
+      if (err) { alert(err); }
+      else { console.log(res); }
+    });
   },
 
-  'newConvo.removeUser'({LocalState}, userToRemove) {
-    const usersToAdd = LocalState.get('newConvo.usersToAdd') ?
-      LocalState.get('newConvo.usersToAdd') : [];
-    LocalState.set('newConvo.usersToAdd',
-      R.filter(user => user._id !== userToRemove._id, usersToAdd));
+  'newConvo.addUserId'({LocalState}, userId) {
+    const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd') ?
+      LocalState.get('newConvo.userIdsToAdd') : [];
+    LocalState.set('newConvo.userIdsToAdd', [ ...userIdsToAdd, userId ]);
   },
 
-  'newConvo.clearAddedUsers'({LocalState}) {
-    LocalState.set('newConvo.usersToAdd', []);
-  }
+  'newConvo.removeUserId'({LocalState}, userIdToRemove) {
+    const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd') ?
+      LocalState.get('newConvo.userIdsToAdd') : [];
+    LocalState.set('newConvo.userIdsToAdd',
+      R.filter(userId => userId !== userIdToRemove, userIdsToAdd));
+  },
+
+  'newConvo.clearAddedUserIds'({LocalState}) {
+    LocalState.set('newConvo.userIdsToAdd', []);
+  },
+
+  setUserIdShown({LocalState}, userId) {
+    LocalState.set('convoDirectory.userIdShown', userId);
+  },
 };

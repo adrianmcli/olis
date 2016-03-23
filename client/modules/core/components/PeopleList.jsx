@@ -7,6 +7,10 @@ import Avatar from 'material-ui/lib/avatar';
 import SearchBar from '/client/modules/search/components/SearchBar.jsx';
 
 export default class PeopleList extends React.Component {
+  focusSearchField() {
+    this._search.focusSearchField();
+  }
+
   renderListItems() {
     const {users, userClickHandler, team} = this.props;
     return users.map( user => {
@@ -46,7 +50,7 @@ export default class PeopleList extends React.Component {
     const {search} = this.props;
     return (
       <div>
-        <SearchBar search={search} />
+        <SearchBar search={search} ref={x => this._search = x} />
         <div style={{
           borderRight: '1px solid rgba(0,0,0,0.15)',
           height: '360px',

@@ -310,4 +310,52 @@ export default function () {
       });
     }
   });
+
+  // SERVER ONLY
+  const TEAMS_IS_MEMBER = 'teams.isMember';
+  Meteor.methods({
+    'teams.isMember'({teamId}) {
+      check(arguments[0], {
+        teamId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_IS_MEMBER, 'Must be logged in to access team route.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_IS_MEMBER, 'Must be a member of existing team.');
+      }
+      if (!team.isUserMember(userId)) {
+        throw new Meteor.Error(TEAMS_IS_MEMBER, 'User is not a member of team.');
+      }
+
+      return team.isUserMember(userId);
+    }
+  });
+
+  // SERVER ONLY
+  const TEAMS_IS_ADMIN = 'teams.isAdmin';
+  Meteor.methods({
+    'teams.isAdmin'({teamId}) {
+      check(arguments[0], {
+        teamId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_IS_ADMIN, 'Must be logged in to access team route.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(TEAMS_IS_ADMIN, 'Must be a member of existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(TEAMS_IS_ADMIN, 'User is not an admin of team.');
+      }
+
+      return team.isUserAdmin(userId);
+    }
+  });
 }

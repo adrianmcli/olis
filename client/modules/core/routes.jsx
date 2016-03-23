@@ -43,10 +43,19 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
     triggersEnter: [ ensureSignedIn ],
     triggersExit: [ setLastTimeInTeam ],
     action(params) {
-      setLastTimeInTeam({params});
-
-      mount(MainLayoutCtx, {
-        content: () => (<Home />)
+      const {teamId} = params;
+      Meteor.call('teams.isMember', {teamId}, (err, res) => {
+        if (err) {
+          mount(MainLayoutCtx, {
+            content: () => (<div>You are not authorized to view this page.</div>)
+          });
+        }
+        else {
+          setLastTimeInTeam({params});
+          mount(MainLayoutCtx, {
+            content: () => (<Home />)
+          });
+        }
       });
     }
   });
@@ -56,11 +65,20 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
     triggersEnter: [ ensureSignedIn, removeNotifications ],
     triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications ],
     action(params) {
-      setLastTimeInTeam({params});
-      setLastTimeInConvo({params});
-
-      mount(MainLayoutCtx, {
-        content: () => (<Home />)
+      const {convoId} = params;
+      Meteor.call('convos.isMember', {convoId}, (err, res) => {
+        if (err) {
+          mount(MainLayoutCtx, {
+            content: () => (<div>You are not authorized to view this page.</div>)
+          });
+        }
+        else {
+          setLastTimeInTeam({params});
+          setLastTimeInConvo({params});
+          mount(MainLayoutCtx, {
+            content: () => (<Home />)
+          });
+        }
       });
     }
   });

@@ -1,11 +1,11 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import HeaderNewConversation from '../components/HeaderNewConversation.jsx';
+import AddPeopleToConvo from '../components/ChatMenuItems/AddPeopleToConvo.jsx';
 import {buildRegExp} from '/client/modules/core/libs/search';
 import R from 'ramda';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  addConvo: actions.convos.add,
+  addUsersToConvo: actions.convos.addMembers,
   searchTeamUsers: actions.search['searchText.teamUsers.set'],
   addUserId: actions.convos['newConvo.addUserId'],
   removeUserId: actions.convos['newConvo.removeUserId'],
@@ -22,9 +22,11 @@ export const composer = ({context}, onData) => {
     LocalState.get('newConvo.userIdsToAdd') : [];
 
   const teamId = FlowRouter.getParam('teamId');
-  if (teamId) {
+  const convoId = FlowRouter.getParam('convoId');
+  if (teamId && convoId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
+      const convo = Collections.Convos.findOne(convoId);
       const searchText = LocalState.get('searchText.teamUsers');
 
       let selector = {};
@@ -38,7 +40,7 @@ export const composer = ({context}, onData) => {
       selector[`roles.${teamId}`] = {$exists: true};
 
       const foundUsers = Meteor.users.find(selector).fetch();
-      const excludeFromSearchResult = [ user._id, ...userIdsToAdd ];
+      const excludeFromSearchResult = [ user._id, ...userIdsToAdd, ...convo.userIds ];
       teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
         foundUsers);
 
@@ -47,16 +49,16 @@ export const composer = ({context}, onData) => {
       onData(null, {
         team,
         teamUsersSearchResult,
-        usersToAdd
+        usersToAdd,
+        convoId
       });
     }
   }
 
   // Don't return a cleanup function here, since it's a dialog and is always mounted, but just not visible.
-  return () => console.log('header_new_conversation cleanup');
 };
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(HeaderNewConversation);
+)(AddPeopleToConvo);

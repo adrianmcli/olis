@@ -9,6 +9,10 @@ export default class SearchBar extends React.Component {
     search(value);
   }
 
+  focusSearchField() {
+    this._searchField.focus();
+  }
+
   render() {
     const containerStyle = {
       background: '#efefef',

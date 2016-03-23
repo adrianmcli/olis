@@ -59,7 +59,6 @@ export default {
 
   invite({Meteor, LocalState, FlowRouter}, inviteEmails, callback) {
     const teamId = FlowRouter.getParam('teamId');
-
     try {
       let numNonEmpty = 0;
       inviteEmails.forEach(email => {
@@ -77,7 +76,7 @@ export default {
         if (err) { alert(err); }
         else {
           console.log(res);
-          callback();
+          if (callback) { callback(); }
         }
       });
     }
