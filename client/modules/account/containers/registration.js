@@ -17,11 +17,14 @@ export const composer = ({context}, onData) => {
     case '/register/username':
       currentStep = 1;
       break;
-    case '/register/team-name':
+    case '/register/password':
       currentStep = 2;
       break;
-    case '/register/invite':
+    case '/register/team-name':
       currentStep = 3;
+      break;
+    case '/register/invite':
+      currentStep = 4;
       break;
   }
 

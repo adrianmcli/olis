@@ -57,9 +57,26 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.username', username);
-        FlowRouter.go('/register/team-name');
+        FlowRouter.go('/register/password');
       }
     });
+  },
+
+  setRegisterPassword({Meteor, LocalState, FlowRouter}, password1, password2) {
+    // TODO validate length etc...
+    const passwordTrim = password1.trim();
+    try {
+      if (password1 !== password2) {
+        throw new Meteor.Error('actions.account.setRegisterPassword', 'Passwords must match.');
+      }
+      if (passwordTrim === '') {
+        throw new Meteor.Error('actions.account.setRegisterPassword', 'Enter a non-blank password.');
+      }
+
+    }
+    catch (e) { alert(e); }
+    LocalState.set('register.password', passwordTrim);
+    FlowRouter.go('/register/team-name');
   },
 
   setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
@@ -140,6 +157,10 @@ export default {
   goToMyAccount({Meteor, FlowRouter}) {
     const user = Meteor.user();
     if (user) { FlowRouter.go(`/account/${user.username}`); }
+  },
+
+  goToCreateAccountPassword({FlowRouter}) {
+    FlowRouter.go('register/password');
   },
 
   goToCreateAccountTeamName({FlowRouter}) {

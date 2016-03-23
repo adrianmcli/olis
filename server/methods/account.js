@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Convos, Teams, Messages} from '/lib/collections';
 import Team from '/lib/team';
+import Convo from '/lib/convo';
 import {check} from 'meteor/check';
 import {Random} from 'meteor/random';
 import {Roles} from 'meteor/alanning:roles';
@@ -9,9 +10,42 @@ import EmailValidator from 'email-validator';
 import {Cloudinary} from 'meteor/lepozepo:cloudinary';
 
 export default function () {
-  const ACCOUNT_REGISTER = 'account.register';
+  const ACCOUNT_REGISTER_TEAM_CONVO = 'account.register.createTeamAndConvo';
   Meteor.methods({
-    'account.register'({email, username, teamName}) {
+    'account.register.createTeamAndConvo'({teamName}) {
+      check(arguments[0], {
+        teamName: String
+      });
+
+      // Account creation called from client side.
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_REGISTER_TEAM_CONVO, 'Must be logged in to create team and convo.');
+      }
+
+      // Add users to team and set roles
+      const team = new Team();
+      team.set({
+        name: teamName,
+        userIds: [ userId ]
+      });
+      team.save();
+      Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
+
+      const convoId = Meteor.call('convos.add', {
+        name: 'Your first chat!',
+        userIds: [ userId ],
+        teamId: team._id}
+      );
+
+      return {teamId: team._id, convoId};
+    }
+  });
+
+  const ACCOUNT_REGISTER_NO_PWD = 'account.register.noPassword';
+  Meteor.methods({
+    'account.register.noPassword'({email, username, teamName}) {
       check(arguments[0], {
         email: String,
         username: String,

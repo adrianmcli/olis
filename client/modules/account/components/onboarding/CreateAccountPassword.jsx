@@ -17,7 +17,7 @@ export default class CreateAccountPassword extends React.Component {
   }
 
   componentDidMount() {
-    this.input.focus();
+    this._newPassword1.focus();
   }
 
   _checkEmpty(pwd1, pwd2) {
@@ -57,7 +57,7 @@ export default class CreateAccountPassword extends React.Component {
   }
 
   handleClick() {
-    const { changePassword } = this.props;
+    const { setRegisterPassword } = this.props;
     const pwd1 = this._newPassword1.getValue();
     const pwd2 = this._newPassword2.getValue();
 
@@ -66,7 +66,7 @@ export default class CreateAccountPassword extends React.Component {
     const matching = this._checkMatching(pwd1, pwd2);    // 2. ensure that both new passwords are the same
 
     if (notEmpty && matching) {
-      changePassword(pwd1, pwd2);
+      setRegisterPassword(pwd1, pwd2);
     } else {
       // There was an error
     }
@@ -78,12 +78,14 @@ export default class CreateAccountPassword extends React.Component {
   }
 
   render() {
+    const {registerPassword} = this.props;
     return (
       <div>
         <p>Set your password by filling out the following:</p>
         <TextField
           hintText="Something hard to guess!"
           floatingLabelText="New Password"
+          defaultValue={registerPassword}
           type="password"
           ref={ref => this._newPassword1 = ref}
           errorText={this.state.showError1 ? this.state.errorText1 : null}
@@ -91,6 +93,7 @@ export default class CreateAccountPassword extends React.Component {
         <TextField
           hintText="Type it again"
           floatingLabelText="Confirm New Password"
+          defaultValue={registerPassword}
           type="password"
           ref={ref => this._newPassword2 = ref}
           onEnterKeyDown={this.handleEnterKeyDown.bind(this)}

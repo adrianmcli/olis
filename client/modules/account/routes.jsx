@@ -39,6 +39,15 @@ export default function (injectDeps, {FlowRouter}) {
     }
   });
 
+  FlowRouter.route('/register/password', {
+    name: 'register-password',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Registration />)
+      });
+    }
+  });
+
   FlowRouter.route('/register/team-name', {
     name: 'register-team-name',
     action() {
