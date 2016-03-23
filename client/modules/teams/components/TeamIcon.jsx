@@ -12,6 +12,36 @@ export default class TeamIcon extends React.Component {
     this.props.selectTeam();
   }
 
+  _generateIcon(teamName) {
+    const styles = {
+      container: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        width: '90%',
+        height: '90%',
+        borderRadius: '5px',
+        backgroundColor: '#2f3f70',
+      },
+      text: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+        fontSize: '12px',
+        color: 'white',
+      },
+    };
+    return (
+      <div style={styles.container}>
+        <div style={styles.text}>
+          { teamName }
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const {
       teamName,
@@ -41,7 +71,7 @@ export default class TeamIcon extends React.Component {
         }}
       >
         <div className={'team-item' + activeClass}>
-          <img src={iconSrc} alt={teamName}/>
+          { iconSrc ? <img src={iconSrc} alt={teamName}/> : this._generateIcon(teamName)}
         </div>
       </IconButton>
     );
