@@ -35,7 +35,7 @@ export default class Sidebar extends React.Component {
 
             let lastUsername;
             if (!lastUser) {
-              const otherRecentUsernames = R.filter(name => name !== user.username, 
+              const otherRecentUsernames = R.filter(name => name !== user.username,
                 convo.recentUsernames);
               lastUsername = R.last(otherRecentUsernames);
             }
