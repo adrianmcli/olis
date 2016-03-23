@@ -53,7 +53,7 @@ export const composer = ({context}, onData) => {
   }
 
   // Don't return a cleanup function here, since it's a dialog and is always mounted, but just not visible.
-  return () => console.log('header_new_conversation cleanup');
+  // return () => console.log('header_new_conversation cleanup');
 };
 
 export default composeAll(
