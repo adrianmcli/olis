@@ -6,7 +6,7 @@ import R from 'ramda';
 const depsMapper = (context, actions) => ({
   context: () => context,
   addConvo: actions.convos.add,
-  searchTeamUsers: actions.search.setTeamUsersSearchText,
+  searchTeamUsers: actions.search['searchText.teamUsers.set'],
   addUserId: actions.convos['newConvo.addUserId'],
   removeUserId: actions.convos['newConvo.removeUserId'],
   clearAddedUserIds: actions.convos['newConvo.clearAddedUserIds'],
@@ -53,6 +53,7 @@ export const composer = ({context}, onData) => {
   }
 
   // Don't return a cleanup function here, since it's a dialog and is always mounted, but just not visible.
+  return () => console.log('header_new_conversation cleanup');
 };
 
 export default composeAll(

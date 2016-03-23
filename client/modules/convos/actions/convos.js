@@ -44,5 +44,9 @@ export default {
 
   'newConvo.clearAddedUserIds'({LocalState}) {
     LocalState.set('newConvo.userIdsToAdd', []);
-  }
+  },
+
+  setUserIdShown({LocalState}, userId) {
+    LocalState.set('convoDirectory.userIdShown', userId);
+  },
 };

@@ -125,10 +125,7 @@ export default class ChatContainer extends React.Component {
           </div>
         </div>
 
-        <ChatMembers
-          open={this.state.chatMembersOpen}
-          onRequestClose={this.closeChatMembers.bind(this)}
-        />
+        
       </div>
     );
   }
