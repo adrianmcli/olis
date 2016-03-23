@@ -1,0 +1,100 @@
+soft-blue = #445BA2
+bubble-color = white
+bubble-color-me = soft-blue
+meta-font-color = #efefef - 50%
+
+.chat-msg-item
+  margin-bottom 12px
+  display flex
+  display -webkit-flex
+  flex-direction column
+  align-items flex-start
+  .chat-author
+    font-size 12px
+    color meta-font-color
+  .chat-primary
+    width 88%
+    margin-top 8px
+    display flex
+    display -webkit-flex
+    position relative
+  .chat-avatar
+    padding 0 6px 6px
+    flex-shrink 0
+    // background red
+  .chat-bubble
+    border-radius 6px
+    padding 8px
+    font-size 14px
+    font-weight 300
+    background bubble-color
+    & > div > *
+      
+      &:first-child
+        margin-top 0
+      
+      &:last-child
+        margin-bottom 0
+
+    &:after
+      content ''
+      position absolute
+      top 0
+      left 52px
+      width 0
+      height 0
+      border-style solid
+      border-width 0 16px 16px 0
+      border-color transparent white transparent transparent
+
+  .chat-timestamp
+    font-size 12px
+    margin-top 6px
+    color meta-font-color
+    position relative
+    
+  .chat-timestamp-string
+    position absolute
+    left 0
+    white-space no-wrap
+  
+  // p
+  //   margin-top 0px
+  //   margin-bottom 8px
+    
+  //   &:first-of-type
+  //     margin-bottom 0
+    
+  //   &:only-of-type
+  //     margin 0
+    
+  //   &:last-of-type
+  //     margin-bottom 0
+    
+  
+  &.you
+    text-align right
+    align-items flex-end
+    .chat-primary 
+      flex-direction row-reverse
+
+    .chat-bubble
+      text-align left
+      color white
+      background bubble-color-me
+      &:after
+        content ''
+        position absolute
+        top 0
+        right 52px
+        left auto
+        width 0
+        height 0
+        border-style solid
+        border-width 16px 16px 0 0
+        border-color bubble-color-me transparent transparent transparent
+    
+    .chat-timestamp-string
+      left auto
+      right 0
+      

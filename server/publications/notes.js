@@ -1,4 +1,4 @@
-import {Convos, Notes} from '/lib/collections';
+import {Convos, Notes, Teams} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 
@@ -16,10 +16,17 @@ export default function () {
     if (!convo) {
       throw new Meteor.Error(NOTES_SINGLE, 'Must get a note from an existing convo.');
     }
+    const team = Teams.findOne(convo.teamId);
+    if (!team) {
+      throw new Meteor.Error(NOTES_SINGLE, 'Must get a note from a convo in an existing team.');
+    }
+    if (!team.isUserInTeam(this.userId)) {
+      throw new Meteor.Error(NOTES_SINGLE, 'Must be a member of team to get note.');
+    }
     if (!convo.isUserInConvo(this.userId)) {
       throw new Meteor.Error(NOTES_SINGLE, 'Must be a member of convo to get the convo\'s note.');
     }
-    
+
     return Notes.find({convoId});
   });
 }

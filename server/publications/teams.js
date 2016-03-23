@@ -1,6 +1,7 @@
-import {Teams} from '/lib/collections';
+import {Teams, Notifications, Invites} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
-// import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
+import R from 'ramda';
 
 /*  If you restrict the data you publish,
   the Astro Class will fill in the rest of the specified fields with null
@@ -10,10 +11,70 @@ import {Meteor} from 'meteor/meteor';
 */
 export default function () {
   const TEAMS_LIST = 'teams.list';
-  Meteor.publish(TEAMS_LIST, function () {
-    if (!this.userId) {
+  Meteor.publish(TEAMS_LIST, function (args) {
+    check(args, Match.Optional(Match.OneOf(undefined, null, Object))); // Use this until Match.Maybe works, https://github.com/meteor/meteor/issues/3876
+    if (args) {
+      check(args, {
+        teamId: Match.Optional(Match.OneOf(undefined, null, String)),
+        convoId: Match.Optional(Match.OneOf(undefined, null, String))
+      });
+    }
+
+    const userId = this.userId;
+    if (!userId) {
       throw new Meteor.Error(TEAMS_LIST, 'Must be logged in to get teams list.');
     }
-    return Teams.find({userIds: this.userId});
+
+    // Notifications
+    function mergeTeamId(selectObj) {
+      if (!args) { return selectObj; }
+      if (args.teamId) { return R.merge(selectObj, {teamId: {$ne: args.teamId}}); }
+      return selectObj;
+    }
+    function mergeConvoId(selectObj) {
+      if (!args) { return selectObj; }
+      if (args.convoId) { return R.merge(selectObj, {convoId: {$ne: args.convoId}}); }
+      return selectObj;
+    }
+    const getSelector = R.compose(mergeConvoId, mergeTeamId);
+    const selectUserId = {userId};
+    const notifsSelector = getSelector(selectUserId);
+
+    return [
+      Teams.find({userIds: userId}),
+      Notifications.find(notifsSelector),
+      Invites.find()
+    ];
+  });
+
+  const TEAMS_SINGLE = 'teams.single';
+  Meteor.publish(TEAMS_SINGLE, function ({teamId}) {
+    check(arguments[0], {
+      teamId: String
+    });
+
+    const userId = this.userId;
+    if (!userId) {
+      throw new Meteor.Error(TEAMS_SINGLE, 'Must be logged in to get team.');
+    }
+    const team = Teams.findOne(teamId);
+    if (!team.isUserInTeam(userId)) {
+      throw new Meteor.Error(TEAMS_SINGLE, 'Must be a member of team to get team info.');
+    }
+
+    const userFields = {
+      username: 1,
+      [`roles.${teamId}`]: 1,
+      emails: 1
+    };
+    const userSelector = { // Have to do it this way since {_id: {$in: team.userIds}} isn't reactive
+      [`roles.${teamId}`]: {$exists: true}
+    };
+
+    return [
+      Meteor.users.find(userSelector, {fields: userFields}),
+      Teams.find(teamId),
+      Invites.find({teamId})
+    ];
   });
 }

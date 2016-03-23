@@ -29,7 +29,16 @@ export default function ({Meteor, Collections, Models}) {
       const convo = new Models.Convo();
       const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
-      convo.set({name, userIds: uniqueUserIds, teamId});
+      const recentUserIds = R.takeLast(2, uniqueUserIds);
+      const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}}).fetch();
+      const recentUsernames = recentUsers.map(x => x.username);
+      
+      convo.set({
+        name,
+        userIds: uniqueUserIds,
+        recentUserIds,
+        recentUsernames,
+        teamId});
       convo.save();
 
       // Insert a note
@@ -67,6 +76,31 @@ export default function ({Meteor, Collections, Models}) {
       const uniqueUserIds = R.uniq(newUserIds);
 
       convo.set({userIds: uniqueUserIds});
+      convo.save();
+    }
+  });
+
+  const CONVOS_SET_NAME = 'convos.setName';
+  Meteor.methods({
+    'convos.setName'({convoId, name}) {
+      check(arguments[0], {
+        convoId: String,
+        name: String
+      });
+
+      const userId = Meteor.userId();
+      if (!userId) {
+        throw new Meteor.Error(CONVOS_SET_NAME, 'Must be logged in to set chat name.');
+      }
+      const convo = Collections.Convos.findOne(convoId);
+      if (!convo) {
+        throw new Meteor.Error(CONVOS_SET_NAME, 'Must set the name of an existing chat.');
+      }
+      if (!convo.isUserAdmin(userId)) {
+        throw new Meteor.Error(CONVOS_SET_NAME, 'Must be an admin of chat to set the chat name.');
+      }
+
+      convo.set({name});
       convo.save();
     }
   });

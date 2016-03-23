@@ -1,0 +1,25 @@
+@import '/client/modules/core/components/application'
+
+#notes-container
+  width 100%
+  height 100%
+  
+  .notes-header
+    height 64px
+    border-bottom 1px solid rgba(0,0,0,0.08)
+    box-sizing content-box
+  
+  .notes-data-wrapper
+    padding 12px 36px
+    height calc(100% - 64px)
+    overflow scroll
+    & *
+      font-family Cardo, Georgia, Serif
+      outline-color white
+  
+  .notes-icon-bar
+    display flex
+    display -webkit-flex
+    padding 8px
+    position absolute
+    right 0

@@ -1,5 +1,7 @@
 import {createApp} from 'mantra-core';
 import initContext from './configs/context';
+import setupHead from './dochead';
+import setupCloudinary from './cloudinary';
 
 // modules
 import testModule from './modules/_myTest';
@@ -7,9 +9,11 @@ import coreModule from './modules/core';
 import accountModule from './modules/account';
 import teamsModule from './modules/teams';
 import convosModule from './modules/convos';
-import msgsModule from './modules/messages';
-import usersModule from './modules/users';
+import msgsModule from './modules/chat';
 import notesModule from './modules/notes';
+import searchModule from './modules/search';
+import notificationsModule from './modules/notifications';
+import imagesModule from './modules/images';
 
 // init context
 const context = initContext();
@@ -24,9 +28,14 @@ app.loadModule(accountModule);
 app.loadModule(teamsModule);
 app.loadModule(convosModule);
 app.loadModule(msgsModule);
-app.loadModule(usersModule);
 app.loadModule(notesModule);
+app.loadModule(searchModule);
+app.loadModule(notificationsModule);
+app.loadModule(imagesModule);
 
 app.loadModule(testModule);
 
 app.init();
+
+setupHead();
+setupCloudinary();

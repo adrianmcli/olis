@@ -4,6 +4,9 @@ import teams from './teams';
 import convos from './convos';
 import msgs from './msgs';
 import sections from './sections';
+import notifications from './notifications';
+import images from './images';
+import invites from './invites';
 
 export default function () {
   test();
@@ -12,4 +15,7 @@ export default function () {
   convos();
   msgs();
   sections();
+  notifications();
+  images();
+  invites();
 }

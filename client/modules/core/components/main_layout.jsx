@@ -1,18 +1,10 @@
 import React from 'react';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 const Layout = ({content = () => null}) => (
-  <div>
-    <header>
-    <h1>Olis</h1>
-    </header>
-
-    <div>
+  <div id="content">
     {content()}
-    </div>
-
-    <footer>
-    <small>Built with <a href='https://github.com/kadirahq/mantra'>Mantra</a> &amp; Meteor.</small>
-    </footer>
   </div>
 );
 

@@ -1,46 +1,36 @@
+import AccountUtils from '/client/modules/core/libs/account';
+import MsgUtils from '/client/modules/core/libs/msgs';
+import EmailValidator from 'email-validator';
+import R from 'ramda';
+import LangCodes from '/lib/constants/lang_codes';
+
 export default {
-  register({Meteor, LocalState, FlowRouter}, {email, username, password}) {
-    LocalState.set('REGISTRATION_ERROR', null);
-    if (email === '' || !email) {
-      LocalState.set('REGISTRATION_ERROR', 'Enter an email');
-    }
-    if (username === '' || !username) {
-      LocalState.set('REGISTRATION_ERROR', 'Enter a username.');
-    }
+  login({Meteor, LocalState, FlowRouter}, usernameOrEmail, password) {
+    try {
+      if (R.isEmpty(usernameOrEmail)) {
+        throw new Meteor.Error('actions.account.login', 'Username or email must not be empty.');
+      }
+      if (R.isEmpty(password)) {
+        throw new Meteor.Error('actions.account.login', 'Password must not be empty.');
+      }
 
-    function _register() {
-      return new Promise((resolve, reject) => {
-        Meteor.call('account.register', {email, username, password}, (err) => {
-          if (err) { reject(err); }
-          else { resolve('registered'); }
-        });
+      Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
+        if (err) { alert(err); }
+        else {
+          const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+          const convoId = AccountUtils.getMostRecentConvoId({Meteor});
+          MsgUtils.routeToChat({FlowRouter}, teamId, convoId);
+        }
       });
     }
-
-    function _login() {
-      return new Promise((resolve, reject) => {
-        Meteor.loginWithPassword(username, password, (err) => {
-          if (err) { reject(err); }
-          else { resolve('logged in'); }
-        });
-      });
-    }
-
-    _register()
-    .then(_login)
-    .then(() => FlowRouter.go('/home'))
-    .catch((err) => {
-      console.log('REGISTRATION_ERROR');
-      console.log(err);
-    });
+    catch (e) { alert(e); }
   },
 
-  login({Meteor, LocalState, FlowRouter}, {usernameOrEmail, password}) {
-    LocalState.set('LOGIN_ERROR', null);
+  logout({Meteor, FlowRouter}) {
+    FlowRouter.go('/login');
 
-    Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
-      if (err && err.reason) { LocalState.set('LOGIN_ERROR', err.reason); }
-      else { FlowRouter.go('/home'); }
+    Meteor.logout(err => {
+      if (err) { alert(err); }
     });
   },
 
@@ -49,4 +39,206 @@ export default {
     LocalState.set('LOGIN_ERROR', null);
     return null;
   },
+
+  setRegisterEmail({Meteor, LocalState, FlowRouter}, email) {
+    Meteor.call('account.validateEmail', {email}, (err, res) => {
+      if (err) { alert(err); }
+      else {
+        console.log(res);
+        LocalState.set('register.email', email);
+        FlowRouter.go('/register/username');
+      }
+    });
+  },
+
+  setRegisterUsername({Meteor, LocalState, FlowRouter}, username) {
+    Meteor.call('account.validateUsername', {username}, (err, res) => {
+      if (err) { alert(err); }
+      else {
+        console.log(res);
+        LocalState.set('register.username', username);
+        FlowRouter.go('/register/password');
+      }
+    });
+  },
+
+  setRegisterPassword({Meteor, LocalState, FlowRouter}, password1, password2) {
+    // TODO validate length etc...
+    const passwordTrim = password1.trim();
+    try {
+      if (password1 !== password2) {
+        throw new Meteor.Error('actions.account.setRegisterPassword', 'Passwords must match.');
+      }
+      if (passwordTrim === '') {
+        throw new Meteor.Error('actions.account.setRegisterPassword', 'Enter a non-blank password.');
+      }
+
+    }
+    catch (e) { alert(e); }
+    LocalState.set('register.password', passwordTrim);
+    FlowRouter.go('/register/team-name');
+  },
+
+  setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
+    const nameTrim = teamName.trim();
+    try {
+      if (nameTrim === '') {
+        throw new Meteor.Error('actions.account.setRegisterTeamName', 'Enter a non-blank team name.');
+      }
+
+      LocalState.set('register.teamName', teamName);
+      FlowRouter.go('/register/invite');
+    }
+    catch (e) { alert(e); }
+  },
+
+  setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails) {
+    try {
+      inviteEmails.forEach(email => {
+        if (!EmailValidator.validate(email) && !R.isEmpty(email)) {
+          throw new Meteor.Error('actions.account.setRegisterInviteEmails', 'Enter proper emails.');
+        }
+      });
+
+      LocalState.set('register.inviteEmails', inviteEmails);
+      AccountUtils.register({Meteor, LocalState, FlowRouter});
+    }
+    catch (e) { alert(e); }
+  },
+
+  skipInvites({Meteor, LocalState, FlowRouter}) {
+    AccountUtils.register({Meteor, LocalState, FlowRouter});
+  },
+
+  addMoreInvites({LocalState}) {
+    const current = LocalState.get('register.numInviteInputs') ?
+      LocalState.get('register.numInviteInputs') : 3;
+
+    LocalState.set('register.numInviteInputs', current + 1);
+  },
+
+  validateEmail({Meteor}, email, onError, onSuccess) {
+    Meteor.call('account.validateEmail', {email}, (err, res) => {
+      if (err) {
+        if (onError) { onError(err); }
+      }
+      else {
+        if (onSuccess) { onSuccess(); }
+      }
+    });
+  },
+
+  resetPassword({Meteor, FlowRouter}, token, pwd1, pwd2) {
+    function _reset(newPassword) {
+      return new Promise((resolve, reject) => {
+        Accounts.resetPassword(token, newPassword, (err) => {
+          if (err) { reject(err); }
+          else { resolve(); }
+        });
+      });
+    }
+
+    try {
+      if (pwd1 !== pwd2) {
+        throw new Meteor.Error('actions.account.resetPassword', 'Your passwords must match.');
+      }
+
+      const newPassword = pwd1;
+      _reset(newPassword)
+      .then(() => {
+        const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+        FlowRouter.go(`/team/${teamId ? teamId : ''}`);
+      })
+      .catch((err) => alert(err));
+    }
+    catch (e) { alert(e); }
+  },
+
+  goToMyAccount({Meteor, FlowRouter}) {
+    const user = Meteor.user();
+    if (user) { FlowRouter.go(`/account/${user.username}`); }
+  },
+
+  goToCreateAccountPassword({FlowRouter}) {
+    FlowRouter.go('register/password');
+  },
+
+  goToCreateAccountTeamName({FlowRouter}) {
+    FlowRouter.go('/register/team-name');
+  },
+
+  goToCreateAccountEmail({FlowRouter}) {
+    FlowRouter.go('/register/email');
+  },
+
+  goToCreateAccountUsername({FlowRouter}) {
+    FlowRouter.go('/register/username');
+  },
+
+  submitFindMyTeamEmail({Meteor}, email, callback) {
+    try {
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error('actions.account.submitFindMyTeamEmail', 'Enter a proper email.');
+      }
+
+      Meteor.call('account.findMyTeam', {email}, (err, res) => {
+        if (err) { alert(err); }
+        else {
+          console.log(res);
+          callback();
+        }
+      });
+    }
+    catch (e) { alert(e); }
+  },
+
+  setUsername({Meteor}, username) {
+    Meteor.call('account.setUsername', {username}, (err) => {
+      if (err) { alert(err); }
+      else { alert('Username changed!'); }
+    });
+  },
+
+  changePassword({Meteor}, oldPassword, newPassword1, newPassword2) {
+    try {
+      if (newPassword1 !== newPassword2) {
+        throw new Meteor.Error('actions.account.changePassword', 'New passwords must match.');
+      }
+
+      Accounts.changePassword(oldPassword, newPassword1, (err) => {
+        if (err) { alert(err); }
+        else { alert('Password changed!'); }
+      });
+    }
+    catch (e) { alert(e); }
+  },
+
+  setEmail({Meteor}, email) {
+    try {
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error('actions.account.setEmail', 'Enter a proper email.');
+      }
+
+      Meteor.call('account.setEmail', {email}, err => {
+        if (err) { alert(err); }
+        else { alert('Email changed!'); }
+      });
+    }
+    catch (e) { alert(e); }
+  },
+
+  setTranslationLanguage({Meteor}, langCode) {
+    try {
+      if (!R.contains(langCode, R.keys(LangCodes))) {
+        throw new Meteor.Error(
+          'actions.account.setTranslationLanguage', 'Select a proper language code.');
+      }
+
+      Meteor.call('account.setTranslationLanguage', {langCode}, err => {
+        if (err) { alert(err); }
+        else { console.log('Translation language changed.'); }
+      });
+    }
+    catch (e) { alert(e); }
+  }
 };

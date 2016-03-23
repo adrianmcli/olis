@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Sections, Convos, Notes} from '/lib/collections';
 import Section from '/lib/section';
-import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
 import R from 'ramda';
 
 const dateInXMin = (x) => {
@@ -12,11 +12,11 @@ const dateInXMin = (x) => {
 export default function () {
   const SECTION_ADD = 'sections.add';
   Meteor.methods({
-    'sections.add'({noteId, text, afterSectionId = ''}) {
+    'sections.add'({noteId, text, afterSectionId}) {
       check(arguments[0], {
         noteId: String,
         text: String,
-        afterSectionId: String
+        afterSectionId: Match.Optional(Match.OneOf(undefined, null, String))
       });
 
       const userId = this.userId;
@@ -45,11 +45,13 @@ export default function () {
       });
       section.save();
 
-      const index = afterSectionId === '' ? 0 : note.sectionIds.indexOf(afterSectionId) + 1;
-      note.set({
-        sectionIds: R.insert(index, section._id, note.sectionIds)
-      });
+      const index = afterSectionId ? note.sectionIds.indexOf(afterSectionId) + 1 : 0;
+      const sectionIds = R.insert(index, section._id, note.sectionIds);
+
+      note.set({sectionIds});
       note.save();
+
+      return section;
     }
   });
 
@@ -91,6 +93,61 @@ export default function () {
 
         section.save();
       }
+    }
+  });
+
+  const SECTION_RELEASE_LOCK = 'sections.releaseLock';
+  Meteor.methods({
+    'sections.releaseLock'({sectionId}) {
+      check(arguments[0], {
+        sectionId: String
+      });
+
+      const userId = this.userId;
+      const section = Sections.findOne(sectionId);
+      if (!section) {
+        throw new Meteor.Error(SECTION_RELEASE_LOCK, 'Must unlock an existing section.');
+      }
+      if (section.editingByUserId !== userId) {
+        throw new Meteor.Error(SECTION_RELEASE_LOCK, 'Can only unlock a section you are editing.');
+      }
+
+      section.set({
+        editingByUserId: null,
+        unlocksAt: new Date(0)
+      });
+      section.save();
+      return section;
+    }
+  });
+
+  const SECTION_ACQUIRE_LOCK = 'sections.acquireLock';
+  Meteor.methods({
+    'sections.acquireLock'({sectionId}) {
+      check(arguments[0], {
+        sectionId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(SECTION_ACQUIRE_LOCK, 'Must be logged in to acquire section lock.');
+      }
+      const section = Sections.findOne(sectionId);
+      if (!section) {
+        throw new Meteor.Error(SECTION_ACQUIRE_LOCK, 'Can only lock existing sections.');
+      }
+      const note = Notes.findOne(section.noteId);
+      const convo = Convos.findOne(note.convoId);
+      if (!convo.isUserInConvo(userId)) {
+        throw new Meteor.Error(SECTION_ACQUIRE_LOCK, 'Must be a member of convo to acquire section locks.');
+      }
+
+      section.set({
+        editingByUserId: userId,
+        unlocksAt: dateInXMin(5)
+      });
+      section.save();
+      return section;
     }
   });
 }
