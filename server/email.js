@@ -10,7 +10,7 @@ export default function () {
     const host = encodeURIComponent(`smtp.mailgun.org`);
     const port = 587;
 
-    if (R.contains('localhost', Meteor.absoluteUrl())) {
+    if (!R.contains('localhost', Meteor.absoluteUrl())) {
       process.env.MAIL_URL = `smtp://${username}:${password}@${host}:${port}`;
     }
   });
