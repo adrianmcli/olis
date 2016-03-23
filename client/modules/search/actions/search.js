@@ -1,5 +1,5 @@
 export default {
-  setTeamUsersSearchText({LocalState}, searchText) {
+  'searchText.teamUsers.set'({LocalState}, searchText) {
     LocalState.set('searchText.teamUsers', searchText);
   },
 
@@ -9,5 +9,13 @@ export default {
 
   'searchText.teamUsers.clear'({LocalState}) {
     LocalState.set('searchText.teamUsers', undefined);
+  },
+
+  'searchText.convoUsers.set'({LocalState}, searchText) {
+    LocalState.set('searchText.convoUsers', searchText);
+  },
+
+  'searchText.convoUsers.clear'({LocalState}) {
+    LocalState.set('searchText.convoUsers', undefined);
   }
 };

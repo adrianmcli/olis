@@ -6,7 +6,7 @@ import R from 'ramda';
 const depsMapper = (context, actions) => ({
   context: () => context,
   addUsersToConvo: actions.convos.addMembers,
-  searchTeamUsers: actions.search.setTeamUsersSearchText,
+  searchTeamUsers: actions.search['searchText.teamUsers.set'],
   addUserId: actions.convos['newConvo.addUserId'],
   removeUserId: actions.convos['newConvo.removeUserId'],
   clearAddedUserIds: actions.convos['newConvo.clearAddedUserIds'],

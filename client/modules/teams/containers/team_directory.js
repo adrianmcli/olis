@@ -4,7 +4,7 @@ import TeamDirectory from '../components/HeaderMenuItems/TeamDirectory.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  searchTeamUsers: actions.search.setTeamUsersSearchText,
+  searchTeamUsers: actions.search['searchText.teamUsers.set'],
   showUserInfo: actions.teams.setUserIdShown,
   makeUserTeamAdmin: actions.teams.makeUserAdmin,
   removeUserFromTeam: actions.teams.removeUser

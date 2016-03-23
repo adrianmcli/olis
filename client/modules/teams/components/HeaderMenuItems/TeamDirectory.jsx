@@ -11,6 +11,7 @@ export default class TeamDirectory extends React.Component {
       showUserInfo, userShown, isAdmin,
       makeUserTeamAdmin, removeUserFromTeam
     } = this.props;
+    
     return (
       <Dialog
         title={`${team.name}: Directory`}

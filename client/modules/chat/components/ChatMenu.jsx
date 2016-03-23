@@ -7,7 +7,7 @@ import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
 import AddPeople from '../containers/add_people';
 import ChangeConvoName from '../containers/change_convo_name';
-import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
+import ChatMembers from '../containers/chat_members';
 
 import PersonAdd from 'material-ui/lib/svg-icons/social/person-add';
 import EditTitle from 'material-ui/lib/svg-icons/content/create';
