@@ -158,9 +158,10 @@ export default class ChatMessageItem extends React.Component {
         onMouseEnter={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
       >
-        <div className="chat-author">{authorName}</div>
+        
         <div className="chat-primary">
           <div className="chat-avatar">
+            <div className="chat-author">{authorName}</div>
             <AvatarWithInfo username={authorName} avatarSrc={avatarSrc} />
           </div>
           <div className="chat-body">
