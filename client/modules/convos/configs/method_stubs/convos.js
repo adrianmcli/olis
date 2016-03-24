@@ -32,7 +32,7 @@ export default function ({Meteor, Collections, Models}) {
       const recentUserIds = R.takeLast(2, uniqueUserIds);
       const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}}).fetch();
       const recentUsernames = recentUsers.map(x => x.username);
-      
+
       convo.set({
         name,
         userIds: uniqueUserIds,
@@ -40,11 +40,9 @@ export default function ({Meteor, Collections, Models}) {
         recentUsernames,
         teamId});
       convo.save();
+      const convoId = convo._id;
 
-      // Insert a note
-      const note = new Models.Note();
-      note.set({convoId: convo._id});
-      note.save();
+      Meteor.call('notes.add', {convoId});
     }
   });
 
