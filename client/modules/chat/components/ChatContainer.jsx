@@ -5,7 +5,9 @@ import IconButton from 'material-ui/lib/icon-button';
 import FilledStarIcon from 'material-ui/lib/svg-icons/toggle/star';
 import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
 
-import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
+// import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
+// import ChangeConvoName from './ChatMenuItems/ChangeConvoName.jsx';
+import ChangeConvoName from '../containers/change_convo_name';
 import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
@@ -18,6 +20,7 @@ export default class ChatContainer extends React.Component {
       distanceFromBottom: 0,
       distanceFromTop: 0,
       chatMembersOpen: false,
+      changeTitleOpen: false,
     };
   }
 
@@ -57,6 +60,18 @@ export default class ChatContainer extends React.Component {
   openChatMembers() {this.setState({chatMembersOpen: true});}
   closeChatMembers() {this.setState({chatMembersOpen: false});}
 
+  openChangeTitle() {this.setState({changeTitleOpen: true});}
+  closeChangeTitle() {this.setState({changeTitleOpen: false});}
+
+  renderChangeTitleDialog() {
+    return (
+      <ChangeConvoName
+        open={this.state.changeTitleOpen}
+        onRequestClose={this.closeChangeTitle.bind(this)}
+      />
+    );
+  }
+
   scrollToBottom() {
     const ele = $(this._container);
     ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
@@ -78,7 +93,8 @@ export default class ChatContainer extends React.Component {
     return (
       <div id="chat-container">
         <div id="chat-header">
-          <div className="header-body" onClick={this.openChatMembers.bind(this)}>
+          <div className="header-body" onTouchTap={this.openChangeTitle.bind(this)}>
+            { this.renderChangeTitleDialog() }
             <div className="chat-title">
               {title}
             </div>
