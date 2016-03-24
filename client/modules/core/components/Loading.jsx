@@ -14,17 +14,18 @@ export default class Loading extends React.Component {
   }
 
   renderCubeGrid() {
+    const { color } = this.props;
     return (
       <div className="sk-cube-grid" style={this.props.style}>
-        <div className="sk-cube sk-cube1"></div>
-        <div className="sk-cube sk-cube2"></div>
-        <div className="sk-cube sk-cube3"></div>
-        <div className="sk-cube sk-cube4"></div>
-        <div className="sk-cube sk-cube5"></div>
-        <div className="sk-cube sk-cube6"></div>
-        <div className="sk-cube sk-cube7"></div>
-        <div className="sk-cube sk-cube8"></div>
-        <div className="sk-cube sk-cube9"></div>
+        <div className="sk-cube sk-cube1" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube2" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube3" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube4" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube5" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube6" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube7" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube8" style={{backgroundColor: color}}></div>
+        <div className="sk-cube sk-cube9" style={{backgroundColor: color}}></div>
       </div>
     );
   }

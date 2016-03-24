@@ -16,7 +16,7 @@ export default class ChatMessageItem extends React.Component {
     super(props);
     this.state = {
       isHovering: false,
-      gettingTranslation: false
+      gettingTranslation: false,
     };
   }
 
@@ -70,16 +70,28 @@ export default class ChatMessageItem extends React.Component {
 
     if (translation) {
       return (
-        <ReactMarkdown
-          source={translation}
-          softBreak="br"
-          escapeHtml
-        />
+        <div className="translation">
+          <hr />
+          <ReactMarkdown
+            source={translation}
+            softBreak="br"
+            escapeHtml
+          />
+        </div>
       );
     }
     if (gettingTranslation) {
+      const loadingColor = 'rgba(255,255,255,0.75)';
+      const loadingStyle = {
+        margin: 'auto',
+        width: '20px',
+        height: '20px',
+      };
       return (
-        <Loading spinnerName='cube-grid' style={{marginTop: '12px', marginBottom: '12px'}}/>
+        <div className="translation">
+          <hr />
+          <Loading spinnerName='cube-grid' style={loadingStyle} color={loadingColor}/>
+        </div>
       );
     }
     return null;
