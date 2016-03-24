@@ -3,7 +3,7 @@ import PeopleIcon from 'material-ui/lib/svg-icons/social/people';
 
 import RaisedButton from 'material-ui/lib/raised-button';
 
-export default function NoTeamSelected() {
+export default function NoTeamSelected({goToMyAccount, logout}) {
   const colors = {
     foreground: '#999',
     background: '#EEE',
@@ -42,11 +42,13 @@ export default function NoTeamSelected() {
           <RaisedButton
             label="Account Settings"
             secondary={true}
+            onClick={goToMyAccount}
           />
           <RaisedButton
             label="Logout"
             primary={true}
             style={{marginLeft: '24px'}}
+            onClick={logout}
           />
         </div>
       </div>

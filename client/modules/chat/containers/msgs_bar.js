@@ -32,43 +32,28 @@ export const composer = ({context}, onData) => {
     const currentNumMsgs = LocalState.get('loadMore.convoNumMsgs') ?
       LocalState.get('loadMore.convoNumMsgs') : 0;
 
+    // Subscribe
+    MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
+    const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
+    if (langCode) { MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
+
+    // Fetch
     const options = {sort: [ [ 'createdAt', 'asc' ] ]};
-    if (currentNumMsgs > 0) {
-      msgs = Collections.Messages.find({convoId}, options).fetch();
+    msgs = Collections.Messages.find({convoId}, options).fetch();
+    convo = Collections.Convos.findOne(convoId);
+    if (convo) {
+      const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
+      convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
+      title = convo.name;
 
-      convo = Collections.Convos.findOne(convoId);
-      if (convo) {
-        const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
-        convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
-        title = convo.name;
-
-        usersListString = convoUsersArr.reduce((prev, curr, index) => {
-          if (index > 0) { return `${prev}, ${curr.username}`; }
-          return `${curr.username}`;
-        }, '');
-      }
-
-    }
-    if (MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs}).ready()) {
-      msgs = Collections.Messages.find({convoId}, options).fetch();
-
-      convo = Collections.Convos.findOne(convoId);
-      if (convo) {
-        const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
-        convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
-        title = convo.name;
-
-        usersListString = convoUsersArr.reduce((prev, curr, index) => {
-          if (index > 0) { return `${prev}, ${curr.username}`; }
-          return `${curr.username}`;
-        }, '');
-      }
+      usersListString = convoUsersArr.reduce((prev, curr, index) => {
+        if (index > 0) { return `${prev}, ${curr.username}`; }
+        return `${curr.username}`;
+      }, '');
     }
 
-    if (langCode && MsgSubs.subscribe('translations.list', {convoId, langCode}).ready()) {
-      const transArr = Collections.Translations.find({convoId}).fetch();
-      translations = R.zipObj(transArr.map(item => item.msgId), transArr);
-    }
+    const transArr = Collections.Translations.find({convoId}).fetch();
+    translations = R.zipObj(transArr.map(item => item.msgId), transArr);
   }
 
   onData(null, {
