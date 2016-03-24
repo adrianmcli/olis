@@ -2,7 +2,9 @@ import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import Home from '../components/Home.jsx';
 
 const depsMapper = (context, actions) => ({
-  context: () => context
+  context: () => context,
+  goToMyAccount: actions.account.goToMyAccount,
+  logout: actions.account.logout
 });
 
 export const composer = ({context}, onData) => {
