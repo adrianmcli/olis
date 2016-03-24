@@ -35,7 +35,7 @@ export default class ChatContainer extends React.Component {
     const {distanceFromBottom, distanceFromTop} = this.state;
     const ele = $(this._container);
     const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
-    if (distanceFromBottom === 0 || distanceFromTop === 0) {
+    if (distanceFromBottom <= 0 || distanceFromTop === 0) {
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
     }
   }
