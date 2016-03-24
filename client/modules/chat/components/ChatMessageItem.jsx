@@ -51,13 +51,14 @@ export default class ChatMessageItem extends React.Component {
   }
 
   render() {
-
     const {
       authorName,
       avatarSrc,
       content,
       timestamp,
       selfAuthor,
+      translate,
+      msgId
     } = this.props;
 
     const authorClass = selfAuthor ? ' you' : '';
@@ -91,7 +92,7 @@ export default class ChatMessageItem extends React.Component {
         anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
         targetOrigin={{horizontal: 'left', vertical: 'top'}}
       >
-        <MenuItem primaryText="Translate" />
+        <MenuItem primaryText="Translate" onTouchTap={translate.bind(null, msgId, 'ja')} />
         <MenuItem primaryText="Copy" />
         <MenuItem primaryText="Lorem Ipsum" />
       </IconMenu>

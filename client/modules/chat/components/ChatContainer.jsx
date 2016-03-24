@@ -9,7 +9,7 @@ import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
 import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
-import ChatMessageItem from './ChatMessageItem.jsx';
+import ChatMessageItem from '../containers/chat_message_item';
 
 export default class ChatContainer extends React.Component {
   constructor(props) {
@@ -104,6 +104,7 @@ export default class ChatContainer extends React.Component {
             return (
               <ChatMessageItem
                 key={msg._id}
+                msgId={msg._id}
                 authorName={authorName}
                 avatarSrc={avatarSrc}
                 content={msg.text}
