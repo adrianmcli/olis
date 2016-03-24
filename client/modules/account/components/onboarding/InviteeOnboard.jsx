@@ -1,8 +1,11 @@
 import React from 'react';
 
+import CreateAccountUsername from '../../containers/register_username';
+import CreateAccountPassword from '../../containers/register_password';
+
 import OnboardingWrapper from './OnboardingWrapper.jsx';
 
-export default class Invitee extends React.Component {
+export default class InviteeOnboard extends React.Component {
   render() {
     const {currentStep} = this.props;
     const data = [
@@ -22,10 +25,16 @@ export default class Invitee extends React.Component {
         content: <div>Confirm and prepare to launch</div>,
       },
     ];
-    return <OnboardingWrapper dataSrc={data} currentStep={currentStep}/>;
+    return (
+      <OnboardingWrapper
+        dataSrc={data}
+        currentStep={currentStep}
+        firstTaskDesc="Be invited!"
+      />
+    );
   }
 }
 
-Invitee.defaultProps = {
+InviteeOnboard.defaultProps = {
   currentStep: 0
 };

@@ -6,8 +6,8 @@ import ReactCSSTransitionReplace from 'react-css-transition-replace';
 export default class OnboardingWrapper extends React.Component {
 
   renderProgress() {
-    const { dataSrc, currentStep } = this.props;
-    const defaultItem = <ProgressItem key='default' description='You clicked sign up!' done/>;
+    const { dataSrc, currentStep, firstTaskDesc } = this.props;
+    const defaultItem = <ProgressItem key='default' description={firstTaskDesc} done/>;
     const progressItems = dataSrc.map( (stepItem, index) => {
       return (
           <ProgressItem
@@ -92,6 +92,10 @@ export default class OnboardingWrapper extends React.Component {
     );
   }
 }
+
+OnboardingWrapper.defaultProps = {
+  firstTaskDesc: 'You clicked sign up!'
+};
 
 import CheckIcon from 'material-ui/lib/svg-icons/toggle/check-box';
 import EmptyIcon from 'material-ui/lib/svg-icons/toggle/check-box-outline-blank';

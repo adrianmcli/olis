@@ -8,6 +8,7 @@ import Login from './containers/login';
 import MyAccount from './containers/my_account';
 
 import Registration from './containers/registration';
+import InviteeOnboard from './components/onboarding/InviteeOnboard.jsx';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
@@ -19,6 +20,15 @@ export default function (injectDeps, {FlowRouter}) {
   FlowRouter.route('/register', {
     name: 'register',
     triggersEnter: [ redirectToRegisterEmail ]
+  });
+
+  FlowRouter.route('/invite_onboard', {
+    name: 'register-email',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<InviteeOnboard />)
+      });
+    }
   });
 
   FlowRouter.route('/register/email', {
