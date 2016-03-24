@@ -3,14 +3,14 @@ import HeaderNewConversation from '../components/HeaderNewConversation.jsx';
 import {buildRegExp} from '/client/modules/core/libs/search';
 import R from 'ramda';
 
-const depsMapper = (context, actions) => ({
+export const depsMapper = (context, actions) => ({
   context: () => context,
   addConvo: actions.convos.add,
   searchTeamUsers: actions.search['searchText.teamUsers.set'],
   addUserId: actions.convos['newConvo.addUserId'],
   removeUserId: actions.convos['newConvo.removeUserId'],
+  setNewConvoName: actions.convos['newConvo.setName'],
   clearAddedUserIds: actions.convos['newConvo.clearAddedUserIds'],
-  clearTeamUsersSearchText: actions.search['searchText.teamUsers.clear']
 });
 
 export const composer = ({context}, onData) => {
@@ -20,6 +20,9 @@ export const composer = ({context}, onData) => {
   let teamUsersSearchResult = [];
   const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd') ?
     LocalState.get('newConvo.userIdsToAdd') : [];
+
+  const newConvoName = LocalState.get('newConvo.name') ?
+    LocalState.get('newConvo.name') : '';
 
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
@@ -47,7 +50,8 @@ export const composer = ({context}, onData) => {
       onData(null, {
         team,
         teamUsersSearchResult,
-        usersToAdd
+        usersToAdd,
+        newConvoName
       });
     }
   }

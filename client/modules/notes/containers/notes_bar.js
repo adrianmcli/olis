@@ -1,6 +1,9 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import NotesContainer from '../components/NotesContainer.jsx';
 import R from 'ramda';
+import {SubsManager} from 'meteor/meteorhacks:subs-manager';
+
+const NotesSubs = new SubsManager();
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -19,13 +22,13 @@ export const composer = ({context, actions}, onData) => {
   let _addSection = actions().sections.add;
 
   if (convoId) {
-    if (Meteor.subscribe('notes.single', {convoId}).ready()) {
+    if (NotesSubs.subscribe('notes.single', {convoId}).ready()) {
       note = Collections.Notes.findOne({convoId});
       const noteId = note._id;
 
       _addSection = _addSection.bind(null, noteId);
 
-      if (Meteor.subscribe('sections', {noteId}).ready()) {
+      if (NotesSubs.subscribe('sections', {noteId}).ready()) {
         const unsortedSections = Collections.Sections.find({noteId}).fetch();
 
         if (!R.isEmpty(unsortedSections)) {
