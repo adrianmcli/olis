@@ -2,7 +2,7 @@
   // Server authentication info
   "servers": [
     {
-      "host": "188.166.210.3",
+      "host": "olisapp.com",
       "username": "root",
       // "password": "password"
       // or pem file (ssh based authentication)
@@ -39,10 +39,10 @@
   "app": ".",
 
   // Configure environment // Appears to be optional
-  // "env": {
-  //   "ROOT_URL": "http://olisapp.com", // Must be an actual url, not an IP
-  //   "PORT": 3000
-  // },
+  "env": {
+    "ROOT_URL": "http://olisapp.com", // Must be an actual url, not an IP. If you don't set this, you will get localhost when you do Meteor.absoluteUrl
+    "PORT": 80 // 80 is the default port for when you don't specify a port in the url in the browser
+  },
 
   // Meteor Up checks if the app comes online just after the deployment
   // before mup checks that, it will wait for no. of seconds configured below

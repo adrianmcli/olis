@@ -6,6 +6,7 @@ import _ from 'lodash';
 export default function () {
   Meteor.startup(function () {
     const isLocalhost = Meteor.absoluteUrl().indexOf('localhost') > -1;
+    console.log(`isLocalhost ${Meteor.absoluteUrl()} ${isLocalhost}`);
     if (!isLocalhost) {
       const username = encodeURIComponent(Meteor.settings.mailgun.address);
       const password = encodeURIComponent(Meteor.settings.mailgun.password);
