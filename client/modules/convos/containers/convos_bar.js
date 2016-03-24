@@ -21,25 +21,25 @@ export const composer = ({context}, onData) => {
   const user = Meteor.user();
 
   if (teamId) {
-    Meteor.subscribe('users.team', {teamId});
-    Meteor.subscribe('convos.list', {teamId});
+    if (Meteor.subscribe('users.team', {teamId}).ready()) {
+      const teamSelector = {
+        [`roles.${teamId}`]: {$exists: true}
+      };
+      const teamUsersArr = Meteor.users.find(teamSelector).fetch();
+      teamUsers = R.zipObj(teamUsersArr.map(teamUser => teamUser._id), teamUsersArr);
+    }
 
-    const teamSelector = {
-      [`roles.${teamId}`]: {$exists: true}
-    };
-    const teamUsersArr = Meteor.users.find(teamSelector).fetch();
-    teamUsers = R.zipObj(teamUsersArr.map(teamUser => teamUser._id), teamUsersArr);
+    if (Meteor.subscribe('convos.list', {teamId}).ready()) {
+      const selector = {
+        userIds: Meteor.userId(),
+        teamId
+      };
+      const options = {sort: [ [ 'updatedAt', 'desc' ] ]};
 
-    const selector = {
-      userIds: Meteor.userId(),
-      teamId
-    };
-    const options = {sort: [ [ 'updatedAt', 'desc' ] ]};
-
-    convos = Collections.Convos.find(selector, options).fetch();
-    convoId = FlowRouter.getParam('convoId');
-    lastTimeInConvo = Meteor.user().lastTimeInConvo;
-
+      convos = Collections.Convos.find(selector, options).fetch();
+      convoId = FlowRouter.getParam('convoId');
+      lastTimeInConvo = Meteor.user().lastTimeInConvo;
+    }
   }
   onData(null, {
     convos,
