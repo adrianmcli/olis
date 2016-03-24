@@ -17,12 +17,12 @@ export default function () {
         teamName: String
       });
 
-      // Account creation called from client side.
-
+      // Account creation called from client side, so user is logged in already.
       const userId = this.userId;
       if (!userId) {
         throw new Meteor.Error(ACCOUNT_REGISTER_TEAM_CONVO, 'Must be logged in to create team and convo.');
       }
+      Meteor.call('account.setTranslationLanguage', {langCode: 'en'});
 
       // Add users to team and set roles
       const team = new Team();

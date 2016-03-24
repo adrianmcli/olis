@@ -1,7 +1,8 @@
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import {Microsoft} from 'meteor/devian:mstranslate';
-import {Messages} from '/lib/collections';
+import {Messages, Translations} from '/lib/collections';
+import Translation from '/lib/translation';
 
 export default function () {
   const TRANSLATION_GET = 'translation.get';
@@ -20,11 +21,20 @@ export default function () {
       if (!msg) {
         throw new Meteor.Error(TRANSLATION_GET, 'Must translate an existing message.');
       }
-      const text = msg.text;
-      const translated = Microsoft.translate(text, langCode);
+      const existingTrans = Translations.findOne({msgId, langCode});
+      if (!existingTrans) {
+        const text = msg.text;
+        const translated = Microsoft.translate(text, langCode);
 
-      msg.set(`translation.${langCode}`, translated);
-      msg.save();
+        const translation = new Translation({
+          msgId,
+          convoId: msg.convoId,
+          langCode,
+          text: translated
+        });
+        translation.save();
+        return translated;
+      }
     }
   });
 

@@ -72,6 +72,8 @@ export default class ChatContainer extends React.Component {
       usersListString,
       loadMore,
       starred,
+      translations,
+      langCode
     } = this.props;
     return (
       <div id="chat-container">
@@ -110,6 +112,8 @@ export default class ChatContainer extends React.Component {
                 content={msg.text}
                 timestamp={msg.createdAt}
                 selfAuthor={msg.userId === userId}
+                translation={translations[msg._id] ? translations[msg._id].text : undefined}
+                langCode={langCode}
               />
             );
           })}
