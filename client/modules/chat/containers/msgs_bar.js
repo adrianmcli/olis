@@ -48,7 +48,10 @@ export const composer = ({context}, onData) => {
         }, '');
       }
 
+      const transArr = Collections.Translations.find({convoId}).fetch();
+      translations = R.zipObj(transArr.map(item => item.msgId), transArr);
     }
+
     if (MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs}).ready()) {
       msgs = Collections.Messages.find({convoId}, options).fetch();
 
@@ -65,7 +68,8 @@ export const composer = ({context}, onData) => {
       }
     }
 
-    if (langCode && MsgSubs.subscribe('translations.list', {convoId, langCode}).ready()) {
+    const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
+    if (langCode && MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}).ready()) {
       const transArr = Collections.Translations.find({convoId}).fetch();
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
     }

@@ -1,6 +1,10 @@
 export default {
-  get({Meteor}, msgId, langCode) {
+  get({Meteor, LocalState}, msgId, langCode) {
     const TRANSLATION_GET = 'actions.translation.get';
+
+    const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
+    LocalState.set('translation.msgIds', [ ...msgIds, msgId ]);
+
     Meteor.call('translation.get', {msgId, langCode}, (err, res) => {
       if (err) { alert(err); }
       else {
