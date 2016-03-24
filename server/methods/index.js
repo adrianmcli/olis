@@ -8,6 +8,7 @@ import sections from './sections';
 import notifications from './notifications';
 import images from './images';
 import invites from './invites';
+import translation from './translation';
 
 export default function () {
   test();
@@ -20,4 +21,5 @@ export default function () {
   notifications();
   images();
   invites();
+  translation();
 }

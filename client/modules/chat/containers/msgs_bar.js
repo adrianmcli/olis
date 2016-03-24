@@ -19,7 +19,11 @@ export const composer = ({context}, onData) => {
   // If you only see loading, make sure you added the collection to the index
   let msgs = [];
   const userId = Meteor.userId();
+  const user = Meteor.user();
+  const langCode = user ? user.translationLangCode : undefined;
+
   let convoUsers = {};
+  let translations = {};
   let title = null;
   let usersListString = null;
   let convo;
@@ -60,6 +64,11 @@ export const composer = ({context}, onData) => {
         }, '');
       }
     }
+
+    if (langCode && MsgSubs.subscribe('translations.list', {convoId, langCode}).ready()) {
+      const transArr = Collections.Translations.find({convoId}).fetch();
+      translations = R.zipObj(transArr.map(item => item.msgId), transArr);
+    }
   }
 
   onData(null, {
@@ -68,7 +77,9 @@ export const composer = ({context}, onData) => {
     userId,
     convoUsers,
     title,
-    usersListString
+    usersListString,
+    langCode,
+    translations
   });
 };
 

@@ -7,6 +7,7 @@ import notes from './notes';
 import sections from './sections';
 import notifications from './notifications';
 import invites from './invites';
+import translations from './translations';
 
 export default function () {
   test();
@@ -18,4 +19,5 @@ export default function () {
   sections();
   notifications();
   invites();
+  translations();
 }
