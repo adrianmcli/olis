@@ -11,10 +11,10 @@ meta-font-color = #efefef - 50%
   align-items flex-start
   .chat-author
     font-size 12px
+    margin-bottom 8px
     color meta-font-color
   .chat-primary
     width 88%
-    margin-top 8px
     display flex
     display -webkit-flex
     position relative
@@ -25,6 +25,7 @@ meta-font-color = #efefef - 50%
   .chat-bubble
     border-radius 6px
     padding 8px
+    margin-bottom 6px
     font-size 14px
     font-weight 300
     background bubble-color
@@ -63,28 +64,14 @@ meta-font-color = #efefef - 50%
 
   .chat-timestamp
     font-size 12px
-    margin-top 6px
     color meta-font-color
     position relative
+    height 18px
     
   .chat-timestamp-string
     position absolute
     left 0
-    white-space no-wrap
-  
-  // p
-  //   margin-top 0px
-  //   margin-bottom 8px
-    
-  //   &:first-of-type
-  //     margin-bottom 0
-    
-  //   &:only-of-type
-  //     margin 0
-    
-  //   &:last-of-type
-  //     margin-bottom 0
-    
+    white-space no-wrap  
   
   &.you
     text-align right
