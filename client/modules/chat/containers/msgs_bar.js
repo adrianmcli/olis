@@ -65,7 +65,7 @@ export const composer = ({context}, onData) => {
       }
     }
 
-    if (MsgSubs.subscribe('translations.list', {convoId}).ready()) {
+    if (langCode && MsgSubs.subscribe('translations.list', {convoId, langCode}).ready()) {
       const transArr = Collections.Translations.find({convoId}).fetch();
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
     }

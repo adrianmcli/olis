@@ -4,9 +4,10 @@ import {check} from 'meteor/check';
 
 export default function () {
   const TRANSLATIONS_LIST = 'translations.list';
-  Meteor.publish(TRANSLATIONS_LIST, function ({convoId}) {
+  Meteor.publish(TRANSLATIONS_LIST, function ({convoId, langCode}) {
     check(arguments[0], {
-      convoId: String
+      convoId: String,
+      langCode: String
     });
 
     if (!this.userId) {
@@ -27,6 +28,6 @@ export default function () {
       throw new Meteor.Error(TRANSLATIONS_LIST, 'Must be a member of convo to get the convo\'s translations.');
     }
 
-    return Translations.find({convoId});
+    return Translations.find({convoId, langCode});
   });
 }
