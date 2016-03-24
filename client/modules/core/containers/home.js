@@ -18,7 +18,14 @@ export const composer = ({context}, onData) => {
     FlowRouter.go('/team');
   }
 
-  onData(null, {teamId, convoId});
+  const numConvos = Collections.Convos.find({teamId}).count();
+  const doConvosExist = numConvos > 0;
+
+  onData(null, {
+    teamId,
+    convoId,
+    doConvosExist
+  });
 };
 
 export default composeAll(
