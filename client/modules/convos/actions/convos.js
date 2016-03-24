@@ -29,6 +29,10 @@ export default {
     });
   },
 
+  'newConvo.setName'({LocalState}, name) {
+    LocalState.set('newConvo.name', name);
+  },
+
   'newConvo.addUserId'({LocalState}, userId) {
     const userIdsToAdd = LocalState.get('newConvo.userIdsToAdd') ?
       LocalState.get('newConvo.userIdsToAdd') : [];
