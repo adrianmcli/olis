@@ -34,7 +34,8 @@ export default function NoConvoSelected() {
     <div style={styles.container}>
       <div style={styles.content}>
         <ChatIcon style={styles.icon} color={colors.foreground}/>
-        <h1>There Are No Conversations</h1>
+        <h1>Welcome to Olis!</h1>
+        <p>Click the button to begin your first conversation:</p>
         <div style={{marginBottom: '50px'}}>
           <RaisedButton
             label="Create Your First Conversation"
