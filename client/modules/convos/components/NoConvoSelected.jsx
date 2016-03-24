@@ -4,7 +4,7 @@ import ChatIcon from 'material-ui/lib/svg-icons/action/question-answer';
 import RaisedButton from 'material-ui/lib/raised-button';
 import NewConvoDialog from '/client/modules/convos/components/NewConvoDialog.jsx';
 
-export default function NoConvoSelected() {
+export default function NoConvoSelected(props) {
   const colors = {
     foreground: '#999',
     background: '#EEE',
@@ -46,7 +46,7 @@ export default function NoConvoSelected() {
         </div>
       </div>
 
-      <NewConvoDialog ref={x => this._dialog = x} />
+      <NewConvoDialog ref={x => this._dialog = x} {...props} />
     </div>
   );
 }

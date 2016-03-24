@@ -5,7 +5,7 @@ import MsgsBar from '../../chat/containers/msgs_bar';
 import NotesBar from '../../notes/containers/notes_bar';
 
 import NoTeamSelected from '/client/modules/teams/components/NoTeamSelected.jsx';
-import NoConvoSelected from '/client/modules/convos/components/NoConvoSelected.jsx';
+import NoConvoSelected from '/client/modules/convos/containers/no_convo_selected';
 
 const Home = ({teamId, convoId, goToMyAccount, logout}) => (
   <div id="main-page">
