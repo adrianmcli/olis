@@ -119,6 +119,13 @@ export default class ChatMessageItem extends React.Component {
                 softBreak="br"
                 escapeHtml
               />
+              {translation ?
+                <ReactMarkdown
+                  source={translation}
+                  softBreak="br"
+                  escapeHtml
+                />
+                : null}
             </div>
             <div className="chat-timestamp">
               <div className="chat-timestamp-string">
