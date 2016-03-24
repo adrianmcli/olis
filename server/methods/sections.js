@@ -15,7 +15,7 @@ export default function () {
     'sections.add'({noteId, text, afterSectionId}) {
       check(arguments[0], {
         noteId: String,
-        text: String,
+        text: Match.Optional(Match.OneOf(undefined, null, String)),
         afterSectionId: Match.Optional(Match.OneOf(undefined, null, String))
       });
 

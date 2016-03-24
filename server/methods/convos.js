@@ -45,23 +45,11 @@ export default function () {
         recentUsernames,
         teamId});
       convo.save();
+      const convoId = convo._id;
 
-      // Insert a note
-      const note = new Note();
-      note.set({convoId: convo._id});
-      note.save();
+      Meteor.call('notes.add', {convoId});
 
-      // Insert a section, server only
-      // const header = `<h1>Notes</h1>`;
-      // const body = `<p>Write notes here! You can also edit that title up there!</p>`;
-      // const section = Meteor.call('sections.add', {noteId: note._id, text: header});
-      // Meteor.call('sections.add', {
-      //   noteId: note._id, text: body, afterSectionId: section._id
-      // });
-      const text = `<h1>Notes</h1><p>Write notes here! You can also edit that title up there!</p>`;
-      Meteor.call('sections.add', {noteId: note._id, text});
-
-      return convo._id;
+      return convoId;
     }
   });
 
