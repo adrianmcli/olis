@@ -2,7 +2,7 @@ import React from 'react';
 import ChatIcon from 'material-ui/lib/svg-icons/action/question-answer';
 
 import RaisedButton from 'material-ui/lib/raised-button';
-import HeaderNewConversation from '/client/modules/convos/components/HeaderNewConversation.jsx';
+import NewConvoDialog from '/client/modules/convos/components/NewConvoDialog.jsx';
 
 export default function NoConvoSelected() {
   const colors = {
@@ -41,10 +41,12 @@ export default function NoConvoSelected() {
           <RaisedButton
             label="Create Your First Conversation"
             secondary={true}
+            onClick={() => this._dialog.handleOpen()}
           />
-          <HeaderNewConversation />
         </div>
       </div>
+
+      <NewConvoDialog ref={x => this._dialog = x} />
     </div>
   );
 }

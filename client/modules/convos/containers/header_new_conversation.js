@@ -3,7 +3,7 @@ import HeaderNewConversation from '../components/HeaderNewConversation.jsx';
 import {buildRegExp} from '/client/modules/core/libs/search';
 import R from 'ramda';
 
-const depsMapper = (context, actions) => ({
+export const depsMapper = (context, actions) => ({
   context: () => context,
   addConvo: actions.convos.add,
   searchTeamUsers: actions.search['searchText.teamUsers.set'],
