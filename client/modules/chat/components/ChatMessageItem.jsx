@@ -8,6 +8,7 @@ import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 import AvatarWithInfo from './AvatarWithInfo.jsx';
 import ReactMarkdown from 'react-markdown';
+import Loading from '/client/modules/core/components/Loading.jsx';
 
 export default class ChatMessageItem extends React.Component {
 
@@ -15,7 +16,14 @@ export default class ChatMessageItem extends React.Component {
     super(props);
     this.state = {
       isHovering: false,
+      gettingTranslation: false
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.translation) {
+      this.setState({gettingTranslation: false});
+    }
   }
 
   handleMouseEnter() {
@@ -28,6 +36,14 @@ export default class ChatMessageItem extends React.Component {
 
   handleItemTouchTap(event, child) {
     console.log('You have selected: ' + child.props.primaryText);
+  }
+
+  getTranslation() {
+    const {translate, msgId, langCode} = this.props;
+    if (!this.state.gettingTranslation) {
+      this.setState({gettingTranslation: true});
+      translate(msgId, langCode);
+    }
   }
 
   _timestampFormatter(value, unit, suffix) {
@@ -48,6 +64,27 @@ export default class ChatMessageItem extends React.Component {
     return timeStr;
   }
 
+  renderTranslationArea() {
+    const {translation} = this.props;
+    const {gettingTranslation} = this.state;
+
+    if (translation) {
+      return (
+        <ReactMarkdown
+          source={translation}
+          softBreak="br"
+          escapeHtml
+        />
+      );
+    }
+    if (gettingTranslation) {
+      return (
+        <Loading spinnerName='cube-grid' style={{marginTop: '12px', marginBottom: '12px'}}/>
+      );
+    }
+    return null;
+  }
+
   render() {
     const {
       authorName,
@@ -55,8 +92,6 @@ export default class ChatMessageItem extends React.Component {
       content,
       timestamp,
       selfAuthor,
-      translate,
-      msgId,
       langCode,
       translation
     } = this.props;
@@ -92,10 +127,14 @@ export default class ChatMessageItem extends React.Component {
         anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
         targetOrigin={{horizontal: 'left', vertical: 'top'}}
       >
+      {
+        !translation || this.state.gettingTranslation ?
         <MenuItem
           primaryText={`Translate to ${LangCodes[langCode]}`}
-          onTouchTap={translate.bind(null, msgId, langCode)}
+          onTouchTap={this.getTranslation.bind(this)}
         />
+        : null
+      }
         <MenuItem primaryText="Copy" />
         <MenuItem primaryText="Lorem Ipsum" />
       </IconMenu>
@@ -119,13 +158,7 @@ export default class ChatMessageItem extends React.Component {
                 softBreak="br"
                 escapeHtml
               />
-              {translation ?
-                <ReactMarkdown
-                  source={translation}
-                  softBreak="br"
-                  escapeHtml
-                />
-                : null}
+              {this.renderTranslationArea()}
             </div>
             <div className="chat-timestamp">
               <div className="chat-timestamp-string">
