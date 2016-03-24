@@ -7,7 +7,7 @@ import NotesBar from '../../notes/containers/notes_bar';
 import NoTeamSelected from '/client/modules/teams/components/NoTeamSelected.jsx';
 import NoConvoSelected from '/client/modules/convos/containers/no_convo_selected';
 
-const Home = ({teamId, convoId, goToMyAccount, logout, doConvosExist}) => (
+const Home = ({teamId, convoId, goToMyAccount, logout}) => (
   <div id="main-page">
     <div id="teams-column"><TeamsBar /></div>
     {teamId ?
@@ -16,7 +16,7 @@ const Home = ({teamId, convoId, goToMyAccount, logout, doConvosExist}) => (
     }
     {teamId && convoId ? <div id="chat-column"><MsgsBar /></div> : null}
     {teamId && convoId ? <div id="notes-column"><NotesBar /></div> : null}
-    {teamId && !convoId ? <NoConvoSelected doConvosExist={doConvosExist} /> : null}
+    {teamId && !convoId ? <NoConvoSelected /> : null}
   </div>
 );
 

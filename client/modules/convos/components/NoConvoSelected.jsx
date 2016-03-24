@@ -5,7 +5,6 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import NewConvoDialog from '/client/modules/convos/components/NewConvoDialog.jsx';
 
 export default function NoConvoSelected(props) {
-  const {doConvosExist} = props;
   const colors = {
     foreground: '#999',
     background: '#EEE',
@@ -32,32 +31,19 @@ export default function NoConvoSelected(props) {
       margin: 'auto',
     },
   };
-
-  const _firstConvo = (
-    <div>
-      <h1>Welcome to Olis!</h1>
-      <p>Click the button to begin your first conversation:</p>
-      <div style={{marginBottom: '50px'}}>
-        <RaisedButton
-          label="Create Your First Conversation"
-          secondary={true}
-          onClick={() => this._dialog.handleOpen()}
-        />
-      </div>
-    </div>
-  );
-
-  const _selectConvo = (
-    <div>
-      <p>Select a conversation on the right to start chatting!</p>
-    </div>
-  );
-
   return (
     <div style={styles.container}>
       <div style={styles.content}>
         <ChatIcon style={styles.icon} color={colors.foreground}/>
-        {doConvosExist ? _selectConvo : _firstConvo}
+        <h1>Welcome to Olis!</h1>
+        <p>Click the button to begin your first conversation:</p>
+        <div style={{marginBottom: '50px'}}>
+          <RaisedButton
+            label="Create Your First Conversation"
+            secondary={true}
+            onClick={() => this._dialog.handleOpen()}
+          />
+        </div>
       </div>
 
       <NewConvoDialog ref={x => this._dialog = x} {...props} />
