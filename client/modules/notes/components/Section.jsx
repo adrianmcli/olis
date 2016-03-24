@@ -59,6 +59,10 @@ export default class Section extends React.Component {
           'quote',
           'orderedlist', 'unorderedlist',
         ]
+      },
+      placeholder: {
+        text: 'Type your notes here!', // HTML tags do nothing here. They are escaped.
+        hideOnClick: true
       }
     };
 

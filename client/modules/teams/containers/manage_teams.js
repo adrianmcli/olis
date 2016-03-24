@@ -5,7 +5,8 @@ import R from 'ramda';
 const depsMapper = (context, actions) => ({
   context: () => context,
   selectTeam: actions.teams.select,
-  goToChat: actions.msgs.goToChat
+  goToChat: actions.msgs.goToChat,
+  goToTeamSettings: actions.teams.goToTeamSettingsFromManageTeams
 });
 
 export const composer = ({context}, onData) => {

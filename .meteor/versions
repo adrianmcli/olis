@@ -27,6 +27,7 @@ ddp-common@1.2.2
 ddp-rate-limiter@1.0.1-beta.11
 ddp-server@1.2.3-beta.11
 deps@1.0.9
+devian:mstranslate@0.0.6
 diff-sequence@1.0.2-beta.11
 ecmascript@0.4.0-beta.11
 ecmascript-runtime@0.2.7-beta.11
@@ -99,6 +100,8 @@ npm-bcrypt@0.7.8_2
 npm-mongo@1.4.40-beta.11
 observe-sequence@1.0.8-beta.11
 ordered-dict@1.0.4
+peerlibrary:blocking@0.5.2
+peerlibrary:xml2js@0.4.8_1
 promise@0.5.2-beta.11
 random@1.0.6-beta.11
 rate-limit@1.0.1-beta.11

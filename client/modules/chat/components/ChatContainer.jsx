@@ -9,7 +9,7 @@ import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
 import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
-import ChatMessageItem from './ChatMessageItem.jsx';
+import ChatMessageItem from '../containers/chat_message_item';
 
 export default class ChatContainer extends React.Component {
   constructor(props) {
@@ -64,6 +64,7 @@ export default class ChatContainer extends React.Component {
 
   render() {
     const {
+      convo,
       msgs,
       userId,
       convoUsers,
@@ -71,6 +72,8 @@ export default class ChatContainer extends React.Component {
       usersListString,
       loadMore,
       starred,
+      translations,
+      langCode
     } = this.props;
     return (
       <div id="chat-container">
@@ -94,7 +97,8 @@ export default class ChatContainer extends React.Component {
         </div>
 
         <div id="chat-msg-area" ref={(x) => this._container = x}>
-          <div id="load-more-btn" onClick={loadMore}>Load more messages</div>
+          {convo && convo.numMsgs > msgs.length ?
+              <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
           {msgs.map(msg => {
             const otherUser = convoUsers[msg.userId];
             const authorName = otherUser ? otherUser.username : msg.username;
@@ -102,11 +106,14 @@ export default class ChatContainer extends React.Component {
             return (
               <ChatMessageItem
                 key={msg._id}
+                msgId={msg._id}
                 authorName={authorName}
                 avatarSrc={avatarSrc}
                 content={msg.text}
                 timestamp={msg.createdAt}
                 selfAuthor={msg.userId === userId}
+                translation={translations[msg._id] ? translations[msg._id].text : undefined}
+                langCode={langCode}
               />
             );
           })}

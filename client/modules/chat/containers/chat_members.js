@@ -48,7 +48,7 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
     searchConvoUsers(undefined);
     showUserInfo(undefined);
   };
-  return cleanup;
+  // return cleanup;
 };
 
 export default composeAll(

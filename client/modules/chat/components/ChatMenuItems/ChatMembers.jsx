@@ -14,8 +14,6 @@ export default class ChatMembers extends React.Component {
     const {
       convoUsersSearchResult, convo, showUserInfo, searchConvoUsers, userShown, isAdmin
     } = this.props;
-
-    console.log(this.props);
     return (
       <Dialog
         title="Chat Members"

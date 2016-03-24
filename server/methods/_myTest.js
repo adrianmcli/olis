@@ -1,4 +1,6 @@
-import {Posts, Comments, Messages, Teams, Convos, Notifications, Invites, Notes, Sections} from '../../lib/collections';
+import {
+  Posts, Comments, Messages, Teams, Convos, Notifications, Invites, Notes, Sections, Translations
+} from '../../lib/collections';
 import Team from '/lib/team';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
@@ -14,21 +16,35 @@ export default function () {
       Invites.remove({});
       Notes.remove({});
       Sections.remove({});
+      Translations.remove({});
+
+      const langCode = 'en';
 
       const userId = Accounts.createUser({
         email: 'test@test.com',
         username: 'test',
         password: '1'
       });
+      Meteor.users.update(userId, {
+        $set: {translationLangCode: langCode}
+      });
+
       const userId2 = Accounts.createUser({
         email: 'invite@test.com',
         username: 'invite',
         password: '1'
       });
+      Meteor.users.update(userId2, {
+        $set: {translationLangCode: langCode}
+      });
+
       const userId3 = Accounts.createUser({
         email: 'invite2@test.com',
         username: 'invite2',
         password: '1'
+      });
+      Meteor.users.update(userId3, {
+        $set: {translationLangCode: langCode}
       });
 
       const team = new Team();
