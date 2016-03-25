@@ -4,6 +4,13 @@ import Dialog from '/client/modules/core/components/Dialog.jsx';
 import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
 export default class AddPeopleToConvo extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    const {open} = this.props;
+    return (
+      open ||
+      open !== nextProps.open
+    );
+  }
 
   handleSubmit() {
     const {addUsersToConvo, usersToAdd, convoId} = this.props;
