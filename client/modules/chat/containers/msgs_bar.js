@@ -33,39 +33,41 @@ export const composer = ({context}, onData) => {
       LocalState.get('loadMore.convoNumMsgs') : 0;
 
     // Subscribe
-    MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
-    const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
-    if (langCode) { MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
+    const sub = MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
+    if (sub.ready()) {
+      const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
+      if (langCode) { MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
 
-    // Fetch
-    const options = {sort: [ [ 'createdAt', 'asc' ] ]};
-    msgs = Collections.Messages.find({convoId}, options).fetch();
-    convo = Collections.Convos.findOne(convoId);
-    if (convo) {
-      const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
-      convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
-      title = convo.name;
+      // Fetch
+      const options = {sort: [ [ 'createdAt', 'asc' ] ]};
+      msgs = Collections.Messages.find({convoId}, options).fetch();
+      convo = Collections.Convos.findOne(convoId);
+      if (convo) {
+        const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
+        convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
+        title = convo.name;
 
-      usersListString = convoUsersArr.reduce((prev, curr, index) => {
-        if (index > 0) { return `${prev}, ${curr.username}`; }
-        return `${curr.username}`;
-      }, '');
+        usersListString = convoUsersArr.reduce((prev, curr, index) => {
+          if (index > 0) { return `${prev}, ${curr.username}`; }
+          return `${curr.username}`;
+        }, '');
+      }
+
+      const transArr = Collections.Translations.find({convoId}).fetch();
+      translations = R.zipObj(transArr.map(item => item.msgId), transArr);
+
+      onData(null, {
+        convo,
+        msgs,
+        userId,
+        convoUsers,
+        title,
+        usersListString,
+        langCode,
+        translations
+      });
     }
-
-    const transArr = Collections.Translations.find({convoId}).fetch();
-    translations = R.zipObj(transArr.map(item => item.msgId), transArr);
   }
-
-  onData(null, {
-    convo,
-    msgs,
-    userId,
-    convoUsers,
-    title,
-    usersListString,
-    langCode,
-    translations
-  });
 };
 
 export default composeAll(

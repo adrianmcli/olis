@@ -108,6 +108,8 @@ export default class ChatMessageItem extends React.Component {
       translation
     } = this.props;
 
+    console.log(`ChatMessageItem RENDER ${content}`);
+
     const authorClass = selfAuthor ? ' you' : '';
     const buttonStyle = () => {
       if (this.state.isHovering) {

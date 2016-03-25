@@ -30,16 +30,16 @@ export const composer = ({context}, onData) => {
 
       const invites = Collections.Invites.find({teamId}).fetch();
       pendingInviteIds = invites.map(invite => invite.userId);
+
+      onData(null, {
+        teamName,
+        teamInfo,
+        teamUsers,
+        teamId,
+        pendingInviteIds
+      });
     }
   }
-
-  onData(null, {
-    teamName,
-    teamInfo,
-    teamUsers,
-    teamId,
-    pendingInviteIds
-  });
 };
 
 export default composeAll(

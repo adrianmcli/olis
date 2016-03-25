@@ -50,6 +50,8 @@ export default class ConversationItem extends React.Component {
       username
     } = this.props;
 
+    console.log(`ConversationItem RENDER ${title}`);
+
     const badgeStyle = {
       top: '-6px',
       right: '-6px',

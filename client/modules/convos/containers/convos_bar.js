@@ -21,15 +21,16 @@ export const composer = ({context}, onData) => {
   const user = Meteor.user();
 
   if (teamId) {
-    if (Meteor.subscribe('users.team', {teamId}).ready()) {
+    const subUsers = Meteor.subscribe('users.team', {teamId});
+    const subConvos = Meteor.subscribe('convos.list', {teamId});
+
+    if (subUsers.ready() && subConvos.ready()) {
       const teamSelector = {
         [`roles.${teamId}`]: {$exists: true}
       };
       const teamUsersArr = Meteor.users.find(teamSelector).fetch();
       teamUsers = R.zipObj(teamUsersArr.map(teamUser => teamUser._id), teamUsersArr);
-    }
 
-    if (Meteor.subscribe('convos.list', {teamId}).ready()) {
       const selector = {
         userIds: Meteor.userId(),
         teamId
@@ -39,15 +40,16 @@ export const composer = ({context}, onData) => {
       convos = Collections.Convos.find(selector, options).fetch();
       convoId = FlowRouter.getParam('convoId');
       lastTimeInConvo = Meteor.user().lastTimeInConvo;
+
+      onData(null, {
+        convos,
+        convoId,
+        lastTimeInConvo,
+        teamUsers,
+        user
+      });
     }
   }
-  onData(null, {
-    convos,
-    convoId,
-    lastTimeInConvo,
-    teamUsers,
-    user
-  });
 };
 
 export default composeAll(

@@ -35,14 +35,14 @@ export const composer = ({context, actions}, onData) => {
           const groupById = R.groupBy(R.prop('_id'), unsortedSections);
           const sort = R.map(id => groupById[id][0]);
           sections = sort(note.sectionIds);
+
+          onData(null, {
+            note, sections, addSection: _addSection, userId: Meteor.userId()
+          });
         }
       }
     }
   }
-
-  onData(null, {
-    note, sections, addSection: _addSection, userId: Meteor.userId()
-  });
 };
 
 export default composeAll(
