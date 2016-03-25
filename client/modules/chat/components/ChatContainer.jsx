@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactList from 'react-list';
 
 import IconButton from 'material-ui/lib/icon-button';
 
@@ -24,6 +25,14 @@ export default class ChatContainer extends React.Component {
     };
   }
 
+  componentDidMount() {
+    $(this._container).on("scroll", this._scrollHandler.bind(this));
+  }
+
+  componentWillUnmount() {
+    $(this._container).off("scroll", this._scrollHandler.bind(this));
+  }
+
   componentWillReceiveProps() {
     const ele = $(this._container);
     const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
@@ -40,6 +49,13 @@ export default class ChatContainer extends React.Component {
     const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
     if (distanceFromBottom <= 0 || distanceFromTop === 0) {
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+    }
+  }
+
+  _scrollHandler() {
+    const distanceFromTop = $(this._container).scrollTop();
+    if (distanceFromTop && distanceFromTop < 50) {
+      console.log("I'm close to the top!");
     }
   }
 
@@ -73,6 +89,29 @@ export default class ChatContainer extends React.Component {
     );
   }
 
+  renderItem(index, key) {
+    const {msgs, convoUsers, userId, translations, langCode} = this.props;
+    const msg = msgs[index];
+
+    const otherUser = convoUsers[msg.userId];
+    const authorName = otherUser ? otherUser.username : msg.username;
+    const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
+
+    return (
+      <ChatMessageItem
+        key={key}
+        msgId={msg._id}
+        authorName={authorName}
+        avatarSrc={avatarSrc}
+        content={msg.text}
+        timestamp={msg.createdAt}
+        selfAuthor={msg.userId === userId}
+        translation={translations[msg._id] ? translations[msg._id].text : undefined}
+        langCode={langCode}
+      />
+    );
+  }
+
   scrollToBottom() {
     const ele = $(this._container);
     const scrollHeight = ele[0].scrollHeight;
@@ -84,14 +123,10 @@ export default class ChatContainer extends React.Component {
     const {
       convo,
       msgs,
-      userId,
-      convoUsers,
       title,
       usersListString,
       loadMore,
-      starred,
-      translations,
-      langCode
+      starred
     } = this.props;
 
     return (
@@ -119,24 +154,14 @@ export default class ChatContainer extends React.Component {
         <div id="chat-msg-area" ref={(x) => this._container = x}>
           {convo && convo.numMsgs > msgs.length ?
               <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
-          {msgs.map(msg => {
-            const otherUser = convoUsers[msg.userId];
-            const authorName = otherUser ? otherUser.username : msg.username;
-            const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
-            return (
-              <ChatMessageItem
-                key={msg._id}
-                msgId={msg._id}
-                authorName={authorName}
-                avatarSrc={avatarSrc}
-                content={msg.text}
-                timestamp={msg.createdAt}
-                selfAuthor={msg.userId === userId}
-                translation={translations[msg._id] ? translations[msg._id].text : undefined}
-                langCode={langCode}
-              />
-            );
-          })}
+
+          <ReactList
+            itemRenderer={this.renderItem.bind(this)}
+            length={msgs.length}
+            type='uniform'
+            threshold={5}
+            pageSize={5}
+          />
         </div>
 
         <div id="chat-input">
