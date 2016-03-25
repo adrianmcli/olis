@@ -3,7 +3,7 @@ import {mount} from 'react-mounter';
 
 import MainLayout from '../core/components/main_layout.jsx';
 import PostList from './containers/post_list.jsx';
-import Speed from './containers/speed';
+import Speed from './components/Speed.jsx';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
