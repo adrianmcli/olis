@@ -9,6 +9,13 @@ import Loading from '/client/modules/core/components/Loading.jsx';
 import TextField from 'material-ui/lib/text-field';
 
 export default class HeaderSearch extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    const {open} = this.state;
+    return (
+      open ||
+      open !== nextState.open
+    );
+  }
 
   constructor(props) {
     super(props);
@@ -129,7 +136,6 @@ export default class HeaderSearch extends React.Component {
     const iconColor = 'white';
     return (
       <div>
-
         <div className="header-icon">
           <IconButton tooltip="Search" onClick={this.handleOpen.bind(this)}>
             <ActionSearch color={iconColor} />
