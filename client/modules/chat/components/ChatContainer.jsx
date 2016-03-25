@@ -50,10 +50,11 @@ export default class ChatContainer extends React.Component {
     } else {
       e.preventDefault();
       const text = e.target.value;
-      addMsg(text);
-      e.target.value = '';
-      this.scrollToBottom();
-      // setTimeout(this.scrollToBottom(), 100);
+      if (text.trim() !== '') {
+        addMsg(text);
+        e.target.value = '';
+        this.scrollToBottom();
+      }
     }
   }
 
@@ -74,7 +75,9 @@ export default class ChatContainer extends React.Component {
 
   scrollToBottom() {
     const ele = $(this._container);
-    ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
+    const scrollHeight = ele[0].scrollHeight;
+    ele.scrollTop(scrollHeight);
+    // ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
   }
 
   render() {
