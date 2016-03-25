@@ -20,6 +20,17 @@ export default class ChatMessageItem extends React.Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const {msgId} = this.props;
+    const {isHovering, gettingTranslation} = this.state;
+
+    return (
+      msgId !== nextProps.msgId ||
+      isHovering !== nextState.isHovering ||
+      gettingTranslation !== nextState.gettingTranslation
+    );
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.translation) {
       this.setState({gettingTranslation: false});
@@ -107,6 +118,8 @@ export default class ChatMessageItem extends React.Component {
       langCode,
       translation
     } = this.props;
+
+    // console.log(`ChatMessageItem RENDER ${content}`);
 
     const authorClass = selfAuthor ? ' you' : '';
     const buttonStyle = () => {

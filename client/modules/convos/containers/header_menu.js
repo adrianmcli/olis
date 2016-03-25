@@ -33,9 +33,6 @@ export const composer = ({context}, onData) => {
       });
     }
   }
-  else {
-    onData(null, {username, profileImageUrl, teamName, isAdmin});
-  }
 };
 
 export default composeAll(

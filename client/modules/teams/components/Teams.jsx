@@ -57,6 +57,7 @@ export default class Teams extends React.Component {
               return (
                 <TeamIcon
                   key={team._id}
+                  teamId={team._id}
                   teamName={team.name}
                   // iconSrc='https://s3.amazonaws.com/uifaces/faces/twitter/vladabazhan/128.jpg'
                   unreadCount={unreadCount}

@@ -8,6 +8,14 @@ import Badge from 'material-ui/lib/badge';
 import NotificationList from './NotificationList.jsx';
 
 export default class HeaderNotifications extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    const {open} = this.state;
+    return (
+      open ||
+      open !== nextState.open
+    );
+  }
+
   constructor(props) {
     super(props);
     this.state = {

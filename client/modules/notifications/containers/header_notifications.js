@@ -23,9 +23,7 @@ export const composer = ({context}, onData) => {
       const notifications = Collections.Notifications.find(selector).fetch();
       onData(null, {notifications});
     }
-    else { onData(null, {notifications: []}); }
   }
-  else { onData(null, {notifications: []}); }
 };
 
 export default composeAll(

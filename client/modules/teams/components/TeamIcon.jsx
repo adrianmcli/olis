@@ -3,12 +3,16 @@ import IconButton from 'material-ui/lib/icon-button';
 import Badge from 'material-ui/lib/badge';
 
 export default class TeamIcon extends React.Component {
-  handleClick(e) {
-    console.log('User has clicked team: ' + this.props.teamName);
-    // TODO - make sure the team ID is passed into this component
-    // TODO - fire an action to reflect the fact that user wants
-    //        to switch teams to that team ID
+  shouldComponentUpdate(nextProps) {
+    const {teamId, unread, active} = this.props;
+    return (
+      teamId !== nextProps.teamId ||
+      unread !== nextProps.unread ||
+      active !== nextProps.active
+    );
+  }
 
+  handleClick(e) {
     this.props.selectTeam();
   }
 

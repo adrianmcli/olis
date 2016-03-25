@@ -93,6 +93,7 @@ export default class ChatContainer extends React.Component {
       translations,
       langCode
     } = this.props;
+
     return (
       <div id="chat-container">
         <div id="chat-header">

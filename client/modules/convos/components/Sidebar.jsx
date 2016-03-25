@@ -52,6 +52,7 @@ export default class Sidebar extends React.Component {
           return (
             <ConversationItem
               key={convo._id}
+              convoId={convo._id}
               title={convo.name}
               lastUpdated={convo.updatedAt}
               previewText={convo.lastMsgText}

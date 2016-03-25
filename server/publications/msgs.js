@@ -5,7 +5,7 @@ import R from 'ramda';
 
 export default function () {
   const MSGS_LIST = 'msgs.list';
-  const NUM_MSG_INTERVAL = 5;
+  const NUM_MSG_INTERVAL = 30;
   Meteor.publish(MSGS_LIST, function ({convoId, currentNumMsgs}) {
     check(arguments[0], {
       convoId: String,

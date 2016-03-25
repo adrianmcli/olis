@@ -24,7 +24,6 @@ export const composer = ({context}, onData) => {
       translationLangCode: user.translationLangCode
     });
   }
-  else { onData(null, {}); }
 };
 
 export default composeAll(

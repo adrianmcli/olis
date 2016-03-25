@@ -44,7 +44,7 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
   }
 
   const cleanup = () => {
-    console.log('team_directory cleanup'); // Not sure why this is called when stuff is updated
+    // console.log('team_directory cleanup'); // Not sure why this is called when stuff is updated
     searchTeamUsers(undefined);
     showUserInfo(undefined);
   };

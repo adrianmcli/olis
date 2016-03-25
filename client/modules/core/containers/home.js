@@ -12,9 +12,10 @@ export const composer = ({context}, onData) => {
   const teamId = FlowRouter.getParam('teamId');
   const convoId = FlowRouter.getParam('convoId');
 
-  const user = Meteor.user();
+  // const user = Meteor.user();
+  const userId = Meteor.userId();
   const team = Collections.Teams.findOne(teamId);
-  if (team && !team.isUserInTeam(user._id)) {
+  if (team && !team.isUserInTeam(userId)) {
     FlowRouter.go('/team');
   }
 

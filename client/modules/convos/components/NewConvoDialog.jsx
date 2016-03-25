@@ -5,6 +5,13 @@ import Dialog from '/client/modules/core/components/Dialog.jsx';
 import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
 export default class NewConvoDialog extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    const {open} = this.state;
+    return (
+      open ||
+      open !== nextState.open
+    );
+  }
 
   constructor(props) {
     super(props);
