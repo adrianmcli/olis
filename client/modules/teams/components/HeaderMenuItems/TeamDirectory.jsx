@@ -5,6 +5,14 @@ import PeopleList from '/client/modules/core/components/PeopleList.jsx';
 import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class TeamDirectory extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    const {open} = this.props;
+    return (
+      open !== nextProps.open ||
+      open
+    );
+  }
+
   render() {
     const {
       team, teamUsersSearchResult, searchTeamUsers,
@@ -12,6 +20,8 @@ export default class TeamDirectory extends React.Component {
       makeUserTeamAdmin, removeUserFromTeam
     } = this.props;
     
+    console.log('TeamDirectory RENDER');
+
     return (
       <Dialog
         title={`${team.name}: Directory`}
