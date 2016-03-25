@@ -5,6 +5,13 @@ import Dialog from '/client/modules/core/components/Dialog.jsx';
 import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 
 export default class NewConvoDialog extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    const {open} = this.state;
+    return (
+      open ||
+      open !== nextState.open
+    );
+  }
 
   constructor(props) {
     super(props);
@@ -83,6 +90,7 @@ export default class NewConvoDialog extends React.Component {
   }
 
   render() {
+    console.log(`NewConvoDialog RENDER`);
     // first stage settings
     let width = 360;
     let submitFunc = this.handleNext.bind(this);
