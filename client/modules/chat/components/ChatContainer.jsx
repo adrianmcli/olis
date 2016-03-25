@@ -25,6 +25,14 @@ export default class ChatContainer extends React.Component {
     };
   }
 
+  componentDidMount() {
+    $(this._container).on("scroll", this._scrollHandler.bind(this));
+  }
+
+  componentWillUnmount() {
+    $(this._container).off("scroll", this._scrollHandler.bind(this));
+  }
+
   componentWillReceiveProps() {
     const ele = $(this._container);
     const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
@@ -41,6 +49,13 @@ export default class ChatContainer extends React.Component {
     const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
     if (distanceFromBottom <= 0 || distanceFromTop === 0) {
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+    }
+  }
+
+  _scrollHandler() {
+    const distanceFromTop = $(this._container).scrollTop();
+    if (distanceFromTop && distanceFromTop < 50) {
+      console.log("I'm close to the top!");
     }
   }
 
