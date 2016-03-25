@@ -24,4 +24,13 @@ export default function (injectDeps, {FlowRouter}) {
       });
     }
   });
+
+  FlowRouter.route('/test/speed', {
+    name: 'test-speed',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<PostList />)
+      });
+    }
+  });
 }
