@@ -8,6 +8,7 @@ import HeaderSearch from './HeaderSearch.jsx';
 import HeaderNotifications from '/client/modules/notifications/containers/header_notifications';
 
 import FlipMove from 'react-flip-move';
+import GeminiScrollbar from 'react-gemini-scrollbar';
 import ConversationItem from './ConversationItem.jsx';
 
 export default class Sidebar extends React.Component {
@@ -81,7 +82,9 @@ export default class Sidebar extends React.Component {
 
         {/* Conversation List */}
         <div id="conversation-list">
-          { convos.length === 0 ? emptyState : this.renderConversations.bind(this)()}
+          <GeminiScrollbar>
+            { convos.length === 0 ? emptyState : this.renderConversations.bind(this)()}
+          </GeminiScrollbar>
         </div>
       </div>
     );
