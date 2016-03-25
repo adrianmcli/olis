@@ -5,5 +5,10 @@ export default {
       if (err) { console.log(err); }
       else { console.log(res); }
     });
+  },
+
+  'speed.selectConvo'({FlowRouter}, convoId) {
+    const teamId = FlowRouter.getParam('teamId');
+    FlowRouter.go(`/test/speed/team/${teamId}/convo/${convoId}`);
   }
 };
