@@ -82,7 +82,6 @@ export default class ChatContainer extends React.Component {
     const authorName = otherUser ? otherUser.username : msg.username;
     const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
 
-
     return (
       <ChatMessageItem
         key={key}
@@ -145,6 +144,7 @@ export default class ChatContainer extends React.Component {
             itemRenderer={this.renderItem.bind(this)}
             length={msgs.length}
             type='uniform'
+            threshold={10}
           />
         </div>
 
