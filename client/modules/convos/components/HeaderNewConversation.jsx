@@ -10,7 +10,6 @@ export default class HeaderNewConversation extends React.Component {
   }
 
   render() {
-    console.log('HeaderNewConversation RENDER');
     return (
       <div>
         <div className="header-icon">

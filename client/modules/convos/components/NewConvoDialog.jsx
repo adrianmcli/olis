@@ -90,7 +90,6 @@ export default class NewConvoDialog extends React.Component {
   }
 
   render() {
-    console.log(`NewConvoDialog RENDER`);
     // first stage settings
     let width = 360;
     let submitFunc = this.handleNext.bind(this);
