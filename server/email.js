@@ -32,10 +32,11 @@ export default function () {
     console.log('enrollAccount subject');
     console.log(user);
 
-    const prepend = `Welcome to Olis, ${user.username}!`;
-    const text =
-      user.invitedBy ? `${prepend} An account has been created for you by ${user.invitedBy}.` :
-      `${prepend}`;
+    // const prepend = `Welcome to Olis, ${user.username}!`;
+    // const text =
+    //   user.invitedBy ? `${prepend} An account has been created for you by ${user.invitedBy}.` :
+    //   `${prepend}`;
+    const text = user.invitedBy ? `${user.invitedBy} has invited you to join Olis` : `Welcome to Olis!`;
     return text;
   };
 
@@ -45,14 +46,14 @@ export default function () {
     const team = Teams.findOne(R.keys(user.roles)[0]);
 
     const append =
-      `To setup your password and activate your account, click the link below:\n\n
+      `In order to setup your account, click the link below:\n\n
       ${url}`;
 
     if (user.invitedBy) {
       Meteor.users.update(user._id, {
         $unset: {invitedBy: ''}
       });
-      const text = `You have been invited by ${user.invitedBy} to participate in their team, ${team.name}!\n\n${append}`;
+      const text = `${user.invitedBy} has invited you to participate in their team, ${team.name} on Olis. \n\n${append}`;
       return text;
     }
 
