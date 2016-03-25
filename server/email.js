@@ -53,7 +53,7 @@ export default function () {
       Meteor.users.update(user._id, {
         $unset: {invitedBy: ''}
       });
-      const text = `${user.invitedBy} has invited you to participate in their team, ${team.name} on Olis. \n\n${append}`;
+      const text = `${user.invitedBy} has invited you to join ${team.name}, their team on Olis. \n\n${append}`;
       return text;
     }
 
