@@ -6,16 +6,16 @@ import PeoplePicker from '/client/modules/core/components/PeoplePicker.jsx';
 export default class AddPeopleToConvo extends React.Component {
 
   handleSubmit() {
-    const {addUsersToConvo, usersToAdd, convoId, onRequestClose} = this.props;
+    const {addUsersToConvo, usersToAdd, convoId} = this.props;
     addUsersToConvo(convoId, usersToAdd.map(user => user._id));
-    onRequestClose();
+    this.handleClose();
   }
 
   handleClose() {
-    const {clearAddedUserIds, clearTeamUsersSearchText} = this.props;
-    this.props.onRequestClose();
+    const {clearAddedUserIds, clearTeamUsersSearchText, onRequestClose} = this.props;
     clearAddedUserIds();
     clearTeamUsersSearchText();
+    onRequestClose();
   }
 
   render() {
