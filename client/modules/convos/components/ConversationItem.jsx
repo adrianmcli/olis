@@ -7,11 +7,25 @@ import StarIcon from 'material-ui/lib/svg-icons/toggle/star';
 import TimeAgo from 'react-timeago';
 
 export default class ConversationItem extends React.Component {
-  handleClick(e) {
-    console.log('User has clicked conversation: ' + this.props.title);
-    // TODO - make sure the conversation ID is passed into this component
-    // TODO - fire an action to reflect the fact that user wants 
-    //        to switch to that conversation ID
+  shouldComponentUpdate(nextProps, nextState) {
+    const {convoId, title, lastUpdated, active, unread} = this.props;
+
+    // const a = convoId !== nextProps.convoId;
+    // const b = lastUpdated.getTime() !== nextProps.lastUpdated.getTime();
+    // const c = active !== nextProps.active;
+    // const d = unread !== nextProps.unread;
+
+    // console.log(`${title} a ${a}, b ${b}, c ${c}, d ${d}`);
+
+    return (
+      convoId !== nextProps.convoId ||
+      lastUpdated.getTime() !== nextProps.lastUpdated.getTime() || // 2 date objects are always different, so do getTime()
+      active !== nextProps.active ||
+      unread !== nextProps.unread
+    );
+  }
+
+  handleClick() {
     this.props.selectConvo();
   }
 
