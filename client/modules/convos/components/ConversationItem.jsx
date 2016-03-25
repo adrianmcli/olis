@@ -8,14 +8,7 @@ import TimeAgo from 'react-timeago';
 
 export default class ConversationItem extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
-    const {convoId, title, lastUpdated, active, unread} = this.props;
-
-    // const a = convoId !== nextProps.convoId;
-    // const b = lastUpdated.getTime() !== nextProps.lastUpdated.getTime();
-    // const c = active !== nextProps.active;
-    // const d = unread !== nextProps.unread;
-
-    // console.log(`${title} a ${a}, b ${b}, c ${c}, d ${d}`);
+    const {convoId, lastUpdated, active, unread} = this.props;
 
     return (
       convoId !== nextProps.convoId ||
@@ -63,8 +56,6 @@ export default class ConversationItem extends React.Component {
       starred,
       username
     } = this.props;
-
-    console.log(`ConversationItem RENDER ${title}`);
 
     const badgeStyle = {
       top: '-6px',

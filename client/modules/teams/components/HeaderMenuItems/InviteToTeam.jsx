@@ -4,6 +4,14 @@ import Dialog from '/client/modules/core/components/Dialog.jsx';
 import TextField from 'material-ui/lib/text-field';
 
 export default class InviteToTeam extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    const {open} = this.props;
+    return (
+      open ||
+      open !== nextProps.open
+    );
+  }
+
   handleSubmit() {
     const {invite, onRequestClose} = this.props;
     const email = this._textField.getValue();

@@ -8,8 +8,8 @@ export default class TeamDirectory extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     const {open} = this.props;
     return (
-      open !== nextProps.open ||
-      open
+      open ||
+      open !== nextProps.open
     );
   }
 
@@ -19,8 +19,6 @@ export default class TeamDirectory extends React.Component {
       showUserInfo, userShown, isAdmin,
       makeUserTeamAdmin, removeUserFromTeam
     } = this.props;
-    
-    console.log('TeamDirectory RENDER');
 
     return (
       <Dialog

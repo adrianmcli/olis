@@ -3,6 +3,14 @@ import React from 'react';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 
 export default class TeamInfo extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    const {open} = this.props;
+    return (
+      open ||
+      open !== nextProps.open
+    );
+  }
+
   render() {
     const {teamName, teamInfo} = this.props;
     return (
