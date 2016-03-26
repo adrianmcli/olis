@@ -10,6 +10,34 @@ import EmailValidator from 'email-validator';
 import {Cloudinary} from 'meteor/lepozepo:cloudinary';
 
 export default function () {
+
+  const ACCOUNT_REGISTER_TEAM = 'account.register.createTeam';
+  Meteor.methods({
+    'account.register.createTeam'({teamName}) {
+      check(arguments[0], {
+        teamName: String
+      });
+
+      // Account creation called from client side, so user is logged in already.
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_REGISTER_TEAM, 'Must be logged in to create team.');
+      }
+      Meteor.call('account.setTranslationLanguage', {langCode: 'en'});
+
+      // Add users to team and set roles
+      const team = new Team();
+      team.set({
+        name: teamName,
+        userIds: [ userId ]
+      });
+      team.save();
+      Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
+
+      return {teamId: team._id};
+    }
+  });
+
   const ACCOUNT_REGISTER_TEAM_CONVO = 'account.register.createTeamAndConvo';
   Meteor.methods({
     'account.register.createTeamAndConvo'({teamName}) {
