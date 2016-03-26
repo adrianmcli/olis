@@ -46,7 +46,6 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.email', email);
-        FlowRouter.go('/register/username');
       }
     });
   },
@@ -57,7 +56,6 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.username', username);
-        FlowRouter.go('/register/password');
       }
     });
   },
@@ -76,7 +74,6 @@ export default {
     }
     catch (e) { alert(e); }
     LocalState.set('register.password', passwordTrim);
-    FlowRouter.go('/register/team-name');
   },
 
   setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
@@ -87,7 +84,6 @@ export default {
       }
 
       LocalState.set('register.teamName', teamName);
-      FlowRouter.go('/register/invite');
     }
     catch (e) { alert(e); }
   },
@@ -101,13 +97,26 @@ export default {
       });
 
       LocalState.set('register.inviteEmails', inviteEmails);
-      AccountUtils.register({Meteor, LocalState, FlowRouter});
     }
     catch (e) { alert(e); }
   },
 
-  skipInvites({Meteor, LocalState, FlowRouter}) {
+  finishRegistration({Meteor, LocalState, FlowRouter}) {
     AccountUtils.register({Meteor, LocalState, FlowRouter});
+  },
+
+  finishInviteeOnboard({Meteor, LocalState, FlowRouter}) {
+    const pwd = LocalState.get('register.password');
+    const username = LocalState.get('register.username');
+    const token = FlowRouter.getParam('token');
+
+    const _setUsername = () => {
+      Meteor.call('account.setUsername', {username}, (err) => {
+        if (err) { alert(err); }
+      });
+    };
+
+    AccountUtils.resetPassword({Meteor, FlowRouter}, token, pwd, pwd, _setUsername);
   },
 
   addMoreInvites({LocalState}) {

@@ -45,13 +45,14 @@ export default class CreateAccountInviteTeammates extends React.Component {
   }
 
   handleInviteClick() {
-    const {setRegisterInviteEmails} = this.props;
+    const {setRegisterInviteEmails, finishRegistration} = this.props;
     const inputValues = R.keys(this.refs).map(key => this.refs[key].getValue());
     setRegisterInviteEmails(inputValues);
+    finishRegistration();
   }
 
   render() {
-    const {numInviteInputs, addMoreInvites, goBack} = this.props;
+    const {numInviteInputs, addMoreInvites} = this.props;
     let inputs = [];
     for (let i = 0; i < numInviteInputs; i++) {
       const ref = `${this.refBase}${i}`;

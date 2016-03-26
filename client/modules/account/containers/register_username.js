@@ -5,7 +5,7 @@ export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
   setRegisterUsername: actions.account.setRegisterUsername,
-  goBack: actions.account.goToCreateAccountEmail
+  go: (path) => context.FlowRouter.go(path)
 });
 
 export const composer = ({context}, onData) => {

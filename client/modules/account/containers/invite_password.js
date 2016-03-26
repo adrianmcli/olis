@@ -1,22 +1,22 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
-import CreateAccountTeamName from '../components/onboarding/CreateAccountTeamName.jsx';
+import CreateAccountPassword from '../components/onboarding/CreateAccountPassword.jsx';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  setRegisterTeamName: actions.account.setRegisterTeamName,
-  go: (path) => context.FlowRouter.go(path)
+  setRegisterPassword: actions.account.setRegisterPassword,
+  finishInviteeOnboard: actions.account.finishInviteeOnboard
 });
 
 export const composer = ({context}, onData) => {
   const {LocalState} = context();
-  const registerTeamName = LocalState.get('register.teamName');
+  const registerPassword = LocalState.get('register.password');
   onData(null, {
-    registerTeamName
+    registerPassword
   });
 };
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(CreateAccountTeamName);
+)(CreateAccountPassword);
