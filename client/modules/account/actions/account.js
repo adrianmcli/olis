@@ -105,6 +105,20 @@ export default {
     AccountUtils.register({Meteor, LocalState, FlowRouter});
   },
 
+  finishInviteeOnboard({Meteor, LocalState, FlowRouter}) {
+    const pwd = LocalState.get('register.password');
+    const username = LocalState.get('register.username');
+    const token = FlowRouter.getParam('token');
+
+    const _setUsername = () => {
+      Meteor.call('account.setUsername', {username}, (err) => {
+        if (err) { alert(err); }
+      });
+    };
+
+    AccountUtils.resetPassword({Meteor, FlowRouter}, token, pwd, pwd, _setUsername);
+  },
+
   addMoreInvites({LocalState}) {
     const current = LocalState.get('register.numInviteInputs') ?
       LocalState.get('register.numInviteInputs') : 3;

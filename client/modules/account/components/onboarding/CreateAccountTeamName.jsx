@@ -12,7 +12,7 @@ export default class CreateAccountTeamName extends React.Component {
     const inputValue = this.input.getValue();
     const {setRegisterTeamName, go, nextPath} = this.props;
     setRegisterTeamName(inputValue);
-    go(nextPath);
+    if (nextPath) { go(nextPath); }
   }
 
   handleEnterKeyDown(e) {

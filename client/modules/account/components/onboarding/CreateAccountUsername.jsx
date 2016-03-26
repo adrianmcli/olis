@@ -12,7 +12,7 @@ export default class CreateAccountUsername extends React.Component {
     const inputValue = this.input.getValue();
     const {setRegisterUsername, go, nextPath} = this.props;
     setRegisterUsername(inputValue);
-    go(nextPath);
+    if (nextPath) { go(nextPath); }
   }
 
   handleEnterKeyDown(e) {

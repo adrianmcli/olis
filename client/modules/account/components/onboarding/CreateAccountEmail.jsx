@@ -21,7 +21,7 @@ export default class RegisterEmail extends React.Component {
     const value = this.input.getValue();
     const {setRegisterEmail, go, nextPath} = this.props;
     setRegisterEmail(value);
-    go(nextPath);
+    if (nextPath) { go(nextPath); }
   }
 
   handleEnterKeyDown(e) {

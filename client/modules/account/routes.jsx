@@ -8,7 +8,7 @@ import Login from './containers/login';
 import MyAccount from './containers/my_account';
 
 import Registration from './containers/registration';
-import InviteeOnboard from './components/onboarding/InviteeOnboard.jsx';
+import InviteeOnboard from './containers/invitee_onboard';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
@@ -17,18 +17,13 @@ export default function (injectDeps, {FlowRouter}) {
     redirect('/register/email');
   }
 
+  function redirectToInviteUsername(context, redirect) {
+    redirect(`/invite/username/${context.params.token}`);
+  }
+
   FlowRouter.route('/register', {
     name: 'register',
     triggersEnter: [ redirectToRegisterEmail ]
-  });
-
-  FlowRouter.route('/invite_onboard', {
-    name: 'register-email',
-    action() {
-      mount(MainLayoutCtx, {
-        content: () => (<InviteeOnboard />)
-      });
-    }
   });
 
   FlowRouter.route('/register/email', {
@@ -95,10 +90,24 @@ export default function (injectDeps, {FlowRouter}) {
   });
 
   FlowRouter.route('/invite/:token', {
-    name: 'enroll-account',
+    name: 'invite',
+    triggersEnter: [ redirectToInviteUsername ]
+  });
+
+  FlowRouter.route('/invite/username/:token', {
+    name: 'invite-username',
     action(params) {
       mount(MainLayoutCtx, {
-        content: () => (<SetPassword token={params.token} />)
+        content: () => (<InviteeOnboard token={params.token} />)
+      });
+    }
+  });
+
+  FlowRouter.route('/invite/password/:token', {
+    name: 'invite-password',
+    action(params) {
+      mount(MainLayoutCtx, {
+        content: () => (<InviteeOnboard token={params.token} />)
       });
     }
   });

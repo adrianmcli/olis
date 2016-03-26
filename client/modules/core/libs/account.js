@@ -93,6 +93,33 @@ export default {
     });
   },
 
+  resetPassword({Meteor, FlowRouter}, token, pwd1, pwd2, callback = () => null) {
+    function _reset(newPassword) {
+      return new Promise((resolve, reject) => {
+        Accounts.resetPassword(token, newPassword, (err) => {
+          if (err) { reject(err); }
+          else { resolve(); }
+        });
+      });
+    }
+
+    try {
+      if (pwd1 !== pwd2) {
+        throw new Meteor.Error('actions.account.resetPassword', 'Your passwords must match.');
+      }
+
+      const newPassword = pwd1;
+      _reset(newPassword)
+      .then(() => {
+        const teamId = this.getMostRecentTeamId({Meteor});
+        FlowRouter.go(`/team/${teamId ? teamId : ''}`);
+      })
+      .then(callback)
+      .catch((err) => alert(err));
+    }
+    catch (e) { alert(e); }
+  },
+
   getMostRecentTeamId({Meteor}) {
     const user = Meteor.user();
     if (!user) { return null; }
