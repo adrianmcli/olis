@@ -30,6 +30,18 @@ export default {
       });
     }
 
+    function _createTeam() {
+      return new Promise((resolve, reject) => {
+        Meteor.call('account.register.createTeam', {teamName}, (err, res) => {
+          if (err) { reject(err); }
+          else {
+            const {teamId} = res;
+            resolve({teamId});
+          }
+        });
+      });
+    }
+
     function _createTeamAndConvo() {
       return new Promise((resolve, reject) => {
         Meteor.call('account.register.createTeamAndConvo', {teamName}, (err, res) => {
@@ -42,12 +54,19 @@ export default {
       });
     }
 
-    function _route({teamId, convoId}) {
+    function _route({teamId}) {
       return new Promise((resolve, reject) => {
-        FlowRouter.go(`/team/${teamId}/convo/${convoId}`);
+        FlowRouter.go(`/team/${teamId}/`);
         resolve({teamId});
       });
     }
+
+    // function _route({teamId, convoId}) {
+    //   return new Promise((resolve, reject) => {
+    //     FlowRouter.go(`/team/${teamId}/convo/${convoId}`);
+    //     resolve({teamId});
+    //   });
+    // }
 
     function _sendInvites({teamId}) {
       return new Promise((resolve, reject) => {
@@ -59,9 +78,14 @@ export default {
     }
 
     _register()
-    .then(_createTeamAndConvo)
+    .then(_createTeam)
     .then(_route)
     .then(_sendInvites)
+
+    // _register()
+    // .then(_createTeamAndConvo)
+    // .then(_route)
+    // .then(_sendInvites)
     
     .catch((err) => {
       console.log('REGISTRATION_ERROR');

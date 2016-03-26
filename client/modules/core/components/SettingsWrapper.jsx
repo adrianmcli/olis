@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import BackIcon from 'material-ui/lib/svg-icons/navigation/arrow-back';
 
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
+import GeminiScrollbar from 'react-gemini-scrollbar';
 
 // import DownIcon from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 
@@ -139,7 +140,7 @@ export default class SettingsWrapper extends React.Component {
     const mainSettingsStyle = {
       width: '440px',
       height: '100%',
-      overflowY: 'scroll',
+      overflow: 'auto',
     };
 
     const backButtonStyle = {
@@ -154,15 +155,17 @@ export default class SettingsWrapper extends React.Component {
           <div style={sidebarStyle} className="settings-sidebar">
             <h1 style={{margin: '30px 24px 20px'}}>{ title }</h1>
             <hr className="fancy-line" />
-            <div style={{flexGrow: '1', overflowY: 'scroll', opacity: '0.8'}}>
-              { this.generateListFromData.bind(this)(dataSrc) }
+            <div style={{flexGrow: '1', overflow: 'auto', opacity: '0.8'}}>
+              <GeminiScrollbar>
+                { this.generateListFromData.bind(this)(dataSrc) }
+              </GeminiScrollbar>
             </div>
           </div>
-          <div className="settings-shadow-container"></div>
+          <div className="settings-shadow-container" />
           <div style={mainSettingsStyle} className="settings-main">
-          <ReactCSSTransitionReplace transitionName="fade-wait" 
-                               transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
-            { this.renderMainComponent.bind(this)() }
+            <ReactCSSTransitionReplace transitionName="fade-wait" 
+                                 transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
+              { this.renderMainComponent.bind(this)() }
             </ReactCSSTransitionReplace>
           </div>
         </Paper>

@@ -17,6 +17,7 @@ export default class Sidebar extends React.Component {
     const {convos, selectConvo, convoId,
       lastTimeInConvo, teamUsers, user} = this.props;
     return (
+      <GeminiScrollbar>
       <FlipMove>
         {convos.map(convo => {
           const otherRecentUserIds = convo.recentUserIds.length > 1 ?
@@ -66,6 +67,7 @@ export default class Sidebar extends React.Component {
           );
         })}
       </FlipMove>
+      </GeminiScrollbar>
     );
   }
 
@@ -83,9 +85,7 @@ export default class Sidebar extends React.Component {
 
         {/* Conversation List */}
         <div id="conversation-list">
-          <GeminiScrollbar>
-            { convos.length === 0 ? emptyState : this.renderConversations.bind(this)()}
-          </GeminiScrollbar>
+          { convos.length === 0 ? emptyState : this.renderConversations.bind(this)()}
         </div>
       </div>
     );

@@ -12,6 +12,7 @@ import ChangeConvoName from '../containers/change_convo_name';
 import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
+import GeminiScrollbar from 'react-gemini-scrollbar';
 import ChatMessageItem from '../containers/chat_message_item';
 
 export default class ChatContainer extends React.Component {
@@ -121,6 +122,10 @@ export default class ChatContainer extends React.Component {
 
   render() {
     const {
+      userId,
+      translations,
+      langCode,
+      convoUsers,
       convo,
       msgs,
       title,
@@ -152,16 +157,29 @@ export default class ChatContainer extends React.Component {
         </div>
 
         <div id="chat-msg-area" ref={(x) => this._container = x}>
-          {convo && convo.numMsgs > msgs.length ?
-              <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
+          <GeminiScrollbar>
+            {convo && convo.numMsgs > msgs.length ?
+                <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
 
-          <ReactList
-            itemRenderer={this.renderItem.bind(this)}
-            length={msgs.length}
-            type='uniform'
-            threshold={5}
-            pageSize={5}
-          />
+            {msgs.map(msg => {
+              const otherUser = convoUsers[msg.userId];
+              const authorName = otherUser ? otherUser.username : msg.username;
+              const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
+              return (
+                <ChatMessageItem
+                  key={msg._id}
+                  msgId={msg._id}
+                  authorName={authorName}
+                  avatarSrc={avatarSrc}
+                  content={msg.text}
+                  timestamp={msg.createdAt}
+                  selfAuthor={msg.userId === userId}
+                  translation={translations[msg._id] ? translations[msg._id].text : undefined}
+                  langCode={langCode}
+                />
+              );
+            })}
+          </GeminiScrollbar>
         </div>
 
         <div id="chat-input">

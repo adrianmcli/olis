@@ -1,4 +1,5 @@
 import React from 'react';
+import WhyDidYouUpdateMixin from '/lib/vendor/WhyDidYouUpdateMixin';
 
 import UndoIcon from 'material-ui/lib/svg-icons/content/undo';
 import RedoIcon from 'material-ui/lib/svg-icons/content/redo';
@@ -8,6 +9,11 @@ import IconButton from 'material-ui/lib/icon-button';
 import Section from './Section.jsx';
 
 export default class NotesContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    // this.componentDidUpdate = WhyDidYouUpdateMixin.componentDidUpdate.bind(this);
+  }
+
   render() {
     const {sections, userId, addSection, editSection, selectSection, releaseSectionLock} = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
