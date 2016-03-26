@@ -5,15 +5,34 @@ import SocialNotifications from 'material-ui/lib/svg-icons/social/notifications'
 import Popover from 'material-ui/lib/popover/popover';
 import Badge from 'material-ui/lib/badge';
 
+import TitleCounter from 'notification-count';
+import FaviconNotification from 'favicon-notification';
+
 import NotificationList from './NotificationList.jsx';
 
 export default class HeaderNotifications extends React.Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    const {open} = this.state;
-    return (
-      open ||
-      open !== nextState.open
-    );
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const {open} = this.state;
+  //   return (
+  //     open ||
+  //     open !== nextState.open
+  //   );
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    const before = this.props.notifications.length;
+    const after = nextProps.notifications.length;
+    if (before !== after) {
+      let titleCount = new TitleCounter();
+      titleCount.set(after);
+
+      if (after > 0) FaviconNotification.add();
+      if (after === 0) FaviconNotification.remove();
+      if (after > before) {
+        // make audible alert
+        // fire native alert
+      }
+    }
   }
 
   constructor(props) {
