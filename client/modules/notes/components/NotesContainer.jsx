@@ -8,6 +8,10 @@ import IconButton from 'material-ui/lib/icon-button';
 import Section from './Section.jsx';
 
 export default class NotesContainer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const {sections, userId, addSection, editSection, selectSection, releaseSectionLock} = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';

@@ -46,7 +46,8 @@
     "react-mounter": "^1.0.0",
     "react-tap-event-plugin": "^0.2.2",
     "react-timeago": "^2.2.1",
-    "spinkit": "^1.2.5"
+    "spinkit": "^1.2.5",
+    "underscore": "^1.8.3"
   },
   "private": true
 }
