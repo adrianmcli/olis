@@ -2,6 +2,7 @@ import React from 'react';
 
 import Paper from 'material-ui/lib/paper';
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
+import GeminiScrollbar from 'react-gemini-scrollbar';
 
 export default class OnboardingWrapper extends React.Component {
 
@@ -74,18 +75,22 @@ export default class OnboardingWrapper extends React.Component {
             { this.renderStepPhrase(stepsLeft) }
             </div>
             <div className="progress-list">
-              { this.renderProgress.bind(this)() }
+              <GeminiScrollbar>
+                { this.renderProgress.bind(this)() }
+              </GeminiScrollbar>
             </div>
           </div>
           <div className="onboarding-shadow-container"></div>
           <div className="onboarding-main">
-            <div style={contentContainerStyle}>
-              <h1 style={titleStyle}> { title } </h1>
-              <ReactCSSTransitionReplace transitionName="fade-wait" 
-                               transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
-                { content }
-              </ReactCSSTransitionReplace>
-            </div>
+            <GeminiScrollbar>
+              <div style={contentContainerStyle}>
+                <h1 style={titleStyle}> { title } </h1>
+                <ReactCSSTransitionReplace transitionName="fade-wait" 
+                                 transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
+                  { content }
+                </ReactCSSTransitionReplace>
+              </div>
+            </GeminiScrollbar>
           </div>
         </Paper>
       </div>

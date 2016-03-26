@@ -9,6 +9,7 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import BackIcon from 'material-ui/lib/svg-icons/navigation/arrow-back';
 
 import ReactCSSTransitionReplace from 'react-css-transition-replace';
+import GeminiScrollbar from 'react-gemini-scrollbar';
 
 // import DownIcon from 'material-ui/lib/svg-icons/navigation/arrow-drop-down';
 
@@ -139,7 +140,7 @@ export default class SettingsWrapper extends React.Component {
     const mainSettingsStyle = {
       width: '440px',
       height: '100%',
-      overflowY: 'scroll',
+      overflow: 'auto',
     };
 
     const backButtonStyle = {
@@ -158,12 +159,14 @@ export default class SettingsWrapper extends React.Component {
               { this.generateListFromData.bind(this)(dataSrc) }
             </div>
           </div>
-          <div className="settings-shadow-container"></div>
+          <div className="settings-shadow-container" />
           <div style={mainSettingsStyle} className="settings-main">
-          <ReactCSSTransitionReplace transitionName="fade-wait" 
-                               transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
-            { this.renderMainComponent.bind(this)() }
-            </ReactCSSTransitionReplace>
+            <GeminiScrollbar>
+              <ReactCSSTransitionReplace transitionName="fade-wait" 
+                                   transitionEnterTimeout={500} transitionLeaveTimeout={500} overflowHidden={false}>
+                { this.renderMainComponent.bind(this)() }
+              </ReactCSSTransitionReplace>
+            </GeminiScrollbar>
           </div>
         </Paper>
         <div style={backButtonStyle}>
