@@ -1,4 +1,5 @@
 import React from 'react';
+import WhyDidYouUpdateMixin from '/lib/vendor/WhyDidYouUpdateMixin';
 
 import UndoIcon from 'material-ui/lib/svg-icons/content/undo';
 import RedoIcon from 'material-ui/lib/svg-icons/content/redo';
@@ -10,6 +11,7 @@ import Section from './Section.jsx';
 export default class NotesContainer extends React.Component {
   constructor(props) {
     super(props);
+    // this.componentDidUpdate = WhyDidYouUpdateMixin.componentDidUpdate.bind(this);
   }
 
   render() {
