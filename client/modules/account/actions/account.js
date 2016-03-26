@@ -46,7 +46,6 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.email', email);
-        FlowRouter.go('/register/username');
       }
     });
   },
@@ -57,7 +56,6 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.username', username);
-        FlowRouter.go('/register/password');
       }
     });
   },
@@ -76,7 +74,6 @@ export default {
     }
     catch (e) { alert(e); }
     LocalState.set('register.password', passwordTrim);
-    FlowRouter.go('/register/team-name');
   },
 
   setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
@@ -87,7 +84,6 @@ export default {
       }
 
       LocalState.set('register.teamName', teamName);
-      FlowRouter.go('/register/invite');
     }
     catch (e) { alert(e); }
   },
