@@ -29,8 +29,8 @@ export const composer = ({context}, onData) => {
   let convo;
 
   if (convoId) {
-    const currentNumMsgs = LocalState.get('loadMore.convoNumMsgs') ?
-      LocalState.get('loadMore.convoNumMsgs') : 0;
+    const currentNumMsgs = LocalState.get(`loadMore.convo.${convoId}.numMsgs`) ?
+      LocalState.get(`loadMore.convo.${convoId}.numMsgs`) : 0;
 
     // Subscribe
     const sub = MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});

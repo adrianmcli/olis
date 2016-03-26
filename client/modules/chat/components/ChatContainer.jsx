@@ -158,7 +158,7 @@ export default class ChatContainer extends React.Component {
           <ReactList
             itemRenderer={this.renderItem.bind(this)}
             length={msgs.length}
-            type='uniform'
+            type='simple'
             threshold={5}
             pageSize={5}
           />

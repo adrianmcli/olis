@@ -13,7 +13,7 @@ export default {
   loadMore({Collections, LocalState, FlowRouter}) {
     const convoId = FlowRouter.getParam('convoId');
     const convoNumMsgs = Collections.Messages.find({convoId}).count();
-    LocalState.set('loadMore.convoNumMsgs', convoNumMsgs);
+    LocalState.set(`loadMore.convo.${convoId}.numMsgs`, convoNumMsgs);
   },
 
   goToChat({Meteor, FlowRouter}) {
