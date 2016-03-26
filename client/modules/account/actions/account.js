@@ -97,12 +97,11 @@ export default {
       });
 
       LocalState.set('register.inviteEmails', inviteEmails);
-      AccountUtils.register({Meteor, LocalState, FlowRouter});
     }
     catch (e) { alert(e); }
   },
 
-  skipInvites({Meteor, LocalState, FlowRouter}) {
+  finishRegistration({Meteor, LocalState, FlowRouter}) {
     AccountUtils.register({Meteor, LocalState, FlowRouter});
   },
 

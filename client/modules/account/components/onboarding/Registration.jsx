@@ -20,17 +20,17 @@ export default class Registration extends React.Component {
       {
         title: 'Your User Name',
         description: 'Choose a user name',
-        content: <CreateAccountUsername key={2} />,
+        content: <CreateAccountUsername key={2} nextPath={'/register/password'} />,
       },
       {
         title: 'Your Password',
         description: 'Choose a password',
-        content: <CreateAccountPassword key={3} />,
+        content: <CreateAccountPassword key={3} nextPath={'/register/team-name'} />,
       },
       {
         title: 'Your Team',
         description: 'Choose a team name',
-        content: <CreateAccountTeamName key={4} />,
+        content: <CreateAccountTeamName key={4} nextPath={'/register/invite'} />,
       },
       {
         title: 'Invite Teammates',

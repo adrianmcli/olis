@@ -10,8 +10,9 @@ export default class CreateAccountUsername extends React.Component {
 
   handleClick() {
     const inputValue = this.input.getValue();
-    const {setRegisterUsername} = this.props;
+    const {setRegisterUsername, go, nextPath} = this.props;
     setRegisterUsername(inputValue);
+    go(nextPath);
   }
 
   handleEnterKeyDown(e) {
@@ -20,7 +21,7 @@ export default class CreateAccountUsername extends React.Component {
   }
 
   render() {
-    const {registerUsername, goBack} = this.props;
+    const {registerUsername} = this.props;
     return (
       <div>
         <p>This will be shown to others in your team, so pick something recognizable.</p>

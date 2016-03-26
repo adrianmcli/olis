@@ -1,6 +1,5 @@
 import React from 'react';
 
-import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
@@ -11,8 +10,9 @@ export default class CreateAccountTeamName extends React.Component {
 
   handleClick() {
     const inputValue = this.input.getValue();
-    const {setRegisterTeamName} = this.props;
+    const {setRegisterTeamName, go, nextPath} = this.props;
     setRegisterTeamName(inputValue);
+    go(nextPath);
   }
 
   handleEnterKeyDown(e) {
@@ -21,7 +21,7 @@ export default class CreateAccountTeamName extends React.Component {
   }
 
   render() {
-    const {registerTeamName, goBack} = this.props;
+    const {registerTeamName} = this.props;
     return (
       <div>
         <p>Give your team a name. You can always change this later.</p>
