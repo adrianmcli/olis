@@ -12,6 +12,7 @@ import ChangeConvoName from '../containers/change_convo_name';
 import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
+import GeminiScrollbar from 'react-gemini-scrollbar';
 import ChatMessageItem from '../containers/chat_message_item';
 
 export default class ChatContainer extends React.Component {
@@ -152,14 +153,16 @@ export default class ChatContainer extends React.Component {
         </div>
 
         <div id="chat-msg-area" ref={(x) => this._container = x}>
-          {convo && convo.numMsgs > msgs.length ?
-              <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
+          <GeminiScrollbar>
+            {convo && convo.numMsgs > msgs.length ?
+                <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
 
-          <ReactList
-            itemRenderer={this.renderItem.bind(this)}
-            length={msgs.length}
-            type='simple'
-          />
+            <ReactList
+              itemRenderer={this.renderItem.bind(this)}
+              length={msgs.length}
+              type='simple'
+            />
+          </GeminiScrollbar>
         </div>
 
         <div id="chat-input">
