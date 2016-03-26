@@ -122,6 +122,10 @@ export default class ChatContainer extends React.Component {
 
   render() {
     const {
+      userId,
+      translations,
+      langCode,
+      convoUsers,
       convo,
       msgs,
       title,
@@ -157,11 +161,24 @@ export default class ChatContainer extends React.Component {
             {convo && convo.numMsgs > msgs.length ?
                 <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
 
-            <ReactList
-              itemRenderer={this.renderItem.bind(this)}
-              length={msgs.length}
-              type='simple'
-            />
+            {msgs.map(msg => {
+              const otherUser = convoUsers[msg.userId];
+              const authorName = otherUser ? otherUser.username : msg.username;
+              const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
+              return (
+                <ChatMessageItem
+                  key={msg._id}
+                  msgId={msg._id}
+                  authorName={authorName}
+                  avatarSrc={avatarSrc}
+                  content={msg.text}
+                  timestamp={msg.createdAt}
+                  selfAuthor={msg.userId === userId}
+                  translation={translations[msg._id] ? translations[msg._id].text : undefined}
+                  langCode={langCode}
+                />
+              );
+            })}
           </GeminiScrollbar>
         </div>
 
