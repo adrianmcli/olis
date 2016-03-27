@@ -3,9 +3,9 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import TimeAgo from 'react-timeago';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
-import ReactMarkdown from 'react-markdown';
-import Loading from '/client/modules/core/components/Loading.jsx';
 import ChatMessageItemContextMenu from './ChatMessageItemContextMenu.jsx';
+import ChatMessageText from './ChatMessageText.jsx';
+import ChatMessageTranslation from './ChatMessageTranslation.jsx';
 
 export default class ChatMessageItem extends React.Component {
 
@@ -59,39 +59,6 @@ export default class ChatMessageItem extends React.Component {
     return timeStr;
   }
 
-  renderTranslationArea() {
-    const {translation} = this.props;
-    const {gettingTranslation} = this.state;
-
-    if (translation) {
-      return (
-        <div className="translation">
-          <hr />
-          <ReactMarkdown
-            source={translation}
-            softBreak="br"
-            escapeHtml
-          />
-        </div>
-      );
-    }
-    if (gettingTranslation) {
-      const loadingColor = 'rgba(255,255,255,0.75)';
-      const loadingStyle = {
-        margin: 'auto',
-        width: '20px',
-        height: '20px',
-      };
-      return (
-        <div className="translation">
-          <hr />
-          <Loading spinnerName='cube-grid' style={loadingStyle} color={loadingColor}/>
-        </div>
-      );
-    }
-    return null;
-  }
-
   render() {
     const {
       authorName,
@@ -102,6 +69,8 @@ export default class ChatMessageItem extends React.Component {
       langCode,
       translation
     } = this.props;
+
+    const {gettingTranslation} = this.state;
 
     // console.log(`ChatMessageItem RENDER ${content}`);
 
@@ -120,12 +89,8 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
-              <ReactMarkdown
-                source={content}
-                softBreak="br"
-                escapeHtml
-              />
-              {this.renderTranslationArea()}
+              <ChatMessageText content={content} />
+              <ChatMessageTranslation translation={translation} gettingTranslation={gettingTranslation} />
             </div>
             <div className="chat-timestamp">
               <div className="chat-timestamp-string">

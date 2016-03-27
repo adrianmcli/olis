@@ -1,9 +1,14 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import WhyDidYouUpdateMixin from '/lib/vendor/WhyDidYouUpdateMixin';
+
 import TextField from 'material-ui/lib/text-field';
 
 export default class ChatInput extends React.Component {
   constructor(props) {
     super(props);
+    this.componentDidUpdate = WhyDidYouUpdateMixin.componentDidUpdate.bind(this);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   render() {

@@ -11,7 +11,7 @@ export default class InvitedToTeam extends React.Component {
     this.state = {
       open: !R.isEmpty(invites)
     };
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);    
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {

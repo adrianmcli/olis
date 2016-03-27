@@ -16,6 +16,7 @@ export default class ChatContainer extends React.Component {
       distanceFromTop: 0
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.handleEnterKeyDown = () => this.handleEnterKeyDown;
   }
 
   componentDidMount() {
@@ -122,7 +123,7 @@ export default class ChatContainer extends React.Component {
           </GeminiScrollbar>
         </div>
 
-        <ChatInput handleEnterKeyDown={this.handleEnterKeyDown.bind(this)} />
+        <ChatInput handleEnterKeyDown={this.handleEnterKeyDown} />
       </div>
     );
   }

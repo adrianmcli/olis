@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import IconButton from 'material-ui/lib/icon-button';
 import TeamIcon from './TeamIcon.jsx';
@@ -10,8 +11,13 @@ export default class Teams extends React.Component {
     this.state = {
       addTeamDialogOpen: false,
     };
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    // this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return !_.isEqual(this.props, nextProps) ||
+  //     !_.isEqual(this.state, nextState);
+  // }
 
   handleOpen() {
     this.setState({addTeamDialogOpen: true});
