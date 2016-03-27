@@ -1,4 +1,5 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 import LangCodes from '/lib/constants/lang_codes';
 
 import TimeAgo from 'react-timeago';
@@ -18,17 +19,7 @@ export default class ChatMessageItem extends React.Component {
       isHovering: false,
       gettingTranslation: false,
     };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const {msgId} = this.props;
-    const {isHovering, gettingTranslation} = this.state;
-
-    return (
-      msgId !== nextProps.msgId ||
-      isHovering !== nextState.isHovering ||
-      gettingTranslation !== nextState.gettingTranslation
-    );
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -171,7 +162,6 @@ export default class ChatMessageItem extends React.Component {
         onMouseEnter={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
       >
-        
         <div className="chat-primary">
           <div className="chat-avatar">
             <div className="chat-author">{authorName}</div>

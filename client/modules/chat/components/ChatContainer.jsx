@@ -3,27 +3,17 @@ import ReactList from 'react-list';
 // import ReactChatView from 'react-chatview';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import IconButton from 'material-ui/lib/icon-button';
-
-import FilledStarIcon from 'material-ui/lib/svg-icons/toggle/star';
-import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
-
-// import ChatMembers from './ChatMenuItems/ChatMembers.jsx';
-// import ChangeConvoName from './ChatMenuItems/ChangeConvoName.jsx';
-import ChangeConvoName from '../containers/change_convo_name';
-import ChatMenu from './ChatMenu.jsx';
 import ChatInput from './ChatInput.jsx';
 import GeminiScrollbar from 'react-gemini-scrollbar';
 import ChatMessageItem from './ChatMessageItem.jsx';
+import ChatHeader from './ChatHeader.jsx';
 
 export default class ChatContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       distanceFromBottom: 0,
-      distanceFromTop: 0,
-      chatMembersOpen: false,
-      changeTitleOpen: false,
+      distanceFromTop: 0
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
@@ -77,21 +67,6 @@ export default class ChatContainer extends React.Component {
     }
   }
 
-  openChatMembers() {this.setState({chatMembersOpen: true});}
-  closeChatMembers() {this.setState({chatMembersOpen: false});}
-
-  openChangeTitle() {this.setState({changeTitleOpen: true});}
-  closeChangeTitle() {this.setState({changeTitleOpen: false});}
-
-  renderChangeTitleDialog() {
-    return (
-      <ChangeConvoName
-        open={this.state.changeTitleOpen}
-        onRequestClose={this.closeChangeTitle.bind(this)}
-      />
-    );
-  }
-
   scrollToBottom() {
     const ele = $(this._container);
     const scrollHeight = ele[0].scrollHeight;
@@ -137,26 +112,7 @@ export default class ChatContainer extends React.Component {
 
     return (
       <div id="chat-container">
-        <div id="chat-header">
-          <div className="header-body" onTouchTap={this.openChangeTitle.bind(this)}>
-            { this.renderChangeTitleDialog() }
-            <div className="chat-title">
-              {title}
-            </div>
-            <div className="chat-meta">
-              {usersListString}
-            </div>
-          </div>
-          <div className="header-icon">
-            <IconButton tooltip="Star this conversation">
-              { starred ? <FilledStarIcon color="#FFC107"/> : <EmptyStarIcon color="#FFC107"/> }
-            </IconButton>
-          </div>
-          <div className="header-icon">
-            <ChatMenu />
-          </div>
-        </div>
-
+        <ChatHeader title={title} usersListString={usersListString} starred={starred} />
         <div id="chat-msg-area" ref={(x) => this._container = x}>
           <GeminiScrollbar>
             {convo && convo.numMsgs > msgs.length ?
@@ -172,7 +128,5 @@ export default class ChatContainer extends React.Component {
   }
 }
 ChatContainer.defaultProps = {
-  title: 'Default title',
-  usersListString: 'Default users list string',
-  starred: false,
+  msgs: []
 };
