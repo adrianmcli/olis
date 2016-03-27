@@ -27,15 +27,17 @@ export default class ChatContainer extends React.Component {
   }
 
   componentDidMount() {
-    $(this._container).on("scroll", this._scrollHandler.bind(this));
+    const ele = this._getScrollContainer();
+    ele.on('scroll', this._scrollHandler.bind(this));
   }
 
   componentWillUnmount() {
-    $(this._container).off("scroll", this._scrollHandler.bind(this));
+    const ele = this._getScrollContainer();
+    ele.off('scroll', this._scrollHandler.bind(this));
   }
 
   componentWillReceiveProps() {
-    const ele = $(this._container);
+    const ele = this._getScrollContainer();
     const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
     const distanceFromTop = ele.scrollTop();
     this.setState({
@@ -46,15 +48,28 @@ export default class ChatContainer extends React.Component {
 
   componentDidUpdate() {
     const {distanceFromBottom, distanceFromTop} = this.state;
-    const ele = $(this._container);
+    const ele = this._getScrollContainer();
+
     const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
     if (distanceFromBottom <= 0 || distanceFromTop === 0) {
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
     }
   }
 
+  _getScrollContainer() {
+    let ele = $(this._container);
+    // detect if geminiScrollbar has been applied
+    const gm = $('#chat-msg-area .gm-scrollbar-container');
+    if (gm.length > 0) {
+      ele = $('#chat-msg-area .gm-scroll-view');
+    }
+    return ele;
+  }
+
   _scrollHandler() {
-    const distanceFromTop = $(this._container).scrollTop();
+    const ele = this._getScrollContainer();
+
+    const distanceFromTop = ele.scrollTop();
     if (distanceFromTop && distanceFromTop < 50) {
       console.log("I'm close to the top!");
     }
@@ -114,7 +129,7 @@ export default class ChatContainer extends React.Component {
   }
 
   scrollToBottom() {
-    const ele = $(this._container);
+    const ele = this._getScrollContainer();
     const scrollHeight = ele[0].scrollHeight;
     ele.scrollTop(scrollHeight);
     // ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
@@ -158,6 +173,7 @@ export default class ChatContainer extends React.Component {
 
         <div id="chat-msg-area" ref={(x) => this._container = x}>
           <GeminiScrollbar>
+            <div className="chat-wrapper">
             {convo && convo.numMsgs > msgs.length ?
                 <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
 
@@ -179,6 +195,7 @@ export default class ChatContainer extends React.Component {
                 />
               );
             })}
+            </div>
           </GeminiScrollbar>
         </div>
 
