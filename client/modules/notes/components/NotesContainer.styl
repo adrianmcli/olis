@@ -8,6 +8,23 @@
     height 64px
     border-bottom 1px solid rgba(0,0,0,0.08)
     box-sizing content-box
+    display flex
+    justify-content space-between
+  
+    .notes-status
+      color rgba(0,0,0,0.5)
+      font-size 16px
+      font-style italic
+      padding 24px 12px
+      flex-grow 1
+      white-space nowrap
+      text-overflow ellipsis
+      overflow hidden
+
+    .notes-icon-bar
+      display flex
+      display -webkit-flex
+      padding 8px
   
   .notes-data-wrapper
     padding 12px 36px
@@ -16,10 +33,3 @@
     & *
       font-family Cardo, Georgia, Serif
       outline-color white
-  
-  .notes-icon-bar
-    display flex
-    display -webkit-flex
-    padding 8px
-    position absolute
-    right 0

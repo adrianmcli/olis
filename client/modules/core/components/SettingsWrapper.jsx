@@ -155,7 +155,7 @@ export default class SettingsWrapper extends React.Component {
           <div style={sidebarStyle} className="settings-sidebar">
             <h1 style={{margin: '30px 24px 20px'}}>{ title }</h1>
             <hr className="fancy-line" />
-            <div style={{flexGrow: '1', overflow: 'auto', opacity: '0.8'}}>
+            <div style={{flexGrow: '1', overflow: 'auto', opacity: '0.8', position: 'relative'}}>
               <GeminiScrollbar>
                 { this.generateListFromData.bind(this)(dataSrc) }
               </GeminiScrollbar>

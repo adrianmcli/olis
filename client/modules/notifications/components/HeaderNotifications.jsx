@@ -30,6 +30,20 @@ export default class HeaderNotifications extends React.Component {
       if (after === 0) FaviconNotification.remove();
       if (after > before) {
         // make audible alert
+        // init bunch of sounds
+        ion.sound({
+          sounds: [
+            {name: 'beer_can_opening'},
+          ],
+          // main config
+          path: '/sounds/',
+          preload: true,
+          multiplay: true,
+          volume: 0.9
+        });
+
+        // play sound
+        ion.sound.play('beer_can_opening');
         // fire native alert
       }
     }

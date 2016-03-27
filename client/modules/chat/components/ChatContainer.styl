@@ -65,7 +65,13 @@ bg-color = #EFEFEF
   #chat-msg-area
     flex-grow 1
     overflow auto
-    padding 24px side-padding 0
+    position relative
+    
+    .gm-scrollbar-container
+      position absolute
+    
+    .chat-wrapper
+      padding 24px side-padding 0
     
   #load-more-btn
     font-size 14px

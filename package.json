@@ -29,6 +29,7 @@
     "email-validator": "^1.0.4",
     "favicon-notification": "^0.1.4",
     "get-emails": "^1.0.1",
+    "ion-sound": "^3.0.7",
     "lodash": "^4.5.1",
     "mantra-core": "^1.2.0",
     "material-ui": "^0.14.4 ",

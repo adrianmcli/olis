@@ -15,7 +15,6 @@ export default class NotesContainer extends React.Component {
     return (
       <div id="notes-container">
         <NotesHeader />
-
         <div className="notes-data-wrapper">
           {sections.map(section => {
             return (
