@@ -15,16 +15,18 @@ export default class ChatMessageItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isHovering: false,
       gettingTranslation: false,
     };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const {msgId} = this.props;
-    const {gettingTranslation} = this.state;
+    const {isHovering, gettingTranslation} = this.state;
 
     return (
       msgId !== nextProps.msgId ||
+      isHovering !== nextState.isHovering ||
       gettingTranslation !== nextState.gettingTranslation
     );
   }
@@ -33,6 +35,14 @@ export default class ChatMessageItem extends React.Component {
     if (nextProps.translation) {
       this.setState({gettingTranslation: false});
     }
+  }
+
+  handleMouseEnter() {
+    this.setState({ isHovering: true });
+  }
+
+  handleMouseLeave() {
+    this.setState({ isHovering: false });
   }
 
   handleItemTouchTap(event, child) {
@@ -115,11 +125,10 @@ export default class ChatMessageItem extends React.Component {
     const buttonStyle = {
       padding: '0',
       width: '36px',
-      height: '36px',
+      height: '36px'
     };
     const contextMenu = (
       <IconMenu
-        className="chat-msg-menu"
         onItemTouchTap={this.handleItemTouchTap.bind(this)}
         iconButtonElement={
           <IconButton style={buttonStyle}>
@@ -143,7 +152,12 @@ export default class ChatMessageItem extends React.Component {
     );
 
     return (
-      <div className={'chat-msg-item' + authorClass} >
+      <div
+        className={'chat-msg-item' + authorClass}
+        onMouseEnter={this.handleMouseEnter.bind(this)}
+        onMouseLeave={this.handleMouseLeave.bind(this)}
+      >
+        
         <div className="chat-primary">
           <div className="chat-avatar">
             <div className="chat-author">{authorName}</div>
@@ -165,7 +179,7 @@ export default class ChatMessageItem extends React.Component {
             </div>
           </div>
           <div>
-            {contextMenu}
+            {this.state.isHovering ? contextMenu : null}
           </div>
         </div>
       </div>
