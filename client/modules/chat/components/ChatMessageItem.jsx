@@ -15,18 +15,16 @@ export default class ChatMessageItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHovering: false,
       gettingTranslation: false,
     };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     const {msgId} = this.props;
-    const {isHovering, gettingTranslation} = this.state;
+    const {gettingTranslation} = this.state;
 
     return (
       msgId !== nextProps.msgId ||
-      isHovering !== nextState.isHovering ||
       gettingTranslation !== nextState.gettingTranslation
     );
   }
@@ -35,14 +33,6 @@ export default class ChatMessageItem extends React.Component {
     if (nextProps.translation) {
       this.setState({gettingTranslation: false});
     }
-  }
-
-  handleMouseEnter() {
-    this.setState({ isHovering: true });
-  }
-
-  handleMouseLeave() {
-    this.setState({ isHovering: false });
   }
 
   handleItemTouchTap(event, child) {
@@ -122,30 +112,17 @@ export default class ChatMessageItem extends React.Component {
     // console.log(`ChatMessageItem RENDER ${content}`);
 
     const authorClass = selfAuthor ? ' you' : '';
-    const buttonStyle = () => {
-      if (this.state.isHovering) {
-        return ({
-          padding: '0',
-          width: '36px',
-          height: '36px'
-        });
-      } else {
-        return ({
-          padding: '0',
-          width: '36px',
-          height: '36px',
-          opacity: '0',
-          pointerEvents: 'none',
-        });
-      }
+    const buttonStyle = {
+      padding: '0',
+      width: '36px',
+      height: '36px',
     };
     const contextMenu = (
       <IconMenu
+        className="chat-msg-menu"
         onItemTouchTap={this.handleItemTouchTap.bind(this)}
         iconButtonElement={
-          <IconButton
-            style={buttonStyle()}
-          >
+          <IconButton style={buttonStyle}>
             <MoreVertIcon color="rgba(0,0,0,0.5)" />
           </IconButton>
         }
@@ -166,12 +143,7 @@ export default class ChatMessageItem extends React.Component {
     );
 
     return (
-      <div
-        className={'chat-msg-item' + authorClass}
-        onMouseEnter={this.handleMouseEnter.bind(this)}
-        onMouseLeave={this.handleMouseLeave.bind(this)}
-      >
-        
+      <div className={'chat-msg-item' + authorClass} >
         <div className="chat-primary">
           <div className="chat-avatar">
             <div className="chat-author">{authorName}</div>
