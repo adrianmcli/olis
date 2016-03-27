@@ -9,7 +9,8 @@ export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
   addMsg: actions.msgs.add,
-  loadMore: actions.msgs.loadMore
+  loadMore: actions.msgs.loadMore,
+  translate: actions.translation.get
 });
 
 export const composer = ({context}, onData) => {

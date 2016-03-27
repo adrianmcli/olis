@@ -1,4 +1,5 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 import R from 'ramda';
 import FlatButton from 'material-ui/lib/flat-button';
 import Dialog from 'material-ui/lib/dialog';
@@ -10,6 +11,7 @@ export default class InvitedToTeam extends React.Component {
     this.state = {
       open: !R.isEmpty(invites)
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
