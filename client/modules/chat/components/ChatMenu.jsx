@@ -1,4 +1,5 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -22,6 +23,7 @@ export default class ChatMenu extends React.Component {
       changeTitleOpen: false,
       chatMembersOpen: false,
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   openAddPeople() {this.setState({addPeopleOpen: true});}
