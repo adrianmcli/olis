@@ -13,7 +13,7 @@ import ChatMenu from './ChatMenu.jsx';
 
 import TextField from 'material-ui/lib/text-field';
 import GeminiScrollbar from 'react-gemini-scrollbar';
-import ChatMessageItem from '../containers/chat_message_item';
+import ChatMessageItem from './ChatMessageItem.jsx';
 
 export default class ChatContainer extends React.Component {
   constructor(props) {
@@ -90,29 +90,6 @@ export default class ChatContainer extends React.Component {
     );
   }
 
-  renderItem(index, key) {
-    const {msgs, convoUsers, userId, translations, langCode} = this.props;
-    const msg = msgs[index];
-
-    const otherUser = convoUsers[msg.userId];
-    const authorName = otherUser ? otherUser.username : msg.username;
-    const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
-
-    return (
-      <ChatMessageItem
-        key={key}
-        msgId={msg._id}
-        authorName={authorName}
-        avatarSrc={avatarSrc}
-        content={msg.text}
-        timestamp={msg.createdAt}
-        selfAuthor={msg.userId === userId}
-        translation={translations[msg._id] ? translations[msg._id].text : undefined}
-        langCode={langCode}
-      />
-    );
-  }
-
   scrollToBottom() {
     const ele = $(this._container);
     const scrollHeight = ele[0].scrollHeight;
@@ -131,7 +108,8 @@ export default class ChatContainer extends React.Component {
       title,
       usersListString,
       loadMore,
-      starred
+      starred,
+      translate
     } = this.props;
 
     return (
@@ -176,6 +154,7 @@ export default class ChatContainer extends React.Component {
                   selfAuthor={msg.userId === userId}
                   translation={translations[msg._id] ? translations[msg._id].text : undefined}
                   langCode={langCode}
+                  translate={translate}
                 />
               );
             })}
