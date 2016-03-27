@@ -127,6 +127,15 @@ export default class ChatMessageItem extends React.Component {
       width: '36px',
       height: '36px'
     };
+    const placeholder = (
+      <div style={{
+        display: 'inline-block',
+        position: 'relative',
+        width: '36px',
+        height: '36px',
+      }}>
+      </div>
+    );
     const contextMenu = (
       <IconMenu
         onItemTouchTap={this.handleItemTouchTap.bind(this)}
@@ -179,7 +188,7 @@ export default class ChatMessageItem extends React.Component {
             </div>
           </div>
           <div>
-            {this.state.isHovering ? contextMenu : null}
+            {this.state.isHovering ? contextMenu : placeholder }
           </div>
         </div>
       </div>
