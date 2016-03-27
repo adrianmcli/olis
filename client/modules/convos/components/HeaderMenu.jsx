@@ -1,6 +1,5 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import WhyDidYouUpdateMixin from '/lib/vendor/WhyDidYouUpdateMixin';
 
 import Popover from 'material-ui/lib/popover/popover';
 import Menu from 'material-ui/lib/menus/menu';

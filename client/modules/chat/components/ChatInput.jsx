@@ -1,13 +1,13 @@
 import React from 'react';
-import TextField from 'material-ui/lib/text-field'
+import TextField from 'material-ui/lib/text-field';
 
-export default class ChatContainer extends React.Component {
+export default class ChatInput extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const {handleEnterKeyDown} = this.props;    
+    const {handleEnterKeyDown} = this.props;
     return (
       <div id="chat-input">
         <div className="chat-input-container">
@@ -20,7 +20,7 @@ export default class ChatContainer extends React.Component {
             onEnterKeyDown={handleEnterKeyDown}
           />
         </div>
-      </div>      
+      </div>
     );
   }
 }

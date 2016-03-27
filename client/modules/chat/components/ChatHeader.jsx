@@ -9,7 +9,7 @@ import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
 import ChangeConvoName from '../containers/change_convo_name';
 import ChatMenu from './ChatMenu.jsx';
 
-export default class ChatContainer extends React.Component {
+export default class ChatHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,7 +59,7 @@ export default class ChatContainer extends React.Component {
     );
   }
 }
-ChatContainer.defaultProps = {
+ChatHeader.defaultProps = {
   title: 'Default title',
   usersListString: 'Default users list string',
   starred: false,

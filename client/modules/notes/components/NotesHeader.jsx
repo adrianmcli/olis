@@ -6,10 +6,8 @@ import RedoIcon from 'material-ui/lib/svg-icons/content/redo';
 import SaveIcon from 'material-ui/lib/svg-icons/content/save';
 import ShareIcon from 'material-ui/lib/svg-icons/social/share';
 import IconButton from 'material-ui/lib/icon-button';
-import Section from './Section.jsx';
-import NotesHeader from './NotesHeader.jsx';
 
-export default class NotesContainer extends React.Component {
+export default class NotesHeader extends React.Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);

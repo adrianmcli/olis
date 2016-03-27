@@ -1,15 +1,11 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import LangCodes from '/lib/constants/lang_codes';
 
 import TimeAgo from 'react-timeago';
-import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import IconButton from 'material-ui/lib/icon-button';
-import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import ReactMarkdown from 'react-markdown';
 import Loading from '/client/modules/core/components/Loading.jsx';
+import ChatMessageItemContextMenu from './ChatMessageItemContextMenu.jsx';
 
 export default class ChatMessageItem extends React.Component {
 
@@ -20,6 +16,7 @@ export default class ChatMessageItem extends React.Component {
       gettingTranslation: false,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.getTranslation = () => this.getTranslation;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,10 +31,6 @@ export default class ChatMessageItem extends React.Component {
 
   handleMouseLeave() {
     this.setState({ isHovering: false });
-  }
-
-  handleItemTouchTap(event, child) {
-    console.log('You have selected: ' + child.props.primaryText);
   }
 
   getTranslation() {
@@ -113,48 +106,6 @@ export default class ChatMessageItem extends React.Component {
     // console.log(`ChatMessageItem RENDER ${content}`);
 
     const authorClass = selfAuthor ? ' you' : '';
-    const buttonStyle = () => {
-      if (this.state.isHovering) {
-        return ({
-          padding: '0',
-          width: '36px',
-          height: '36px'
-        });
-      } else {
-        return ({
-          padding: '0',
-          width: '36px',
-          height: '36px',
-          opacity: '0',
-          pointerEvents: 'none',
-        });
-      }
-    };
-    const contextMenu = (
-      <IconMenu
-        onItemTouchTap={this.handleItemTouchTap.bind(this)}
-        iconButtonElement={
-          <IconButton
-            style={buttonStyle()}
-          >
-            <MoreVertIcon color="rgba(0,0,0,0.5)" />
-          </IconButton>
-        }
-        anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
-        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-      >
-      {
-        !translation || this.state.gettingTranslation ?
-        <MenuItem
-          primaryText={`Translate to ${LangCodes[langCode]}`}
-          onTouchTap={this.getTranslation.bind(this)}
-        />
-        : null
-      }
-        <MenuItem primaryText="Copy" />
-        <MenuItem primaryText="Lorem Ipsum" />
-      </IconMenu>
-    );
 
     return (
       <div
@@ -183,7 +134,12 @@ export default class ChatMessageItem extends React.Component {
             </div>
           </div>
           <div>
-            {contextMenu}
+            <ChatMessageItemContextMenu
+              isHovering={this.state.isHovering}
+              langCode={langCode}
+              showTranslation={!translation || this.state.gettingTranslation}
+              getTranslation={this.getTranslation}
+            />
           </div>
         </div>
       </div>
