@@ -39,7 +39,7 @@ export default class AvatarWithInfo extends React.Component {
           size={51}
           username={username}
           avatarSrc={avatarSrc}
-          // onClick={this.handleOpen.bind(this)}
+          onClick={this.handleOpen.bind(this)}
         />
         <Popover
           open={this.state.open}
@@ -54,7 +54,7 @@ export default class AvatarWithInfo extends React.Component {
               size={128}
               username={username}
               avatarSrc={avatarSrc}
-              // onClick={this.handleClose.bind(this)}
+              onClick={this.handleClose.bind(this)}
             />
             <div style={{fontSize: '18px',lineHeight: '24px'}}>Nicky Cage</div>
             <div style={{fontSize: '12px',lineHeight: '16px'}}>I like tuna sandwiches.</div>

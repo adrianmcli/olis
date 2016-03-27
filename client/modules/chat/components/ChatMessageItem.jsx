@@ -6,7 +6,7 @@ import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
-import AvatarWithInfo from './AvatarWithInfo.jsx';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import ReactMarkdown from 'react-markdown';
 import Loading from '/client/modules/core/components/Loading.jsx';
 
@@ -175,7 +175,7 @@ export default class ChatMessageItem extends React.Component {
         <div className="chat-primary">
           <div className="chat-avatar">
             <div className="chat-author">{authorName}</div>
-            <AvatarWithInfo username={authorName} avatarSrc={avatarSrc} />
+            <AvatarWithDefault size={51} username={authorName} avatarSrc={avatarSrc} />
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
