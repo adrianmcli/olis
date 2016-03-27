@@ -83,9 +83,7 @@ export default class ChatMenu extends React.Component {
           disabled
         />
       </IconMenu>
-
         { this.renderDialogs() }
-
       </div>
     );
   }
