@@ -1,6 +1,8 @@
 import React from 'react';
-import Popover from 'material-ui/lib/popover/popover';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import WhyDidYouUpdateMixin from '/lib/vendor/WhyDidYouUpdateMixin';
 
+import Popover from 'material-ui/lib/popover/popover';
 import Menu from 'material-ui/lib/menus/menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import Divider from 'material-ui/lib/divider';
@@ -26,6 +28,7 @@ class HeaderMenu extends React.Component {
       teamDirectoryOpen: false,
       teamInfoOpen: false,
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   openInviteToTeam() {setTimeout(() => {
