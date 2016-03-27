@@ -20,6 +20,7 @@ export default class NotesContainer extends React.Component {
     return (
       <div id="notes-container">
         <div className="notes-header">
+          <div className="notes-status">Last Updated: 23 min ago</div>
           <div className="notes-icon-bar">
             <IconButton tooltip="Share">
               <ShareIcon color={iconColor}/>
