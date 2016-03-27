@@ -1,3 +1,4 @@
+import React from 'react';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import AddPeopleToConvo from '../components/ChatMenuItems/AddPeopleToConvo.jsx';
 import {buildRegExp} from '/client/modules/core/libs/search';
@@ -54,11 +55,9 @@ export const composer = ({context}, onData) => {
       });
     }
   }
-
-  // Don't return a cleanup function here, since it's a dialog and is always mounted, but just not visible.
 };
 
 export default composeAll(
-  composeWithTracker(composer),
+  composeWithTracker(composer, () => <div></div>),
   useDeps(depsMapper)
 )(AddPeopleToConvo);

@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
-import AddPeople from '../containers/add_people';
+import AddPeople from '../containers/add_people.jsx';
 import ChangeConvoName from '../containers/change_convo_name';
 import ChatMembers from '../containers/chat_members';
 
