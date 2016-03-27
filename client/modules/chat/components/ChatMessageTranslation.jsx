@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import Loading from '/client/modules/core/components/Loading.jsx';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default class ChatMessageTranslation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
+
   renderTranslationArea() {
     const {translation, gettingTranslation} = this.props;
 
