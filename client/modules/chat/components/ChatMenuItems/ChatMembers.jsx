@@ -5,14 +5,6 @@ import PeopleList from '/client/modules/core/components/PeopleList.jsx';
 import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class ChatMembers extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    const {open} = this.props;
-    return (
-      open ||
-      open !== nextProps.open
-    );
-  }
-
   handleClose() {
     this.props.onRequestClose();
   }

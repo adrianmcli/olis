@@ -1,11 +1,12 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import IconMenu from 'material-ui/lib/menus/icon-menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 
-import AddPeople from '../containers/add_people';
+import AddPeople from '../containers/add_people.jsx';
 import ChangeConvoName from '../containers/change_convo_name';
 import ChatMembers from '../containers/chat_members';
 
@@ -22,6 +23,7 @@ export default class ChatMenu extends React.Component {
       changeTitleOpen: false,
       chatMembersOpen: false,
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   openAddPeople() {this.setState({addPeopleOpen: true});}
@@ -81,9 +83,7 @@ export default class ChatMenu extends React.Component {
           disabled
         />
       </IconMenu>
-
         { this.renderDialogs() }
-
       </div>
     );
   }
