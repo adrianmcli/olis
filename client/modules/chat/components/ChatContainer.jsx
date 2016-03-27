@@ -16,7 +16,7 @@ export default class ChatContainer extends React.Component {
       distanceFromTop: 0
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.scrollToBottom = () => this.scrollToBottom;
+    this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
   componentDidMount() {

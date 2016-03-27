@@ -16,7 +16,7 @@ export default class ChatMessageItem extends React.Component {
       gettingTranslation: false,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.getTranslation = () => this.getTranslation;
+    this.getTranslation = this.getTranslation.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
