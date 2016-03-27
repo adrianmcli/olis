@@ -51,12 +51,9 @@ export default class ChatMessageItem extends React.Component {
       langCode,
       translation
     } = this.props;
-
-    const {gettingTranslation} = this.state;
-
-    // console.log(`ChatMessageItem RENDER ${content}`);
-
+    const {gettingTranslation, isHovering} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
+    // console.log(`ChatMessageItem RENDER ${content}`);
 
     return (
       <div
@@ -77,12 +74,16 @@ export default class ChatMessageItem extends React.Component {
             <ChatMessageTimestamp timestamp={timestamp} />
           </div>
           <div>
-            <ChatMessageItemContextMenu
-              isHovering={this.state.isHovering}
-              langCode={langCode}
-              showTranslation={!translation || this.state.gettingTranslation}
-              getTranslation={this.getTranslation}
-            />
+            {
+              isHovering ?
+              <ChatMessageItemContextMenu
+                isHovering={this.state.isHovering}
+                langCode={langCode}
+                showTranslation={!translation || this.state.gettingTranslation}
+                getTranslation={this.getTranslation}
+              /> :
+              null
+            }
           </div>
         </div>
       </div>
