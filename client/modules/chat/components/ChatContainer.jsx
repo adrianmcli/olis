@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactList from 'react-list';
+// import ReactChatView from 'react-chatview';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import IconButton from 'material-ui/lib/icon-button';
@@ -98,19 +99,40 @@ export default class ChatContainer extends React.Component {
     // ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
   }
 
+  renderMsgs() {
+    const {
+      msgs, userId, translations, langCode, convoUsers, translate
+    } = this.props;
+
+    return msgs.map(msg => {
+      const otherUser = convoUsers[msg.userId];
+      const authorName = otherUser ? otherUser.username : msg.username;
+      const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
+      return (
+        <ChatMessageItem
+          key={msg._id}
+          msgId={msg._id}
+          authorName={authorName}
+          avatarSrc={avatarSrc}
+          content={msg.text}
+          timestamp={msg.createdAt}
+          selfAuthor={msg.userId === userId}
+          translation={translations[msg._id] ? translations[msg._id].text : undefined}
+          langCode={langCode}
+          translate={translate}
+        />
+      );
+    });
+  }
+
   render() {
     const {
-      userId,
-      translations,
-      langCode,
-      convoUsers,
       convo,
       msgs,
       title,
       usersListString,
       loadMore,
-      starred,
-      translate
+      starred
     } = this.props;
 
     return (
@@ -140,25 +162,7 @@ export default class ChatContainer extends React.Component {
             {convo && convo.numMsgs > msgs.length ?
                 <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
 
-            {msgs.map(msg => {
-              const otherUser = convoUsers[msg.userId];
-              const authorName = otherUser ? otherUser.username : msg.username;
-              const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
-              return (
-                <ChatMessageItem
-                  key={msg._id}
-                  msgId={msg._id}
-                  authorName={authorName}
-                  avatarSrc={avatarSrc}
-                  content={msg.text}
-                  timestamp={msg.createdAt}
-                  selfAuthor={msg.userId === userId}
-                  translation={translations[msg._id] ? translations[msg._id].text : undefined}
-                  langCode={langCode}
-                  translate={translate}
-                />
-              );
-            })}
+            {this.renderMsgs()}
           </GeminiScrollbar>
         </div>
 
