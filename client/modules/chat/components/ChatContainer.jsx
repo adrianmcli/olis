@@ -168,7 +168,7 @@ export default class ChatContainer extends React.Component {
             <div className="chat-wrapper">
               {convo && convo.numMsgs > msgs.length ?
                   <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
-              {this.renderInfiniteMsgs()}
+              {this.renderMsgs()}
             </div>
           </GeminiScrollbar>
         </div>

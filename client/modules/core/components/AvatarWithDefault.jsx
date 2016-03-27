@@ -14,6 +14,7 @@ export default class AvatarWithDefault extends React.Component {
 
   render() {
     const {avatarSrc, username, size, pointer, isInListItem, style} = this.props;
+    // console.log(`AvatarWithDefault ${username}`);
 
     const defaultStyle = {
       cursor: pointer ? 'pointer' : 'inherit',

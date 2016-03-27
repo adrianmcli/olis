@@ -1,11 +1,11 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
-import TimeAgo from 'react-timeago';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import ChatMessageItemContextMenu from './ChatMessageItemContextMenu.jsx';
 import ChatMessageText from './ChatMessageText.jsx';
 import ChatMessageTranslation from './ChatMessageTranslation.jsx';
+import ChatMessageTimestamp from './ChatMessageTimestamp.jsx';
 
 export default class ChatMessageItem extends React.Component {
 
@@ -41,24 +41,6 @@ export default class ChatMessageItem extends React.Component {
     }
   }
 
-  _timestampFormatter(value, unit, suffix) {
-    let timeStr = '';
-    let resultingUnit = unit;
-
-    if (unit === 'minute') { resultingUnit = 'min'; }
-    if (unit === 'hour') { resultingUnit = 'hr'; }
-
-    if (unit === 'second') {
-      timeStr = 'Just now';
-    } else {
-      if (value !== 1) {
-        resultingUnit += 's';
-      }
-      return value + ' ' + resultingUnit + ' ' + suffix;
-    }
-    return timeStr;
-  }
-
   render() {
     const {
       authorName,
@@ -92,11 +74,7 @@ export default class ChatMessageItem extends React.Component {
               <ChatMessageText content={content} />
               <ChatMessageTranslation translation={translation} gettingTranslation={gettingTranslation} />
             </div>
-            <div className="chat-timestamp">
-              <div className="chat-timestamp-string">
-                <TimeAgo date={timestamp} formatter={this._timestampFormatter} title={timestamp}/>
-              </div>
-            </div>
+            <ChatMessageTimestamp timestamp={timestamp} />
           </div>
           <div>
             <ChatMessageItemContextMenu

@@ -10,6 +10,7 @@ export default class ChatMessageText extends React.Component {
 
   render() {
     const {content} = this.props;
+    // console.log(`ChatMessageText ${content}`);
     return (
       <ReactMarkdown
         source={content}

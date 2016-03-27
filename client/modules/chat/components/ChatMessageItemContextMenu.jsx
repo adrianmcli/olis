@@ -15,6 +15,7 @@ export default class ChatMessageItemContextMenu extends React.Component {
 
   render() {
     const {showTranslation, langCode, getTranslation, isHovering} = this.props;
+    // console.log(`ChatMessageItemContextMenu`);
 
     const buttonStyle = isHovering ?
       {
