@@ -10,8 +10,7 @@ import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
 // import ChangeConvoName from './ChatMenuItems/ChangeConvoName.jsx';
 import ChangeConvoName from '../containers/change_convo_name';
 import ChatMenu from './ChatMenu.jsx';
-
-import TextField from 'material-ui/lib/text-field';
+import ChatInput from './ChatInput.jsx';
 import GeminiScrollbar from 'react-gemini-scrollbar';
 import ChatMessageItem from './ChatMessageItem.jsx';
 
@@ -161,18 +160,7 @@ export default class ChatContainer extends React.Component {
           </GeminiScrollbar>
         </div>
 
-        <div id="chat-input">
-        <div className="chat-input-container">
-          <TextField
-            hintText="Type your message here"
-            multiLine={true}
-            rows={1}
-            rowsMax={10}
-            style={{transition: 'none', width: '90%', margin: '8px'}}
-            onEnterKeyDown={this.handleEnterKeyDown.bind(this)}
-          />
-          </div>
-        </div>
+        <ChatInput handleEnterKeyDown={this.handleEnterKeyDown.bind(this)} />
       </div>
     );
   }
