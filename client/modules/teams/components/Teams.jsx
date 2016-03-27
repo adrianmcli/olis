@@ -1,4 +1,5 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 import IconButton from 'material-ui/lib/icon-button';
 import TeamIcon from './TeamIcon.jsx';
 import InvitedToTeam from '../containers/invited_to_team';
@@ -9,6 +10,7 @@ export default class Teams extends React.Component {
     this.state = {
       addTeamDialogOpen: false,
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   handleOpen() {

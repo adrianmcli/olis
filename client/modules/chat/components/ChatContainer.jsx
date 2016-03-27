@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactList from 'react-list';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import IconButton from 'material-ui/lib/icon-button';
 
@@ -23,6 +24,7 @@ export default class ChatContainer extends React.Component {
       chatMembersOpen: false,
       changeTitleOpen: false,
     };
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   componentDidMount() {
