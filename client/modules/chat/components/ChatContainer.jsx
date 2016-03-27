@@ -16,7 +16,7 @@ export default class ChatContainer extends React.Component {
       distanceFromTop: 0
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.handleEnterKeyDown = () => this.handleEnterKeyDown;
+    this.scrollToBottom = () => this.scrollToBottom;
   }
 
   componentDidMount() {
@@ -65,21 +65,6 @@ export default class ChatContainer extends React.Component {
     const distanceFromTop = ele.scrollTop();
     if (distanceFromTop && distanceFromTop < 50) {
       console.log("I'm close to the top!");
-    }
-  }
-
-  handleEnterKeyDown(e) {
-    const {addMsg} = this.props;
-    if (e.shiftKey === true) {
-      // shift key pressed, do nothing
-    } else {
-      e.preventDefault();
-      const text = e.target.value;
-      if (text.trim() !== '') {
-        addMsg(text);
-        e.target.value = '';
-        this.scrollToBottom();
-      }
     }
   }
 
@@ -157,7 +142,8 @@ export default class ChatContainer extends React.Component {
       title,
       usersListString,
       loadMore,
-      starred
+      starred,
+      addMsg
     } = this.props;
 
     return (
@@ -173,7 +159,10 @@ export default class ChatContainer extends React.Component {
           </GeminiScrollbar>
         </div>
 
-        <ChatInput handleEnterKeyDown={this.handleEnterKeyDown} />
+        <ChatInput
+          addMsg={addMsg}
+          scrollToBottom={this.scrollToBottom}
+        />
       </div>
     );
   }
