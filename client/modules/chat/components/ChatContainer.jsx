@@ -42,7 +42,9 @@ export default class ChatContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {convo} = this.props;
+    const {convo, msgs} = this.props;
+    console.log(`prev ${prevProps.msgs.length}, msgs ${msgs.length}`);
+
     if (convo._id !== prevProps.convo._id) { this.scrollToBottom(); }
     else {
       const {distanceFromBottom, distanceFromTop} = this.state;
