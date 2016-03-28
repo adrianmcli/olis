@@ -43,18 +43,23 @@ export default class ChatContainer extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {convo, msgs} = this.props;
-    console.log(`prev ${prevProps.msgs.length}, msgs ${msgs.length}`);
+    const {distanceFromBottom, distanceFromTop} = this.state;
+    const ele = this._getScrollContainer();
+
+    const isEarlierMsgs = msgs[0].createdAt < prevProps.msgs[0].createdAt;
+    function _maintainScroll() {
+      const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
+      ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+    }
 
     if (convo._id !== prevProps.convo._id) { this.scrollToBottom(); }
     else {
-      const {distanceFromBottom, distanceFromTop} = this.state;
-      const ele = this._getScrollContainer();
-
-      const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
-      if (distanceFromBottom <= 0 || distanceFromTop === 0) {
-        ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+      if (isEarlierMsgs || distanceFromBottom <= 0) {
+        _maintainScroll();
       }
     }
+
+    // console.log(`prev ${prevProps.msgs.length}, msgs ${msgs.length}, isEarlierMsgs ${isEarlierMsgs}`);
   }
 
   _getScrollContainer() {
@@ -171,7 +176,6 @@ export default class ChatContainer extends React.Component {
 
         <ChatInput
           addMsg={addMsg}
-          scrollToBottom={this.scrollToBottom}
         />
       </div>
     );

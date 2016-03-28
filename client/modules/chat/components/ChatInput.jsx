@@ -19,7 +19,6 @@ export default class ChatInput extends React.Component {
       if (text.trim() !== '') {
         addMsg(text);
         e.target.value = '';
-        scrollToBottom();
       }
     }
   }

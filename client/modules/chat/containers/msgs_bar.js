@@ -60,7 +60,7 @@ export const composer = ({context}, onData) => {
 
       const numVisibleMsgs = LocalState.get('numVisibleMsgs') ?
         LocalState.get('numVisibleMsgs') : 10;
-      msgs = R.takeLast(numVisibleMsgs, msgs);
+      // msgs = R.takeLast(numVisibleMsgs, msgs);
 
       onData(null, {
         convo,
