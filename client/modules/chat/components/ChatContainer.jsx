@@ -47,7 +47,7 @@ export default class ChatContainer extends React.Component {
     const ele = this._getScrollContainer();
 
     const isEarlierMsgs = msgs[0].createdAt < prevProps.msgs[0].createdAt;
-    function _maintainScroll() {
+    function _maintainView() {
       const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
     }
@@ -55,7 +55,7 @@ export default class ChatContainer extends React.Component {
     if (convo._id !== prevProps.convo._id) { this.scrollToBottom(); }
     else {
       if (isEarlierMsgs || distanceFromBottom <= 0) {
-        _maintainScroll();
+        _maintainView();
       }
     }
 
