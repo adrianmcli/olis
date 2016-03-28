@@ -4,7 +4,7 @@ import R from 'ramda';
 
 import HeaderMenu from '../containers/header_menu';
 import HeaderNewConversation from '../containers/header_new_conversation';
-import HeaderSearch from '/client/modules/search/components/HeaderSearch.jsx';
+import HeaderSearch from './HeaderSearch.jsx';
 import HeaderNotifications from '/client/modules/notifications/containers/header_notifications';
 
 import FlipMove from 'react-flip-move';
