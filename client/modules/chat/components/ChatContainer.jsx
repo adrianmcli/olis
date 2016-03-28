@@ -39,13 +39,17 @@ export default class ChatContainer extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    const {distanceFromBottom, distanceFromTop} = this.state;
-    const ele = this._getScrollContainer();
+  componentDidUpdate(prevProps) {
+    const {convo} = this.props;
+    if (convo._id !== prevProps.convo._id) { this.scrollToBottom(); }
+    else {
+      const {distanceFromBottom, distanceFromTop} = this.state;
+      const ele = this._getScrollContainer();
 
-    const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
-    if (distanceFromBottom <= 0 || distanceFromTop === 0) {
-      ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+      const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
+      if (distanceFromBottom <= 0 || distanceFromTop === 0) {
+        ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+      }
     }
   }
 
