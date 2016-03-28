@@ -11,7 +11,7 @@ export const depsMapper = (context, actions) => ({
   addMsg: actions.msgs.add,
   loadMore: actions.msgs.loadMore,
   translate: actions.translation.get,
-  setNumVisibleMsgs: actions.msgs.setNumVisible
+  incrementNumVisibleMsgs: actions.msgs.incrementNumVisible
 });
 
 export const composer = ({context}, onData) => {

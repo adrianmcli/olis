@@ -30,7 +30,7 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
   }
 
   function resetNumVisibleMsgs({params}) {
-    LocalState.set('numVisibleMsgs', undefined);
+    LocalState.set('msgs.numVisible', undefined);
   }
 
   FlowRouter.route('/team', {

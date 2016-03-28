@@ -25,7 +25,10 @@ export default {
     MsgUtils.routeToChat({FlowRouter}, teamId, convoId);
   },
 
-  setNumVisible({LocalState}, num) {
-    LocalState.set('msgs.numVisible', num);
+  incrementNumVisible({LocalState}) {
+    const INTERVAL = 10;
+    const numVisible = LocalState.get('msgs.numVisible') ?
+      LocalState.get('msgs.numVisible') : INTERVAL;
+    LocalState.set('msgs.numVisible', numVisible + INTERVAL);
   }
 };
