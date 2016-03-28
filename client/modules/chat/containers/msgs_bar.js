@@ -73,8 +73,7 @@ export const composer = ({context}, onData) => {
         title,
         usersListString,
         langCode,
-        translations,
-        numVisibleMsgs
+        translations
       });
     }
   }
