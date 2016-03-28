@@ -66,11 +66,12 @@ export default class ChatContainer extends React.Component {
   }
 
   _scrollHandler() {
-    const ele = this._getScrollContainer();
+    const {numVisibleMsgs, setNumVisibleMsgs} = this.props;
 
+    const ele = this._getScrollContainer();
     const distanceFromTop = ele.scrollTop();
-    if (distanceFromTop && distanceFromTop < 50) {
-      console.log("I'm close to the top!");
+    if (distanceFromTop && distanceFromTop < 100) {
+      // if (numVisibleMsgs < 999999) {setNumVisibleMsgs(999999);}
     }
   }
 
@@ -160,6 +161,7 @@ export default class ChatContainer extends React.Component {
             <div className="chat-wrapper">
               {convo && convo.numMsgs > msgs.length ?
                   <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
+              <button onClick={this.props.setNumVisibleMsgs.bind(null, 999999)}>Show more</button>
               {this.renderMsgs()}
             </div>
           </GeminiScrollbar>

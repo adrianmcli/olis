@@ -60,6 +60,7 @@ export const composer = ({context}, onData) => {
 
       const numVisibleMsgs = LocalState.get('numVisibleMsgs') ?
         LocalState.get('numVisibleMsgs') : 10;
+      msgs = R.takeLast(numVisibleMsgs, msgs);
 
       onData(null, {
         convo,
@@ -69,7 +70,8 @@ export const composer = ({context}, onData) => {
         title,
         usersListString,
         langCode,
-        translations
+        translations,
+        numVisibleMsgs
       });
     }
   }
