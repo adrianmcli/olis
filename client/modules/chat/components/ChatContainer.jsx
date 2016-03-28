@@ -78,7 +78,7 @@ export default class ChatContainer extends React.Component {
     const ele = this._getScrollContainer();
     const distanceFromTop = ele.scrollTop();
     if (distanceFromTop && distanceFromTop < 100) {
-      // if (numVisibleMsgs < 999999) {setNumVisibleMsgs(999999);}
+      setNumVisibleMsgs(numVisibleMsgs + 10);
     }
   }
 
