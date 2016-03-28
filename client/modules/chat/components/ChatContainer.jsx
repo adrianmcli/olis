@@ -22,6 +22,8 @@ export default class ChatContainer extends React.Component {
   componentDidMount() {
     const ele = this._getScrollContainer();
     ele.on('scroll', this._scrollHandler.bind(this));
+
+    this.scrollToBottom();
   }
 
   componentWillUnmount() {
