@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 import ReactList from 'react-list';
 // import ReactChatView from 'react-chatview';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
@@ -42,7 +43,7 @@ export default class ChatContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {convo, msgs} = this.props;
+    const {convo, msgs, userId} = this.props;
     const {distanceFromBottom, distanceFromTop} = this.state;
     const ele = this._getScrollContainer();
 
@@ -53,9 +54,13 @@ export default class ChatContainer extends React.Component {
 
     if (convo && prevProps.convo) {
       const isDiffConvo = convo._id !== prevProps.convo._id;
-      const isEarlierMsgs = msgs[0].createdAt < prevProps.msgs[0].createdAt;
+      const isMoreMsgs = msgs.length > prevProps.msgs.length;
+      const isEarlierMsgs = isMoreMsgs && msgs[0].createdAt < prevProps.msgs[0].createdAt;
+      const isNewMsgs = isMoreMsgs && R.last(msgs).createdAt > R.last(prevProps.msgs).createdAt;
+      const isMyMsg = isNewMsgs && R.last(msgs).userId === userId;
 
       if (isDiffConvo) { this.scrollToBottom(); }
+      else if (isMyMsg) { this.scrollToBottom(); }
       else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }
     }
   }
