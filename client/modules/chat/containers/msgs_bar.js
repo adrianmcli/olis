@@ -59,8 +59,8 @@ export const composer = ({context}, onData) => {
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
 
       // Filter msgs to save render time
-      const numVisibleMsgs = LocalState.get('numVisibleMsgs') ?
-        LocalState.get('numVisibleMsgs') : 10;
+      const numVisibleMsgs = LocalState.get('msgs.numVisible') ?
+        LocalState.get('msgs.numVisible') : 10;
       const msgsAfterThisOne = msgs[msgs.length - numVisibleMsgs] ?
         msgs[msgs.length - numVisibleMsgs] : msgs[0];
       msgs = R.filter(msg => msg.createdAt >= msgsAfterThisOne.createdAt, msgs);

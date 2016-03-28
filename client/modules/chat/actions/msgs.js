@@ -26,6 +26,6 @@ export default {
   },
 
   setNumVisible({LocalState}, num) {
-    LocalState.set('numVisibleMsgs', num);
+    LocalState.set('msgs.numVisible', num);
   }
 };
