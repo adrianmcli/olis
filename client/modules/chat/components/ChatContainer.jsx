@@ -46,15 +46,18 @@ export default class ChatContainer extends React.Component {
     const {distanceFromBottom, distanceFromTop} = this.state;
     const ele = this._getScrollContainer();
 
-    const isDiffConvo = convo._id !== prevProps.convo._id;
-    const isEarlierMsgs = msgs[0].createdAt < prevProps.msgs[0].createdAt;
     function _maintainView() {
       const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
     }
 
-    if (isDiffConvo) { this.scrollToBottom(); }
-    else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }
+    if (convo && prevProps.convo) {
+      const isDiffConvo = convo._id !== prevProps.convo._id;
+      const isEarlierMsgs = msgs[0].createdAt < prevProps.msgs[0].createdAt;
+
+      if (isDiffConvo) { this.scrollToBottom(); }
+      else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }      
+    }
   }
 
   _getScrollContainer() {

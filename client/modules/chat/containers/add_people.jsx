@@ -28,31 +28,34 @@ export const composer = ({context}, onData) => {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {
       const team = Collections.Teams.findOne(teamId);
       const convo = Collections.Convos.findOne(convoId);
-      const searchText = LocalState.get('searchText.teamUsers');
 
-      let selector = {};
-      if (searchText) {
-        const regExp = buildRegExp(searchText);
-        selector = {$or: [
-          {username: regExp},
-          {'emails.address': regExp}
-        ]};
+      if (team && convo) {
+        const searchText = LocalState.get('searchText.teamUsers');
+
+        let selector = {};
+        if (searchText) {
+          const regExp = buildRegExp(searchText);
+          selector = {$or: [
+            {username: regExp},
+            {'emails.address': regExp}
+          ]};
+        }
+        selector[`roles.${teamId}`] = {$exists: true};
+
+        const foundUsers = Meteor.users.find(selector).fetch();
+        const excludeFromSearchResult = [ user._id, ...userIdsToAdd, ...convo.userIds ];
+        teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
+          foundUsers);
+
+        const usersToAdd = Meteor.users.find({_id: {$in: userIdsToAdd}}).fetch();
+
+        onData(null, {
+          team,
+          teamUsersSearchResult,
+          usersToAdd,
+          convoId
+        });
       }
-      selector[`roles.${teamId}`] = {$exists: true};
-
-      const foundUsers = Meteor.users.find(selector).fetch();
-      const excludeFromSearchResult = [ user._id, ...userIdsToAdd, ...convo.userIds ];
-      teamUsersSearchResult = R.filter(other => !R.contains(other._id, excludeFromSearchResult),
-        foundUsers);
-
-      const usersToAdd = Meteor.users.find({_id: {$in: userIdsToAdd}}).fetch();
-
-      onData(null, {
-        team,
-        teamUsersSearchResult,
-        usersToAdd,
-        convoId
-      });
     }
   }
 };
