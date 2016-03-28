@@ -10,7 +10,8 @@ export const depsMapper = (context, actions) => ({
   actions: () => actions,
   addMsg: actions.msgs.add,
   loadMore: actions.msgs.loadMore,
-  translate: actions.translation.get
+  translate: actions.translation.get,
+  setNumVisibleMsgs: actions.msgs.setNumVisible
 });
 
 export const composer = ({context}, onData) => {
@@ -56,6 +57,9 @@ export const composer = ({context}, onData) => {
 
       const transArr = Collections.Translations.find({convoId}).fetch();
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
+
+      const numVisibleMsgs = LocalState.get('numVisibleMsgs') ?
+        LocalState.get('numVisibleMsgs') : 10;
 
       onData(null, {
         convo,

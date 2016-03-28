@@ -24,4 +24,8 @@ export default {
 
     MsgUtils.routeToChat({FlowRouter}, teamId, convoId);
   },
+
+  setNumVisible({LocalState}, num) {
+    LocalState.set('numVisibleMsgs', num);
+  }
 };
