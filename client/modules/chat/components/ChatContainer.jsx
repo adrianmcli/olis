@@ -163,7 +163,6 @@ export default class ChatContainer extends React.Component {
             <div className="chat-wrapper">
               {convo && convo.numMsgs > msgs.length ?
                   <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
-              <button onClick={this.props.setNumVisibleMsgs.bind(null, 999999)}>Show more</button>
               {this.renderMsgs()}
             </div>
           </GeminiScrollbar>
