@@ -56,7 +56,7 @@ export default class ChatContainer extends React.Component {
       const isEarlierMsgs = msgs[0].createdAt < prevProps.msgs[0].createdAt;
 
       if (isDiffConvo) { this.scrollToBottom(); }
-      else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }      
+      else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }
     }
   }
 
