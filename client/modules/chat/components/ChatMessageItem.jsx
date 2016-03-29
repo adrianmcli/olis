@@ -14,6 +14,7 @@ export default class ChatMessageItem extends React.Component {
     this.state = {
       isHovering: false,
       gettingTranslation: false,
+      menuOpen: false,
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.getTranslation = this.getTranslation.bind(this);
@@ -41,6 +42,16 @@ export default class ChatMessageItem extends React.Component {
     }
   }
 
+  openMenu() {
+    this.setState({menuOpen: true});
+  }
+
+  closeMenu() {
+    setTimeout(() => {
+      this.setState({menuOpen: false});
+    }, 200);
+  }
+
   render() {
     const {
       authorName,
@@ -51,7 +62,7 @@ export default class ChatMessageItem extends React.Component {
       langCode,
       translation
     } = this.props;
-    const {gettingTranslation, isHovering} = this.state;
+    const {gettingTranslation, isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
 
     // console.log(`ChatMessageItem RENDER ${content}`);
@@ -76,12 +87,14 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div>
             {
-              isHovering ?
+              isHovering || menuOpen ?
               <ChatMessageItemContextMenu
                 isHovering={this.state.isHovering}
                 langCode={langCode}
                 showTranslation={!translation || this.state.gettingTranslation}
                 getTranslation={this.getTranslation}
+                closeMenu={this.closeMenu.bind(this)}
+                openMenu={this.openMenu.bind(this)}
               />
               :
               <div style={{

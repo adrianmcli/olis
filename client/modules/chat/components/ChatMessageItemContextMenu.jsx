@@ -14,7 +14,13 @@ export default class ChatMessageItemContextMenu extends React.Component {
   }
 
   render() {
-    const {showTranslation, langCode, getTranslation} = this.props;
+    const {
+      showTranslation,
+      langCode,
+      getTranslation,
+      closeMenu,
+      openMenu,
+    } = this.props;
 
     const buttonStyle = {
       padding: '0',
@@ -24,7 +30,8 @@ export default class ChatMessageItemContextMenu extends React.Component {
 
     return (
       <IconMenu
-        // onItemTouchTap={this.handleItemTouchTap.bind(this)}
+        onItemTouchTap={closeMenu}
+        onMouseDown={openMenu}
         iconButtonElement={
           <IconButton
             style={buttonStyle}
