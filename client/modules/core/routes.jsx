@@ -30,7 +30,9 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
   }
 
   function resetNumVisibleMsgs({params}) {
-    LocalState.set('msgs.numVisible', undefined);
+    const convoId = params.convoId;
+    LocalState.set(`${convoId}.msgs.visibleAfterDate`, undefined);
+    LocalState.set(`${convoId}.msgs.numVisible`, undefined);
   }
 
   FlowRouter.route('/team', {
@@ -66,7 +68,7 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
 
   FlowRouter.route('/team/:teamId/convo/:convoId', {
     name: 'team-convo',
-    triggersEnter: [ ensureSignedIn, removeNotifications ],
+    triggersEnter: [ ensureSignedIn, removeNotifications, resetNumVisibleMsgs ],
     triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications, resetNumVisibleMsgs ],
     action(params) {
       const {convoId} = params;

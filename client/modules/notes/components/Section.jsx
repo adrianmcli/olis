@@ -9,7 +9,7 @@ export default class Section extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const {userId} = this.props;
-    console.log(`shouldComponentUpdate ${nextProps.section._id}, ${!nextProps.section.isUserEditing(userId)}`);
+    // console.log(`shouldComponentUpdate ${nextProps.section._id}, ${!nextProps.section.isUserEditing(userId)}`);
     return !nextProps.section.isUserEditing(userId) && nextProps.section.text !== this.props.section.text;
   }  
 
