@@ -6,7 +6,7 @@ import ActionSearch from 'material-ui/lib/svg-icons/action/search';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import Loading from '/client/modules/core/components/Loading.jsx';
 
-import ModalResultList from './ResultsContainer.jsx';
+import ModalResultList from './ModalResultList.jsx';
 
 import TextField from 'material-ui/lib/text-field';
 

@@ -11,7 +11,11 @@ export default class ModalResultList extends React.Component {
 
     return (
       <List>
-        <ResultItem />
+        <ResultItem
+          type='user'
+          avatar={<Avatar src="http://www.fillmurray.com/201/200" />}
+          name='Bob Saget'
+        />
         <ResultItem
           type='convo'
           title='Hiring 2016'
