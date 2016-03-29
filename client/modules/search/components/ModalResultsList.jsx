@@ -5,10 +5,9 @@ import Avatar from 'material-ui/lib/avatar';
 
 import ResultItem from './ResultItem.jsx';
 
-export default class ModalResultList extends React.Component {
+export default class ModalResultsList extends React.Component {
 
   render() {
-
     return (
       <List>
         <ResultItem

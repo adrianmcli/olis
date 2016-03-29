@@ -24,7 +24,7 @@ export default class ResultItem extends React.Component {
   }
 
   renderConvoItem() {
-    const primaryText = <div><strong>Conversation:</strong> {this.props.title}</div>;
+    const primaryText = makePrimaryText('Conversation', this.props.title);
     return (
       <ListItem
         leftAvatar={<Avatar icon={<ConvoIcon/>} backgroundColor={colors.blue300}/>}
@@ -34,7 +34,7 @@ export default class ResultItem extends React.Component {
   }
 
   renderNotesItem() {
-    const primaryText = <div><strong>Notes:</strong> {this.props.title}</div>;
+    const primaryText = makePrimaryText('Notes', this.props.title);
     return (
       <ListItem
         leftAvatar={<Avatar icon={<NotesIcon/>} backgroundColor={colors.indigo300}/>}
@@ -44,7 +44,7 @@ export default class ResultItem extends React.Component {
   }
 
   renderMsgItem() {
-    const primaryText = <div><strong>Message:</strong> {this.props.title}</div>;
+    const primaryText = makePrimaryText('Message', this.props.title);
     const secondaryText = this.props.msg;
     return (
       <ListItem
@@ -71,4 +71,8 @@ export default class ResultItem extends React.Component {
         );
     }
   }
+}
+
+function makePrimaryText(strong, title) {
+  return <div><strong>{strong}:</strong> {title}</div>;
 }
