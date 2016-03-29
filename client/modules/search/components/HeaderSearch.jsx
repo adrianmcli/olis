@@ -6,6 +6,8 @@ import ActionSearch from 'material-ui/lib/svg-icons/action/search';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import Loading from '/client/modules/core/components/Loading.jsx';
 
+import ResultsContainer from './ResultsContainer.jsx'
+
 import TextField from 'material-ui/lib/text-field';
 
 export default class HeaderSearch extends React.Component {
@@ -47,12 +49,13 @@ export default class HeaderSearch extends React.Component {
 
   renderResults() {
     return (
-      <div>Results</div>
+      <ResultsContainer />
     );
   }
 
   renderResultsContainer() {
-    const waiting = true;
+    // const waiting = true;
+    const waiting = false;
     const renderLoading = () => {
       return (
         <div style={{
@@ -60,7 +63,8 @@ export default class HeaderSearch extends React.Component {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingTop: '36px',
+          height: '100%',
+          textAlign: 'center',
         }}>
           <Loading spinnerName='cube-grid' />
           <h4 style={{fontWeight: '400', lineHeight: '1.6em', color: '#00BCD4'}}>
@@ -70,13 +74,15 @@ export default class HeaderSearch extends React.Component {
       );
     };
     return (
-      <div>
+      <div style={{height: '100%'}}>
         { waiting ? renderLoading() : this.renderResults() }
       </div>
     );
   }
 
   renderSearchDialog() {
+    const teamName = 'Team Name';
+    const dialogTitle = `Search: ${teamName}`;
     const placeholderColor = '#AAA';
     const renderEmptyPlaceholder = () => {
       return (
@@ -86,7 +92,7 @@ export default class HeaderSearch extends React.Component {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingTop: '36px',
+          height: '100%',
           textAlign: 'center',
         }}>
           <ActionSearch
@@ -101,7 +107,7 @@ export default class HeaderSearch extends React.Component {
     };
     return (
       <Dialog
-        title="Search"
+        title={dialogTitle}
         open={this.state.open}
         onRequestClose={this.handleClose.bind(this)}
         bodyStyle={{paddingTop: '0'}}
@@ -118,14 +124,14 @@ export default class HeaderSearch extends React.Component {
           zIndex: '1',
         }}>
           <TextField
-            hintText="Search messages, conversations, users, notes, and more..."
+            hintText="Search people, conversations, messages, and notes"
             floatingLabelText="Search Query"
             onChange={this._handleOnChange.bind(this)}
             fullWidth
             ref={ x => this._searchField = x }
           />
         </div>
-        <div style={{marginTop: '72px', height: '200px'}}>
+        <div style={{marginTop: '72px', height: '300px', position: 'relative'}}>
           { this.state.emptyQuery ? renderEmptyPlaceholder() : this.renderResultsContainer() }
         </div>
       </Dialog>
