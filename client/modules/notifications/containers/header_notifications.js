@@ -7,10 +7,19 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, Collections, FlowRouter} = context();
+  const {Meteor, Collections, FlowRouter, LocalState} = context();
+
+  function _getConvoId() {
+    const windowIsFocused = LocalState.get('window.isFocused');
+    const convoId = FlowRouter.getParam('convoId') ?
+    FlowRouter.getParam('convoId') : undefined;
+
+    if (!windowIsFocused) { return undefined; }
+    return convoId;
+  }
 
   const teamId = FlowRouter.getParam('teamId');
-  const convoId = FlowRouter.getParam('convoId') ? FlowRouter.getParam('convoId') : undefined;
+  const convoId = _getConvoId();
   if (teamId) {
     if (Meteor.subscribe('notifications.list', {teamId, convoId}).ready()) {
       const userId = Meteor.userId();
