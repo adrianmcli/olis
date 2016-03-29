@@ -2,7 +2,7 @@ import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import ChatContainer from '../components/ChatContainer.jsx';
 import R from 'ramda';
 import {SubsManager} from 'meteor/meteorhacks:subs-manager';
-import {VISIBLE_INTERVAL} from '/lib/constants/msgs';
+import {NEW_CONVO_VISIBLE} from '/lib/constants/msgs';
 
 const MsgSubs = new SubsManager();
 
@@ -61,7 +61,7 @@ export const composer = ({context}, onData) => {
 
       // Filter msgs to save render time
       const numVisibleMsgs = LocalState.get('msgs.numVisible') ?
-        LocalState.get('msgs.numVisible') : VISIBLE_INTERVAL;
+        LocalState.get('msgs.numVisible') : NEW_CONVO_VISIBLE;
       const msgsAfterThisOne = msgs[msgs.length - numVisibleMsgs] ?
         msgs[msgs.length - numVisibleMsgs] : msgs[0];
       msgs = R.filter(msg => msg.createdAt >= msgsAfterThisOne.createdAt, msgs);
