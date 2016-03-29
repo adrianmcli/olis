@@ -82,14 +82,12 @@ export default class ChatContainer extends React.Component {
 
     const ele = this._getScrollContainer();
     const distanceFromTop = ele.scrollTop();
-    const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
+    // const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
 
     const scrollingToTop = distanceFromTop && distanceFromTop <= 100;
-    const scrollingFromBot = distanceFromBottom && distanceFromBottom <= 100;
+    // const scrollingFromBot = distanceFromBottom && distanceFromBottom <= 100;
 
-    // This is quite a hack way of fixing oldest msg getting bumped when new msg comes in.
-    // TODO Show visible msgs by time threshold rather than last 10 or something.
-    if (scrollingToTop || scrollingFromBot) {
+    if (scrollingToTop) {
       incrementNumVisibleMsgs();
     }
   }

@@ -64,18 +64,28 @@ export const composer = ({context}, onData) => {
         LocalState.get('msgs.numVisible') : NEW_CONVO_VISIBLE;
       const msgsAfterThisOne = msgs[msgs.length - numVisibleMsgs] ?
         msgs[msgs.length - numVisibleMsgs] : msgs[0];
-      msgs = R.filter(msg => msg.createdAt >= msgsAfterThisOne.createdAt, msgs);
 
-      onData(null, {
-        convo,
-        msgs,
-        userId,
-        convoUsers,
-        title,
-        usersListString,
-        langCode,
-        translations
-      });
+      if (!LocalState.get('msgs.visibleAfterDate')) {
+        LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+      } else {
+        const visibleAfterDate = LocalState.get('msgs.visibleAfterDate');
+        const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
+        if (xMsgFromBotIsNewer) {
+          msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, msgs);
+          onData(null, {
+            convo,
+            msgs,
+            userId,
+            convoUsers,
+            title,
+            usersListString,
+            langCode,
+            translations
+          });
+        } else {
+          LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+        }
+      }
     }
   }
 };
