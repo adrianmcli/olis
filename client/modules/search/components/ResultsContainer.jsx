@@ -2,7 +2,6 @@ import React from 'react';
 
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
-import Divider from 'material-ui/lib/divider';
 
 import Avatar from 'material-ui/lib/avatar';
 import NotesIcon from 'material-ui/lib/svg-icons/action/chrome-reader-mode';
@@ -16,17 +15,10 @@ const colors = styles.Colors;
 export default class ResultsContainer extends React.Component {
 
   render() {
-    const convo = {
-      color: colors.white,
-      bgColor: colors.blue300,
-    };
-    const notes = {
-      color: colors.white,
-      bgColor: colors.indigo300,
-    };
-    const msgs = {
-      color: colors.white,
-      bgColor: colors.purple900,
+    const iconColor = {
+      convo: colors.blue300,
+      notes: colors.indigo300,
+      msgs: colors.purple900,
     };
 
     return (
@@ -44,8 +36,7 @@ export default class ResultsContainer extends React.Component {
             leftAvatar={
               <Avatar
                 icon={<ConvoIcon />}
-                color={convo.color}
-                backgroundColor={convo.bgColor}
+                backgroundColor={iconColor.convo}
               />
             }
             primaryText="Hiring 2016"
@@ -54,8 +45,7 @@ export default class ResultsContainer extends React.Component {
             leftAvatar={
               <Avatar
                 icon={<ConvoIcon />}
-                color={convo.color}
-                backgroundColor={convo.bgColor}
+                backgroundColor={iconColor.convo}
               />
             }
             primaryText="Q4 Sales Report 2016"
@@ -64,8 +54,7 @@ export default class ResultsContainer extends React.Component {
             leftAvatar={
               <Avatar
                 icon={<NotesIcon />}
-                color={notes.color}
-                backgroundColor={notes.bgColor}
+                backgroundColor={iconColor.notes}
               />
             }
             primaryText="Q4 Sales Report"
@@ -74,8 +63,7 @@ export default class ResultsContainer extends React.Component {
             leftAvatar={
               <Avatar
                 icon={<NotesIcon />}
-                color={notes.color}
-                backgroundColor={notes.bgColor}
+                backgroundColor={iconColor.notes}
               />
             }
             primaryText="Hiring 2016"
@@ -84,8 +72,7 @@ export default class ResultsContainer extends React.Component {
             leftAvatar={
               <Avatar
                 icon={<MsgIcon />}
-                color={msgs.color}
-                backgroundColor={msgs.bgColor}
+                backgroundColor={iconColor.msgs}
               />
             }
             primaryText="Q4 Sales Report"
@@ -95,8 +82,7 @@ export default class ResultsContainer extends React.Component {
             leftAvatar={
               <Avatar
                 icon={<MsgIcon />}
-                color={msgs.color}
-                backgroundColor={msgs.bgColor}
+                backgroundColor={iconColor.msgs}
               />
             }
             primaryText="Hiring 2016"
