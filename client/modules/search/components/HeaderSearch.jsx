@@ -6,7 +6,7 @@ import ActionSearch from 'material-ui/lib/svg-icons/action/search';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import Loading from '/client/modules/core/components/Loading.jsx';
 
-import ResultsContainer from './ResultsContainer.jsx'
+import ModalResultList from './ResultsContainer.jsx';
 
 import TextField from 'material-ui/lib/text-field';
 
@@ -49,7 +49,7 @@ export default class HeaderSearch extends React.Component {
 
   renderResults() {
     return (
-      <ResultsContainer />
+      <ModalResultList />
     );
   }
 
