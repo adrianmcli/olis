@@ -81,8 +81,8 @@ export const composer = ({context}, onData) => {
         const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
         if (xMsgFromBotIsNewer) {
           const msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, allMsgs);
-          // console.log(`msgs rendered ${msgs.length}`);
-          
+          // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
+
           onData(null, {
             convo,
             msgs,
