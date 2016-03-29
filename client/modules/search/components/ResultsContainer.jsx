@@ -39,7 +39,7 @@ export default class ResultsContainer extends React.Component {
                 backgroundColor={iconColor.convo}
               />
             }
-            primaryText="Hiring 2016"
+            primaryText={<div><strong>Chat Title:</strong> Hiring 2016</div>}
           />
           <ListItem
             leftAvatar={
@@ -48,7 +48,7 @@ export default class ResultsContainer extends React.Component {
                 backgroundColor={iconColor.convo}
               />
             }
-            primaryText="Q4 Sales Report 2016"
+            primaryText={<div><strong>Chat Title:</strong> Q4 Sales Report 2016</div>}
           />
           <ListItem
             leftAvatar={
@@ -57,7 +57,7 @@ export default class ResultsContainer extends React.Component {
                 backgroundColor={iconColor.notes}
               />
             }
-            primaryText="Q4 Sales Report"
+            primaryText={<div><strong>Notes:</strong> Q4 Sales Report 2016</div>}
           />
           <ListItem
             leftAvatar={
@@ -66,7 +66,7 @@ export default class ResultsContainer extends React.Component {
                 backgroundColor={iconColor.notes}
               />
             }
-            primaryText="Hiring 2016"
+            primaryText={<div><strong>Notes:</strong> Hiring 2016</div>}
           />
           <ListItem
             leftAvatar={
@@ -75,7 +75,7 @@ export default class ResultsContainer extends React.Component {
                 backgroundColor={iconColor.msgs}
               />
             }
-            primaryText="Q4 Sales Report"
+            primaryText={<div><strong>In chat:</strong> Q4 Sales Report</div>}
             secondaryText="Hey how are you doing..."
           />
           <ListItem
@@ -85,7 +85,7 @@ export default class ResultsContainer extends React.Component {
                 backgroundColor={iconColor.msgs}
               />
             }
-            primaryText="Hiring 2016"
+            primaryText={<div><strong>In chat:</strong> Hiring 2016</div>}
             secondaryText="These interviews are so boring..."
           />
         </List>
