@@ -2,6 +2,7 @@ import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import ChatContainer from '../components/ChatContainer.jsx';
 import R from 'ramda';
 import {SubsManager} from 'meteor/meteorhacks:subs-manager';
+import {NEW_CONVO_VISIBLE} from '/lib/constants/msgs';
 
 const MsgSubs = new SubsManager();
 
@@ -10,7 +11,8 @@ export const depsMapper = (context, actions) => ({
   actions: () => actions,
   addMsg: actions.msgs.add,
   loadMore: actions.msgs.loadMore,
-  translate: actions.translation.get
+  translate: actions.translation.get,
+  incrementNumVisibleMsgs: actions.msgs.incrementNumVisible
 });
 
 export const composer = ({context}, onData) => {
@@ -57,16 +59,33 @@ export const composer = ({context}, onData) => {
       const transArr = Collections.Translations.find({convoId}).fetch();
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
 
-      onData(null, {
-        convo,
-        msgs,
-        userId,
-        convoUsers,
-        title,
-        usersListString,
-        langCode,
-        translations
-      });
+      // Filter msgs to save render time
+      const numVisibleMsgs = LocalState.get('msgs.numVisible') ?
+        LocalState.get('msgs.numVisible') : NEW_CONVO_VISIBLE;
+      const msgsAfterThisOne = msgs[msgs.length - numVisibleMsgs] ?
+        msgs[msgs.length - numVisibleMsgs] : msgs[0];
+
+      if (!LocalState.get('msgs.visibleAfterDate')) {
+        LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+      } else {
+        const visibleAfterDate = LocalState.get('msgs.visibleAfterDate');
+        const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
+        if (xMsgFromBotIsNewer) {
+          msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, msgs);
+          onData(null, {
+            convo,
+            msgs,
+            userId,
+            convoUsers,
+            title,
+            usersListString,
+            langCode,
+            translations
+          });
+        } else {
+          LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+        }
+      }
     }
   }
 };

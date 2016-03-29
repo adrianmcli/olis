@@ -1,12 +1,15 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import Sidebar from '../components/Sidebar.jsx';
 import R from 'ramda';
+import {SubsManager} from 'meteor/meteorhacks:subs-manager';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
   selectConvo: actions.convos.select
 });
+
+const ConvoSubs = new SubsManager();
 
 export const composer = ({context}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
@@ -22,7 +25,7 @@ export const composer = ({context}, onData) => {
 
   if (teamId) {
     const subUsers = Meteor.subscribe('users.team', {teamId});
-    const subConvos = Meteor.subscribe('convos.list', {teamId});
+    const subConvos = ConvoSubs.subscribe('convos.list', {teamId});
 
     if (subUsers.ready() && subConvos.ready()) {
       const teamSelector = {

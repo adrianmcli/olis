@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 import ReactList from 'react-list';
 // import ReactChatView from 'react-chatview';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
@@ -22,6 +23,8 @@ export default class ChatContainer extends React.Component {
   componentDidMount() {
     const ele = this._getScrollContainer();
     ele.on('scroll', this._scrollHandler.bind(this));
+
+    this.scrollToBottom();
   }
 
   componentWillUnmount() {
@@ -39,13 +42,28 @@ export default class ChatContainer extends React.Component {
     });
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    const {convo, msgs, userId} = this.props;
     const {distanceFromBottom, distanceFromTop} = this.state;
     const ele = this._getScrollContainer();
 
-    const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
-    if (distanceFromBottom <= 0 || distanceFromTop === 0) {
+    function _maintainView() {
+      const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
       ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
+    }
+
+    if (convo && prevProps.convo) {
+      const isDiffConvo = convo._id !== prevProps.convo._id;
+      const isMoreMsgs = msgs.length > prevProps.msgs.length;
+      const isEarlierMsgs = isMoreMsgs && msgs[0].createdAt < prevProps.msgs[0].createdAt;
+      const isNewMsgs = isMoreMsgs && R.last(msgs).createdAt > R.last(prevProps.msgs).createdAt;
+      const isMyMsg = isNewMsgs && R.last(msgs).userId === userId;
+
+      if (isDiffConvo) { this.scrollToBottom(); }
+      else if (isMyMsg) { this.scrollToBottom(); }
+      else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }
+      // distanceFromBottom <= 0 because of some browsers non overlaying scroll bars
+      // gives an offset of like -17.
     }
   }
 
@@ -60,11 +78,17 @@ export default class ChatContainer extends React.Component {
   }
 
   _scrollHandler() {
-    const ele = this._getScrollContainer();
+    const {incrementNumVisibleMsgs} = this.props;
 
+    const ele = this._getScrollContainer();
     const distanceFromTop = ele.scrollTop();
-    if (distanceFromTop && distanceFromTop < 50) {
-      console.log("I'm close to the top!");
+    // const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
+
+    const scrollingToTop = distanceFromTop && distanceFromTop <= 100;
+    // const scrollingFromBot = distanceFromBottom && distanceFromBottom <= 100;
+
+    if (scrollingToTop) {
+      incrementNumVisibleMsgs();
     }
   }
 
@@ -161,7 +185,6 @@ export default class ChatContainer extends React.Component {
 
         <ChatInput
           addMsg={addMsg}
-          scrollToBottom={this.scrollToBottom}
         />
       </div>
     );

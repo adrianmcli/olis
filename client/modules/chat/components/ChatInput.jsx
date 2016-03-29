@@ -10,7 +10,7 @@ export default class ChatInput extends React.Component {
   }
 
   handleEnterKeyDown(e) {
-    const {addMsg, scrollToBottom} = this.props;
+    const {addMsg} = this.props;
     if (e.shiftKey === true) {
       // shift key pressed, do nothing
     } else {
@@ -19,7 +19,6 @@ export default class ChatInput extends React.Component {
       if (text.trim() !== '') {
         addMsg(text);
         e.target.value = '';
-        scrollToBottom();
       }
     }
   }

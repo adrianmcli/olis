@@ -7,7 +7,7 @@ import Home from './containers/home';
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
 
-export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
+export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalState}) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
   function ensureSignedIn(context, redirect) {
@@ -27,6 +27,10 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
     Meteor.call('notifications.remove', {convoId}, (err) => {
       if (err) { alert(err); }
     });
+  }
+
+  function resetNumVisibleMsgs({params}) {
+    LocalState.set('msgs.numVisible', undefined);
   }
 
   FlowRouter.route('/team', {
@@ -63,7 +67,7 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections}) {
   FlowRouter.route('/team/:teamId/convo/:convoId', {
     name: 'team-convo',
     triggersEnter: [ ensureSignedIn, removeNotifications ],
-    triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications ],
+    triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications, resetNumVisibleMsgs ],
     action(params) {
       const {convoId} = params;
       Meteor.call('convos.isMember', {convoId}, (err, res) => {

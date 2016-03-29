@@ -1,5 +1,6 @@
 import MsgUtils from '/client/modules/core/libs/msgs';
 import AccountUtils from '/client/modules/core/libs/account';
+import {VISIBLE_INTERVAL} from '/lib/constants/msgs';
 
 export default {
   add({Meteor, Collections, FlowRouter}, text) {
@@ -24,4 +25,10 @@ export default {
 
     MsgUtils.routeToChat({FlowRouter}, teamId, convoId);
   },
+
+  incrementNumVisible({LocalState}) {
+    const numVisible = LocalState.get('msgs.numVisible') ?
+      LocalState.get('msgs.numVisible') : VISIBLE_INTERVAL;
+    LocalState.set('msgs.numVisible', numVisible + VISIBLE_INTERVAL);
+  }
 };
