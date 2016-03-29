@@ -88,6 +88,9 @@ export const composer = ({context}, onData) => {
       }
     }
   }
+  return () => {
+    LocalState.set('msgs.visibleAfterDate', undefined);
+  };
 };
 
 export default composeAll(
