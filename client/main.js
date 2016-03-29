@@ -16,6 +16,9 @@ import notificationsModule from './modules/notifications';
 import imagesModule from './modules/images';
 import translationModule from './modules/translation';
 
+// notification tab listener
+import notOnTabListener from './modules/notifications/configs/notOnTabListener';
+
 // init context
 const context = initContext();
 
@@ -41,3 +44,4 @@ app.init();
 
 setupHead();
 setupCloudinary();
+notOnTabListener(context);
