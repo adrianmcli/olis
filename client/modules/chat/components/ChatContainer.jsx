@@ -62,6 +62,8 @@ export default class ChatContainer extends React.Component {
       if (isDiffConvo) { this.scrollToBottom(); }
       else if (isMyMsg) { this.scrollToBottom(); }
       else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }
+      // distanceFromBottom <= 0 because of some browsers non overlaying scroll bars
+      // gives an offset of like -17.
     }
   }
 
