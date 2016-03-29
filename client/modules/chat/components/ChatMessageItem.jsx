@@ -80,7 +80,11 @@ export default class ChatMessageItem extends React.Component {
           <div className="chat-body">
             <div className="chat-bubble">
               <ChatMessageText content={content} />
-              <ChatMessageTranslation translation={translation} gettingTranslation={gettingTranslation} />
+              <ChatMessageTranslation
+                translation={translation}
+                gettingTranslation={gettingTranslation}
+                selfAuthor={selfAuthor}
+              />
             </div>
             <ChatMessageTimestamp timestamp={timestamp} />
           </div>
