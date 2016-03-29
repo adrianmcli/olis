@@ -20,7 +20,6 @@ export const composer = ({context}, onData) => {
   const convoId = FlowRouter.getParam('convoId');
 
   // If you only see loading, make sure you added the collection to the index
-  let msgs = [];
   const userId = Meteor.userId();
   const user = Meteor.user();
   const langCode = user ? user.translationLangCode : undefined;
@@ -43,7 +42,7 @@ export const composer = ({context}, onData) => {
 
       // Fetch
       const options = {sort: [ [ 'createdAt', 'asc' ] ]};
-      msgs = Collections.Messages.find({convoId}, options).fetch();
+      const allMsgs = Collections.Messages.find({convoId}, options).fetch();
       convo = Collections.Convos.findOne(convoId);
       if (convo) {
         const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
@@ -60,18 +59,30 @@ export const composer = ({context}, onData) => {
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
 
       // Filter msgs to save render time
-      const numVisibleMsgs = LocalState.get('msgs.numVisible') ?
-        LocalState.get('msgs.numVisible') : NEW_CONVO_VISIBLE;
-      const msgsAfterThisOne = msgs[msgs.length - numVisibleMsgs] ?
-        msgs[msgs.length - numVisibleMsgs] : msgs[0];
+      const numVisibleMsgs = LocalState.get(`${convoId}.msgs.numVisible`) ?
+        LocalState.get(`${convoId}.msgs.numVisible`) : NEW_CONVO_VISIBLE;
+      const msgsAfterThisOne = allMsgs[allMsgs.length - numVisibleMsgs] ?
+        allMsgs[allMsgs.length - numVisibleMsgs] : allMsgs[0];
 
-      if (!LocalState.get('msgs.visibleAfterDate')) {
-        LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+      const isNewConvo = !LocalState.get(`${convoId}.msgs.visibleAfterDate`);
+
+      // console.log(`-----------`);
+      // console.log(`convoId from Router ${convoId} ${convo.name}`);
+      // console.log(`${LocalState.get(`${convoId}.msgs.visibleAfterDate`)}`);
+      // console.log(`isNewConvo ${isNewConvo}`);
+      // console.log(`allMsgs[0] ${allMsgs[0] ? allMsgs[0].text : ''}`);
+      // console.log(`msgsAfterThisOne ${msgsAfterThisOne.text}`);
+      // console.log(`allMsgs ${allMsgs.length}, numVisibleMsgs ${numVisibleMsgs}`);
+
+      if (isNewConvo) {
+        LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
       } else {
-        const visibleAfterDate = LocalState.get('msgs.visibleAfterDate');
+        const visibleAfterDate = LocalState.get(`${convoId}.msgs.visibleAfterDate`);
         const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
         if (xMsgFromBotIsNewer) {
-          msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, msgs);
+          const msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, allMsgs);
+          // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
+
           onData(null, {
             convo,
             msgs,
@@ -83,7 +94,7 @@ export const composer = ({context}, onData) => {
             translations
           });
         } else {
-          LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+          LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
         }
       }
     }

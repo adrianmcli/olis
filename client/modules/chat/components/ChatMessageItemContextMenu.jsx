@@ -11,6 +11,20 @@ export default class ChatMessageItemContextMenu extends React.Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.state = {
+      isMenuOpen: false,
+    };
+  }
+
+  _handleRequestChange(open) {
+    const { closeMenu, openMenu } = this.props;
+    if (open) {
+      openMenu();
+      this.setState({isMenuOpen: true});
+    } else {
+      closeMenu();
+      this.setState({isMenuOpen: false});
+    }
   }
 
   render() {
@@ -18,8 +32,6 @@ export default class ChatMessageItemContextMenu extends React.Component {
       showTranslation,
       langCode,
       getTranslation,
-      closeMenu,
-      openMenu,
     } = this.props;
 
     const buttonStyle = {
@@ -30,8 +42,8 @@ export default class ChatMessageItemContextMenu extends React.Component {
 
     return (
       <IconMenu
-        onItemTouchTap={closeMenu}
-        onMouseDown={openMenu}
+        open={this.state.isMenuOpen}
+        onRequestChange={this._handleRequestChange.bind(this)}
         iconButtonElement={
           <IconButton
             style={buttonStyle}
