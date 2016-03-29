@@ -47,9 +47,7 @@ export default class ChatMessageItem extends React.Component {
   }
 
   closeMenu() {
-    setTimeout(() => {
-      this.setState({menuOpen: false});
-    }, 200);
+    this.setState({menuOpen: false});
   }
 
   render() {
@@ -70,7 +68,8 @@ export default class ChatMessageItem extends React.Component {
     return (
       <div
         className={'chat-msg-item' + authorClass}
-        onMouseEnter={this.handleMouseEnter.bind(this)}
+        // onMouseEnter={this.handleMouseEnter.bind(this)}
+        onMouseOver={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
       >
         <div className="chat-primary">
@@ -81,7 +80,11 @@ export default class ChatMessageItem extends React.Component {
           <div className="chat-body">
             <div className="chat-bubble">
               <ChatMessageText content={content} />
-              <ChatMessageTranslation translation={translation} gettingTranslation={gettingTranslation} />
+              <ChatMessageTranslation
+                translation={translation}
+                gettingTranslation={gettingTranslation}
+                selfAuthor={selfAuthor}
+              />
             </div>
             <ChatMessageTimestamp timestamp={timestamp} />
           </div>
