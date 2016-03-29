@@ -2,10 +2,10 @@ import {Teams, Convos, Messages} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import R from 'ramda';
+import {PUBLISH_INTERVAL} from '/lib/constants/msgs';
 
 export default function () {
   const MSGS_LIST = 'msgs.list';
-  const NUM_MSG_INTERVAL = 15;
   Meteor.publish(MSGS_LIST, function ({convoId, currentNumMsgs}) {
     check(arguments[0], {
       convoId: String,
@@ -33,7 +33,7 @@ export default function () {
     const selector = {convoId};
     const optionsLimit = {
       sort: [ [ 'createdAt', 'desc' ] ],
-      limit: currentNumMsgs + NUM_MSG_INTERVAL
+      limit: currentNumMsgs + PUBLISH_INTERVAL
     };
     const msgs = Messages.find(selector, optionsLimit).fetch();
     const oldestDate = !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);

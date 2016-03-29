@@ -2,6 +2,7 @@ import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import ChatContainer from '../components/ChatContainer.jsx';
 import R from 'ramda';
 import {SubsManager} from 'meteor/meteorhacks:subs-manager';
+import {NEW_CONVO_VISIBLE} from '/lib/constants/msgs';
 
 const MsgSubs = new SubsManager();
 
@@ -11,7 +12,7 @@ export const depsMapper = (context, actions) => ({
   addMsg: actions.msgs.add,
   loadMore: actions.msgs.loadMore,
   translate: actions.translation.get,
-  setNumVisibleMsgs: actions.msgs.setNumVisible
+  incrementNumVisibleMsgs: actions.msgs.incrementNumVisible
 });
 
 export const composer = ({context}, onData) => {
@@ -59,23 +60,32 @@ export const composer = ({context}, onData) => {
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
 
       // Filter msgs to save render time
-      const numVisibleMsgs = LocalState.get('numVisibleMsgs') ?
-        LocalState.get('numVisibleMsgs') : 10;
+      const numVisibleMsgs = LocalState.get('msgs.numVisible') ?
+        LocalState.get('msgs.numVisible') : NEW_CONVO_VISIBLE;
       const msgsAfterThisOne = msgs[msgs.length - numVisibleMsgs] ?
         msgs[msgs.length - numVisibleMsgs] : msgs[0];
-      msgs = R.filter(msg => msg.createdAt >= msgsAfterThisOne.createdAt, msgs);
 
-      onData(null, {
-        convo,
-        msgs,
-        userId,
-        convoUsers,
-        title,
-        usersListString,
-        langCode,
-        translations,
-        numVisibleMsgs
-      });
+      if (!LocalState.get('msgs.visibleAfterDate')) {
+        LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+      } else {
+        const visibleAfterDate = LocalState.get('msgs.visibleAfterDate');
+        const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
+        if (xMsgFromBotIsNewer) {
+          msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, msgs);
+          onData(null, {
+            convo,
+            msgs,
+            userId,
+            convoUsers,
+            title,
+            usersListString,
+            langCode,
+            translations
+          });
+        } else {
+          LocalState.set('msgs.visibleAfterDate', msgsAfterThisOne.createdAt);
+        }
+      }
     }
   }
 };

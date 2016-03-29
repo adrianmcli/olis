@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 import ReactList from 'react-list';
 // import ReactChatView from 'react-chatview';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
@@ -42,7 +43,7 @@ export default class ChatContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {convo, msgs} = this.props;
+    const {convo, msgs, userId} = this.props;
     const {distanceFromBottom, distanceFromTop} = this.state;
     const ele = this._getScrollContainer();
 
@@ -53,10 +54,16 @@ export default class ChatContainer extends React.Component {
 
     if (convo && prevProps.convo) {
       const isDiffConvo = convo._id !== prevProps.convo._id;
-      const isEarlierMsgs = msgs[0].createdAt < prevProps.msgs[0].createdAt;
+      const isMoreMsgs = msgs.length > prevProps.msgs.length;
+      const isEarlierMsgs = isMoreMsgs && msgs[0].createdAt < prevProps.msgs[0].createdAt;
+      const isNewMsgs = isMoreMsgs && R.last(msgs).createdAt > R.last(prevProps.msgs).createdAt;
+      const isMyMsg = isNewMsgs && R.last(msgs).userId === userId;
 
       if (isDiffConvo) { this.scrollToBottom(); }
+      else if (isMyMsg) { this.scrollToBottom(); }
       else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }
+      // distanceFromBottom <= 0 because of some browsers non overlaying scroll bars
+      // gives an offset of like -17.
     }
   }
 
@@ -71,12 +78,17 @@ export default class ChatContainer extends React.Component {
   }
 
   _scrollHandler() {
-    const {numVisibleMsgs, setNumVisibleMsgs} = this.props;
+    const {incrementNumVisibleMsgs} = this.props;
 
     const ele = this._getScrollContainer();
     const distanceFromTop = ele.scrollTop();
-    if (distanceFromTop && distanceFromTop < 100) {
-      setNumVisibleMsgs(numVisibleMsgs + 10);
+    // const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
+
+    const scrollingToTop = distanceFromTop && distanceFromTop <= 100;
+    // const scrollingFromBot = distanceFromBottom && distanceFromBottom <= 100;
+
+    if (scrollingToTop) {
+      incrementNumVisibleMsgs();
     }
   }
 
