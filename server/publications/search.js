@@ -10,6 +10,8 @@ export default function () {
       text: String
     });
 
+    console.log(text);
+
     const userId = this.userId;
     if (!userId) {
       throw new Meteor.Error(SEARCH_RESULTS, 'Must be logged in to search.');

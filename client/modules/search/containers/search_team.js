@@ -23,8 +23,6 @@ export const composer = ({context, search}, onData) => {
   else {
     onData(null, {});
   }
-
-  return () => search(undefined);
 };
 
 export default composeAll(
