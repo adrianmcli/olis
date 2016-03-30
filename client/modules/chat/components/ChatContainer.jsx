@@ -91,7 +91,7 @@ export default class ChatContainer extends React.Component {
     if (gm.length > 0) {
       ele = $('#chat-msg-area .gm-scroll-view');
     }
-    const ele = gm.length > 0 ? $('#chat-msg-area .gm-scroll-view') : $(this._container);
+    // const ele = gm.length > 0 ? $('#chat-msg-area .gm-scroll-view') : $(this._container);
     return ele;
   }
 
