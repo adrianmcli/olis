@@ -56,7 +56,7 @@ export default class NewConvoDialog extends React.Component {
     this.handleClose();
   }
 
-  renderFirstStep() {
+  renderTitlePicker() {
     return (
       <div>
         <p>Enter a name for your new conversation.</p>
@@ -71,7 +71,7 @@ export default class NewConvoDialog extends React.Component {
     );
   }
 
-  renderSecondStep() {
+  renderPeoplePicker() {
     const {
       teamUsersSearchResult, usersToAdd, team, addUserId, removeUserId, searchTeamUsers
     } = this.props;
@@ -90,36 +90,44 @@ export default class NewConvoDialog extends React.Component {
   }
 
   render() {
-    // first stage settings
-    let width = 360;
-    let submitFunc = this.handleNext.bind(this);
-    let submitLabel = 'Next';
-    let title = 'Choose Conversation Name';
-    let bodyStyle = {padding: '24px'};
-    let actionsContainerStyle = {};
+    const stageData = {
+      picker: {
+        width: 540,
+        submitFunc: this.handleSubmit.bind(this),
+        submitLabel: 'Next',
+        title: 'Add Participants',
+        style: {
+          body: {padding: '0'},
+          actionsContainer: {borderTop: '1px solid rgba(0,0,0,0.15)'},
+        },
+      },
+      title: {
+        width: 360,
+        submitFunc: this.handleNext.bind(this),
+        submitLabel: 'Next',
+        title: 'Choose Conversation Name',
+        style: {
+          body: {padding: '24px'},
+          actionsContainer: {},
+        },
+      },
+    };
 
-    // second stage settings
-    if (this.state.stage !== 0) {
-      width = 540;
-      submitFunc = this.handleSubmit.bind(this);
-      submitLabel = 'Create';
-      title = 'Add Participants';
-      bodyStyle = {padding: '0'};
-      actionsContainerStyle = {borderTop: '1px solid rgba(0,0,0,0.15)'};
-    }
+    const data = this.state.stage !== 0 ? stageData.picker : stageData.title;
+
     return (
       <Dialog
-        title={title}
+        title={data.title}
         open={this.state.open}
         onRequestClose={this.handleClose.bind(this)}
-        submitLabel={submitLabel}
-        onSubmit={submitFunc}
+        submitLabel={data.submitLabel}
+        onSubmit={data.submitFunc}
         onShow={() => {this._textField.focus();}}
-        width={width}
-        actionsContainerStyle={actionsContainerStyle}
-        bodyStyle={bodyStyle}
+        width={data.width}
+        actionsContainerStyle={data.style.actionsContainer}
+        bodyStyle={data.style.body}
       >
-        { this.state.stage === 0 ? this.renderFirstStep() : this.renderSecondStep() }
+        { this.state.stage === 0 ? this.renderTitlePicker() : this.renderPeoplePicker() }
       </Dialog>
     );
   }
