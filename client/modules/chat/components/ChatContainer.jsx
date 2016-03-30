@@ -1,7 +1,6 @@
 import React from 'react';
 import R from 'ramda';
 import _ from 'lodash';
-import ReactList from 'react-list';
 
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
@@ -14,97 +13,81 @@ export default class ChatContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      distanceFromBottom: 0,
-      distanceFromTop: 0
+      distFromBot: 0,
+      distFromTop: 0
     };
-    this.throttledFunc = _.throttle(() => this._incVisible.bind(this)(), 500);
+    this.throttledFunc = _.throttle(() => this.incVisible.bind(this)(), 500);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
   componentDidMount() {
-    const ele = this._getScrollContainer();
-    ele.on('scroll', this._scrollHandler.bind(this));
+    const ele = this._getContainerEle();
+    ele.on('scroll', this.scrollHandler.bind(this));
     this.scrollToBottom();
   }
 
   componentWillUnmount() {
-    const ele = this._getScrollContainer();
-    ele.off('scroll', this._scrollHandler.bind(this));
+    const ele = this._getContainerEle();
+    ele.off('scroll', this.scrollHandler.bind(this));
   }
 
   componentWillReceiveProps() {
-    const ele = this._getScrollContainer();
-    const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
-    const distanceFromTop = ele.scrollTop();
-    this.setState({
-      distanceFromBottom,
-      distanceFromTop,
-    });
+    const ele = this._getContainerEle();
+    const distFromBot = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
+    const distFromTop = ele.scrollTop();
+    this.setState({ distFromBot, distFromTop });
   }
 
   componentDidUpdate(prevProps) {
-    const {convo, msgs, userId} = this.props;
-    const {distanceFromBottom} = this.state;
-    const ele = this._getScrollContainer();
+    const { convo, msgs, userId } = this.props;
+    const { distFromBot } = this.state;
 
-    function _maintainView() {
-      const targetScrollTopValue = ele[0].scrollHeight - ele.outerHeight() - distanceFromBottom;
-      ele.scrollTop(targetScrollTopValue);  // set the scrollTop value
-    }
+    if (convo && prevProps.convo && !R.isEmpty(msgs)) {
 
-    if (convo && prevProps.convo) {
-      const isDiffConvo = convo._id !== prevProps.convo._id;
+      const switchedConvo = convo._id !== prevProps.convo._id;
       const isMoreMsgs = msgs.length > prevProps.msgs.length;
 
-      const _getIsEarlierMsgs = () => {
-        if (!prevProps.msgs) { return false; }
-        if (R.isEmpty(prevProps.msgs)) { return false; }
-        return isMoreMsgs && msgs[0].createdAt < prevProps.msgs[0].createdAt;
-      };
-      const isEarlierMsgs = _getIsEarlierMsgs();
+      const lastMsgMine = R.last(msgs).userId === userId;
+      const hasPrevMsgs = prevProps.msgs && !R.isEmpty(prevProps.msgs);
 
-      const _getIsNewMsgs = () => {
-        if (!prevProps.msgs) { return false; }
-        if (R.isEmpty(prevProps.msgs)) { return false; }
-        return isMoreMsgs && R.last(msgs).createdAt > R.last(prevProps.msgs).createdAt;
-      };
-      const isNewMsgs = _getIsNewMsgs();
+      const isOlder = hasPrevMsgs ? msgs[0].createdAt < prevProps.msgs[0].createdAt : false;
+      const isNewer = hasPrevMsgs ?
+        R.last(msgs).createdAt > R.last(prevProps.msgs).createdAt : false;
 
-      const isMyMsg = isNewMsgs && R.last(msgs).userId === userId;
+      const comingFromTop = isMoreMsgs && isOlder;
+      const comingFromBottom = isMoreMsgs && isNewer;
 
-      if (isDiffConvo) { this.scrollToBottom(); }
-      else if (isMyMsg) { this.scrollToBottom(); }
-      else if (isEarlierMsgs || distanceFromBottom <= 0) { _maintainView(); }
-      // distanceFromBottom <= 0 because of some browsers non overlaying scroll bars
-      // gives an offset of like -17.
+      if (switchedConvo) { this.scrollToBottom(); }
+      else if (comingFromBottom && lastMsgMine) { this.scrollToBottom(); }
+      else if (comingFromTop || distFromBot <= 0) { this.maintainView(); }
     }
   }
 
-  _incVisible() {
+  _getContainerEle() {
+    const gm = $('#chat-msg-area .gm-scrollbar-container');
+    return gm.length > 0 ? $('#chat-msg-area .gm-scroll-view') : $(this._container);
+  }
+
+  incVisible() {
     this.props.incrementNumVisibleMsgs();
   }
 
-  _getScrollContainer() {
-    const gm = $('#chat-msg-area .gm-scrollbar-container');
-    let ele = $(this._container);
-    if (gm.length > 0) {
-      ele = $('#chat-msg-area .gm-scroll-view');
-    }
-    // const ele = gm.length > 0 ? $('#chat-msg-area .gm-scroll-view') : $(this._container);
-    return ele;
-  }
-
-  _scrollHandler() {
-    const distanceFromTop = this._getScrollContainer().scrollTop();
-    const scrollingToTop = distanceFromTop && distanceFromTop <= 100;
-    if (scrollingToTop) { this.throttledFunc(); }
+  scrollHandler() {
+    const distFromTop = this._getContainerEle().scrollTop();
+    if (distFromTop && distFromTop <= 100) { this.throttledFunc(); }
   }
 
   scrollToBottom() {
-    const ele = this._getScrollContainer();
+    const ele = this._getContainerEle();
     const scrollHeight = ele[0].scrollHeight;
     ele.scrollTop(scrollHeight);
+  }
+
+  maintainView() {
+    const ele = this._getContainerEle();
+    const targetVal = ele[0].scrollHeight - ele.outerHeight() - this.state.distFromBot;
+    ele.scrollTop(targetVal);
   }
 
   renderMsgs() {
@@ -133,40 +116,6 @@ export default class ChatContainer extends React.Component {
     });
   }
 
-  renderInfiniteMsgs() {
-    const {
-      msgs, userId, translations, langCode, convoUsers, translate
-    } = this.props;
-
-    const _renderItem = (index, key) => {
-      const msg = msgs[index];
-      const otherUser = convoUsers[msg.userId];
-      const authorName = otherUser ? otherUser.username : msg.username;
-      const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
-      return (
-        <ChatMessageItem
-          key={key}
-          msgId={msg._id}
-          authorName={authorName}
-          avatarSrc={avatarSrc}
-          content={msg.text}
-          timestamp={msg.createdAt}
-          selfAuthor={msg.userId === userId}
-          translation={translations[msg._id] ? translations[msg._id].text : undefined}
-          langCode={langCode}
-          translate={translate}
-        />
-      );
-    };
-
-    return (
-      <ReactList
-        itemRenderer={_renderItem}
-        length={msgs.length}
-      />
-    );
-  }
-
   render() {
     const {
       convo,
@@ -186,18 +135,17 @@ export default class ChatContainer extends React.Component {
             <div className="chat-wrapper">
               {convo && convo.numMsgs > msgs.length ?
                   <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
-              {this.renderMsgs()}
+              { this.renderMsgs() }
             </div>
           </GeminiScrollbar>
         </div>
 
-        <ChatInput
-          addMsg={addMsg}
-        />
+        <ChatInput addMsg={addMsg} />
       </div>
     );
   }
 }
+
 ChatContainer.defaultProps = {
   msgs: []
 };
