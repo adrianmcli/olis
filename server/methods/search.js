@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Teams} from '/lib/collections';
 import {check} from 'meteor/check';
-import {IndexMsgs} from '/lib/search/easy_search';
+import {IndexMsgs, IndexConvos, IndexUsers} from '/lib/search/easy_search';
 
 export default function () {
   const SEARCH_TEAM = 'search.team';
@@ -24,8 +24,18 @@ export default function () {
         throw new Meteor.Error(SEARCH_TEAM, 'Must be a member of a team to search it.');
       }
 
-      const cursor = IndexMsgs.search(searchString);
-      return cursor.fetch();
+      const cursorMsgs = IndexMsgs.search(searchString);
+      const cursorConvos = IndexConvos.search(searchString);
+      const cursorUsers = IndexUsers.search(searchString);
+
+      const results = {
+        msgs: cursorMsgs.fetch(),
+        convos: cursorConvos.fetch(),
+        users: cursorUsers.fetch()
+      };
+      console.log(results);
+
+      return results;
     }
   });
 }

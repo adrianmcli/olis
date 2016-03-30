@@ -9,6 +9,7 @@ import notifications from './notifications';
 import images from './images';
 import invites from './invites';
 import translation from './translation';
+import search from './search';
 
 export default function () {
   test();
@@ -22,4 +23,5 @@ export default function () {
   images();
   invites();
   translation();
+  search();
 }
