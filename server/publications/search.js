@@ -55,11 +55,15 @@ export default function () {
 
     const _getUsers = () => {
       const selector = {
-        $text: {$search: text}
+        $or: [
+          {[`roles.${teamId}`]: 'admin'},
+          {[`roles.${teamId}`]: 'member'}
+        ],
+        $text: { $search: text }
       };
       const options = {
         fields: {
-          score: {$meta: 'textScore'},
+          score: { $meta: 'textScore' },
           username: 1,
           emails: 1,
           profileImageUrl: 1
