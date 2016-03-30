@@ -28,7 +28,6 @@ export default class HeaderSearch extends React.Component {
   }
 
   renderDialog() {
-    const {results} = this.props;
     const style = {
       searchBar: {
         position: 'absolute',
@@ -67,7 +66,7 @@ export default class HeaderSearch extends React.Component {
 
         <div style={style.content}>
           { this.state.emptyQuery ?
-            <ModalEmptyPlaceholder /> : <ModalResultsContainer results={results} /> }
+            <ModalEmptyPlaceholder /> : <ModalResultsContainer {...this.props} /> }
         </div>
 
       </Dialog>

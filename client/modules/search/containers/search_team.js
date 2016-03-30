@@ -1,4 +1,5 @@
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
+import R from 'ramda';
 import HeaderSearch from '../components/HeaderSearch.jsx';
 
 const depsMapper = (context, actions) => ({
@@ -13,9 +14,11 @@ export const composer = ({context, search}, onData) => {
 
   const subsSearch = Meteor.subscribe('search.results', {teamId, text});
   if (subsSearch.ready()) {
-    const msgs = Collections.Messages.find({}, { sort: [ [ 'score', 'desc' ] ] }).fetch();
+    const msgs = Collections.Messages.find({}, { sort: { score: -1 } }).fetch();
 
-    onData(null, {msgs});
+    onData(null, {
+      msgs
+    });
   }
   else {
     onData(null, {});

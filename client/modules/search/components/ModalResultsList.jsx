@@ -7,8 +7,7 @@ import ResultItem from './ResultItem.jsx';
 
 export default class ModalResultsList extends React.Component {
   render() {
-    const {results} = this.props;
-    const {msgs, convos, users, notes} = results;
+    const {msgs, users, convos, notes} = this.props;
     const isResultsEmpty = false;
     return (
       <List>
@@ -33,7 +32,7 @@ export default class ModalResultsList extends React.Component {
             key={msg._id}
             type='msg'
             title='Hiring 2016'
-            author='Nicky Cage'
+            author={msg.username}
             msg={msg.text}
           />
         )}
@@ -42,10 +41,8 @@ export default class ModalResultsList extends React.Component {
   }
 }
 ModalResultsList.defaultProps = {
-  results: {
-    msgs: [],
-    convos: [],
-    users: [],
-    notes: []
-  }
+  msgs: [],
+  convos: [],
+  users: [],
+  notes: []
 };
