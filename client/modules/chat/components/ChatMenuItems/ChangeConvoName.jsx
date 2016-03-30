@@ -23,6 +23,7 @@ export default class ChangeConvoName extends React.Component {
         onRequestClose={this.handleClose.bind(this)}
         width={360}
         submitLabel="Change Name"
+        onSubmit={this.handleSubmit.bind(this)}
         onShow={() => {this._textField.focus();}}
       >
         <p>Enter a new chat title below:</p>
