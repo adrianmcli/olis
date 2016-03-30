@@ -33,7 +33,8 @@ export default class HeaderNotifications extends React.Component {
         // init bunch of sounds
         ion.sound({
           sounds: [
-            {name: 'beer_can_opening'},
+            // {name: 'beer_can_opening'},
+            {name: 'button_tiny'},
           ],
           // main config
           path: '/sounds/',
@@ -43,7 +44,7 @@ export default class HeaderNotifications extends React.Component {
         });
 
         // play sound
-        ion.sound.play('beer_can_opening');
+        ion.sound.play('button_tiny');
         // fire native alert
       }
     }
