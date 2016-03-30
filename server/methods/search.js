@@ -31,7 +31,8 @@ export default function () {
       const results = {
         msgs: cursorMsgs.fetch(),
         convos: cursorConvos.fetch(),
-        users: cursorUsers.fetch()
+        users: cursorUsers.fetch(),
+        notes: [] // TODO
       };
       console.log(results);
 

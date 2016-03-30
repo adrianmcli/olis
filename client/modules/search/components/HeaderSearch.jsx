@@ -9,16 +9,6 @@ import ModalEmptyPlaceholder from './ModalEmptyPlaceholder.jsx';
 import ModalResultsContainer from './ModalResultsContainer.jsx';
 
 export default class HeaderSearch extends React.Component {
-
-  // change this to pure render mixin if possible
-  shouldComponentUpdate(nextProps, nextState) {
-    const {open} = this.state;
-    return (
-      open ||
-      open !== nextState.open
-    );
-  }
-
   constructor(props) {
     super(props);
     this.state = { open: false, emptyQuery: true };
@@ -34,7 +24,13 @@ export default class HeaderSearch extends React.Component {
     this.setState({ emptyQuery: input === '' });
   }
 
+  handleEnter() {
+    const {doSearch} = this.props;
+    doSearch(this._searchField.getValue());
+  }
+
   renderDialog() {
+    const {results} = this.props;
     const style = {
       searchBar: {
         position: 'absolute',
@@ -68,11 +64,13 @@ export default class HeaderSearch extends React.Component {
             onChange={this.handleOnChange.bind(this)}
             fullWidth
             ref={ x => this._searchField = x }
+            onEnterKeyDown={this.handleEnter.bind(this)}
           />
         </div>
 
         <div style={style.content}>
-          { this.state.emptyQuery ? <ModalEmptyPlaceholder /> : <ModalResultsContainer /> }
+          { this.state.emptyQuery ?
+            <ModalEmptyPlaceholder /> : <ModalResultsContainer results={results} /> }
         </div>
 
       </Dialog>
@@ -88,9 +86,7 @@ export default class HeaderSearch extends React.Component {
             <ActionSearch color={iconColor} />
           </IconButton>
         </div>
-
         { this.renderDialog() }
-
       </div>
     );
   }

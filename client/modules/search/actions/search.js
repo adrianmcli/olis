@@ -19,10 +19,19 @@ export default {
     LocalState.set('searchText.convoUsers', undefined);
   },
 
-  team({LocalState, FlowRouter, Meteor}, text) {
+  'team'({LocalState, FlowRouter, Meteor}, text) {
     const teamId = FlowRouter.getParam('teamId');
     Meteor.call('search.team', {teamId, searchString: text}, (err, res) => {
-      LocalState.set('search.team.results', res);
+      if (err) { alert(err); }
+      else {
+        console.log(res);
+        LocalState.set(`search.team.${teamId}.results`, res);
+      }
     });
+  },
+
+  'team.clearResults'({LocalState, FlowRouter}) {
+    const teamId = FlowRouter.getParam('teamId');
+    LocalState.set(`search.team.${teamId}.results`, undefined);
   }
 };

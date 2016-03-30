@@ -32,10 +32,11 @@ export default class ModalResultsContainer extends React.Component {
   }
 
   render() {
+    const {results} = this.props;
     const waiting = false; // for debugging
     return (
       <div style={{height: '100%'}}>
-        { waiting ? <this.renderLoading /> : <ModalResultsList /> }
+        { waiting ? <this.renderLoading /> : <ModalResultsList results={results} /> }
       </div>
     );
   }
