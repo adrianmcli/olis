@@ -1,3 +1,4 @@
+import React from 'react';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import Sidebar from '../components/Sidebar.jsx';
 import R from 'ramda';
@@ -56,6 +57,8 @@ export const composer = ({context}, onData) => {
 };
 
 export default composeAll(
-  composeWithTracker(composer),
+  composeWithTracker(composer, function () {
+    return React.createElement('div', null);
+  }),
   useDeps(depsMapper)
 )(Sidebar);

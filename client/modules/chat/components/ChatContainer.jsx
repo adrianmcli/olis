@@ -1,7 +1,8 @@
 import React from 'react';
 import R from 'ramda';
+import _ from 'lodash';
 import ReactList from 'react-list';
-// import ReactChatView from 'react-chatview';
+
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import ChatInput from './ChatInput.jsx';
@@ -16,6 +17,7 @@ export default class ChatContainer extends React.Component {
       distanceFromBottom: 0,
       distanceFromTop: 0
     };
+    this.throttledFunc = _.throttle(() => this._incVisible.bind(this)(), 500);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
   }
@@ -23,7 +25,6 @@ export default class ChatContainer extends React.Component {
   componentDidMount() {
     const ele = this._getScrollContainer();
     ele.on('scroll', this._scrollHandler.bind(this));
-
     this.scrollToBottom();
   }
 
@@ -44,7 +45,7 @@ export default class ChatContainer extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {convo, msgs, userId} = this.props;
-    const {distanceFromBottom, distanceFromTop} = this.state;
+    const {distanceFromBottom} = this.state;
     const ele = this._getScrollContainer();
 
     function _maintainView() {
@@ -80,36 +81,30 @@ export default class ChatContainer extends React.Component {
     }
   }
 
+  _incVisible() {
+    this.props.incrementNumVisibleMsgs();
+  }
+
   _getScrollContainer() {
-    let ele = $(this._container);
-    // detect if geminiScrollbar has been applied
     const gm = $('#chat-msg-area .gm-scrollbar-container');
+    let ele = $(this._container);
     if (gm.length > 0) {
       ele = $('#chat-msg-area .gm-scroll-view');
     }
+    const ele = gm.length > 0 ? $('#chat-msg-area .gm-scroll-view') : $(this._container);
     return ele;
   }
 
   _scrollHandler() {
-    const {incrementNumVisibleMsgs} = this.props;
-
-    const ele = this._getScrollContainer();
-    const distanceFromTop = ele.scrollTop();
-    // const distanceFromBottom = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
-
+    const distanceFromTop = this._getScrollContainer().scrollTop();
     const scrollingToTop = distanceFromTop && distanceFromTop <= 100;
-    // const scrollingFromBot = distanceFromBottom && distanceFromBottom <= 100;
-
-    if (scrollingToTop) {
-      incrementNumVisibleMsgs();
-    }
+    if (scrollingToTop) { this.throttledFunc(); }
   }
 
   scrollToBottom() {
     const ele = this._getScrollContainer();
     const scrollHeight = ele[0].scrollHeight;
     ele.scrollTop(scrollHeight);
-    // ele.animate({ scrollTop: ele.prop('scrollHeight')}, 500);
   }
 
   renderMsgs() {

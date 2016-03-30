@@ -1,3 +1,4 @@
+import React from 'react';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import HeaderNotifications from '../components/HeaderNotifications.jsx';
 
@@ -36,6 +37,8 @@ export const composer = ({context}, onData) => {
 };
 
 export default composeAll(
-  composeWithTracker(composer), // Must be first in function call
+  composeWithTracker(composer, function () {
+    return React.createElement('div', null);
+  }), // Must be first in function call
   useDeps(depsMapper)
 )(HeaderNotifications);

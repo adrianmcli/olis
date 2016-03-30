@@ -1,3 +1,4 @@
+import React from 'react';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import AddTeamModal from '../components/AddTeamModal.jsx';
 import UsersSearchSource from '/client/usersSearchSource';
@@ -23,6 +24,8 @@ export const composer = ({context, setAllUsersSearchText}, onData) => {
 };
 
 export default composeAll(
-  composeWithTracker(composer),
+  composeWithTracker(composer, function () {
+    return React.createElement('div', null);
+  }),
   useDeps(depsMapper)
 )(AddTeamModal);
