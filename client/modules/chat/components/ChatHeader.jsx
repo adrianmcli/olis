@@ -6,7 +6,8 @@ import IconButton from 'material-ui/lib/icon-button';
 import FilledStarIcon from 'material-ui/lib/svg-icons/toggle/star';
 import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
 
-import ChangeConvoName from '../containers/change_convo_name';
+// import ChangeConvoName from '../containers/change_convo_name';
+import ChatMembers from '../containers/chat_members';
 import ChatMenu from './ChatMenu.jsx';
 
 export default class ChatHeader extends React.Component {
@@ -34,10 +35,10 @@ export default class ChatHeader extends React.Component {
 
     return (
       <div id="chat-header">
-        <div className="header-body" onTouchTap={this.openChangeTitle.bind(this)}>
-          <ChangeConvoName
-            open={this.state.changeTitleOpen}
-            onRequestClose={this.closeChangeTitle.bind(this)}
+        <div className="header-body" onTouchTap={this.openChatMembers.bind(this)}>
+          <ChatMembers
+            open={this.state.chatMembersOpen}
+            onRequestClose={this.closeChatMembers.bind(this)}
           />
 
           <div className="chat-title">
