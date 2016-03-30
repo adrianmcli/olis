@@ -75,7 +75,7 @@ export default class ChatContainer extends React.Component {
 
   scrollHandler() {
     const distFromTop = this._getContainerEle().scrollTop();
-    if (distFromTop && distFromTop <= 100) { this.throttledFunc(); }
+    if (distFromTop && distFromTop <= 200) { this.throttledFunc(); }
   }
 
   scrollToBottom() {
