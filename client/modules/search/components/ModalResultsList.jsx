@@ -1,7 +1,7 @@
 import React from 'react';
 
 import List from 'material-ui/lib/lists/list';
-import Avatar from 'material-ui/lib/avatar';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 
 import ResultItem from './ResultItem.jsx';
 
@@ -18,7 +18,7 @@ export default class ModalResultsList extends React.Component {
             key={user._id}
             type='user'
             name={user.username}
-            avatar={<Avatar src="http://www.fillmurray.com/201/200"/>}
+            avatar={<AvatarWithDefault avatarSrc={user.profileImageUrl} username={user.username} />}
           />
         )}
         {convos.map(convo =>

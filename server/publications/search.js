@@ -10,8 +10,6 @@ export default function () {
       text: String
     });
 
-    console.log(text);
-
     const userId = this.userId;
     if (!userId) {
       throw new Meteor.Error(SEARCH_RESULTS, 'Must be logged in to search.');
@@ -38,8 +36,6 @@ export default function () {
       };
       return Messages.find(selector, options);
     };
-    // console.log(_getMsgs().fetch());
-    // return _getMsgs();
 
     const _getConvos = () => {
       const selector = {
@@ -52,8 +48,6 @@ export default function () {
       };
       return Convos.find(selector, options);
     };
-    // console.log(_getConvos().fetch());
-    // return _getConvos();
 
     const _getUsers = () => {
       const selector = {
@@ -74,8 +68,6 @@ export default function () {
       };
       return Meteor.users.find(selector, options);
     };
-    // console.log(_getUsers().fetch());
-    // return _getUsers();
 
     return [ _getMsgs(), _getConvos(), _getUsers() ];
   });
