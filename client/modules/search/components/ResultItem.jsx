@@ -14,11 +14,12 @@ const colors = styles.Colors;
 export default class ResultItem extends React.Component {
 
   renderUserItem() {
-    const { avatar, name } = this.props;
+    const { avatar, name, email } = this.props;
     return (
       <ListItem
         leftAvatar={avatar}
         primaryText={name}
+        secondaryText={email}
       />
     );
   }

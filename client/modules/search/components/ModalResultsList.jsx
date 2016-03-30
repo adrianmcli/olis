@@ -18,6 +18,7 @@ export default class ModalResultsList extends React.Component {
             key={user._id}
             type='user'
             name={user.username}
+            email={user.emails[0].address}
             avatar={<AvatarWithDefault avatarSrc={user.profileImageUrl} username={user.username} />}
           />
         )}
