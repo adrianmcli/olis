@@ -25,7 +25,7 @@ export const composer = ({context, search}, onData) => {
     });
   }
   else {
-    onData(null, {});
+    onData(null, {waiting: true});
   }
 };
 
