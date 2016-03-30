@@ -1,6 +1,8 @@
 import {Teams, Messages, Convos} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
+import R from 'ramda';
+import {othersFields} from './users';
 
 export default function () {
   const SEARCH_RESULTS = 'search.results';
@@ -57,13 +59,13 @@ export default function () {
         ],
         $text: { $search: text }
       };
+
+      const fieldsObj = R.merge({
+        score: { $meta: 'textScore' }
+      }, othersFields);
+
       const options = {
-        fields: {
-          score: { $meta: 'textScore' },
-          username: 1,
-          emails: 1,
-          profileImageUrl: 1
-        },
+        fields: fieldsObj,
         sort: { score: { $meta: 'textScore' } }
       };
       return Meteor.users.find(selector, options);
