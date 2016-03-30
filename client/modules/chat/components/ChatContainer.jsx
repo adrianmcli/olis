@@ -55,8 +55,21 @@ export default class ChatContainer extends React.Component {
     if (convo && prevProps.convo) {
       const isDiffConvo = convo._id !== prevProps.convo._id;
       const isMoreMsgs = msgs.length > prevProps.msgs.length;
-      const isEarlierMsgs = isMoreMsgs && msgs[0].createdAt < prevProps.msgs[0].createdAt;
-      const isNewMsgs = isMoreMsgs && R.last(msgs).createdAt > R.last(prevProps.msgs).createdAt;
+
+      const _getIsEarlierMsgs = () => {
+        if (!prevProps.msgs) { return false; }
+        if (R.isEmpty(prevProps.msgs)) { return false; }
+        return isMoreMsgs && msgs[0].createdAt < prevProps.msgs[0].createdAt;
+      };
+      const isEarlierMsgs = _getIsEarlierMsgs();
+
+      const _getIsNewMsgs = () => {
+        if (!prevProps.msgs) { return false; }
+        if (R.isEmpty(prevProps.msgs)) { return false; }
+        return isMoreMsgs && R.last(msgs).createdAt > R.last(prevProps.msgs).createdAt;
+      };
+      const isNewMsgs = _getIsNewMsgs();
+
       const isMyMsg = isNewMsgs && R.last(msgs).userId === userId;
 
       if (isDiffConvo) { this.scrollToBottom(); }

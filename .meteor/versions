@@ -29,6 +29,7 @@ ddp-server@1.2.3-beta.11
 deps@1.0.9
 devian:mstranslate@0.0.6
 diff-sequence@1.0.2-beta.11
+easysearch:core@2.0.9
 ecmascript@0.4.0-beta.11
 ecmascript-runtime@0.2.7-beta.11
 ejson@1.0.8-beta.11
