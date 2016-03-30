@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 
 import List from 'material-ui/lib/lists/list';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
@@ -8,10 +9,12 @@ import ResultItem from './ResultItem.jsx';
 export default class ModalResultsList extends React.Component {
   render() {
     const {msgs, users, convos, notes} = this.props;
-    const isResultsEmpty = false;
+    const isResultsEmpty = () => R.isEmpty(msgs) && R.isEmpty(users) &&
+      R.isEmpty(convos) && R.isEmpty(notes);
+
     return (
       <List>
-        {isResultsEmpty ? <div>No results found.</div> : null}
+        {isResultsEmpty() ? <div>No results found.</div> : null}
 
         {users.map(user =>
           <ResultItem
