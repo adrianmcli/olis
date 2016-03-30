@@ -3,18 +3,25 @@ import HeaderSearch from '../components/HeaderSearch.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  doSearch: actions.search.team,
-  clearSearchResults: actions.search['team.clearResults']
+  search: actions.search['searchText.team.all.set']
 });
 
-export const composer = ({context, clearSearchResults}, onData) => {
-  const {LocalState, FlowRouter} = context();
+export const composer = ({context, search}, onData) => {
+  const {Meteor, FlowRouter, LocalState, Collections} = context();
   const teamId = FlowRouter.getParam('teamId');
-  onData(null, {
-    results: LocalState.get(`search.team.${teamId}.results`)
-  });
+  const text = LocalState.get('searchText.team.all') ? LocalState.get('searchText.team.all') : '';
 
-  return () => clearSearchResults();
+  const subsSearch = Meteor.subscribe('search.results', {teamId, text});
+  if (subsSearch.ready()) {
+    const msgs = Collections.Messages.find({}, { sort: [ [ 'score', 'desc' ] ] }).fetch();
+
+    onData(null, {msgs});
+  }
+  else {
+    onData(null, {});
+  }
+
+  return () => search(undefined);
 };
 
 export default composeAll(

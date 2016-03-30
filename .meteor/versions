@@ -102,6 +102,7 @@ npm-mongo@1.4.40-beta.11
 observe-sequence@1.0.8-beta.11
 ordered-dict@1.0.4
 peerlibrary:blocking@0.5.2
+peerlibrary:user-extra@0.1.0
 peerlibrary:xml2js@0.4.8_1
 promise@0.5.2-beta.11
 random@1.0.6-beta.11

@@ -8,6 +8,7 @@ import sections from './sections';
 import notifications from './notifications';
 import invites from './invites';
 import translations from './translations';
+import search from './search';
 
 export default function () {
   test();
@@ -20,4 +21,5 @@ export default function () {
   notifications();
   invites();
   translations();
+  search();
 }

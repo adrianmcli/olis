@@ -20,13 +20,11 @@ export default class HeaderSearch extends React.Component {
 
   // Handle text field change
   handleOnChange() {
+    const {search} = this.props;
     const input = this._searchField.getValue();
     this.setState({ emptyQuery: input === '' });
-  }
 
-  handleEnter() {
-    const {doSearch} = this.props;
-    doSearch(this._searchField.getValue());
+    search(input);
   }
 
   renderDialog() {
@@ -64,7 +62,6 @@ export default class HeaderSearch extends React.Component {
             onChange={this.handleOnChange.bind(this)}
             fullWidth
             ref={ x => this._searchField = x }
-            onEnterKeyDown={this.handleEnter.bind(this)}
           />
         </div>
 
