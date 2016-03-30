@@ -59,43 +59,57 @@ export const composer = ({context}, onData) => {
       translations = R.zipObj(transArr.map(item => item.msgId), transArr);
 
       // Filter msgs to save render time
-      const numVisibleMsgs = LocalState.get(`${convoId}.msgs.numVisible`) ?
-        LocalState.get(`${convoId}.msgs.numVisible`) : NEW_CONVO_VISIBLE;
-      const msgsAfterThisOne = allMsgs[allMsgs.length - numVisibleMsgs] ?
-        allMsgs[allMsgs.length - numVisibleMsgs] : allMsgs[0];
+      if (!R.isEmpty(allMsgs)) {
+        const numVisibleMsgs = LocalState.get(`${convoId}.msgs.numVisible`) ?
+          LocalState.get(`${convoId}.msgs.numVisible`) : NEW_CONVO_VISIBLE;
+        const msgsAfterThisOne = allMsgs[allMsgs.length - numVisibleMsgs] ?
+          allMsgs[allMsgs.length - numVisibleMsgs] : allMsgs[0];
 
-      const isNewConvo = !LocalState.get(`${convoId}.msgs.visibleAfterDate`);
+        const isNewConvo = !LocalState.get(`${convoId}.msgs.visibleAfterDate`);
 
-      // console.log(`-----------`);
-      // console.log(`convoId from Router ${convoId} ${convo.name}`);
-      // console.log(`${LocalState.get(`${convoId}.msgs.visibleAfterDate`)}`);
-      // console.log(`isNewConvo ${isNewConvo}`);
-      // console.log(`allMsgs[0] ${allMsgs[0] ? allMsgs[0].text : ''}`);
-      // console.log(`msgsAfterThisOne ${msgsAfterThisOne.text}`);
-      // console.log(`allMsgs ${allMsgs.length}, numVisibleMsgs ${numVisibleMsgs}`);
+        // console.log(`-----------`);
+        // console.log(`convoId from Router ${convoId} ${convo.name}`);
+        // console.log(`${LocalState.get(`${convoId}.msgs.visibleAfterDate`)}`);
+        // console.log(`isNewConvo ${isNewConvo}`);
+        // console.log(`allMsgs[0] ${allMsgs[0] ? allMsgs[0].text : ''}`);
+        // console.log(`msgsAfterThisOne ${msgsAfterThisOne.text}`);
+        // console.log(`allMsgs ${allMsgs.length}, numVisibleMsgs ${numVisibleMsgs}`);
 
-      if (isNewConvo) {
-        LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
-      } else {
-        const visibleAfterDate = LocalState.get(`${convoId}.msgs.visibleAfterDate`);
-        const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
-        if (xMsgFromBotIsNewer) {
-          const msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, allMsgs);
-          // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
-
-          onData(null, {
-            convo,
-            msgs,
-            userId,
-            convoUsers,
-            title,
-            usersListString,
-            langCode,
-            translations
-          });
-        } else {
+        if (isNewConvo) {
           LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
+        } else {
+          const visibleAfterDate = LocalState.get(`${convoId}.msgs.visibleAfterDate`);
+          const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
+          if (xMsgFromBotIsNewer) {
+            const msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, allMsgs);
+            // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
+
+            onData(null, {
+              convo,
+              msgs,
+              userId,
+              convoUsers,
+              title,
+              usersListString,
+              langCode,
+              translations
+            });
+          } else {
+            LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
+          }
         }
+      }
+      else {
+        onData(null, {
+          convo,
+          msgs: [],
+          userId,
+          convoUsers,
+          title,
+          usersListString,
+          langCode,
+          translations
+        });
       }
     }
   }
