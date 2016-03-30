@@ -26,6 +26,7 @@ export default class ModalResultsList extends React.Component {
         <ResultItem
           type='msg'
           title='Hiring 2016'
+          author='nickyCage'
           msg='These interviews are so boring...'
         />
       </List>

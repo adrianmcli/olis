@@ -44,13 +44,13 @@ export default class ResultItem extends React.Component {
   }
 
   renderMsgItem() {
-    const primaryText = makePrimaryText('Message', this.props.title);
-    const secondaryText = this.props.msg;
+    const { title, author, msg } = this.props;
+    const primaryText = makePrimaryText('Message', `${author} in ${title}`);
     return (
       <ListItem
         leftAvatar={<Avatar icon={<MsgIcon />} backgroundColor={colors.purple900}/>}
         primaryText={primaryText}
-        secondaryText={secondaryText}
+        secondaryText={msg}
       />
     );
   }
