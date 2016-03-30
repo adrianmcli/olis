@@ -26,13 +26,19 @@ export default class ChatHeader extends React.Component {
   openChangeTitle() {this.setState({changeTitleOpen: true});}
   closeChangeTitle() {this.setState({changeTitleOpen: false});}
 
-  render() {
-    const {
-      title,
-      usersListString,
-      starred
-    } = this.props;
+  renderStar() {
+    const { starred } = this.props;
+    return (
+      <div className="header-icon">
+        <IconButton tooltip="Star this conversation">
+          { starred ? <FilledStarIcon color="#FFC107"/> : <EmptyStarIcon color="#FFC107"/> }
+        </IconButton>
+      </div>
+    );
+  }
 
+  render() {
+    const { title, usersListString } = this.props;
     return (
       <div id="chat-header">
         <div className="header-body" onTouchTap={this.openChatMembers.bind(this)}>
@@ -48,11 +54,9 @@ export default class ChatHeader extends React.Component {
             {usersListString}
           </div>
         </div>
-        <div className="header-icon">
-          <IconButton tooltip="Star this conversation">
-            { starred ? <FilledStarIcon color="#FFC107"/> : <EmptyStarIcon color="#FFC107"/> }
-          </IconButton>
-        </div>
+
+        {/* this.renderStar.bind(this)() */}
+
         <div className="header-icon">
           <ChatMenu />
         </div>
