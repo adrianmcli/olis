@@ -53,4 +53,83 @@ export default function () {
       Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields})
     ];
   });
+
+  const MSGS_SEARCH_RESULT_OLDER = 'msgs.searchResult.older';
+  Meteor.publish(MSGS_SEARCH_RESULT_OLDER, function ({msgId, currentNumOlder}) {
+    check(arguments[0], {
+      msgId: String,
+      currentNumOlder: Number
+    });
+
+    const userId = this.userId;
+    if (!userId) {
+
+    }
+    const msg = Messages.findOne(msgId);
+    if (!msg) {
+
+    }
+    const convo = Convos.findOne(msg.convoId);
+    if (!convo) {
+
+    }
+    if (!convo.isUserInConvo) {
+
+    }
+    const team = Teams.findOne(convo.teamId);
+    if (!team) {
+
+    }
+    if (!team.isUserInTeam(this.userId)) {
+
+    }
+
+    const selector = {convoId: msg.convoId, createdAt: {$lte: msg.createdAt}};
+    const options = {
+      sort: [ [ 'createdAt', 'desc' ] ],
+      limit: currentNumOlder + PUBLISH_INTERVAL
+    };
+    return Messages.find(selector, options);
+
+  });
+
+  const MSGS_SEARCH_RESULT_NEWER = 'msgs.searchResult.newer';
+  Meteor.publish(MSGS_SEARCH_RESULT_NEWER, function ({msgId, currentNumNewer}) {
+    check(arguments[0], {
+      msgId: String,
+      currentNumNewer: Number
+    });
+
+    const userId = this.userId;
+    if (!userId) {
+
+    }
+    const msg = Messages.findOne(msgId);
+    if (!msg) {
+
+    }
+    const convo = Convos.findOne(msg.convoId);
+    if (!convo) {
+
+    }
+    if (!convo.isUserInConvo) {
+
+    }
+    const team = Teams.findOne(convo.teamId);
+    if (!team) {
+
+    }
+    if (!team.isUserInTeam(this.userId)) {
+
+    }
+
+    const selector = {convoId: msg.convoId, createdAt: {$gte: msg.createdAt}};
+    const options = {
+      sort: [ [ 'createdAt', 'asc' ] ],
+      limit: currentNumNewer + PUBLISH_INTERVAL
+    };
+    return Messages.find(selector, options);
+
+  });
+
 }

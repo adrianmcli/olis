@@ -7,7 +7,18 @@ import {check} from 'meteor/check';
 
 export default function () {
   Meteor.methods({
-    'a.wipeDbAndInitialize'() {
+    '_makeFakeConvo'(teamId, num) {
+      check(teamId, String);
+      check(num, Number);
+      const convoId = Meteor.call('convos.add', {name: 'fake convo', userIds: [], teamId});
+      for (let i = 1; i <= num; i++) {
+        Meteor.call('msgs.add', {text: `${i}`, convoId});
+      }
+    }
+  });
+
+  Meteor.methods({
+    '_wipeDbAndInitialize'() {
       Meteor.users.remove({});
       Messages.remove({});
       Teams.remove({});
