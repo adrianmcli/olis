@@ -37,12 +37,14 @@ export const composer = ({context}, onData) => {
     // Subscribe
     const sub = MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
     if (sub.ready()) {
+      // Translation
       const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
       if (langCode) { MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
+      const transArr = Collections.Translations.find({convoId}).fetch();
+      translations = R.zipObj(transArr.map(item => item.msgId), transArr);
 
       // Fetch
-      const options = {sort: [ [ 'createdAt', 'asc' ] ]};
-      const allMsgs = Collections.Messages.find({convoId}, options).fetch();
+      const allMsgs = _fetchAllMsgs(Collections, convoId);
       convo = Collections.Convos.findOne(convoId);
       if (convo) {
         const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
@@ -54,9 +56,6 @@ export const composer = ({context}, onData) => {
           return `${curr.username}`;
         }, '');
       }
-
-      const transArr = Collections.Translations.find({convoId}).fetch();
-      translations = R.zipObj(transArr.map(item => item.msgId), transArr);
 
       // Filter msgs to save render time
       if (!R.isEmpty(allMsgs)) {
@@ -108,4 +107,9 @@ function log(convo, LocalState, isNewConvo, allMsgs, msgsAfterThisOne, numVisibl
   console.log(`allMsgs[0] ${allMsgs[0] ? allMsgs[0].text : ''}`);
   console.log(`msgsAfterThisOne ${msgsAfterThisOne.text}`);
   console.log(`allMsgs ${allMsgs.length}, numVisibleMsgs ${numVisibleMsgs}`);
+}
+
+function _fetchAllMsgs(Collections, convoId) {
+  const options = {sort: [ [ 'createdAt', 'asc' ] ]};
+  return Collections.Messages.find({convoId}, options).fetch();
 }
