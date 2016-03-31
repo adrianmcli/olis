@@ -99,18 +99,6 @@ export const composer = ({context}, onData) => {
           }
         }
       }
-      else {
-        onData(null, {
-          convo,
-          msgs: [],
-          userId,
-          convoUsers,
-          title,
-          usersListString,
-          langCode,
-          translations
-        });
-      }
     }
   }
 };
