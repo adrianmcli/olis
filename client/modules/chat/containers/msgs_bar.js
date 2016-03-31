@@ -37,7 +37,7 @@ export const composer = ({context}, onData) => {
     const sub = MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
     const subTrans = _subTrans(LocalState, langCode, convoId);
 
-    if (sub.ready() && subTrans.ready()) {
+    if (sub.ready() && subTrans && subTrans.ready()) {
       // Fetch
       const allMsgs = _fetchAllMsgs(Collections, convoId);
       convo = Collections.Convos.findOne(convoId);
@@ -111,7 +111,7 @@ function _fetchAllMsgs(Collections, convoId) {
 
 function _subTrans(LocalState, langCode, convoId) {
   const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
-  if (langCode) { MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
+  if (langCode) { return MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
   return null;
 }
 
