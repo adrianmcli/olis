@@ -21,5 +21,19 @@ export default {
 
   'searchText.team.all.set'({LocalState}, text) {
     LocalState.set('searchText.team.all', text);
+  },
+
+  'select.convo'({FlowRouter}, convoId) {
+    const teamId = FlowRouter.getParam('teamId');
+    FlowRouter.go(`/team/${teamId}/convo/${convoId}`);
+  },
+
+  'select.user'({FlowRouter}, userId) {
+    // TODO go to your private convo with them.
+    // What if you don't have one? Start one.
+  },
+
+  'select.msg'({FlowRouter}, convoId, msgId) {
+    // TODO Jump to the convo and msg
   }
 };

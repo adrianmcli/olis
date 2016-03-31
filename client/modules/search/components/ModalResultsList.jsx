@@ -8,7 +8,11 @@ import ResultItem from './ResultItem.jsx';
 
 export default class ModalResultsList extends React.Component {
   render() {
-    const {msgs, users, convos, notes} = this.props;
+    const {
+      msgs, users, convos, notes,
+      onClickConvo,
+      closeModal
+    } = this.props;
     const isResultsEmpty = () => R.isEmpty(msgs) && R.isEmpty(users) &&
       R.isEmpty(convos) && R.isEmpty(notes);
 
@@ -23,13 +27,20 @@ export default class ModalResultsList extends React.Component {
             name={user.username}
             email={user.emails[0].address}
             avatar={<AvatarWithDefault avatarSrc={user.profileImageUrl} username={user.username} />}
+            closeModal={closeModal}
           />
         )}
         {convos.map(convo =>
-          <ResultItem key={convo._id} type='convo' title={convo.name} />
+          <ResultItem
+            key={convo._id}
+            type='convo'
+            title={convo.name}
+            onClick={onClickConvo.bind(null, convo._id)}
+            closeModal={closeModal}
+          />
         )}
         {notes.map(note =>
-          <ResultItem key={note._id} type='notes' title='Hiring 2016' />
+          <ResultItem key={note._id} type='notes' title='Hiring 2016' closeModal={closeModal}/>
         )}
         {msgs.map(msg =>
           <ResultItem
@@ -38,6 +49,7 @@ export default class ModalResultsList extends React.Component {
             title={msg.convoName}
             author={msg.username}
             msg={msg.text}
+            closeModal={closeModal}
           />
         )}
       </List>

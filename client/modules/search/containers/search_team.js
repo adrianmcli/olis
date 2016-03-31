@@ -3,7 +3,10 @@ import HeaderSearch from '../components/HeaderSearch.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  search: actions.search['searchText.team.all.set']
+  search: actions.search['searchText.team.all.set'],
+  onClickConvo: actions.search['select.convo'],
+  onClickUser: actions.search['select.user'],
+  onClickMsg: actions.search['select.msg']
 });
 
 export const composer = ({context, search}, onData) => {

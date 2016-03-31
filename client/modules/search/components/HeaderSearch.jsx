@@ -66,7 +66,7 @@ export default class HeaderSearch extends React.Component {
 
         <div style={style.content}>
           { this.state.emptyQuery ?
-            <ModalEmptyPlaceholder /> : <ModalResultsContainer {...this.props} /> }
+            <ModalEmptyPlaceholder /> : <ModalResultsContainer {...this.props} closeModal={this.handleClose.bind(this)} /> }
         </div>
 
       </Dialog>

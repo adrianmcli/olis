@@ -12,6 +12,11 @@ import styles from 'material-ui/lib/styles';
 const colors = styles.Colors;
 
 export default class ResultItem extends React.Component {
+  handleClick(onClick) {
+    const {closeModal} = this.props;
+    closeModal();
+    onClick();
+  }
 
   renderUserItem() {
     const { avatar, name, email, onClick } = this.props;
@@ -20,7 +25,7 @@ export default class ResultItem extends React.Component {
         leftAvatar={avatar}
         primaryText={name}
         secondaryText={email}
-        onTouchTap={onClick}
+        onTouchTap={this.handleClick.bind(this, onClick)}
       />
     );
   }
@@ -32,7 +37,7 @@ export default class ResultItem extends React.Component {
       <ListItem
         leftAvatar={<Avatar icon={<ConvoIcon/>} backgroundColor={colors.blue300}/>}
         primaryText={primaryText}
-        onTouchTap={onClick}
+        onTouchTap={this.handleClick.bind(this, onClick)}
       />
     );
   }
@@ -44,7 +49,7 @@ export default class ResultItem extends React.Component {
       <ListItem
         leftAvatar={<Avatar icon={<NotesIcon/>} backgroundColor={colors.indigo300}/>}
         primaryText={primaryText}
-        onTouchTap={onClick}
+        onTouchTap={this.handleClick.bind(this, onClick)}
       />
     );
   }
@@ -57,7 +62,7 @@ export default class ResultItem extends React.Component {
         leftAvatar={<Avatar icon={<MsgIcon />} backgroundColor={colors.purple900}/>}
         primaryText={primaryText}
         secondaryText={msg}
-        onTouchTap={onClick}
+        onTouchTap={this.handleClick.bind(this, onClick)}
       />
     );
   }
