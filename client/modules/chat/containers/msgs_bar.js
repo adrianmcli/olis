@@ -24,11 +24,6 @@ export const composer = ({context}, onData) => {
   const user = Meteor.user();
   const langCode = user ? user.translationLangCode : undefined;
 
-  let convoUsers = {};
-  let title = null;
-  let usersListString = null;
-  let convo;
-
   if (convoId) {
     const currentNumMsgs = LocalState.get(`loadMore.convo.${convoId}.numMsgs`) ?
       LocalState.get(`loadMore.convo.${convoId}.numMsgs`) : 0;
@@ -38,19 +33,7 @@ export const composer = ({context}, onData) => {
     const subTrans = _subTrans(LocalState, langCode, convoId);
 
     if (sub.ready() && subTrans && subTrans.ready()) {
-      // Fetch
       const allMsgs = _fetchAllMsgs(Collections, convoId);
-      convo = Collections.Convos.findOne(convoId);
-      if (convo) {
-        const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
-        convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
-        title = convo.name;
-
-        usersListString = convoUsersArr.reduce((prev, curr, index) => {
-          if (index > 0) { return `${prev}, ${curr.username}`; }
-          return `${curr.username}`;
-        }, '');
-      }
 
       // Filter msgs to save render time
       if (!R.isEmpty(allMsgs)) {
@@ -67,8 +50,11 @@ export const composer = ({context}, onData) => {
           const xMsgFromBotIsNewer = msgsAfterThisOne.createdAt >= visibleAfterDate;
           if (xMsgFromBotIsNewer) {
             const msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, allMsgs);
-            // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
+            const convo = Collections.Convos.findOne(convoId);
+            const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
+            const translations = _fetchTranslations(Collections, convoId);
 
+            // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
             onData(null, {
               convo,
               msgs,
@@ -77,7 +63,7 @@ export const composer = ({context}, onData) => {
               title,
               usersListString,
               langCode,
-              translations: _fetchTranslations(Collections, convoId)
+              translations
             });
           } else {
             LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
@@ -118,4 +104,21 @@ function _subTrans(LocalState, langCode, convoId) {
 function _fetchTranslations(Collections, convoId) {
   const transArr = Collections.Translations.find({convoId}).fetch();
   return R.zipObj(transArr.map(item => item.msgId), transArr);
+}
+
+function _fetchConvoInfo(convo, Meteor) {
+  if (convo) {
+    const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
+    const convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
+
+    const title = convo.name;
+
+    const usersListString = convoUsersArr.reduce((prev, curr, index) => {
+      if (index > 0) { return `${prev}, ${curr.username}`; }
+      return `${curr.username}`;
+    }, '');
+
+    return {convoUsers, title, usersListString};
+  }
+  return {convoUsers: {}, title: null, usersListString: null};
 }
