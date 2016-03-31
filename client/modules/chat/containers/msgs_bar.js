@@ -51,8 +51,7 @@ function _fetchAllMsgs(Collections, convoId) {
 
 function _subTrans(LocalState, langCode, convoId) {
   const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
-  if (langCode) { return MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
-  return null;
+  return MsgSubs.subscribe('translations.list', {msgIds, convoId});
 }
 
 function _fetchTranslations(Collections, convoId) {
@@ -85,7 +84,7 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
   const sub = MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
   const subTrans = _subTrans(LocalState, langCode, convoId);
 
-  if (sub.ready() && subTrans && subTrans.ready()) {
+  if (sub.ready() && subTrans.ready()) {
     const allMsgs = _fetchAllMsgs(Collections, convoId);
 
     // Filter msgs to save render time
