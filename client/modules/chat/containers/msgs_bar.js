@@ -66,15 +66,6 @@ export const composer = ({context}, onData) => {
           allMsgs[allMsgs.length - numVisibleMsgs] : allMsgs[0];
 
         const isNewConvo = !LocalState.get(`${convoId}.msgs.visibleAfterDate`);
-
-        // console.log(`-----------`);
-        // console.log(`convoId from Router ${convoId} ${convo.name}`);
-        // console.log(`${LocalState.get(`${convoId}.msgs.visibleAfterDate`)}`);
-        // console.log(`isNewConvo ${isNewConvo}`);
-        // console.log(`allMsgs[0] ${allMsgs[0] ? allMsgs[0].text : ''}`);
-        // console.log(`msgsAfterThisOne ${msgsAfterThisOne.text}`);
-        // console.log(`allMsgs ${allMsgs.length}, numVisibleMsgs ${numVisibleMsgs}`);
-
         if (isNewConvo) {
           LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
         } else {
@@ -98,6 +89,7 @@ export const composer = ({context}, onData) => {
             LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
           }
         }
+        // log(convo, LocalState, isNewConvo, allMsgs, msgsAfterThisOne, numVisibleMsgs);
       }
     }
   }
@@ -107,3 +99,13 @@ export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
 )(ChatContainer);
+
+function log(convo, LocalState, isNewConvo, allMsgs, msgsAfterThisOne, numVisibleMsgs) {
+  console.log(`-----------`);
+  console.log(`convoId from Router ${convo._id} ${convo.name}`);
+  console.log(`${LocalState.get(`${convo._id}.msgs.visibleAfterDate`)}`);
+  console.log(`isNewConvo ${isNewConvo}`);
+  console.log(`allMsgs[0] ${allMsgs[0] ? allMsgs[0].text : ''}`);
+  console.log(`msgsAfterThisOne ${msgsAfterThisOne.text}`);
+  console.log(`allMsgs ${allMsgs.length}, numVisibleMsgs ${numVisibleMsgs}`);
+}
