@@ -25,7 +25,6 @@ export const composer = ({context}, onData) => {
   const langCode = user ? user.translationLangCode : undefined;
 
   let convoUsers = {};
-  let translations = {};
   let title = null;
   let usersListString = null;
   let convo;
@@ -36,13 +35,9 @@ export const composer = ({context}, onData) => {
 
     // Subscribe
     const sub = MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
-    if (sub.ready()) {
-      // Translation
-      const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
-      if (langCode) { MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
-      const transArr = Collections.Translations.find({convoId}).fetch();
-      translations = R.zipObj(transArr.map(item => item.msgId), transArr);
+    const subTrans = _subTrans(LocalState, langCode, convoId);
 
+    if (sub.ready() && subTrans.ready()) {
       // Fetch
       const allMsgs = _fetchAllMsgs(Collections, convoId);
       convo = Collections.Convos.findOne(convoId);
@@ -82,7 +77,7 @@ export const composer = ({context}, onData) => {
               title,
               usersListString,
               langCode,
-              translations
+              translations: _fetchTranslations(Collections, convoId)
             });
           } else {
             LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
@@ -112,4 +107,15 @@ function log(convo, LocalState, isNewConvo, allMsgs, msgsAfterThisOne, numVisibl
 function _fetchAllMsgs(Collections, convoId) {
   const options = {sort: [ [ 'createdAt', 'asc' ] ]};
   return Collections.Messages.find({convoId}, options).fetch();
+}
+
+function _subTrans(LocalState, langCode, convoId) {
+  const msgIds = LocalState.get('translation.msgIds') ? LocalState.get('translation.msgIds') : [];
+  if (langCode) { MsgSubs.subscribe('translations.list', {msgIds, convoId, langCode}); }
+  return null;
+}
+
+function _fetchTranslations(Collections, convoId) {
+  const transArr = Collections.Translations.find({convoId}).fetch();
+  return R.zipObj(transArr.map(item => item.msgId), transArr);
 }
