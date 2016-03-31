@@ -11,17 +11,17 @@ export const composer = ({context, search}, onData) => {
   const teamId = FlowRouter.getParam('teamId');
   const text = LocalState.get('searchText.team.all') ? LocalState.get('searchText.team.all') : '';
 
-  const subsSearch = Meteor.subscribe('search.results', {teamId, text});
-  if (subsSearch.ready()) {
+  const subSearch = Meteor.subscribe('search.results', {teamId, text});
+  if (subSearch.ready()) {
     const selector = { score: { $exists: true } };
     const options = { sort: { score: -1 } };
 
-    const msgs = Collections.Messages.find(selector, options).fetch();
-    const convos = Collections.Convos.find(selector, options).fetch();
-    const users = Meteor.users.find(selector, options).fetch();
+    const resultMsgs = Collections.Messages.find(selector, options).fetch();
+    const resultConvos = Collections.Convos.find(selector, options).fetch();
+    const resultUsers = Meteor.users.find(selector, options).fetch();
 
     onData(null, {
-      msgs, convos, users
+      msgs: resultMsgs, convos: resultConvos, users: resultUsers
     });
   }
   else {

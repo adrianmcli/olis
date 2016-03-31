@@ -30,7 +30,7 @@ export default function () {
       }
 
       const msg = new Message();
-      msg.set({text, userId, username: user.username, convoId});
+      msg.set({text, userId, username: user.username, convoId, convoName: convo.name});
       msg.save();
 
       // Update convo with last msg text

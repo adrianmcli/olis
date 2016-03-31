@@ -35,7 +35,7 @@ export default class ModalResultsList extends React.Component {
           <ResultItem
             key={msg._id}
             type='msg'
-            title='Hiring 2016'
+            title={msg.convoName}
             author={msg.username}
             msg={msg.text}
           />
