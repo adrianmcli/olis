@@ -18,14 +18,26 @@ export const depsMapper = (context, actions) => ({
 export const composer = ({context}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
   const convoId = FlowRouter.getParam('convoId');
+  const msgId = FlowRouter.getParam('msgId');
 
   // If you only see loading, make sure you added the collection to the index
   const userId = Meteor.userId();
   const user = Meteor.user();
   const langCode = user ? user.translationLangCode : undefined;
 
-  if (convoId) {
+  if (convoId && !msgId) {
     _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onData, userId);
+  }
+  else if (convoId && msgId) {
+    const subOlder = Meteor.subscribe('msgs.searchResult.older', {msgId, currentNumOlder: 0});
+    const subNewer = Meteor.subscribe('msgs.searchResult.newer', {msgId, currentNumNewer: 0});
+
+    if (subOlder.ready() && subNewer.ready()) {
+      const msgs = _fetchAllMsgs(Collections, convoId);
+      console.log('search');
+      console.table(msgs);
+      // onData(null, {msgs});
+    }
   }
 };
 
@@ -80,7 +92,6 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
   const currentNumMsgs = LocalState.get(`loadMore.convo.${convoId}.numMsgs`) ?
     LocalState.get(`loadMore.convo.${convoId}.numMsgs`) : 0;
 
-  // Subscribe
   const sub = MsgSubs.subscribe('msgs.list', {convoId, currentNumMsgs});
   const subTrans = _subTrans(LocalState, langCode, convoId);
 
