@@ -46,7 +46,7 @@ export const composer = ({context}, onData) => {
 
       onData(null, {
         convo,
-        msgId,
+        searchMsgId: msgId,
         msgs,
         userId,
         convoUsers,

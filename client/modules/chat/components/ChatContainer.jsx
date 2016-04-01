@@ -40,7 +40,7 @@ export default class ChatContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { convo, msgs, userId } = this.props;
+    const { convo, msgs, userId, searchMsgId } = this.props;
     const { distFromBot } = this.state;
 
     if (convo && prevProps.convo && !R.isEmpty(msgs)) {
@@ -60,7 +60,10 @@ export default class ChatContainer extends React.Component {
       const isMoreNewMsgsThanOne = msgs.length - prevProps.msgs.length > 1;
       const isOneNewMsg = msgs.length - prevProps.msgs.length === 1;
 
-      if (switchedConvo) { this.scrollToBottom(); return null; }
+      const needsCentering = Boolean(searchMsgId);
+
+      if (switchedConvo && !needsCentering) { this.scrollToBottom(); return null; }
+      else if (switchedConvo && needsCentering) { this.centerViewOnMsg(searchMsgId); return null; }
       else if (comingFromBottom && isOneNewMsg && lastMsgMine) { this.scrollToBottom(); return null; }
       else if (comingFromTop) { this.maintainView(); return null; }
       else if (comingFromBottom && isMoreNewMsgsThanOne) { return null; }
@@ -92,6 +95,14 @@ export default class ChatContainer extends React.Component {
     const ele = this._getContainerEle();
     const targetVal = ele[0].scrollHeight - ele.outerHeight() - this.state.distFromBot;
     ele.scrollTop(targetVal);
+  }
+
+  centerViewOnMsg(msgId) {
+    const {msgs} = this.props;
+    const index = R.findIndex(R.propEq('_id', msgId))(msgs);
+
+    console.log(`centerViewOnMsg ${index}`);
+    // TODO center the view
   }
 
   renderMsgs() {
