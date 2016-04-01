@@ -122,7 +122,7 @@ export default class ChatContainer extends React.Component {
       msgs,
       title,
       usersListString,
-      loadMore,
+      loadMoreOlder, loadMoreNewer,
       starred,
       addMsg
     } = this.props;
@@ -134,7 +134,7 @@ export default class ChatContainer extends React.Component {
           <GeminiScrollbar>
             <div className="chat-wrapper">
               {convo && convo.numMsgs > msgs.length ?
-                  <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
+                  <div id="load-more-btn" onClick={loadMoreOlder}>Load more messages</div> : null}
               { this.renderMsgs() }
             </div>
           </GeminiScrollbar>

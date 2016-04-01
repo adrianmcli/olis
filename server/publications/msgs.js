@@ -1,7 +1,7 @@
 import {Mongo} from 'meteor/mongo';
 import {Teams, Convos, Messages} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
-import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
 import R from 'ramda';
 import {PUBLISH_INTERVAL} from '/lib/constants/msgs';
 
@@ -56,10 +56,11 @@ export default function () {
   });
 
   const MSGS_SEARCH_RESULT_OLDER = 'msgs.searchResult.older';
-  Meteor.publish(MSGS_SEARCH_RESULT_OLDER, function ({msgId, currentNumOlder}) {
+  Meteor.publish(MSGS_SEARCH_RESULT_OLDER, function ({msgId, oldestMsgId, newestMsgId}) {
     check(arguments[0], {
       msgId: String,
-      currentNumOlder: Number
+      oldestMsgId: Match.Optional(Match.OneOf(undefined, null, String)),
+      newestMsgId: Match.Optional(Match.OneOf(undefined, null, String))
     });
 
     const userId = this.userId;
@@ -70,7 +71,8 @@ export default function () {
     if (!msg) {
 
     }
-    const convo = Convos.findOne(msg.convoId);
+    const convoId = msg.convoId;
+    const convo = Convos.findOne(convoId);
     if (!convo) {
 
     }
@@ -84,62 +86,62 @@ export default function () {
     if (!team.isUserInTeam(this.userId)) {
 
     }
+    if (oldestMsgId) {
+      if (!Messages.findOne(oldestMsgId)) {
 
-    const selector = {convoId: msg.convoId, createdAt: {$lte: msg.createdAt}};
-    const options = {
-      sort: [ [ 'createdAt', 'desc' ] ],
-      limit: currentNumOlder + PUBLISH_INTERVAL
+      }
+    }
+
+    // Find oldest date
+    function _getOldestDate() {
+      if (!oldestMsgId) {
+        const selector = {convoId, createdAt: {$lte: msg.createdAt}};
+        const options = {
+          sort: [ [ 'createdAt', 'desc' ] ],
+          limit: PUBLISH_INTERVAL
+        };
+        const msgs = Messages.find(selector, options).fetch();
+        return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
+      }
+
+      const oldestMsg = Messages.findOne(oldestMsgId);
+      return oldestMsg.createdAt;
+    }
+
+    function _getNewestDate() {
+      if (!newestMsgId) {
+        const selector = {convoId: msg.convoId, createdAt: {$gte: msg.createdAt}};
+        const options = {
+          sort: [ [ 'createdAt', 'asc' ] ],
+          limit: PUBLISH_INTERVAL
+        };
+        const msgs = Messages.find(selector, options).fetch();
+        return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
+      }
+    }
+
+    // Publish older msgs using time threshold
+    let optionsAsc = { sort: [ [ 'createdAt', 'asc' ] ] };
+    const selectorTimeOld = {
+      convoId,
+      createdAt: {$gte: _getOldestDate(), $lte: msg.createdAt}
     };
+    Mongo.Collection._publishCursor(
+      Messages.find(selectorTimeOld, optionsAsc), this, 'searchMessages');
 
+    // Publish newer msgs using time threshold
+    const selectorTimeNew = {
+      convoId,
+      createdAt: {$lte: _getNewestDate(), $gte: msg.createdAt}
+    };
+    Mongo.Collection._publishCursor(
+      Messages.find(selectorTimeNew, optionsAsc), this, 'searchMessages');
+
+    // Users
     const userSelector = {_id: {$in: convo.userIds}};
     const userOptions = {fields: othersFields};
-
-    Mongo.Collection._publishCursor(Messages.find(selector, options), this, 'searchMessages');
     Mongo.Collection._publishCursor(Meteor.users.find(userSelector, userOptions), this, 'users');
-    this.ready();
-  });
 
-  const MSGS_SEARCH_RESULT_NEWER = 'msgs.searchResult.newer';
-  Meteor.publish(MSGS_SEARCH_RESULT_NEWER, function ({msgId, currentNumNewer}) {
-    check(arguments[0], {
-      msgId: String,
-      currentNumNewer: Number
-    });
-
-    const userId = this.userId;
-    if (!userId) {
-
-    }
-    const msg = Messages.findOne(msgId);
-    if (!msg) {
-
-    }
-    const convo = Convos.findOne(msg.convoId);
-    if (!convo) {
-
-    }
-    if (!convo.isUserInConvo) {
-
-    }
-    const team = Teams.findOne(convo.teamId);
-    if (!team) {
-
-    }
-    if (!team.isUserInTeam(this.userId)) {
-
-    }
-
-    const selector = {convoId: msg.convoId, createdAt: {$gte: msg.createdAt}};
-    const options = {
-      sort: [ [ 'createdAt', 'asc' ] ],
-      limit: currentNumNewer + PUBLISH_INTERVAL
-    };
-
-    const userSelector = {_id: {$in: convo.userIds}};
-    const userOptions = {fields: othersFields};
-
-    Mongo.Collection._publishCursor(Messages.find(selector, options), this, 'searchMessages');
-    Mongo.Collection._publishCursor(Meteor.users.find(userSelector, userOptions), this, 'users');
     this.ready();
   });
 }

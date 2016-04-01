@@ -11,10 +11,20 @@ export default {
     });
   },
 
-  loadMore({Collections, LocalState, FlowRouter}) {
+  loadMoreOlder({Collections, LocalState, FlowRouter}) {
     const convoId = FlowRouter.getParam('convoId');
     const convoNumMsgs = Collections.Messages.find({convoId}).count();
     LocalState.set(`loadMore.convo.${convoId}.numMsgs`, convoNumMsgs);
+  },
+
+  loadMoreOlderSearch({Collections, LocalState, FlowRouter}, msgId) {
+    const convoId = FlowRouter.getParam('convoId');
+    LocalState.set(`convo.${convoId}.oldestMsgId`, msgId);
+  },
+
+  loadMoreNewerSearch({Collections, LocalState, FlowRouter}, msgId) {
+    const convoId = FlowRouter.getParam('convoId');
+    LocalState.set(`convo.${convoId}.search.newestMsgId`, msgId);
   },
 
   goToChat({Meteor, FlowRouter}) {
