@@ -108,16 +108,6 @@ function _fetchConvoInfo(convo, Meteor) {
   return {convoUsers: {}, usersListString: null};
 }
 
-function _getConvoName(convo, userId, convoUsers) {
-  if (convo.userIds.length > 0) {
-    if (convo.userIds.length > 2) { return convo.name; }
-
-    const otherUserId = R.filter(id => id !== userId, convo.userIds);
-    return convoUsers[otherUserId].username;
-  }
-  return undefined;
-}
-
 function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onData, userId) {
   const currentNumMsgs = LocalState.get(`loadMore.convo.${convoId}.numMsgs`) ?
     LocalState.get(`loadMore.convo.${convoId}.numMsgs`) : 0;
@@ -145,7 +135,7 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
           const msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, allMsgs);
           const convo = Collections.Convos.findOne(convoId);
           const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
-          const title = _getConvoName(convo, userId, convoUsers);
+          const title = convo.getName(userId, convoUsers);
           const translations = _fetchTranslations(Collections, convoId);
 
           // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
@@ -168,7 +158,7 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
     else {
       const convo = Collections.Convos.findOne(convoId);
       const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
-      const title = _getConvoName(convo, userId, convoUsers);
+      const title = convo.getName(userId, convoUsers);
       const translations = _fetchTranslations(Collections, convoId);
       onData(null, {
         convo,

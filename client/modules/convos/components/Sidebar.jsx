@@ -15,7 +15,7 @@ export default class Sidebar extends React.Component {
 
   renderConversations() {
     const {convos, selectConvo, convoId,
-      lastTimeInConvo, teamUsers, user} = this.props;
+      lastTimeInConvo, teamUsers, user, teamUsersArr} = this.props;
     return (
       <GeminiScrollbar>
       <FlipMove>
@@ -50,19 +50,15 @@ export default class Sidebar extends React.Component {
           unread = unreadCount > 0;
           // console.log(`unreadCount ${convo._id} ${unreadCount}`);
 
-          const _getTitle = () => {
-            if (convo.userIds.length > 2) { return convo.name; }
-
-            const otherUserId = R.filter(id => id !== user._id, convo.userIds);
-            const otherUser = teamUsers[otherUserId];
-            return otherUser ? otherUser.username : 'Default';
-          };
+          // No idea why R.filter doesn't work on an object, even tho it worked on Ramda's website test.
+          const convoUsersArr = R.filter(teamUser => R.contains(teamUser._id, convo.userIds), teamUsersArr);
+          const convoUsers = R.zipObj(convoUsersArr.map(convoUser => convoUser._id), convoUsersArr);
 
           return (
             <ConversationItem
               key={convo._id}
               convoId={convo._id}
-              title={_getTitle()}
+              title={convo.getName(user._id, convoUsers)}
               lastUpdated={convo.updatedAt}
               previewText={convo.lastMsgText}
               username={lastUsername}

@@ -44,7 +44,8 @@ export const composer = ({context}, onData) => {
         convoId,
         lastTimeInConvo,
         teamUsers,
-        user
+        user,
+        teamUsersArr
       });
     }
   }
