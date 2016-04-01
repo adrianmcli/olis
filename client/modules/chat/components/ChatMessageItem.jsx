@@ -63,8 +63,6 @@ export default class ChatMessageItem extends React.Component {
     const {gettingTranslation, isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
 
-    // console.log(`ChatMessageItem RENDER ${content}`);
-
     return (
       <div
         className={'chat-msg-item' + authorClass}
@@ -119,4 +117,5 @@ ChatMessageItem.defaultProps = {
   content: 'Form inputs offer a great opportunity to add some subtle and interesting effects to a web page.',
   timestamp: '5 minutes ago',
   selfAuthor: false,
+  highlight: false
 };

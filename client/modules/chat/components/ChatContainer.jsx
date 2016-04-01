@@ -96,13 +96,15 @@ export default class ChatContainer extends React.Component {
 
   renderMsgs() {
     const {
-      msgs, userId, translations, langCode, convoUsers, translate
+      msgs, userId, translations, langCode, convoUsers, translate, searchMsgId
     } = this.props;
 
     return msgs.map(msg => {
       const otherUser = convoUsers[msg.userId];
       const authorName = otherUser ? otherUser.username : msg.username;
       const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
+      const highlight = searchMsgId ? searchMsgId === msg._id : false;
+
       return (
         <ChatMessageItem
           key={msg._id}
@@ -115,6 +117,7 @@ export default class ChatContainer extends React.Component {
           translation={translations[msg._id] ? translations[msg._id].text : undefined}
           langCode={langCode}
           translate={translate}
+          highlight={highlight}
         />
       );
     });
