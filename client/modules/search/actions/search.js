@@ -42,7 +42,7 @@ export default {
     if (privateConvo) { FlowRouter.go(`/team/${teamId}/convo/${privateConvo._id}`); }
     else {
       const args = {
-        name: `Dummy text. Doesn't matter for private convo.`,
+        name: '', // In a private convo the name displayed is always the other user, unless a non empty string is set.
         userIds: [ userId ],
         teamId
       };

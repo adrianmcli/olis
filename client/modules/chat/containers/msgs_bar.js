@@ -98,16 +98,24 @@ function _fetchConvoInfo(convo, Meteor) {
     const convoUsersArr = Meteor.users.find({_id: {$in: convo.userIds}}).fetch();
     const convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
 
-    const title = convo.name;
-
     const usersListString = convoUsersArr.reduce((prev, curr, index) => {
       if (index > 0) { return `${prev}, ${curr.username}`; }
       return `${curr.username}`;
     }, '');
 
-    return {convoUsers, title, usersListString};
+    return {convoUsers, usersListString};
   }
-  return {convoUsers: {}, title: null, usersListString: null};
+  return {convoUsers: {}, usersListString: null};
+}
+
+function _getConvoName(convo, userId, convoUsers) {
+  if (convo.userIds.length > 0) {
+    if (convo.userIds.length > 2) { return convo.name; }
+
+    const otherUserId = R.filter(id => id !== userId, convo.userIds);
+    return convoUsers[otherUserId].username;
+  }
+  return undefined;
 }
 
 function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onData, userId) {
@@ -136,7 +144,8 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
         if (xMsgFromBotIsNewer) {
           const msgs = R.filter(msg => msg.createdAt >= visibleAfterDate, allMsgs);
           const convo = Collections.Convos.findOne(convoId);
-          const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
+          const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
+          const title = _getConvoName(convo, userId, convoUsers);
           const translations = _fetchTranslations(Collections, convoId);
 
           // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
@@ -157,19 +166,20 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
       // log(convo, LocalState, isNewConvo, allMsgs, msgsAfterThisOne, numVisibleMsgs);
     }
     else {
-      // const convo = Collections.Convos.findOne(convoId);
-      // const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
-      // const translations = _fetchTranslations(Collections, convoId);
-      // onData(null, {
-      //   convo,
-      //   msgs: [],
-      //   userId,
-      //   convoUsers,
-      //   title,
-      //   usersListString,
-      //   langCode,
-      //   translations
-      // });
+      const convo = Collections.Convos.findOne(convoId);
+      const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
+      const title = _getConvoName(convo, userId, convoUsers);
+      const translations = _fetchTranslations(Collections, convoId);
+      onData(null, {
+        convo,
+        msgs: [],
+        userId,
+        convoUsers,
+        title,
+        usersListString,
+        langCode,
+        translations
+      });
     }
   }
 }
