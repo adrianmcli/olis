@@ -31,10 +31,27 @@ export const composer = ({context}, onData) => {
   else if (convoId && msgId) {
     const subOlder = Meteor.subscribe('msgs.searchResult.older', {msgId, currentNumOlder: 0});
     const subNewer = Meteor.subscribe('msgs.searchResult.newer', {msgId, currentNumNewer: 0});
+    const subTrans = _subTrans(LocalState, langCode, convoId);
 
-    if (subOlder.ready() && subNewer.ready()) {
-      const msgs = _fetchAllMsgs(Collections, convoId);
+
+    if (subOlder.ready() && subNewer.ready() && subTrans.ready()) {
+      const msgs = _fetchMsgs(Collections.SearchMessages, convoId);
+      const convo = Collections.Convos.findOne(convoId);
+      const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
+      const translations = _fetchTranslations(Collections, convoId);
+
       console.table(msgs);
+
+      onData(null, {
+        convo,
+        msgs,
+        userId,
+        convoUsers,
+        title,
+        usersListString,
+        langCode,
+        translations
+      });
     }
   }
 };
@@ -54,9 +71,9 @@ function log(convo, LocalState, isNewConvo, allMsgs, msgsAfterThisOne, numVisibl
   console.log(`allMsgs ${allMsgs.length}, numVisibleMsgs ${numVisibleMsgs}`);
 }
 
-function _fetchAllMsgs(Collections, convoId) {
+function _fetchMsgs(MsgCol, convoId) {
   const options = {sort: [ [ 'createdAt', 'asc' ] ]};
-  return Collections.Messages.find({convoId}, options).fetch();
+  return MsgCol.find({convoId}, options).fetch();
 }
 
 function _subTrans(LocalState, langCode, convoId) {
@@ -94,7 +111,7 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
   const subTrans = _subTrans(LocalState, langCode, convoId);
 
   if (sub.ready() && subTrans.ready()) {
-    const allMsgs = _fetchAllMsgs(Collections, convoId);
+    const allMsgs = _fetchMsgs(Collections.Messages, convoId);
 
     // Filter msgs to save render time
     if (!R.isEmpty(allMsgs)) {
