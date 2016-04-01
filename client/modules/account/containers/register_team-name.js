@@ -1,3 +1,4 @@
+import React from 'react';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import CreateAccountTeamName from '../components/onboarding/CreateAccountTeamName.jsx';
 
@@ -17,6 +18,8 @@ export const composer = ({context}, onData) => {
 };
 
 export default composeAll(
-  composeWithTracker(composer),
+  composeWithTracker(composer, function () {
+    return React.createElement('div', null);
+  }),
   useDeps(depsMapper)
 )(CreateAccountTeamName);

@@ -62,8 +62,6 @@ export default class ChatMessageItemContextMenu extends React.Component {
         />
         : null
       }
-        <MenuItem primaryText="Copy" />
-        <MenuItem primaryText="Lorem Ipsum" />
       </IconMenu>
     );
   }

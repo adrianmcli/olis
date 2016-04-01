@@ -17,6 +17,7 @@ export default class NotesHeader extends React.Component {
     const iconColor = 'rgba(0,0,0,0.8)';
     return (
       <div className="notes-header">
+        <div className="notes-status">Last Updated: 23 min ago</div>
         <div className="notes-icon-bar">
           <IconButton tooltip="Share">
             <ShareIcon color={iconColor}/>

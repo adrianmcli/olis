@@ -1,3 +1,4 @@
+import React from 'react';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import {buildRegExp} from '/client/modules/core/libs/search';
 import ChatMembers from '../components/ChatMenuItems/ChatMembers.jsx';
@@ -52,6 +53,8 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
 };
 
 export default composeAll(
-  composeWithTracker(composer),
+  composeWithTracker(composer, function () {
+    return React.createElement('div', null);
+  }),
   useDeps(depsMapper)
 )(ChatMembers);

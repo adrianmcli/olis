@@ -1,3 +1,4 @@
+import React from 'react';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import HeaderNewConversation from '../components/HeaderNewConversation.jsx';
 import {buildRegExp} from '/client/modules/core/libs/search';
@@ -61,6 +62,8 @@ export const composer = ({context}, onData) => {
 };
 
 export default composeAll(
-  composeWithTracker(composer),
+  composeWithTracker(composer, function () {
+    return React.createElement('div', null);
+  }),
   useDeps(depsMapper)
 )(HeaderNewConversation);
