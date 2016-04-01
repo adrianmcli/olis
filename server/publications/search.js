@@ -5,6 +5,13 @@ import {check} from 'meteor/check';
 import R from 'ramda';
 import {othersFields} from './users';
 
+const buildRegExp = (searchText) => {
+  let words = searchText.trim().split(/[ \-\:]+/);
+  let exps = words.map(word => `(?=.*${word})`);
+  let fullExp = exps.join('') + '.+';
+  return new RegExp(fullExp, 'i');
+};
+
 export default function () {
   const SEARCH_RESULTS = 'search.results';
   Meteor.publish(SEARCH_RESULTS, function ({teamId, text}) {
@@ -35,7 +42,8 @@ export default function () {
       };
       const options = {
         fields: { score: { $meta: 'textScore' } },
-        sort: { score: { $meta: 'textScore' } }
+        sort: { score: { $meta: 'textScore' } },
+        limit: 10
       };
       Mongo.Collection._publishCursor(
         Messages.find(selector, options), this, 'searchMessages');
@@ -48,19 +56,31 @@ export default function () {
       };
       const options = {
         fields: { score: { $meta: 'textScore' } },
-        sort: { score: { $meta: 'textScore' } }
+        sort: { score: { $meta: 'textScore' } },
+        limit: 10
       };
       Mongo.Collection._publishCursor(
         Convos.find(selector, options), this, 'convos');
     };
 
     const _getUsers = () => {
+      const regExp = buildRegExp(text);
       const selector = {
-        $or: [
-          {[`roles.${teamId}`]: 'admin'},
-          {[`roles.${teamId}`]: 'member'}
-        ],
-        $text: { $search: text }
+        $and: [
+          {
+            $or: [
+              {[`roles.${teamId}`]: 'admin'},
+              {[`roles.${teamId}`]: 'member'}
+            ]
+          },
+          {
+            $or: [
+              {username: regExp},
+              {'emails.address': regExp}
+            ]
+          }
+        ]
+        // $text: { $search: text }
       };
 
       const fieldsObj = R.merge({
@@ -69,7 +89,8 @@ export default function () {
 
       const options = {
         fields: fieldsObj,
-        sort: { score: { $meta: 'textScore' } }
+        sort: { score: { $meta: 'textScore' } },
+        limit: 10
       };
       Mongo.Collection._publishCursor(
         Meteor.users.find(selector, options), this, 'users');
