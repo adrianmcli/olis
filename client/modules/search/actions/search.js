@@ -39,12 +39,18 @@ export default {
         { userIds: { $all: [ userId, Meteor.userId() ] } }
       ]
     });
-    if (privateConvo) {
-      console.log('private convo exists');
-      FlowRouter.go(`/team/${teamId}/convo/${privateConvo._id}`);
-    }
+    if (privateConvo) { FlowRouter.go(`/team/${teamId}/convo/${privateConvo._id}`); }
     else {
-      console.log('no privte convo, so make one');
+      const user = Meteor.users.findOne(userId);
+      const args = {
+        name: user.username,
+        userIds: [ userId ],
+        teamId
+      };
+      Meteor.call('convos.add', args, (err, res) => {
+        if (err) { alert(err); }
+        else { FlowRouter.go(`/team/${teamId}/convo/${res}`); }
+      });
     }
   },
 
