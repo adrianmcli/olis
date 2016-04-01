@@ -35,7 +35,7 @@ export const composer = ({context}, onData) => {
     const oldestMsgId = LocalState.get(`convo.${convoId}.oldestMsgId`);
     const newestMsgId = LocalState.get(`convo.${convoId}.newestMsgId`);
 
-    const subSearchMsgs = Meteor.subscribe('msgs.searchResult.older', {msgId, oldestMsgId, newestMsgId});
+    const subSearchMsgs = Meteor.subscribe('msgs.searchResult', {msgId, oldestMsgId, newestMsgId});
     const subTrans = _subTrans(LocalState, langCode, convoId);
 
     if (subSearchMsgs.ready() && subTrans.ready()) {

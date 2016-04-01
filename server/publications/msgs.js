@@ -55,7 +55,7 @@ export default function () {
     ];
   });
 
-  const MSGS_SEARCH_RESULT_OLDER = 'msgs.searchResult.older';
+  const MSGS_SEARCH_RESULT_OLDER = 'msgs.searchResult';
   Meteor.publish(MSGS_SEARCH_RESULT_OLDER, function ({msgId, oldestMsgId, newestMsgId}) {
     check(arguments[0], {
       msgId: String,
