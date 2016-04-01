@@ -41,9 +41,8 @@ export default {
     });
     if (privateConvo) { FlowRouter.go(`/team/${teamId}/convo/${privateConvo._id}`); }
     else {
-      const user = Meteor.users.findOne(userId);
       const args = {
-        name: user.username,
+        name: `Dummy text. Doesn't matter for private convo.`,
         userIds: [ userId ],
         teamId
       };
