@@ -28,9 +28,22 @@ export default {
     FlowRouter.go(`/team/${teamId}/convo/${convoId}`);
   },
 
-  'select.user'({FlowRouter}, userId) {
+  'select.user'({Meteor, Collections, FlowRouter}, userId) {
     // TODO go to your private convo with them.
     // What if you don't have one? Start one.
+
+    const privateConvo = Collections.Convos.findOne({
+      $and: [
+        { userIds: { $size: 2 } },
+        { userIds: { $all: [ userId, Meteor.userId() ] } }
+      ]
+    });
+    if (privateConvo) {
+      console.log('private convo exists');
+    }
+    else {
+      console.log('no privte convo, so make one');
+    }
   },
 
   'select.msg'({FlowRouter}, convoId, msgId) {
