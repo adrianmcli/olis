@@ -19,6 +19,7 @@ export default class ChatContainer extends React.Component {
     this.throttledFunc = _.throttle(() => this.incVisible.bind(this)(), 500);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
+    this.messageRefs = {};
   }
 
   componentDidMount() {
@@ -37,6 +38,7 @@ export default class ChatContainer extends React.Component {
     const distFromBot = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
     const distFromTop = ele.scrollTop();
     this.setState({ distFromBot, distFromTop });
+    this.messageRefs = {};
   }
 
   componentDidUpdate(prevProps) {
@@ -96,11 +98,19 @@ export default class ChatContainer extends React.Component {
   }
 
   centerViewOnMsg(msgId) {
-    const {msgs} = this.props;
+    const { msgs } = this.props;
     const index = R.findIndex(R.propEq('_id', msgId))(msgs);
+    const msgsAbove = R.take(index - 1, msgs);
+    const heightOfMsgsAbove = R.reduce( (accum, msg) => {
+      const msgRef = this.messageRefs[msg._id];
+      return accum + msgRef.getHeight();
+    }, 0, msgsAbove);
 
-    console.log(`centerViewOnMsg ${index}`);
-    // TODO center the view
+    const ele = this._getContainerEle();
+    ele.scrollTop(heightOfMsgsAbove);
+
+    const targetMsgRef = this.messageRefs[msgId];
+    targetMsgRef.triggerHighlight();
   }
 
   renderMsgs() {
@@ -127,6 +137,7 @@ export default class ChatContainer extends React.Component {
           langCode={langCode}
           translate={translate}
           highlight={highlight}
+          ref={x => this.messageRefs[msg._id] = x}
         />
       );
     });

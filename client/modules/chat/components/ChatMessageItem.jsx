@@ -42,6 +42,20 @@ export default class ChatMessageItem extends React.Component {
     }
   }
 
+  getHeight() {
+    return $(this._container).outerHeight();
+  }
+
+  triggerHighlight() {
+    const ele = $(this._container);
+    ele.removeAttr('style');
+    ele.css('background-color', '#FFDC00');
+    setTimeout(() => {
+      ele.css('transition', `background-color 2500ms`);
+      ele.css('background-color', 'transparent');
+    }, 2500);
+  }
+
   openMenu() {
     this.setState({menuOpen: true});
   }
@@ -69,6 +83,7 @@ export default class ChatMessageItem extends React.Component {
         // onMouseEnter={this.handleMouseEnter.bind(this)}
         onMouseOver={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
+        ref={ x => this._container = x }
       >
         <div className="chat-primary">
           <div className="chat-avatar">
