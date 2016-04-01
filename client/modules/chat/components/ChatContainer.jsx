@@ -44,7 +44,7 @@ export default class ChatContainer extends React.Component {
     const { distFromBot } = this.state;
 
     if (convo && prevProps.convo && !R.isEmpty(msgs)) {
-
+      const atBot = distFromBot <= 0;
       const switchedConvo = convo._id !== prevProps.convo._id;
       const isMoreMsgs = msgs.length > prevProps.msgs.length;
 
@@ -64,6 +64,7 @@ export default class ChatContainer extends React.Component {
       else if (comingFromBottom && isOneNewMsg && lastMsgMine) { this.scrollToBottom(); return null; }
       else if (comingFromTop) { this.maintainView(); return null; }
       else if (comingFromBottom && isMoreNewMsgsThanOne) { return null; }
+      else if (atBot && comingFromBottom && isOneNewMsg) { this.maintainView(); return null; }
     }
   }
 
