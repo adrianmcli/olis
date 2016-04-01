@@ -84,12 +84,12 @@ export default function () {
       };
 
       const fieldsObj = R.merge({
-        score: { $meta: 'textScore' }
+        // score: { $meta: 'textScore' }
       }, othersFields);
 
       const options = {
         fields: fieldsObj,
-        sort: { score: { $meta: 'textScore' } },
+        // sort: { score: { $meta: 'textScore' } },
         limit: 10
       };
       Mongo.Collection._publishCursor(
