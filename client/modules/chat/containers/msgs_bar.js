@@ -156,5 +156,20 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
       }
       // log(convo, LocalState, isNewConvo, allMsgs, msgsAfterThisOne, numVisibleMsgs);
     }
+    else {
+      // const convo = Collections.Convos.findOne(convoId);
+      // const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
+      // const translations = _fetchTranslations(Collections, convoId);
+      // onData(null, {
+      //   convo,
+      //   msgs: [],
+      //   userId,
+      //   convoUsers,
+      //   title,
+      //   usersListString,
+      //   langCode,
+      //   translations
+      // });
+    }
   }
 }

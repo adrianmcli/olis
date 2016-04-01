@@ -32,6 +32,7 @@ export default {
     // TODO go to your private convo with them.
     // What if you don't have one? Start one.
 
+    const teamId = FlowRouter.getParam('teamId');
     const privateConvo = Collections.Convos.findOne({
       $and: [
         { userIds: { $size: 2 } },
@@ -40,6 +41,7 @@ export default {
     });
     if (privateConvo) {
       console.log('private convo exists');
+      FlowRouter.go(`/team/${teamId}/convo/${privateConvo._id}`);
     }
     else {
       console.log('no privte convo, so make one');
