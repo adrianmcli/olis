@@ -20,13 +20,11 @@ export default {
   loadMoreOlderSearch({Collections, LocalState, FlowRouter}, oldestMsgId) {
     const convoId = FlowRouter.getParam('convoId');
     LocalState.set(`convo.${convoId}.oldestMsgId`, oldestMsgId);
-    console.log(`oldestMsgId`);
   },
 
   loadMoreNewerSearch({Collections, LocalState, FlowRouter}, newestMsgId) {
     const convoId = FlowRouter.getParam('convoId');
     LocalState.set(`convo.${convoId}.newestMsgId`, newestMsgId);
-    console.log(`newestMsgId ${newestMsgId}`);
   },
 
   goToChat({Meteor, FlowRouter}) {
