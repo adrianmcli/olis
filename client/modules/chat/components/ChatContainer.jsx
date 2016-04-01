@@ -57,10 +57,13 @@ export default class ChatContainer extends React.Component {
 
       const comingFromTop = isMoreMsgs && isOlder;
       const comingFromBottom = isMoreMsgs && isNewer;
+      const isMoreNewMsgsThanOne = msgs.length - prevProps.msgs.length > 1;
+      const isOneNewMsg = msgs.length - prevProps.msgs.length === 1;
 
-      if (switchedConvo) { this.scrollToBottom(); }
-      else if (comingFromBottom && lastMsgMine) { this.scrollToBottom(); }
-      else if (comingFromTop || distFromBot <= 0) { this.maintainView(); }
+      if (switchedConvo) { this.scrollToBottom(); return null; }
+      else if (comingFromBottom && isOneNewMsg && lastMsgMine) { this.scrollToBottom(); return null; }
+      else if (comingFromTop) { this.maintainView(); return null; }
+      else if (comingFromBottom && isMoreNewMsgsThanOne) { return null; }
     }
   }
 
