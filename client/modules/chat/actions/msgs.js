@@ -4,7 +4,11 @@ import {VISIBLE_INTERVAL} from '/lib/constants/msgs';
 
 export default {
   add({Meteor, Collections, FlowRouter}, text) {
+    const teamId = FlowRouter.getParam('teamId');
     const convoId = FlowRouter.getParam('convoId');
+    const msgId = FlowRouter.getParam('msgId');
+    if (msgId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
+
     Meteor.call('msgs.add', {text, convoId}, (err, res) => {
       if (err) { alert(err); }
       // else { console.log(res); }
