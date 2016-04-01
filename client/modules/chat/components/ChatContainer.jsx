@@ -161,8 +161,9 @@ export default class ChatContainer extends React.Component {
       </div>
     );
 
+    const hasMsgs = msgs.length > 0;
     const hasMoreOldMsgs = convo && convo.numMsgs > msgs.length;
-    const hasMoreNewMsgs = true;
+    const hasMoreNewMsgs = hasMsgs;
 
     return (
       <div id="chat-container">
