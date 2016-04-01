@@ -19,7 +19,7 @@ export const composer = ({context, search}, onData) => {
     const selector = { score: { $exists: true } };
     const options = { sort: { score: -1 } };
 
-    const resultMsgs = Collections.Messages.find(selector, options).fetch();
+    const resultMsgs = Collections.SearchMessages.find(selector, options).fetch();
     const resultConvos = Collections.Convos.find(selector, options).fetch();
     const resultUsers = Meteor.users.find(selector, options).fetch();
 

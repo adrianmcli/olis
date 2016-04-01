@@ -7,6 +7,9 @@ export default {
     const teamId = FlowRouter.getParam('teamId');
     const convoId = FlowRouter.getParam('convoId');
     const msgId = FlowRouter.getParam('msgId');
+
+    // Typed a msg while on search route, take them back to regular convo route
+    // With their view at the newest msg.
     if (msgId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
 
     Meteor.call('msgs.add', {text, convoId}, (err, res) => {

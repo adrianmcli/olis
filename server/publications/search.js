@@ -1,3 +1,4 @@
+import {Mongo} from 'meteor/mongo';
 import {Teams, Messages, Convos} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
@@ -36,7 +37,8 @@ export default function () {
         fields: { score: { $meta: 'textScore' } },
         sort: { score: { $meta: 'textScore' } }
       };
-      return Messages.find(selector, options);
+      Mongo.Collection._publishCursor(
+        Messages.find(selector, options), this, 'searchMessages');
     };
 
     const _getConvos = () => {
@@ -48,7 +50,8 @@ export default function () {
         fields: { score: { $meta: 'textScore' } },
         sort: { score: { $meta: 'textScore' } }
       };
-      return Convos.find(selector, options);
+      Mongo.Collection._publishCursor(
+        Convos.find(selector, options), this, 'convos');
     };
 
     const _getUsers = () => {
@@ -68,9 +71,14 @@ export default function () {
         fields: fieldsObj,
         sort: { score: { $meta: 'textScore' } }
       };
-      return Meteor.users.find(selector, options);
+      Mongo.Collection._publishCursor(
+        Meteor.users.find(selector, options), this, 'users');
     };
 
-    return [ _getMsgs(), _getConvos(), _getUsers() ];
+    _getMsgs();
+    _getConvos();
+    _getUsers();
+
+    this.ready();
   });
 }
