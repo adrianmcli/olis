@@ -34,9 +34,7 @@ export const composer = ({context}, onData) => {
 
     if (subOlder.ready() && subNewer.ready()) {
       const msgs = _fetchAllMsgs(Collections, convoId);
-      console.log('search');
       console.table(msgs);
-      // onData(null, {msgs});
     }
   }
 };

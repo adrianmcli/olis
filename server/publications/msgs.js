@@ -1,8 +1,14 @@
+import {Mongo} from 'meteor/mongo';
 import {Teams, Convos, Messages} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import R from 'ramda';
 import {PUBLISH_INTERVAL} from '/lib/constants/msgs';
+
+const othersFields = {
+  username: 1,
+  roles: 1
+};
 
 export default function () {
   const MSGS_LIST = 'msgs.list';
@@ -42,11 +48,6 @@ export default function () {
     // when newly created msgs come in
     const selectorTime = {convoId, createdAt: {$gte: oldestDate}};
     let options = { sort: [ [ 'createdAt', 'asc' ] ] };
-
-    const othersFields = {
-      username: 1,
-      roles: 1
-    };
 
     return [
       Messages.find(selectorTime, options),
@@ -89,8 +90,12 @@ export default function () {
       sort: [ [ 'createdAt', 'desc' ] ],
       limit: currentNumOlder + PUBLISH_INTERVAL
     };
-    return Messages.find(selector, options);
-
+    // return [
+    //   Messages.find(selector, options),
+    //   Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields})
+    // ];
+    Mongo.Collection._publishCursor(Messages.find(selector, options), this, 'searchMessages');
+    this.ready();
   });
 
   const MSGS_SEARCH_RESULT_NEWER = 'msgs.searchResult.newer';
@@ -128,8 +133,11 @@ export default function () {
       sort: [ [ 'createdAt', 'asc' ] ],
       limit: currentNumNewer + PUBLISH_INTERVAL
     };
-    return Messages.find(selector, options);
-
+    // return [
+    //   Messages.find(selector, options),
+    //   Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields})
+    // ];
+    Mongo.Collection._publishCursor(Messages.find(selector, options), this, 'searchMessages');
+    this.ready();
   });
-
 }
