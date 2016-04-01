@@ -155,22 +155,30 @@ export default class ChatContainer extends React.Component {
       addMsg
     } = this.props;
 
+    const loadMoreBtn = (onClick) => (
+      <div className="load-more-btn" onClick={onClick}>
+        Load more messages
+      </div>
+    );
+
+    const hasMoreOldMsgs = convo && convo.numMsgs > msgs.length;
+    const hasMoreNewMsgs = true;
+
     return (
       <div id="chat-container">
         <ChatHeader title={title} usersListString={usersListString} starred={starred} />
         <div id="chat-msg-area" ref={(x) => this._container = x}>
           <GeminiScrollbar>
             <div className="chat-wrapper">
-              {convo && convo.numMsgs > msgs.length ?
-                  <div id="load-more-btn" onClick={loadMoreOlder}>Load more messages</div> : null}
+              {hasMoreOldMsgs ? loadMoreBtn(loadMoreOlder) : null}
 
-              {msgs.length > 0 ?
-                <button onClick={loadMoreOlderSearch.bind(null, msgs[0]._id)}>load more old</button> : null}
+              {hasMoreOldMsgs ?
+                loadMoreBtn(loadMoreOlderSearch.bind(null, msgs[0]._id)) : null}
 
               { this.renderMsgs() }
 
-              {msgs.length > 0 ?
-                <button onClick={loadMoreNewerSearch.bind(null, R.last(msgs)._id)}>load more new</button> : null}
+              {hasMoreNewMsgs ?
+                loadMoreBtn(loadMoreNewerSearch.bind(null, R.last(msgs)._id)) : null}
             </div>
           </GeminiScrollbar>
         </div>
