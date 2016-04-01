@@ -41,9 +41,13 @@ export const composer = ({context}, onData) => {
     if (subSearchMsgs.ready() && subTrans.ready()) {
       const msgs = _fetchMsgs(Collections.SearchMessages, convoId);
       const convo = Collections.Convos.findOne(convoId);
-      const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
+      const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
+      const title = convo.getName(userId, convoUsers);
       const translations = _fetchTranslations(Collections, convoId);
       const needsCentering = !oldestMsgId && !newestMsgId; // It's a new search, so center it
+
+      const showLoadOldBtn = convo.firstMsgCreatedAt < msgs[0].createdAt;
+      const showLoadNewBtn = convo.lastMsgCreatedAt > R.last(msgs).createdAt;
 
       onData(null, {
         convo,
@@ -55,7 +59,9 @@ export const composer = ({context}, onData) => {
         usersListString,
         langCode,
         translations,
-        needsCentering
+        needsCentering,
+        showLoadOldBtn,
+        showLoadNewBtn
       });
     }
   }
