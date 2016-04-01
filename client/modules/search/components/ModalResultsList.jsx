@@ -10,7 +10,7 @@ export default class ModalResultsList extends React.Component {
   render() {
     const {
       msgs, users, convos, notes,
-      onClickConvo,
+      onClickConvo, onClickMsg,
       closeModal
     } = this.props;
     const isResultsEmpty = () => R.isEmpty(msgs) && R.isEmpty(users) &&
@@ -50,6 +50,7 @@ export default class ModalResultsList extends React.Component {
             author={msg.username}
             msg={msg.text}
             closeModal={closeModal}
+            onClick={onClickMsg.bind(null, msg.convoId, msg._id)}
           />
         )}
       </List>

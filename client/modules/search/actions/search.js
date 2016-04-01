@@ -34,6 +34,7 @@ export default {
   },
 
   'select.msg'({FlowRouter}, convoId, msgId) {
-    // TODO Jump to the convo and msg
+    const teamId = FlowRouter.getParam('teamId');
+    FlowRouter.go(`/team/${teamId}/convo/${convoId}/msg/${msgId}`);
   }
 };

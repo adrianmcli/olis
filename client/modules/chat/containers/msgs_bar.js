@@ -43,6 +43,7 @@ export const composer = ({context}, onData) => {
       const convo = Collections.Convos.findOne(convoId);
       const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
       const translations = _fetchTranslations(Collections, convoId);
+      const needsCentering = !oldestMsgId && !newestMsgId; // It's a new search, so center it
 
       onData(null, {
         convo,
@@ -53,7 +54,8 @@ export const composer = ({context}, onData) => {
         title,
         usersListString,
         langCode,
-        translations
+        translations,
+        needsCentering
       });
     }
   }
