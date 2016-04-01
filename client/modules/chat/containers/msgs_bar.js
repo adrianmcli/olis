@@ -12,6 +12,8 @@ export const depsMapper = (context, actions) => ({
   actions: () => actions,
   addMsg: actions.msgs.add,
   loadMoreOlder: actions.msgs.loadMoreOlder,
+  loadMoreOlderSearch: actions.msgs.loadMoreOlderSearch,
+  loadMoreNewerSearch: actions.msgs.loadMoreNewerSearch,
   translate: actions.translation.get,
   incrementNumVisibleMsgs: actions.msgs.incrementNumVisible
 });
@@ -30,7 +32,10 @@ export const composer = ({context}, onData) => {
     _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onData, userId);
   }
   else if (convoId && msgId) {
-    const subSearchMsgs = Meteor.subscribe('msgs.searchResult.older', {msgId});
+    const oldestMsgId = LocalState.get(`convo.${convoId}.oldestMsgId`);
+    const newestMsgId = LocalState.get(`convo.${convoId}.newestMsgId`);
+
+    const subSearchMsgs = Meteor.subscribe('msgs.searchResult.older', {msgId, oldestMsgId, newestMsgId});
     const subTrans = _subTrans(LocalState, langCode, convoId);
 
     if (subSearchMsgs.ready() && subTrans.ready()) {

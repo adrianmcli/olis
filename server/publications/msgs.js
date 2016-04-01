@@ -92,32 +92,37 @@ export default function () {
       }
     }
 
-    // Find oldest date
     function _getOldestDate() {
-      if (!oldestMsgId) {
-        const selector = {convoId, createdAt: {$lte: msg.createdAt}};
-        const options = {
-          sort: [ [ 'createdAt', 'desc' ] ],
-          limit: PUBLISH_INTERVAL
-        };
-        const msgs = Messages.find(selector, options).fetch();
-        return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
-      }
+      const _getSelector = () => {
+        if (!oldestMsgId) { return {convoId, createdAt: {$lte: msg.createdAt}}; }
 
-      const oldestMsg = Messages.findOne(oldestMsgId);
-      return oldestMsg.createdAt;
+        const oldestMsg = Messages.findOne(oldestMsgId);
+        return {convoId, createdAt: {$lte: oldestMsg.createdAt}};
+      };
+
+      const options = {
+        sort: [ [ 'createdAt', 'desc' ] ],
+        limit: PUBLISH_INTERVAL
+      };
+
+      const msgs = Messages.find(_getSelector(), options).fetch();
+      return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
     }
 
     function _getNewestDate() {
-      if (!newestMsgId) {
-        const selector = {convoId: msg.convoId, createdAt: {$gte: msg.createdAt}};
-        const options = {
-          sort: [ [ 'createdAt', 'asc' ] ],
-          limit: PUBLISH_INTERVAL
-        };
-        const msgs = Messages.find(selector, options).fetch();
-        return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
-      }
+      const _getSelector = () => {
+        if (!newestMsgId) { return {convoId: msg.convoId, createdAt: {$gte: msg.createdAt}}; }
+
+        const newestMsg = Messages.findOne(newestMsgId);
+        return {convoId, createdAt: {$gte: newestMsg.createdAt}};
+      };
+      const options = {
+        sort: [ [ 'createdAt', 'asc' ] ],
+        limit: PUBLISH_INTERVAL
+      };
+
+      const msgs = Messages.find(_getSelector(), options).fetch();
+      return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
     }
 
     // Publish older msgs using time threshold
