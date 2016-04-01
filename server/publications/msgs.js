@@ -90,11 +90,12 @@ export default function () {
       sort: [ [ 'createdAt', 'desc' ] ],
       limit: currentNumOlder + PUBLISH_INTERVAL
     };
-    // return [
-    //   Messages.find(selector, options),
-    //   Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields})
-    // ];
+
+    const userSelector = {_id: {$in: convo.userIds}};
+    const userOptions = {fields: othersFields};
+
     Mongo.Collection._publishCursor(Messages.find(selector, options), this, 'searchMessages');
+    Mongo.Collection._publishCursor(Meteor.users.find(userSelector, userOptions), this, 'users');
     this.ready();
   });
 
@@ -133,11 +134,12 @@ export default function () {
       sort: [ [ 'createdAt', 'asc' ] ],
       limit: currentNumNewer + PUBLISH_INTERVAL
     };
-    // return [
-    //   Messages.find(selector, options),
-    //   Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields})
-    // ];
+
+    const userSelector = {_id: {$in: convo.userIds}};
+    const userOptions = {fields: othersFields};
+
     Mongo.Collection._publishCursor(Messages.find(selector, options), this, 'searchMessages');
+    Mongo.Collection._publishCursor(Meteor.users.find(userSelector, userOptions), this, 'users');
     this.ready();
   });
 }

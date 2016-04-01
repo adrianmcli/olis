@@ -33,17 +33,15 @@ export const composer = ({context}, onData) => {
     const subNewer = Meteor.subscribe('msgs.searchResult.newer', {msgId, currentNumNewer: 0});
     const subTrans = _subTrans(LocalState, langCode, convoId);
 
-
     if (subOlder.ready() && subNewer.ready() && subTrans.ready()) {
       const msgs = _fetchMsgs(Collections.SearchMessages, convoId);
       const convo = Collections.Convos.findOne(convoId);
       const {convoUsers, title, usersListString} = _fetchConvoInfo(convo, Meteor);
       const translations = _fetchTranslations(Collections, convoId);
 
-      console.table(msgs);
-
       onData(null, {
         convo,
+        msgId,
         msgs,
         userId,
         convoUsers,
