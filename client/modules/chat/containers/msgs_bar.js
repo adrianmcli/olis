@@ -46,8 +46,8 @@ export const composer = ({context}, onData) => {
       const translations = _fetchTranslations(Collections, convoId);
       const needsCentering = !oldestMsgId && !newestMsgId; // It's a new search, so center it
 
-      const showLoadOldBtn = convo.firstMsgCreatedAt < msgs[0].createdAt;
-      const showLoadNewBtn = convo.lastMsgCreatedAt > R.last(msgs).createdAt;
+      const showLoadOldBtnSearch = convo.firstMsgCreatedAt < msgs[0].createdAt;
+      const showLoadNewBtnSearch = convo.lastMsgCreatedAt > R.last(msgs).createdAt;
 
       onData(null, {
         convo,
@@ -60,8 +60,8 @@ export const composer = ({context}, onData) => {
         langCode,
         translations,
         needsCentering,
-        showLoadOldBtn,
-        showLoadNewBtn
+        showLoadOldBtnSearch,
+        showLoadNewBtnSearch
       });
     }
   }
@@ -143,6 +143,7 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
           const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
           const title = convo.getName(userId, convoUsers);
           const translations = _fetchTranslations(Collections, convoId);
+          const showLoadOldBtn = convo.firstMsgCreatedAt < msgs[0].createdAt;
 
           // console.log(`${msgs.length} msgs rendered after ${visibleAfterDate}`);
           onData(null, {
@@ -153,7 +154,8 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
             title,
             usersListString,
             langCode,
-            translations
+            translations,
+            showLoadOldBtn
           });
         } else {
           LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);

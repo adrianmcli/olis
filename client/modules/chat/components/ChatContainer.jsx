@@ -145,7 +145,6 @@ export default class ChatContainer extends React.Component {
 
   render() {
     const {
-      convo,
       msgs,
       title,
       usersListString,
@@ -154,7 +153,7 @@ export default class ChatContainer extends React.Component {
       starred,
       addMsg,
       showLoadOldBtn,
-      showLoadNewBtn
+      showLoadOldBtnSearch, showLoadNewBtnSearch
     } = this.props;
 
     const loadMoreBtn = (onClick) => (
@@ -170,11 +169,14 @@ export default class ChatContainer extends React.Component {
           <GeminiScrollbar>
             <div className="chat-wrapper">
               {showLoadOldBtn ?
+                loadMoreBtn(loadMoreOlder.bind(null, msgs[0]._id)) : null}
+
+              {showLoadOldBtnSearch ?
                 loadMoreBtn(loadMoreOlderSearch.bind(null, msgs[0]._id)) : null}
 
               { this.renderMsgs() }
 
-              {showLoadNewBtn ?
+              {showLoadNewBtnSearch ?
                 loadMoreBtn(loadMoreNewerSearch.bind(null, R.last(msgs)._id)) : null}
             </div>
           </GeminiScrollbar>
