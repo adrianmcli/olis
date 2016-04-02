@@ -4,6 +4,7 @@ import {mount} from 'react-mounter';
 import MainLayout from './components/main_layout.jsx';
 import Home from './containers/home';
 
+import AccountUtils from '/client/modules/core/libs/account';
 import TeamUtils from '/client/modules/core/libs/teams';
 import ConvoUtils from '/client/modules/core/libs/convos';
 
@@ -12,6 +13,17 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
 
   function ensureSignedIn(context, redirect) {
     if (!Meteor.userId()) { redirect('/login'); }
+  }
+
+  function rootRedirect(context, redirect) {
+    if (Meteor.userId()) {
+      const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+      const convoId = AccountUtils.getMostRecentConvoId({Meteor});
+
+      if (teamId && convoId) { redirect(`/team/${teamId}/convo/${convoId}`); }
+      else if (teamId && !convoId) { redirect(`/team/${teamId}`); }
+    }
+    else { redirect('/login'); }
   }
 
   function setLastTimeInTeam({params}) {
@@ -34,6 +46,11 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
     LocalState.set(`${convoId}.msgs.visibleAfterDate`, undefined);
     LocalState.set(`${convoId}.msgs.numVisible`, undefined);
   }
+
+  FlowRouter.route('/', {
+    name: 'root',
+    triggersEnter: [ rootRedirect ]
+  });
 
   FlowRouter.route('/team', {
     name: 'no-team',
