@@ -10,7 +10,7 @@ const selfFields = {
   translationLangCode: 1
 };
 
-const othersFields = {
+export const othersFields = {
   username: 1,
   emails: 1,
   profileImageUrl: 1

@@ -1,4 +1,6 @@
-import * as Collections from '/lib/collections';
+import R from 'ramda';
+import * as GlobalCollections from '/lib/collections';
+import * as ClientCollections from '../collections';
 import {Meteor} from 'meteor/meteor';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveDict} from 'meteor/reactive-dict';
@@ -17,7 +19,7 @@ export default function () {
   return {
     Meteor,
     FlowRouter,
-    Collections,
+    Collections: R.merge(GlobalCollections, ClientCollections),
     Models: {
       Convo,
       Message,

@@ -25,7 +25,7 @@ export default function ({Meteor, Collections, Models}) {
       }
 
       const msg = new Models.Message();
-      msg.set({text, userId, username: user.username, convoId});
+      msg.set({text, userId, username: user.username, convoId, convoName: convo.name});
       msg.save();
 
       // Update convo with last msg text
@@ -37,11 +37,23 @@ export default function ({Meteor, Collections, Models}) {
       const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}});
       const recentUsernames = recentUsers.map(recentUser => recentUser.username);
 
-      convo.set({
-        lastMsgText: text,
-        recentUserIds,
-        recentUsernames
-      });
+      const getConvoFields = () => {
+        const baseFields = {
+          lastMsgText: text,
+          lastMsgCreatedAt: msg.createdAt,
+          recentUserIds,
+          recentUsernames,
+          numMsgs: Collections.Messages.find({convoId}).count() // SERVER ONLY
+        };
+
+        if (Collections.Messages.find({convoId}).count() === 1) {
+          const firstMsgCreatedAt = msg.createdAt;
+          return R.merge(baseFields, {firstMsgCreatedAt});
+        }
+        return baseFields;
+      };
+
+      convo.set(getConvoFields());
       convo.save();
     }
   });

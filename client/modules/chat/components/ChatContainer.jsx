@@ -19,6 +19,7 @@ export default class ChatContainer extends React.Component {
     this.throttledFunc = _.throttle(() => this.incVisible.bind(this)(), 500);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
+    this.messageRefs = {};
   }
 
   componentDidMount() {
@@ -37,14 +38,15 @@ export default class ChatContainer extends React.Component {
     const distFromBot = ele[0].scrollHeight - ele.scrollTop() - ele.outerHeight();
     const distFromTop = ele.scrollTop();
     this.setState({ distFromBot, distFromTop });
+    this.messageRefs = {};
   }
 
   componentDidUpdate(prevProps) {
-    const { convo, msgs, userId } = this.props;
+    const { convo, msgs, userId, searchMsgId, needsCentering } = this.props;
     const { distFromBot } = this.state;
 
     if (convo && prevProps.convo && !R.isEmpty(msgs)) {
-
+      const atBot = distFromBot <= 0;
       const switchedConvo = convo._id !== prevProps.convo._id;
       const isMoreMsgs = msgs.length > prevProps.msgs.length;
 
@@ -57,10 +59,15 @@ export default class ChatContainer extends React.Component {
 
       const comingFromTop = isMoreMsgs && isOlder;
       const comingFromBottom = isMoreMsgs && isNewer;
+      const isMoreNewMsgsThanOne = msgs.length - prevProps.msgs.length > 1;
+      const isOneNewMsg = msgs.length - prevProps.msgs.length === 1;
 
-      if (switchedConvo) { this.scrollToBottom(); }
-      else if (comingFromBottom && lastMsgMine) { this.scrollToBottom(); }
-      else if (comingFromTop || distFromBot <= 0) { this.maintainView(); }
+      if (switchedConvo && !needsCentering) { this.scrollToBottom(); return null; }
+      else if (needsCentering) { this.centerViewOnMsg(searchMsgId); return null; }
+      else if (comingFromBottom && isOneNewMsg && lastMsgMine) { this.scrollToBottom(); return null; }
+      else if (comingFromTop) { this.maintainView(); return null; }
+      else if (comingFromBottom && isMoreNewMsgsThanOne) { return null; }
+      else if (atBot && comingFromBottom && isOneNewMsg) { this.maintainView(); return null; }
     }
   }
 
@@ -90,15 +97,33 @@ export default class ChatContainer extends React.Component {
     ele.scrollTop(targetVal);
   }
 
+  centerViewOnMsg(msgId) {
+    const { msgs } = this.props;
+    const index = R.findIndex(R.propEq('_id', msgId))(msgs);
+    const msgsAbove = R.take(index - 1, msgs);
+    const heightOfMsgsAbove = R.reduce( (accum, msg) => {
+      const msgRef = this.messageRefs[msg._id];
+      return accum + msgRef.getHeight();
+    }, 0, msgsAbove);
+
+    const ele = this._getContainerEle();
+    ele.scrollTop(heightOfMsgsAbove);
+
+    const targetMsgRef = this.messageRefs[msgId];
+    targetMsgRef.triggerHighlight();
+  }
+
   renderMsgs() {
     const {
-      msgs, userId, translations, langCode, convoUsers, translate
+      msgs, userId, translations, langCode, convoUsers, translate, searchMsgId
     } = this.props;
 
     return msgs.map(msg => {
       const otherUser = convoUsers[msg.userId];
       const authorName = otherUser ? otherUser.username : msg.username;
       const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
+      const highlight = searchMsgId ? searchMsgId === msg._id : false;
+
       return (
         <ChatMessageItem
           key={msg._id}
@@ -111,6 +136,8 @@ export default class ChatContainer extends React.Component {
           translation={translations[msg._id] ? translations[msg._id].text : undefined}
           langCode={langCode}
           translate={translate}
+          highlight={highlight}
+          ref={x => this.messageRefs[msg._id] = x}
         />
       );
     });
@@ -118,14 +145,22 @@ export default class ChatContainer extends React.Component {
 
   render() {
     const {
-      convo,
       msgs,
       title,
       usersListString,
-      loadMore,
+      loadMoreOlder,
+      loadMoreOlderSearch, loadMoreNewerSearch,
       starred,
-      addMsg
+      addMsg,
+      showLoadOldBtn,
+      showLoadOldBtnSearch, showLoadNewBtnSearch
     } = this.props;
+
+    const loadMoreBtn = (onClick) => (
+      <div className="load-more-btn" onClick={onClick}>
+        Load more messages
+      </div>
+    );
 
     return (
       <div id="chat-container">
@@ -133,9 +168,16 @@ export default class ChatContainer extends React.Component {
         <div id="chat-msg-area" ref={(x) => this._container = x}>
           <GeminiScrollbar>
             <div className="chat-wrapper">
-              {convo && convo.numMsgs > msgs.length ?
-                  <div id="load-more-btn" onClick={loadMore}>Load more messages</div> : null}
+              {showLoadOldBtn ?
+                loadMoreBtn(loadMoreOlder.bind(null, msgs[0]._id)) : null}
+
+              {showLoadOldBtnSearch ?
+                loadMoreBtn(loadMoreOlderSearch.bind(null, msgs[0]._id)) : null}
+
               { this.renderMsgs() }
+
+              {showLoadNewBtnSearch ?
+                loadMoreBtn(loadMoreNewerSearch.bind(null, R.last(msgs)._id)) : null}
             </div>
           </GeminiScrollbar>
         </div>

@@ -1,8 +1,14 @@
+import {Mongo} from 'meteor/mongo';
 import {Teams, Convos, Messages} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
-import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
 import R from 'ramda';
 import {PUBLISH_INTERVAL} from '/lib/constants/msgs';
+
+const othersFields = {
+  username: 1,
+  roles: 1
+};
 
 export default function () {
   const MSGS_LIST = 'msgs.list';
@@ -43,14 +49,104 @@ export default function () {
     const selectorTime = {convoId, createdAt: {$gte: oldestDate}};
     let options = { sort: [ [ 'createdAt', 'asc' ] ] };
 
-    const othersFields = {
-      username: 1,
-      roles: 1
-    };
-
     return [
       Messages.find(selectorTime, options),
       Meteor.users.find({_id: {$in: convo.userIds}}, {fields: othersFields})
     ];
+  });
+
+  const MSGS_SEARCH_RESULT_OLDER = 'msgs.searchResult';
+  Meteor.publish(MSGS_SEARCH_RESULT_OLDER, function ({msgId, oldestMsgId, newestMsgId}) {
+    check(arguments[0], {
+      msgId: String,
+      oldestMsgId: Match.Optional(Match.OneOf(undefined, null, String)),
+      newestMsgId: Match.Optional(Match.OneOf(undefined, null, String))
+    });
+
+    const userId = this.userId;
+    if (!userId) {
+
+    }
+    const msg = Messages.findOne(msgId);
+    if (!msg) {
+
+    }
+    const convoId = msg.convoId;
+    const convo = Convos.findOne(convoId);
+    if (!convo) {
+
+    }
+    if (!convo.isUserInConvo) {
+
+    }
+    const team = Teams.findOne(convo.teamId);
+    if (!team) {
+
+    }
+    if (!team.isUserInTeam(this.userId)) {
+
+    }
+    if (oldestMsgId) {
+      if (!Messages.findOne(oldestMsgId)) {
+
+      }
+    }
+
+    function _getOldestDate() {
+      const _getSelector = () => {
+        if (!oldestMsgId) { return {convoId, createdAt: {$lte: msg.createdAt}}; }
+
+        const oldestMsg = Messages.findOne(oldestMsgId);
+        return {convoId, createdAt: {$lte: oldestMsg.createdAt}};
+      };
+
+      const options = {
+        sort: [ [ 'createdAt', 'desc' ] ],
+        limit: PUBLISH_INTERVAL
+      };
+
+      const msgs = Messages.find(_getSelector(), options).fetch();
+      return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
+    }
+
+    function _getNewestDate() {
+      const _getSelector = () => {
+        if (!newestMsgId) { return {convoId: msg.convoId, createdAt: {$gte: msg.createdAt}}; }
+
+        const newestMsg = Messages.findOne(newestMsgId);
+        return {convoId, createdAt: {$gte: newestMsg.createdAt}};
+      };
+      const options = {
+        sort: [ [ 'createdAt', 'asc' ] ],
+        limit: PUBLISH_INTERVAL
+      };
+
+      const msgs = Messages.find(_getSelector(), options).fetch();
+      return !R.isEmpty(msgs) ? R.last(msgs).createdAt : new Date(0);
+    }
+
+    // Publish older msgs using time threshold
+    let optionsAsc = { sort: [ [ 'createdAt', 'asc' ] ] };
+    const selectorTimeOld = {
+      convoId,
+      createdAt: {$gte: _getOldestDate(), $lte: msg.createdAt}
+    };
+    Mongo.Collection._publishCursor(
+      Messages.find(selectorTimeOld, optionsAsc), this, 'searchMessages');
+
+    // Publish newer msgs using time threshold
+    const selectorTimeNew = {
+      convoId,
+      createdAt: {$lte: _getNewestDate(), $gte: msg.createdAt}
+    };
+    Mongo.Collection._publishCursor(
+      Messages.find(selectorTimeNew, optionsAsc), this, 'searchMessages');
+
+    // Users
+    const userSelector = {_id: {$in: convo.userIds}};
+    const userOptions = {fields: othersFields};
+    Mongo.Collection._publishCursor(Meteor.users.find(userSelector, userOptions), this, 'users');
+
+    this.ready();
   });
 }

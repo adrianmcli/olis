@@ -4,7 +4,7 @@ import R from 'ramda';
 
 import HeaderMenu from '../containers/header_menu';
 import HeaderNewConversation from '../containers/header_new_conversation';
-import HeaderSearch from '/client/modules/search/components/HeaderSearch.jsx';
+import HeaderSearch from '/client/modules/search/containers/search_team';
 import HeaderNotifications from '/client/modules/notifications/containers/header_notifications';
 
 import FlipMove from 'react-flip-move';
@@ -15,7 +15,7 @@ export default class Sidebar extends React.Component {
 
   renderConversations() {
     const {convos, selectConvo, convoId,
-      lastTimeInConvo, teamUsers, user} = this.props;
+      lastTimeInConvo, teamUsers, user, teamUsersArr} = this.props;
     return (
       <GeminiScrollbar>
       <FlipMove>
@@ -50,11 +50,15 @@ export default class Sidebar extends React.Component {
           unread = unreadCount > 0;
           // console.log(`unreadCount ${convo._id} ${unreadCount}`);
 
+          // No idea why R.filter doesn't work on an object, even tho it worked on Ramda's website test.
+          const convoUsersArr = R.filter(teamUser => R.contains(teamUser._id, convo.userIds), teamUsersArr);
+          const convoUsers = R.zipObj(convoUsersArr.map(convoUser => convoUser._id), convoUsersArr);
+
           return (
             <ConversationItem
               key={convo._id}
               convoId={convo._id}
-              title={convo.name}
+              title={convo.getName(user._id, convoUsers)}
               lastUpdated={convo.updatedAt}
               previewText={convo.lastMsgText}
               username={lastUsername}

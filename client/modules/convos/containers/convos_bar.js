@@ -13,14 +13,8 @@ const depsMapper = (context, actions) => ({
 const ConvoSubs = new SubsManager();
 
 export const composer = ({context}, onData) => {
-  const {Meteor, LocalState, Collections, FlowRouter} = context();
+  const {Meteor, Collections, FlowRouter} = context();
   const teamId = FlowRouter.getParam('teamId');
-
-  // If you only see loading, make sure you added the collection to the index
-  let convos = [];
-  let convoId;
-  let lastTimeInConvo;
-  let teamUsers = [];
 
   const user = Meteor.user();
 
@@ -33,7 +27,7 @@ export const composer = ({context}, onData) => {
         [`roles.${teamId}`]: {$exists: true}
       };
       const teamUsersArr = Meteor.users.find(teamSelector).fetch();
-      teamUsers = R.zipObj(teamUsersArr.map(teamUser => teamUser._id), teamUsersArr);
+      const teamUsers = R.zipObj(teamUsersArr.map(teamUser => teamUser._id), teamUsersArr);
 
       const selector = {
         userIds: Meteor.userId(),
@@ -41,16 +35,17 @@ export const composer = ({context}, onData) => {
       };
       const options = {sort: [ [ 'updatedAt', 'desc' ] ]};
 
-      convos = Collections.Convos.find(selector, options).fetch();
-      convoId = FlowRouter.getParam('convoId');
-      lastTimeInConvo = Meteor.user().lastTimeInConvo;
+      const convos = Collections.Convos.find(selector, options).fetch();
+      const convoId = FlowRouter.getParam('convoId');
+      const lastTimeInConvo = Meteor.user().lastTimeInConvo;
 
       onData(null, {
         convos,
         convoId,
         lastTimeInConvo,
         teamUsers,
-        user
+        user,
+        teamUsersArr
       });
     }
   }

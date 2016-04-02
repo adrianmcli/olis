@@ -30,7 +30,7 @@ export default function () {
       }
 
       const msg = new Message();
-      msg.set({text, userId, username: user.username, convoId});
+      msg.set({text, userId, username: user.username, convoId, convoName: convo.name});
       msg.save();
 
       // Update convo with last msg text
@@ -42,12 +42,23 @@ export default function () {
       const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}});
       const recentUsernames = recentUsers.map(recentUser => recentUser.username);
 
-      convo.set({
-        lastMsgText: text,
-        recentUserIds,
-        recentUsernames,
-        numMsgs: Messages.find({convoId}).count() // SERVER ONLY
-      });
+      const getConvoFields = () => {
+        const baseFields = {
+          lastMsgText: text,
+          lastMsgCreatedAt: msg.createdAt,
+          recentUserIds,
+          recentUsernames,
+          numMsgs: Messages.find({convoId}).count() // SERVER ONLY
+        };
+
+        if (Messages.find({convoId}).count() === 1) {
+          const firstMsgCreatedAt = msg.createdAt;
+          return R.merge(baseFields, {firstMsgCreatedAt});
+        }
+        return baseFields;
+      };
+
+      convo.set(getConvoFields());
       convo.save();
 
       // Notify convo users, other than yourself, SERVER ONLY

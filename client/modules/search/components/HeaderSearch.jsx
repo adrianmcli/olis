@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import IconButton from 'material-ui/lib/icon-button';
 import ActionSearch from 'material-ui/lib/svg-icons/action/search';
@@ -9,16 +10,6 @@ import ModalEmptyPlaceholder from './ModalEmptyPlaceholder.jsx';
 import ModalResultsContainer from './ModalResultsContainer.jsx';
 
 export default class HeaderSearch extends React.Component {
-
-  // change this to pure render mixin if possible
-  shouldComponentUpdate(nextProps, nextState) {
-    const {open} = this.state;
-    return (
-      open ||
-      open !== nextState.open
-    );
-  }
-
   constructor(props) {
     super(props);
     this.state = { open: false, emptyQuery: true };
@@ -30,8 +21,14 @@ export default class HeaderSearch extends React.Component {
 
   // Handle text field change
   handleOnChange() {
-    const input = this._searchField.getValue();
-    this.setState({ emptyQuery: input === '' });
+    const debouncedSearch = _.debounce(() => {
+      const {search} = this.props;
+      const input = this._searchField.getValue();
+      this.setState({ emptyQuery: input === '' });
+      search(input);
+    }, 1000);
+
+    debouncedSearch();
   }
 
   renderDialog() {
@@ -72,7 +69,8 @@ export default class HeaderSearch extends React.Component {
         </div>
 
         <div style={style.content}>
-          { this.state.emptyQuery ? <ModalEmptyPlaceholder /> : <ModalResultsContainer /> }
+          { this.state.emptyQuery ?
+            <ModalEmptyPlaceholder /> : <ModalResultsContainer {...this.props} closeModal={this.handleClose.bind(this)} /> }
         </div>
 
       </Dialog>
@@ -88,9 +86,7 @@ export default class HeaderSearch extends React.Component {
             <ActionSearch color={iconColor} />
           </IconButton>
         </div>
-
         { this.renderDialog() }
-
       </div>
     );
   }

@@ -4,17 +4,34 @@ import {VISIBLE_INTERVAL} from '/lib/constants/msgs';
 
 export default {
   add({Meteor, Collections, FlowRouter}, text) {
+    const teamId = FlowRouter.getParam('teamId');
     const convoId = FlowRouter.getParam('convoId');
+    const msgId = FlowRouter.getParam('msgId');
+
+    // Typed a msg while on search route, take them back to regular convo route
+    // With their view at the newest msg.
+    if (msgId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
+
     Meteor.call('msgs.add', {text, convoId}, (err, res) => {
       if (err) { alert(err); }
       // else { console.log(res); }
     });
   },
 
-  loadMore({Collections, LocalState, FlowRouter}) {
+  loadMoreOlder({Collections, LocalState, FlowRouter}) {
     const convoId = FlowRouter.getParam('convoId');
     const convoNumMsgs = Collections.Messages.find({convoId}).count();
     LocalState.set(`loadMore.convo.${convoId}.numMsgs`, convoNumMsgs);
+  },
+
+  loadMoreOlderSearch({Collections, LocalState, FlowRouter}, oldestMsgId) {
+    const convoId = FlowRouter.getParam('convoId');
+    LocalState.set(`convo.${convoId}.oldestMsgId`, oldestMsgId);
+  },
+
+  loadMoreNewerSearch({Collections, LocalState, FlowRouter}, newestMsgId) {
+    const convoId = FlowRouter.getParam('convoId');
+    LocalState.set(`convo.${convoId}.newestMsgId`, newestMsgId);
   },
 
   goToChat({Meteor, FlowRouter}) {
