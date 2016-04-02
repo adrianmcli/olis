@@ -24,7 +24,7 @@ export const composer = ({context, search}, onData) => {
     const resultUsers = Meteor.users.find(selector, options).fetch();
 
     onData(null, {
-      msgs: resultMsgs, convos: resultConvos, users: resultUsers
+      msgs: resultMsgs, convos: resultConvos, users: resultUsers, text
     });
   }
   else {

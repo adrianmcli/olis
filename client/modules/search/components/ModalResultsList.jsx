@@ -11,14 +11,14 @@ export default class ModalResultsList extends React.Component {
     const {
       msgs, users, convos, notes,
       onClickConvo, onClickMsg, onClickUser,
-      closeModal
+      closeModal, text
     } = this.props;
     const isResultsEmpty = () => R.isEmpty(msgs) && R.isEmpty(users) &&
       R.isEmpty(convos) && R.isEmpty(notes);
 
     return (
       <List>
-        {isResultsEmpty() ? <div>No results found.</div> : null}
+        {isResultsEmpty() && text !== '' ? <div>No results found.</div> : null}
 
         {users.map(user =>
           <ResultItem
