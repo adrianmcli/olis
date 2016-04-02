@@ -138,11 +138,14 @@ class HeaderMenu extends React.Component {
       >
         { this.renderMyAccountMenuItem() }
         <Divider />
-        <MenuItem
-          primaryText="Invite to team"
-          leftIcon={<AddPersonIcon />}
-          onClick={this.openInviteToTeam.bind(this)}
-        />
+        {isAdmin ?
+          <MenuItem
+            primaryText="Invite to team"
+            leftIcon={<AddPersonIcon />}
+            onClick={this.openInviteToTeam.bind(this)}
+          /> : null
+        }
+
         <MenuItem
           primaryText="Team directory"
           leftIcon={<TeamDirIcon />}

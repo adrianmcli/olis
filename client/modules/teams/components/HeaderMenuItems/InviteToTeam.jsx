@@ -1,15 +1,13 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import TextField from 'material-ui/lib/text-field';
 
 export default class InviteToTeam extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    const {open} = this.props;
-    return (
-      open ||
-      open !== nextProps.open
-    );
+  constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
   handleSubmit() {
