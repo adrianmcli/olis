@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import IconButton from 'material-ui/lib/icon-button';
 import ActionSearch from 'material-ui/lib/svg-icons/action/search';
@@ -20,11 +21,14 @@ export default class HeaderSearch extends React.Component {
 
   // Handle text field change
   handleOnChange() {
-    const {search} = this.props;
-    const input = this._searchField.getValue();
-    this.setState({ emptyQuery: input === '' });
+    const debouncedSearch = _.debounce(() => {
+      const {search} = this.props;
+      const input = this._searchField.getValue();
+      this.setState({ emptyQuery: input === '' });
+      search(input);
+    }, 1000);
 
-    search(input);
+    debouncedSearch();
   }
 
   renderDialog() {
