@@ -17,8 +17,9 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
 
   const teamId = FlowRouter.getParam('teamId');
   const convoId = FlowRouter.getParam('convoId');
+  const team = Collections.Teams.findOne(teamId);
   const convo = Collections.Convos.findOne(convoId);
-  if (teamId && convoId && convo) {
+  if (teamId && convoId && convo && team) {
 
     const searchText = LocalState.get('searchText.convoUsers');
 
@@ -43,10 +44,10 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
     const userShown = Meteor.users.findOne(userIdShown);
 
     onData(null, {
-      convo,
+      team,
       convoUsersSearchResult,
       userShown,
-      isAdmin: convo.isUserAdmin(Meteor.userId())
+      isAdmin: team.isUserAdmin(Meteor.userId())
     });
   }
 

@@ -11,7 +11,7 @@ export default class ChatMembers extends React.Component {
 
   render() {
     const {
-      convoUsersSearchResult, convo, showUserInfo, searchConvoUsers, userShown, isAdmin
+      convoUsersSearchResult, showUserInfo, searchConvoUsers, userShown, isAdmin, team
     } = this.props;
     return (
       <Dialog
@@ -30,7 +30,7 @@ export default class ChatMembers extends React.Component {
               ref={ x => this._peopleList = x }
               users={convoUsersSearchResult}
               userClickHandler={showUserInfo}
-              team={convo} // TODO make people list team and convo agnostic
+              team={team} // TODO make people list team and convo agnostic
               search={searchConvoUsers}
             />
           </div>
@@ -43,7 +43,7 @@ export default class ChatMembers extends React.Component {
             <UserInfo
               user={userShown}
               showButtons={isAdmin}
-              showMakeAdminButton={userShown ? !convo.isUserAdmin(userShown._id) : true}
+              showMakeAdminButton={userShown ? !team.isUserAdmin(userShown._id) : true}
             />
           </div>
         </div>
