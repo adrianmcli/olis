@@ -1,4 +1,5 @@
 import React from 'react';
+import R from 'ramda';
 import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
 import {buildRegExp} from '/client/modules/core/libs/search';
 import ChatMembers from '../components/ChatMenuItems/ChatMembers.jsx';
@@ -21,18 +22,23 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
 
     const searchText = LocalState.get('searchText.teamUsers');
 
-    let selector = {};
-    if (searchText) {
-      const regExp = buildRegExp(searchText);
-      selector = {$or: [
-        {username: regExp},
-        {'emails.address': regExp}
-      ]};
-    }
+    const selector = () => {
+      const base = { _id: { $in: convo.userIds } };
+      if (searchText) {
+        const regExp = buildRegExp(searchText);
+        return R.merge(base, {
+          $or: [
+            {username: regExp},
+            {'emails.address': regExp}
+          ]
+        });
+      }
+      return base;
+    };
     // selector[`roles.${teamId}`] = {$exists: true};
     const options = {sort: [ [ 'username', 'asc' ] ]};
 
-    const convoUsersSearchResult = Meteor.users.find(selector, options).fetch();
+    const convoUsersSearchResult = Meteor.users.find(selector(), options).fetch();
     const userIdShown = LocalState.get('convoDirectory.userIdShown');
     const userShown = Meteor.users.findOne(userIdShown);
 
