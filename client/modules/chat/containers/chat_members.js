@@ -20,7 +20,7 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
   const convo = Collections.Convos.findOne(convoId);
   if (teamId && convoId && convo) {
 
-    const searchText = LocalState.get('searchText.teamUsers');
+    const searchText = LocalState.get('searchText.convoUsers');
 
     const selector = () => {
       const base = { _id: { $in: convo.userIds } };
