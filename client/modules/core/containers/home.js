@@ -20,6 +20,8 @@ export const composer = ({context}, onData) => {
   const notInTeam = team && !team.isUserInTeam(userId); // Kicked out of team or team deleted
   const notInConvo = convo && !convo.isUserInConvo(userId); // Kicked out of convo or convo deleted
 
+  console.log(`notInConvo ${notInConvo}`);
+
   if (notInTeam || notInConvo) { FlowRouter.go('/team'); }
   onData(null, {teamId, convoId});
 };

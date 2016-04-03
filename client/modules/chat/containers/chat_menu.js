@@ -8,9 +8,20 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {FlowRouter} = context();
+  const {Meteor, FlowRouter, Collections} = context();
+  const teamId = FlowRouter.getParam('teamId');
   const convoId = FlowRouter.getParam('convoId');
-  onData(null, {convoId});
+
+  const team = Collections.Teams.findOne(teamId);
+  const isAdmin = () => {
+    if (team) { return team.isUserAdmin(Meteor.userId()); }
+    return false;
+  };
+
+  onData(null, {
+    convoId,
+    isAdmin: isAdmin()
+  });
 };
 
 export default composeAll(

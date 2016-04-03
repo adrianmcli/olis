@@ -55,7 +55,7 @@ export default class ChatMenu extends React.Component {
   }
 
   render() {
-    const {removeConvo, convoId} = this.props;
+    const {removeConvo, convoId, isAdmin} = this.props;
     return (
       <div>
       <IconMenu
@@ -78,11 +78,14 @@ export default class ChatMenu extends React.Component {
           onTouchTap={this.openChatMembers.bind(this)}
           leftIcon={<ChatMembersIcon />}
         />
-        <MenuItem
-          primaryText="Delete chat"
-          leftIcon={<DeleteIcon />}
-          onTouchTap={removeConvo.bind(null, convoId)}
-        />
+        {
+          isAdmin ?
+          <MenuItem
+            primaryText="Delete chat"
+            leftIcon={<DeleteIcon />}
+            onTouchTap={removeConvo.bind(null, convoId)}
+          /> : null
+        }
       </IconMenu>
         { this.renderDialogs() }
       </div>

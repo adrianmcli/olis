@@ -55,7 +55,6 @@ export default {
   },
 
   remove({FlowRouter, Meteor}) {
-    const teamId = FlowRouter.getParam('teamId');
     const convoId = FlowRouter.getParam('convoId');
     const confirmRemove = confirm(
       `Are you sure you want to delete this conversation? This action is irreversible.`
@@ -63,7 +62,6 @@ export default {
     if (confirmRemove && convoId) {
       Meteor.call('convos.remove', {convoId}, (err, res) => {
         if (err) { alert(err); }
-        else { FlowRouter.go(`/team/${teamId}`); }
       });
     }
   }
