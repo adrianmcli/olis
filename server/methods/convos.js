@@ -1,5 +1,7 @@
 import {Meteor} from 'meteor/meteor';
-import {Convos, Teams} from '/lib/collections';
+import {
+  Convos, Teams, Notifications, Messages, Notes, Sections
+} from '/lib/collections';
 import Convo from '/lib/convo';
 import Note from '/lib/note';
 import Section from '/lib/section';
@@ -175,6 +177,50 @@ export default function () {
 
       convo.set({name});
       convo.save();
+    }
+  });
+
+  const CONVOS_REMOVE = 'convos.remove';
+  Meteor.methods({
+    'convos.remove'({convoId}) {
+      check(arguments[0], {
+        convoId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(CONVOS_REMOVE, 'Must be logged in to remove convo.');
+      }
+      const convo = Convos.findOne(convoId);
+      if (!convo) {
+        throw new Meteor.Error(CONVOS_REMOVE, 'Must remove an existing convo.');
+      }
+      const team = Teams.findOne(convo.teamId);
+      if (!team) {
+        throw new Meteor.Error(CONVOS_REMOVE, 'Must remove a convo from an existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(CONVOS_REMOVE, 'Must be a team admin to remove a convo.');
+      }
+
+      // Remove from all convo users last time in convo as well.
+      const selector = { _id: { $in: convo.userIds } };
+      const unsetObj = { [`lastTimeInConvo.${convoId}`]: '' };
+      const modifier = { $unset: unsetObj };
+      const options = { multi: true };
+      Meteor.users.update(selector, modifier, options);
+
+      // Remove all associated data for this convo
+      Messages.remove({convoId});
+
+      const note = Notes.findOne({convoId});
+      Notes.remove({convoId});
+      Sections.remove({noteId: note._id});
+
+      Notifications.remove({convoId});
+
+      // Remove convo
+      convo.remove();
     }
   });
 }

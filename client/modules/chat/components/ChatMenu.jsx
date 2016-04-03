@@ -13,7 +13,7 @@ import ChatMembers from '../containers/chat_members';
 import PersonAdd from 'material-ui/lib/svg-icons/social/person-add';
 import EditTitle from 'material-ui/lib/svg-icons/content/create';
 import ChatMembersIcon from 'material-ui/lib/svg-icons/social/people';
-import ArchiveIcon from 'material-ui/lib/svg-icons/content/archive';
+import DeleteIcon from 'material-ui/lib/svg-icons/action/delete';
 
 export default class ChatMenu extends React.Component {
   constructor(props) {
@@ -55,6 +55,7 @@ export default class ChatMenu extends React.Component {
   }
 
   render() {
+    const {removeConvo, convoId} = this.props;
     return (
       <div>
       <IconMenu
@@ -78,9 +79,9 @@ export default class ChatMenu extends React.Component {
           leftIcon={<ChatMembersIcon />}
         />
         <MenuItem
-          primaryText="Archive chat"
-          leftIcon={<ArchiveIcon />}
-          disabled
+          primaryText="Delete chat"
+          leftIcon={<DeleteIcon />}
+          onTouchTap={removeConvo.bind(null, convoId)}
         />
       </IconMenu>
         { this.renderDialogs() }

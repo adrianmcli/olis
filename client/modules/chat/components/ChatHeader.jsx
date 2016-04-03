@@ -8,7 +8,7 @@ import EmptyStarIcon from 'material-ui/lib/svg-icons/toggle/star-border';
 
 // import ChangeConvoName from '../containers/change_convo_name';
 import ChatMembers from '../containers/chat_members';
-import ChatMenu from './ChatMenu.jsx';
+import ChatMenu from '../containers/chat_menu';
 
 export default class ChatHeader extends React.Component {
   constructor(props) {

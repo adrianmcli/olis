@@ -65,30 +65,30 @@ export default function () {
 
     const userId = this.userId;
     if (!userId) {
-
+      throw new Meteor.Error(MSGS_SEARCH_RESULT_OLDER, 'Must be logged in to get search results.');
     }
     const msg = Messages.findOne(msgId);
     if (!msg) {
-
+      throw new Meteor.Error(MSGS_SEARCH_RESULT_OLDER, 'Must get the results of an existing message.');
     }
     const convoId = msg.convoId;
     const convo = Convos.findOne(convoId);
     if (!convo) {
-
+      throw new Meteor.Error(MSGS_SEARCH_RESULT_OLDER, 'Must get the results of an existing convo.');
     }
     if (!convo.isUserInConvo) {
-
+      throw new Meteor.Error(MSGS_SEARCH_RESULT_OLDER, 'Must be a member of convo to search it.');
     }
     const team = Teams.findOne(convo.teamId);
     if (!team) {
-
+      throw new Meteor.Error(MSGS_SEARCH_RESULT_OLDER, 'Must get the results of an existing team.');
     }
     if (!team.isUserInTeam(this.userId)) {
-
+      throw new Meteor.Error(MSGS_SEARCH_RESULT_OLDER, 'Must be a member of team to search it.');
     }
     if (oldestMsgId) {
       if (!Messages.findOne(oldestMsgId)) {
-
+        throw new Meteor.Error(MSGS_SEARCH_RESULT_OLDER, 'Oldest message id must belong to an existing message.');
       }
     }
 

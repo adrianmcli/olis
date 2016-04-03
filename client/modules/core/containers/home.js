@@ -16,10 +16,11 @@ export const composer = ({context}, onData) => {
   // const user = Meteor.user();
   const userId = Meteor.userId();
   const team = Collections.Teams.findOne(teamId);
-  if (team && !team.isUserInTeam(userId)) {
-    FlowRouter.go('/team');
-  }
+  const convo = Collections.Convos.findOne(convoId);
+  const notInTeam = team && !team.isUserInTeam(userId); // Kicked out of team or team deleted
+  const notInConvo = convo && !convo.isUserInConvo(userId); // Kicked out of convo or convo deleted
 
+  if (notInTeam || notInConvo) { FlowRouter.go('/team'); }
   onData(null, {teamId, convoId});
 };
 
