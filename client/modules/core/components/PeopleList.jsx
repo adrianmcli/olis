@@ -3,7 +3,7 @@ import React from 'react';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
-import Avatar from 'material-ui/lib/avatar';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import SearchBar from '/client/modules/search/components/SearchBar.jsx';
 
 export default class PeopleList extends React.Component {
@@ -20,7 +20,7 @@ export default class PeopleList extends React.Component {
             primaryText={user.username}
             rightIcon={team.isUserAdmin(user._id) ? this.renderBadge('Admin') : null}
             secondaryText={user.emails[0].address}
-            leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
+            leftAvatar={<AvatarWithDefault username={user.username} avatarSrc={user.profileImageUrl} />}
             onClick={userClickHandler.bind(this, user._id)}
           />
           <Divider inset={true} />

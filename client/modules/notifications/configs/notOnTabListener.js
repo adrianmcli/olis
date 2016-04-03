@@ -7,12 +7,14 @@ export default function ({LocalState, FlowRouter, Meteor, Collections}) {
       const teamId = FlowRouter.getParam('teamId');
       const convoId = FlowRouter.getParam('convoId');
 
-      TeamUtils.setLastTimeInTeam({Meteor}, teamId);
-      ConvoUtils.setLastTimeInConvo({Meteor, Collections}, convoId);
-
-      Meteor.call('notifications.remove', {convoId}, (err) => {
-        if (err) { alert(err); }
-      });
+      // Might be undefined. Can blur on non-team/chat routes like account route
+      if (teamId) { TeamUtils.setLastTimeInTeam({Meteor}, teamId); }
+      if (convoId) {
+        ConvoUtils.setLastTimeInConvo({Meteor, Collections}, convoId);
+        Meteor.call('notifications.remove', {convoId}, (err) => {
+          if (err) { alert(err); }
+        });
+      }
     }
   }
 
