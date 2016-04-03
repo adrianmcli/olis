@@ -18,28 +18,26 @@ export const composer = ({context, actions}, onData) => {
   const {Meteor, FlowRouter, Collections} = context();
   const convoId = FlowRouter.getParam('convoId');
 
-  let note = {};
-  let sections = [];
-  let _addSection = actions().sections.add;
-
   if (convoId) {
     if (NotesSubs.subscribe('notes.single', {convoId}).ready()) {
-      note = Collections.Notes.findOne({convoId});
-      const noteId = note._id;
+      const note = Collections.Notes.findOne({convoId});
 
-      _addSection = _addSection.bind(null, noteId);
+      if (note) {
+        const noteId = note._id;
+        const _addSection = actions().sections.add.bind(null, noteId);
 
-      if (NotesSubs.subscribe('sections', {noteId}).ready()) {
-        const unsortedSections = Collections.Sections.find({noteId}).fetch();
+        if (NotesSubs.subscribe('sections', {noteId}).ready()) {
+          const unsortedSections = Collections.Sections.find({noteId}).fetch();
 
-        if (!R.isEmpty(unsortedSections)) {
-          const groupById = R.groupBy(R.prop('_id'), unsortedSections);
-          const sort = R.map(id => groupById[id][0]);
-          sections = sort(note.sectionIds);
+          if (!R.isEmpty(unsortedSections)) {
+            const groupById = R.groupBy(R.prop('_id'), unsortedSections);
+            const sort = R.map(id => groupById[id][0]);
+            const sections = sort(note.sectionIds);
 
-          onData(null, {
-            note, sections, addSection: _addSection, userId: Meteor.userId()
-          });
+            onData(null, {
+              note, sections, addSection: _addSection, userId: Meteor.userId()
+            });
+          }
         }
       }
     }

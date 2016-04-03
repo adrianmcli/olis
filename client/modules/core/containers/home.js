@@ -17,12 +17,18 @@ export const composer = ({context}, onData) => {
   const userId = Meteor.userId();
   const team = Collections.Teams.findOne(teamId);
   const convo = Collections.Convos.findOne(convoId);
-  const notInTeam = team && !team.isUserInTeam(userId); // Kicked out of team or team deleted
-  const notInConvo = convo && !convo.isUserInConvo(userId); // Kicked out of convo or convo deleted
+  const inTeam = () => {
+    if (team) { return team.isUserInTeam(userId); }
+    return false;
+  };
+  const inConvo = () => {
+    if (convo) { return convo.isUserInConvo(userId); }
+    return false;
+  };
 
-  console.log(`notInConvo ${notInConvo}`);
-
-  if (notInTeam || notInConvo) { FlowRouter.go('/team'); }
+  if (!inTeam) { FlowRouter.go('/team'); }
+  else if (!inConvo && inTeam) { FlowRouter.go(`/team/${teamId}`); }
+  else if (!inConvo && !inTeam) { FlowRouter.go(`/team`); }
   onData(null, {teamId, convoId});
 };
 

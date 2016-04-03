@@ -41,28 +41,30 @@ export const composer = ({context}, onData) => {
     if (subSearchMsgs.ready() && subTrans.ready()) {
       const msgs = _fetchMsgs(Collections.SearchMessages, convoId);
       const convo = Collections.Convos.findOne(convoId);
-      const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
-      const title = convo.getName(userId, convoUsers);
-      const translations = _fetchTranslations(Collections, convoId);
-      const needsCentering = !oldestMsgId && !newestMsgId; // It's a new search, so center it
+      if (convo) {
+        const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
+        const title = convo.getName(userId, convoUsers);
+        const translations = _fetchTranslations(Collections, convoId);
+        const needsCentering = !oldestMsgId && !newestMsgId; // It's a new search, so center it
 
-      const showLoadOldBtnSearch = convo.firstMsgCreatedAt < msgs[0].createdAt;
-      const showLoadNewBtnSearch = convo.lastMsgCreatedAt > R.last(msgs).createdAt;
+        const showLoadOldBtnSearch = convo.firstMsgCreatedAt < msgs[0].createdAt;
+        const showLoadNewBtnSearch = convo.lastMsgCreatedAt > R.last(msgs).createdAt;
 
-      onData(null, {
-        convo,
-        searchMsgId: msgId,
-        msgs,
-        userId,
-        convoUsers,
-        title,
-        usersListString,
-        langCode,
-        translations,
-        needsCentering,
-        showLoadOldBtnSearch,
-        showLoadNewBtnSearch
-      });
+        onData(null, {
+          convo,
+          searchMsgId: msgId,
+          msgs,
+          userId,
+          convoUsers,
+          title,
+          usersListString,
+          langCode,
+          translations,
+          needsCentering,
+          showLoadOldBtnSearch,
+          showLoadNewBtnSearch
+        });
+      }
     }
   }
 };
@@ -165,19 +167,21 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
     }
     else {
       const convo = Collections.Convos.findOne(convoId);
-      const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
-      const title = convo.getName(userId, convoUsers);
-      const translations = _fetchTranslations(Collections, convoId);
-      onData(null, {
-        convo,
-        msgs: [],
-        userId,
-        convoUsers,
-        title,
-        usersListString,
-        langCode,
-        translations
-      });
+      if (convo) {
+        const {convoUsers, usersListString} = _fetchConvoInfo(convo, Meteor);
+        const title = convo.getName(userId, convoUsers);
+        const translations = _fetchTranslations(Collections, convoId);
+        onData(null, {
+          convo,
+          msgs: [],
+          userId,
+          convoUsers,
+          title,
+          usersListString,
+          langCode,
+          translations
+        });
+      }
     }
   }
 }
