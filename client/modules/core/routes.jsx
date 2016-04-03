@@ -83,49 +83,30 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
     }
   });
 
-  FlowRouter.route('/team/:teamId/convo/:convoId', {
-    name: 'team-convo',
-    triggersEnter: [ ensureSignedIn, removeNotifications, resetNumVisibleMsgs ],
-    triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications, resetNumVisibleMsgs ],
-    action(params) {
-      const {convoId} = params;
-      Meteor.call('convos.isMember', {convoId}, (err, res) => {
-        if (err) {
-          mount(MainLayoutCtx, {
-            content: () => (<div>You are not authorized to view this page.</div>)
-          });
-        }
-        else {
-          setLastTimeInTeam({params});
-          setLastTimeInConvo({params});
-          mount(MainLayoutCtx, {
-            content: () => (<Home />)
-          });
-        }
-      });
-    }
-  });
-
-  FlowRouter.route('/team/:teamId/convo/:convoId/msg/:msgId', {
-    name: 'team-convo-msg',
-    triggersEnter: [ ensureSignedIn, removeNotifications, resetNumVisibleMsgs ],
-    triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications, resetNumVisibleMsgs ],
-    action(params) {
-      const {convoId} = params;
-      Meteor.call('convos.isMember', {convoId}, (err, res) => {
-        if (err) {
-          mount(MainLayoutCtx, {
-            content: () => (<div>You are not authorized to view this page.</div>)
-          });
-        }
-        else {
-          setLastTimeInTeam({params});
-          setLastTimeInConvo({params});
-          mount(MainLayoutCtx, {
-            content: () => (<Home />)
-          });
-        }
-      });
-    }
-  });
+  function getConvoRoute(name) {
+    return {
+      name,
+      triggersEnter: [ ensureSignedIn, removeNotifications, resetNumVisibleMsgs ],
+      triggersExit: [ setLastTimeInTeam, setLastTimeInConvo, removeNotifications, resetNumVisibleMsgs ],
+      action(params) {
+        const {convoId} = params;
+        Meteor.call('convos.isMember', {convoId}, (err, res) => {
+          if (err) {
+            mount(MainLayoutCtx, {
+              content: () => (<div>You are not authorized to view this page.</div>)
+            });
+          }
+          else {
+            setLastTimeInTeam({params});
+            setLastTimeInConvo({params});
+            mount(MainLayoutCtx, {
+              content: () => (<Home />)
+            });
+          }
+        });
+      }
+    };
+  }
+  FlowRouter.route('/team/:teamId/convo/:convoId', getConvoRoute('team-convo'));
+  FlowRouter.route('/team/:teamId/convo/:convoId/msg/:msgId', getConvoRoute('team-convo-msg'));
 }

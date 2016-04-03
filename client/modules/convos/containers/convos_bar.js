@@ -13,7 +13,7 @@ const depsMapper = (context, actions) => ({
 const ConvoSubs = new SubsManager();
 
 export const composer = ({context}, onData) => {
-  const {Meteor, Collections, FlowRouter} = context();
+  const {Meteor, Collections, FlowRouter, LocalState} = context();
   const teamId = FlowRouter.getParam('teamId');
 
   const user = Meteor.user();
@@ -38,6 +38,7 @@ export const composer = ({context}, onData) => {
       const convos = Collections.Convos.find(selector, options).fetch();
       const convoId = FlowRouter.getParam('convoId');
       const lastTimeInConvo = Meteor.user().lastTimeInConvo;
+      const windowIsFocused = LocalState.get('window.isFocused');
 
       onData(null, {
         convos,
@@ -45,7 +46,8 @@ export const composer = ({context}, onData) => {
         lastTimeInConvo,
         teamUsers,
         user,
-        teamUsersArr
+        teamUsersArr,
+        windowIsFocused
       });
     }
   }
