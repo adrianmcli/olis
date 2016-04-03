@@ -19,8 +19,10 @@ export const composer = ({context}, onData) => {
   const convo = Collections.Convos.findOne(convoId);
 
   const notInTeam = team && !team.isUserInTeam(userId);
-  // const notInConvo = convo && !convo.isUserInConvo(userId);
+  const notInConvo = convo && !convo.isUserInConvo(userId);
   const noConvo = convoId && !convo;
+
+  // console.log(`notInTeam ${notInTeam}, notInConvo ${notInConvo}, noConvo ${noConvo}`);
 
   // Redirect on team/convo delete or getting kicked out
   if (notInTeam) { FlowRouter.go('/team'); }

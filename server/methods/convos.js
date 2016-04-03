@@ -180,6 +180,7 @@ export default function () {
     }
   });
 
+  // SERVER ONLY
   const CONVOS_REMOVE = 'convos.remove';
   Meteor.methods({
     'convos.remove'({convoId}) {
@@ -221,6 +222,40 @@ export default function () {
 
       // Remove convo
       convo.remove();
+    }
+  });
+
+  const CONVOS_LEAVE = 'convos.leave';
+  Meteor.methods({
+    'convos.leave'({convoId}) {
+      check(arguments[0], {
+        convoId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(CONVOS_LEAVE, 'Must be logged in to leave convo.');
+      }
+      const convo = Convos.findOne(convoId);
+      if (!convo) {
+        throw new Meteor.Error(CONVOS_LEAVE, 'Must leave an existing convo.');
+      }
+      if (!convo.isUserInConvo(userId)) {
+        throw new Meteor.Error(CONVOS_LEAVE, 'Must leave a convo you are a part of.');
+      }
+
+      // Update user
+      const selector = userId;
+      const unsetObj = { [`lastTimeInConvo.${convoId}`]: '' };
+      const modifier = { $unset: unsetObj };
+      Meteor.users.update(selector, modifier);
+
+      // Remove id from convo
+      const userIds = convo.userIds;
+      convo.set({
+        userIds: R.filter(id => id !== userId, userIds)
+      });
+      convo.save();
     }
   });
 }

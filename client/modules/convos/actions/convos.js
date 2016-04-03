@@ -60,9 +60,16 @@ export default {
       `Are you sure you want to delete this conversation? This action is irreversible.`
     );
     if (confirmRemove && convoId) {
-      Meteor.call('convos.remove', {convoId}, (err, res) => {
+      Meteor.call('convos.remove', {convoId}, err => {
         if (err) { alert(err); }
       });
     }
+  },
+
+  leave({FlowRouter, Meteor}) {
+    const convoId = FlowRouter.getParam('convoId');
+    Meteor.call('convos.leave', {convoId}, err => {
+      if (err) { alert(err); }
+    });
   }
 };

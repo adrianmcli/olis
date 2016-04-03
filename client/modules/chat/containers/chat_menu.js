@@ -4,7 +4,8 @@ import ChatMenu from '../components/ChatMenu.jsx';
 
 const depsMapper = (context, actions) => ({
   context: () => context,
-  removeConvo: actions.convos.remove
+  removeConvo: actions.convos.remove,
+  leaveConvo: actions.convos.leave
 });
 
 export const composer = ({context}, onData) => {
