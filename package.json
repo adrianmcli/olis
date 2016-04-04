@@ -33,7 +33,7 @@
     "get-emails": "^1.0.1",
     "ion-sound": "^3.0.7",
     "lodash": "^4.5.1",
-    "mantra-core": "^1.2.0",
+    "mantra-core": "^1.4.0",
     "material-ui": "^0.14.4 ",
     "notification-count": "0.0.2",
     "ramda": "^0.18.0",
