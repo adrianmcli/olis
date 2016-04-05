@@ -1,6 +1,5 @@
 import React from 'react';
 
-import PageWrapper from '/client/modules/core/components/PageWrapper.jsx';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
@@ -14,19 +13,26 @@ export default class Login extends React.Component {
   }
 
   render() {
+    const linkStyle = {
+      color: 'white',
+      marginTop: '12px',
+    };
     return (
-      <PageWrapper
-        title=''
-        hideTitle={true}
-        fullHeight={false}
-        width="420px"
-      >
-      <div style={{textAlign: 'center'}}>
+      <div style={{
+        color: 'white',
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        backgroundColor: '#2F3F70',
+      }}>
         <div
           style={{
             fontSize: '72px',
             fontWeight: '900',
-            color: 'rgba(0,0,0,0.5)'
           }}
         >
           Olis
@@ -35,6 +41,9 @@ export default class Login extends React.Component {
         <div>
           <TextField
             floatingLabelText="Username or Email"
+            floatingLabelStyle={{color: 'rgba(255,255,255,0.5)'}}
+            inputStyle={{color: 'white'}}
+            onEnterKeyDown={this.handleSubmit.bind(this)}
             ref={ref => this.usernameOrEmail = ref}
           />
         </div>
@@ -42,7 +51,10 @@ export default class Login extends React.Component {
         <div>
           <TextField
             floatingLabelText="Password"
+            floatingLabelStyle={{color: 'rgba(255,255,255,0.5)'}}
+            inputStyle={{color: 'white'}}
             type="password"
+            onEnterKeyDown={this.handleSubmit.bind(this)}
             ref={ref => this.password = ref}
           />
         </div>
@@ -54,10 +66,10 @@ export default class Login extends React.Component {
             onClick={this.handleSubmit.bind(this)}
           />
         </div>
-
-        <p style={{opacity: '0.5'}}><a href="#">Forgot your password?</a></p>
+        
+        <a href="#" style={linkStyle}>Forgot your password?</a>
+        <a href="#" style={linkStyle}>No Account?</a>
       </div>
-      </PageWrapper>
     );
   }
 }
