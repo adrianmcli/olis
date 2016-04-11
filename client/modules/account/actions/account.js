@@ -173,22 +173,6 @@ export default {
     if (user) { FlowRouter.go(`/account/${user.username}`); }
   },
 
-  goToCreateAccountPassword({FlowRouter}) {
-    FlowRouter.go('register/password');
-  },
-
-  goToCreateAccountTeamName({FlowRouter}) {
-    FlowRouter.go('/register/team-name');
-  },
-
-  goToCreateAccountEmail({FlowRouter}) {
-    FlowRouter.go('/register/email');
-  },
-
-  goToCreateAccountUsername({FlowRouter}) {
-    FlowRouter.go('/register/username');
-  },
-
   submitFindMyTeamEmail({Meteor}, email, callback) {
     try {
       if (!EmailValidator.validate(email)) {

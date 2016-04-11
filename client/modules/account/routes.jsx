@@ -129,4 +129,13 @@ export default function (injectDeps, {FlowRouter}) {
       });
     }
   });
+
+  FlowRouter.route('/forgot-password', {
+    name: 'forgot-password',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<ForgotPassword />)
+      });
+    }
+  });
 }
