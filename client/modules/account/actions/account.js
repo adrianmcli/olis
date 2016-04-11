@@ -40,12 +40,13 @@ export default {
     return null;
   },
 
-  setRegisterEmail({Meteor, LocalState, FlowRouter}, email) {
+  setRegisterEmail({Meteor, LocalState, FlowRouter}, email, nextPath) {
     Meteor.call('account.validateEmail', {email}, (err, res) => {
       if (err) { alert(err); }
       else {
         console.log(res);
         LocalState.set('register.email', email);
+        FlowRouter.go(nextPath);
       }
     });
   },
