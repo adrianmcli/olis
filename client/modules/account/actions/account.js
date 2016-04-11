@@ -79,7 +79,7 @@ export default {
     if (nextPath) { FlowRouter.go(nextPath); }
   },
 
-  setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
+  setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName, nextPath) {
     const nameTrim = teamName.trim();
     try {
       if (nameTrim === '') {
@@ -87,6 +87,7 @@ export default {
       }
 
       LocalState.set('register.teamName', teamName);
+      if (nextPath) { FlowRouter.go(nextPath); }
     }
     catch (e) { alert(e); }
   },
