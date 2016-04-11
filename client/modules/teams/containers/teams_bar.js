@@ -27,7 +27,9 @@ export const composer = ({context}, onData) => {
   const getSelector = R.compose(mergeConvoId, mergeTeamId);
   const selector = getSelector({userId: Meteor.userId()});
 
-  if (Meteor.subscribe('teams.list', {teamId, convoId}).ready()) {
+  const subTeams = Meteor.subscribe('teams.list', {teamId, convoId});
+
+  if (subTeams.ready()) {
     const teams = Collections.Teams.find({userIds: Meteor.userId()}).fetch();
 
     const notifications = Collections.Notifications.find(selector).fetch();
