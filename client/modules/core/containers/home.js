@@ -14,8 +14,9 @@ export const composer = ({context}, onData) => {
   const teamId = FlowRouter.getParam('teamId');
   const convoId = FlowRouter.getParam('convoId');
 
+  const subTeams = Meteor.subscribe('teams.list', {teamId, convoId});
   const subConvos = Meteor.subscribe('convos.list', {teamId});
-  if (subConvos.ready()) {
+  if (subTeams.ready() && subConvos.ready()) {
     // const user = Meteor.user();
     const userId = Meteor.userId();
     const team = Collections.Teams.findOne(teamId);
