@@ -5,8 +5,7 @@ import CreateAccountPassword from '../components/onboarding/CreateAccountPasswor
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  setRegisterPassword: actions.account.setRegisterPassword,
-  go: (path) => context.FlowRouter.go(path)
+  setRegisterPassword: actions.account.setRegisterPassword
 });
 
 export const composer = ({context}, onData) => {

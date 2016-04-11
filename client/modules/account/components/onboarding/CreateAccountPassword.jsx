@@ -57,7 +57,7 @@ export default class CreateAccountPassword extends React.Component {
   }
 
   handleClick() {
-    const {setRegisterPassword, go, nextPath, finishInviteeOnboard} = this.props;
+    const {setRegisterPassword, nextPath, finishInviteeOnboard} = this.props;
     const pwd1 = this._newPassword1.getValue();
     const pwd2 = this._newPassword2.getValue();
 
@@ -66,9 +66,8 @@ export default class CreateAccountPassword extends React.Component {
     const matching = this._checkMatching(pwd1, pwd2);    // 2. ensure that both new passwords are the same
 
     if (notEmpty && matching) {
-      setRegisterPassword(pwd1, pwd2);
-      if (nextPath) { go(nextPath); }
-      else if (finishInviteeOnboard) { finishInviteeOnboard(); }
+      setRegisterPassword(pwd1, pwd2, nextPath);
+      if (finishInviteeOnboard) { finishInviteeOnboard(); }
     } else {
       // There was an error
     }

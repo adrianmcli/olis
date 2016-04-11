@@ -62,7 +62,7 @@ export default {
     });
   },
 
-  setRegisterPassword({Meteor, LocalState, FlowRouter}, password1, password2) {
+  setRegisterPassword({Meteor, LocalState, FlowRouter}, password1, password2, nextPath) {
     // TODO validate length etc...
     const passwordTrim = password1.trim();
     try {
@@ -76,6 +76,7 @@ export default {
     }
     catch (e) { alert(e); }
     LocalState.set('register.password', passwordTrim);
+    if (nextPath) { FlowRouter.go(nextPath); }
   },
 
   setRegisterTeamName({Meteor, LocalState, FlowRouter}, teamName) {
