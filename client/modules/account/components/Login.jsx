@@ -67,7 +67,7 @@ export default class Login extends React.Component {
           />
         </div>
 
-        <a href="#" style={linkStyle}>Forgot your password?</a>
+        <a href="/forgot-password" style={linkStyle}>Forgot your password?</a>
         <a href="/register" style={linkStyle}>No Account?</a>
       </div>
     );

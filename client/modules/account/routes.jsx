@@ -9,6 +9,7 @@ import MyAccount from './containers/my_account';
 
 import Registration from './containers/registration';
 import InviteeOnboard from './containers/invitee_onboard';
+import ForgotPassword from './components/ForgotPassword.jsx';
 
 export default function (injectDeps, {FlowRouter}) {
   const MainLayoutCtx = injectDeps(MainLayout);
