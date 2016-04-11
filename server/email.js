@@ -98,7 +98,8 @@ export default function () {
         ${url}`;
       return text;
     }
-    const text = `You requested a password change. To reset your password, click the link below:\n\n
+    const text = `If you did not recently request to reset your password, you can ignore this email.\n
+      To reset your password, click the link below:\n\n
       ${url}`;
     return text;
   };

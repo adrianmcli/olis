@@ -360,4 +360,24 @@ export default function () {
       });
     }
   });
+
+  // SERVER ONLY
+  const ACCOUNT_FORGOT_PWD = 'account.forgotPassword';
+  Meteor.methods({
+    'account.forgotPassword'({email}) {
+      check(arguments[0], {
+        email: String
+      });
+
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error(ACCOUNT_FORGOT_PWD, 'Enter a proper email.');
+      }
+      const existingUser = Accounts.findUserByEmail(email);
+      if (!existingUser) {
+        throw new Meteor.Error(ACCOUNT_FORGOT_PWD,
+          `No user found with email: ${email}. Create an account.`);
+      }
+      Accounts.sendResetPasswordEmail(existingUser._id);
+    }
+  });
 }

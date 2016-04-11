@@ -190,6 +190,20 @@ export default {
     catch (e) { alert(e); }
   },
 
+  submitForgotPasswordEmail({Meteor}, email) {
+    try {
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error(
+          'actions.account.submitForgotPasswordEmail', 'Enter a proper email.');
+      }
+
+      Meteor.call('account.forgotPassword', {email}, err => {
+        if (err) { alert(err); }
+      });
+    }
+    catch (e) { alert(e); }
+  },
+
   setUsername({Meteor}, username) {
     Meteor.call('account.setUsername', {username}, (err) => {
       if (err) { alert(err); }
