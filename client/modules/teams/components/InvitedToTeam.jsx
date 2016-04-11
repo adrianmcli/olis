@@ -1,8 +1,11 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import R from 'ramda';
+
 import FlatButton from 'material-ui/lib/flat-button';
 import Dialog from 'material-ui/lib/dialog';
+import List from 'material-ui/lib/lists/list';
+import ListItem from 'material-ui/lib/lists/list-item';
 
 export default class InvitedToTeam extends React.Component {
   constructor(props) {
@@ -41,23 +44,33 @@ export default class InvitedToTeam extends React.Component {
       />
     ];
 
+    const title = invites.length > 1 ?
+      `You've been invited to some new teams!` :
+      `You've been invited to a new team!`;
+
     return (
       <div>
         <Dialog
-          title="Dialog With Actions"
+          title={title + ` Click its name to jump in.`}
           actions={actions}
           modal={true}
           open={open}
         >
-          You have been invited to the following teams:
-          {invites.map(invite => {
-            const {_id, teamId} = invite;
-            return (
-              <div key={_id} onClick={this.handleTeamClick.bind(this, teamId)}>
-                {teams[teamId] ? teams[teamId].name : 'Default team name'}
-              </div>
-            );
-          })}
+          <List>
+            {invites.map(invite => {
+              const {_id, teamId} = invite;
+              return (
+                <ListItem
+                  key={_id}
+                  onClick={this.handleTeamClick.bind(this, teamId)}
+                  primaryText={teams[teamId] ?
+                    teams[teamId].name :
+                    'Default team name'
+                  }
+                />
+              );
+            })}
+          </List>
         </Dialog>
       </div>
     );
