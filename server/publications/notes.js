@@ -1,4 +1,4 @@
-import {Convos, Notes, Teams} from '/lib/collections';
+import {Convos, Notes, Teams, Widgets} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 
@@ -27,6 +27,11 @@ export default function () {
       throw new Meteor.Error(NOTES_SINGLE, 'Must be a member of convo to get the convo\'s note.');
     }
 
-    return Notes.find({convoId});
+    const note = Notes.findOne({convoId});
+
+    return [
+      Notes.find({convoId}),
+      Widgets.find({noteId: note._id})
+    ];
   });
 }
