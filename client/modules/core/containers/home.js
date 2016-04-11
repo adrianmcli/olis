@@ -10,24 +10,28 @@ const depsMapper = (context, actions) => ({
 
 export const composer = ({context}, onData) => {
   const {Meteor, FlowRouter, Collections} = context();
+
   const teamId = FlowRouter.getParam('teamId');
   const convoId = FlowRouter.getParam('convoId');
 
-  // const user = Meteor.user();
-  const userId = Meteor.userId();
-  const team = Collections.Teams.findOne(teamId);
-  const convo = Collections.Convos.findOne(convoId);
+  const subConvos = Meteor.subscribe('convos.list', {teamId});
+  if (subConvos.ready()) {
+    // const user = Meteor.user();
+    const userId = Meteor.userId();
+    const team = Collections.Teams.findOne(teamId);
+    const convo = Collections.Convos.findOne(convoId);
 
-  const notInTeam = team && !team.isUserInTeam(userId);
-  const notInConvo = convo && !convo.isUserInConvo(userId);
-  const noConvo = convoId && !convo;
+    const notInTeam = team && !team.isUserInTeam(userId);
+    const notInConvo = convo && !convo.isUserInConvo(userId);
+    const noConvo = convoId && !convo;
 
-  // console.log(`notInTeam ${notInTeam}, notInConvo ${notInConvo}, noConvo ${noConvo}`);
+    // console.log(`notInTeam ${notInTeam}, notInConvo ${notInConvo}, noConvo ${noConvo}`);
 
-  // Redirect on team/convo delete or getting kicked out
-  if (notInTeam) { FlowRouter.go('/team'); }
-  else if (noConvo) { FlowRouter.go(`/team/${teamId}`); }
-  onData(null, {teamId, convoId});
+    // Redirect on team/convo delete or getting kicked out
+    if (notInTeam) { FlowRouter.go('/team'); }
+    else if (noConvo) { FlowRouter.go(`/team/${teamId}`); }
+    onData(null, {teamId, convoId});
+  }
 };
 
 export default composeAll(
