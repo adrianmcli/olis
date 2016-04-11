@@ -5,7 +5,7 @@ import CreateAcccountEmail from '../components/onboarding/CreateAccountEmail.jsx
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  setRegisterEmail: actions.account.setRegisterEmail,
+  setRegisterEmail: actions.account.setRegisterEmail
 });
 
 export const composer = ({context}, onData) => {

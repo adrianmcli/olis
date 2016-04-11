@@ -10,9 +10,8 @@ export default class CreateAccountUsername extends React.Component {
 
   handleClick() {
     const inputValue = this.input.getValue();
-    const {setRegisterUsername, go, nextPath} = this.props;
-    setRegisterUsername(inputValue);
-    if (nextPath) { go(nextPath); }
+    const {setRegisterUsername, nextPath} = this.props;
+    setRegisterUsername(inputValue, nextPath);
   }
 
   handleEnterKeyDown(e) {

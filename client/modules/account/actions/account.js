@@ -46,17 +46,18 @@ export default {
       else {
         console.log(res);
         LocalState.set('register.email', email);
-        FlowRouter.go(nextPath);
+        if (nextPath) { FlowRouter.go(nextPath); }
       }
     });
   },
 
-  setRegisterUsername({Meteor, LocalState, FlowRouter}, username) {
+  setRegisterUsername({Meteor, LocalState, FlowRouter}, username, nextPath) {
     Meteor.call('account.validateUsername', {username}, (err, res) => {
       if (err) { alert(err); }
       else {
         console.log(res);
         LocalState.set('register.username', username);
+        if (nextPath) { FlowRouter.go(nextPath); }
       }
     });
   },

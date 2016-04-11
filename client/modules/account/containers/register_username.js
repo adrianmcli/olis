@@ -5,8 +5,7 @@ import CreateAccountUsername from '../components/onboarding/CreateAccountUsernam
 export const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  setRegisterUsername: actions.account.setRegisterUsername,
-  go: (path) => context.FlowRouter.go(path)
+  setRegisterUsername: actions.account.setRegisterUsername
 });
 
 export const composer = ({context}, onData) => {
