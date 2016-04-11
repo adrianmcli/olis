@@ -66,7 +66,7 @@ export default class Login extends React.Component {
             onClick={this.handleSubmit.bind(this)}
           />
         </div>
-        
+
         <a href="#" style={linkStyle}>Forgot your password?</a>
         <a href="/register" style={linkStyle}>No Account?</a>
       </div>
