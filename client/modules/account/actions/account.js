@@ -92,7 +92,7 @@ export default {
     catch (e) { alert(e); }
   },
 
-  setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails) {
+  setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails, callback) {
     try {
       inviteEmails.forEach(email => {
         if (!EmailValidator.validate(email) && !R.isEmpty(email)) {
@@ -101,6 +101,7 @@ export default {
       });
 
       LocalState.set('register.inviteEmails', inviteEmails);
+      if (callback) { callback(); }
     }
     catch (e) { alert(e); }
   },
