@@ -1,6 +1,8 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import TimeAgo from 'react-timeago';
 import initData from '/client/modules/widgets/utils/initData';
+import MsgUtils from '/client/modules/core/libs/msgs';
 
 import UndoIcon from 'material-ui/lib/svg-icons/content/undo';
 import RedoIcon from 'material-ui/lib/svg-icons/content/redo';
@@ -46,12 +48,23 @@ export default class NotesHeader extends React.Component {
     this.handleRequestClose();
   }
 
+
+
   render() {
-    const { addWidget, noteId } = this.props;
+    const { addWidget, noteId, updatedAt } = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
     return (
       <div className="notes-header">
-        <div className="notes-status">Last Updated: 23 min ago</div>
+        <div className="notes-status">
+          Last Updated:
+          <span>
+            <TimeAgo
+              date={updatedAt}
+              formatter={MsgUtils.timestampFormatter}
+              title={updatedAt}
+            />
+          </span>
+        </div>
         <div className="notes-icon-bar">
           {/*<IconButton tooltip="Share">
             <ShareIcon color={iconColor}/>

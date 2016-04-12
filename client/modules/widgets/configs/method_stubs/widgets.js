@@ -147,6 +147,12 @@ export default function ({Meteor, Collections}) {
 
       widget.set({data});
       widget.save();
+
+      // To trigger the updated at change
+      note.set({
+        updatedAt: new Date()
+      });
+      note.save();
     }
   });
 }

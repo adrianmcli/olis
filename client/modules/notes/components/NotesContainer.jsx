@@ -40,7 +40,7 @@ class NotesContainer extends React.Component {
     const { note, addWidget } = this.props;
     return (
       <div id="notes-container">
-        <NotesHeader noteId={note._id} addWidget={addWidget} />
+        <NotesHeader noteId={note._id} updatedAt={note.updatedAt} addWidget={addWidget} />
         <div className="notes-data-wrapper">
           {this.renderWidgets()}
         </div>

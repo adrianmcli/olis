@@ -149,6 +149,12 @@ export default function () {
 
       widget.set({data});
       widget.save();
+
+      // To trigger the updated at change
+      note.set({
+        updatedAt: new Date()
+      });
+      note.save();
     }
   });
 }
