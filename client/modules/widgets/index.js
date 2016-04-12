@@ -12,6 +12,7 @@ export default {
 export const Widgets = {
   draggable: DraggableWidget,
   editor: EditorWidget,
+  'meeting-minutes': EditorWidget,
   todo: TodoWidget,
   vote: VoteWidget
 };

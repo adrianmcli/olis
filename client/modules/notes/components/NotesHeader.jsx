@@ -1,5 +1,6 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import initData from '/client/modules/widgets/utils/initData';
 
 import UndoIcon from 'material-ui/lib/svg-icons/content/undo';
 import RedoIcon from 'material-ui/lib/svg-icons/content/redo';
@@ -14,6 +15,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import EditorIcon from 'material-ui/lib/svg-icons/action/description';
 import TodoIcon from 'material-ui/lib/svg-icons/toggle/check-box';
 import VoteIcon from 'material-ui/lib/svg-icons/action/thumb-up';
+import MeetingMinutesIcon from 'material-ui/lib/svg-icons/action/hourglass-empty';
 
 export default class NotesHeader extends React.Component {
   constructor(props) {
@@ -84,6 +86,11 @@ export default class NotesHeader extends React.Component {
                 onClick={addWidget.bind(null, noteId, 'editor', null)}
               />
               <MenuItem
+                primaryText="Meeting Minutes"
+                leftIcon={<MeetingMinutesIcon />}
+                onClick={addWidget.bind(null, noteId, 'meeting-minutes', initData.meetingMinutes())}
+              />
+              <MenuItem
                 primaryText="Todos"
                 leftIcon={<TodoIcon />}
                 onClick={addWidget.bind(null, noteId, 'todo', null)}
@@ -94,8 +101,7 @@ export default class NotesHeader extends React.Component {
                 onClick={addWidget.bind(null, noteId, 'vote', null)}
               />
             </Menu>
-        </Popover>
-
+          </Popover>
         </div>
       </div>
     );
