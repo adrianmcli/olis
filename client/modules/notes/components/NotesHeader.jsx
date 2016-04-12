@@ -10,7 +10,10 @@ import AddIcon from 'material-ui/lib/svg-icons/content/add';
 import Popover from 'material-ui/lib/popover/popover';
 import Menu from 'material-ui/lib/menus/menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import EditorIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
+
+import EditorIcon from 'material-ui/lib/svg-icons/action/description';
+import TodoIcon from 'material-ui/lib/svg-icons/toggle/check-box';
+import VoteIcon from 'material-ui/lib/svg-icons/action/thumb-up';
 
 export default class NotesHeader extends React.Component {
   constructor(props) {
@@ -82,12 +85,12 @@ export default class NotesHeader extends React.Component {
               />
               <MenuItem
                 primaryText="Todos"
-                leftIcon={<EditorIcon />}
+                leftIcon={<TodoIcon />}
                 onClick={addWidget.bind(null, noteId, 'todo', null)}
               />
               <MenuItem
                 primaryText="Vote"
-                leftIcon={<EditorIcon />}
+                leftIcon={<VoteIcon />}
                 onClick={addWidget.bind(null, noteId, 'vote', null)}
               />
             </Menu>
