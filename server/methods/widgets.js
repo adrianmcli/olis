@@ -49,6 +49,7 @@ export default function () {
     }
   });
 
+  const WIDGETS_REMOVE = 'widgets.remove';
   Meteor.methods({
     'widgets.remove'({noteId, widgetId}) {
       check(arguments[0], {
@@ -56,10 +57,25 @@ export default function () {
         widgetId: String
       });
 
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
+      }
+      const note = Notes.findOne(noteId);
+      if (!note) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widget to existing note.');
+      }
+      const convo = Convos.findOne(note.convoId);
+      if (!convo) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widgets to an existing convo.');
+      }
+      if (!convo.isUserInConvo(userId)) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
+      }
+
       Widgets.remove(widgetId);
 
       // Update note's widget array
-      const note = Notes.findOne(noteId);
       const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
       const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
       note.set({
@@ -77,7 +93,22 @@ export default function () {
         position: Number
       });
 
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
+      }
       const note = Notes.findOne(noteId);
+      if (!note) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widget to existing note.');
+      }
+      const convo = Convos.findOne(note.convoId);
+      if (!convo) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widgets to an existing convo.');
+      }
+      if (!convo.isUserInConvo(userId)) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
+      }
+
       const indexToRemove = R.findIndex(i => i === widgetId)(note.widgetIds);
       const widgetsLessRemoved = R.remove(indexToRemove, 1, note.widgetIds);
       const newOrderedWidgets = R.insert(position, widgetId, widgetsLessRemoved);
@@ -96,7 +127,26 @@ export default function () {
         data: Object
       });
 
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
+      }
       const widget = Widgets.findOne(widgetId);
+      if (!widget) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must remove an existing widget.');
+      }
+      const note = Notes.findOne(widget.noteId);
+      if (!note) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widget to existing note.');
+      }
+      const convo = Convos.findOne(note.convoId);
+      if (!convo) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widgets to an existing convo.');
+      }
+      if (!convo.isUserInConvo(userId)) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
+      }
+
       widget.set({data});
       widget.save();
     }
