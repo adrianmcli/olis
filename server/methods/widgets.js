@@ -85,6 +85,7 @@ export default function () {
       note.set({
         widgetIds: newOrderedWidgets
       });
+      note.save();
     }
   });
 

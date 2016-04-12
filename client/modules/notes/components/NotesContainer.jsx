@@ -16,7 +16,7 @@ class NotesContainer extends React.Component {
   renderWidgets() {
     const {
       userId, note, widgets,
-      addWidget, removeWidget, moveWidget
+      removeWidget, moveWidget
     } = this.props;
 
     return widgets.map((widget, index) => {
@@ -35,9 +35,10 @@ class NotesContainer extends React.Component {
   }
 
   render() {
+    const { note, addWidget } = this.props;
     return (
       <div id="notes-container">
-        <NotesHeader />
+        <NotesHeader noteId={note._id} addWidget={addWidget} />
         <div className="notes-data-wrapper">
           {this.renderWidgets()}
         </div>

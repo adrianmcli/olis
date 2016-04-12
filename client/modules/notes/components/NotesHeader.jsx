@@ -20,13 +20,13 @@ export default class NotesHeader extends React.Component {
       open: false
     };
 
-    this.handleAddWidget = this.handleAddWidget.bind(this);
+    this.handleOpenWidgetsList = this.handleOpenWidgetsList.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleItemTouchTap = this.handleItemTouchTap.bind(this);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
-  handleAddWidget(event) {
+  handleOpenWidgetsList(event) {
     this.setState({
       open: true,
       anchorEl: event.currentTarget
@@ -42,7 +42,7 @@ export default class NotesHeader extends React.Component {
   }
 
   render() {
-    const { addWidget } = this.props;
+    const { addWidget, noteId } = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
     return (
       <div className="notes-header">
@@ -60,7 +60,7 @@ export default class NotesHeader extends React.Component {
           <IconButton tooltip="Redo">
             <RedoIcon color={iconColor}/>
           </IconButton>*/}
-          <IconButton tooltip="Add widget" onTouchTap={this.handleAddWidget}>
+          <IconButton tooltip="Add widget" onTouchTap={this.handleOpenWidgetsList}>
             <AddIcon color={iconColor}/>
           </IconButton>
           <Popover
@@ -78,7 +78,7 @@ export default class NotesHeader extends React.Component {
               <MenuItem
                 primaryText="Text Editor"
                 leftIcon={<EditorIcon />}
-                onClick={addWidget}
+                onClick={addWidget.bind(null, noteId, 'editor')}
               />
             </Menu>
         </Popover>
