@@ -8,10 +8,7 @@ const NotesSubs = new SubsManager();
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  actions: () => actions,
-  editSection: actions.sections.edit,
-  selectSection: actions.sections.select,
-  releaseSectionLock: actions.sections.releaseLock,
+  addWidget: actions.widgets.add
 });
 
 export const composer = ({context, actions}, onData) => {
@@ -19,27 +16,19 @@ export const composer = ({context, actions}, onData) => {
   const convoId = FlowRouter.getParam('convoId');
 
   if (convoId) {
-    if (NotesSubs.subscribe('notes.single', {convoId}).ready()) {
+    const subNote = NotesSubs.subscribe('notes.single', {convoId});
+    if (subNote.ready()) {
       const note = Collections.Notes.findOne({convoId});
 
-      if (note) {
-        const noteId = note._id;
-        const _addSection = actions().sections.add.bind(null, noteId);
+      const unorderedWidgets = Collections.Widgets.find({noteId: note._id}).fetch();
+      const widgetOrder = note.widgetIds;
+      const widgets = getOrderedWidgets(unorderedWidgets, widgetOrder);
 
-        if (NotesSubs.subscribe('sections', {noteId}).ready()) {
-          const unsortedSections = Collections.Sections.find({noteId}).fetch();
-
-          if (!R.isEmpty(unsortedSections)) {
-            const groupById = R.groupBy(R.prop('_id'), unsortedSections);
-            const sort = R.map(id => groupById[id][0]);
-            const sections = sort(note.sectionIds);
-
-            onData(null, {
-              note, sections, addSection: _addSection, userId: Meteor.userId()
-            });
-          }
-        }
-      }
+      onData(null, {
+        note,
+        userId: Meteor.userId(),
+        widgets
+      });
     }
   }
 };
@@ -50,3 +39,12 @@ export default composeAll(
   }),
   useDeps(depsMapper)
 )(NotesContainer);
+
+function getOrderedWidgets(widgets, widgetOrder) {
+  if (!R.isEmpty(widgets)) {
+    const groupById = R.groupBy(R.prop('_id'), widgets);
+    const sortById = R.map(id => groupById[id][0]);
+    return sortById(widgetOrder);
+  }
+  return [];
+}

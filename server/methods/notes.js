@@ -35,15 +35,8 @@ export default function () {
       note.set({convoId: convo._id});
       note.save();
 
-      // Insert a section, server only
-      // const header = `<h1>Notes</h1>`;
-      // const body = `<p>Write notes here! You can also edit that title up there!</p>`;
-      // const section = Meteor.call('sections.add', {noteId: note._id, text: header});
-      // Meteor.call('sections.add', {
-      //   noteId: note._id, text: body, afterSectionId: section._id
-      // });
-      // const text = `<h1>Notes</h1><p>Write notes here! You can also edit that title up there!</p>`;
-      Meteor.call('sections.add', {noteId: note._id});
+      // Insert a widget
+      Meteor.call('widgets.add', {noteId: note._id, type: 'editor'});
 
       return convo._id;
     }

@@ -42,6 +42,7 @@ export default class NotesHeader extends React.Component {
   }
 
   render() {
+    const { addWidget } = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
     return (
       <div className="notes-header">
@@ -77,7 +78,7 @@ export default class NotesHeader extends React.Component {
               <MenuItem
                 primaryText="Text Editor"
                 leftIcon={<EditorIcon />}
-                // onClick={this.openTeamDirectory.bind(this)}
+                onClick={addWidget}
               />
             </Menu>
         </Popover>

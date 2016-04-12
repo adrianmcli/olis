@@ -15,6 +15,7 @@ import searchModule from './modules/search';
 import notificationsModule from './modules/notifications';
 import imagesModule from './modules/images';
 import translationModule from './modules/translation';
+import widgetsModule from './modules/widgets';
 
 // notification tab listener
 import notOnTabListener from './modules/notifications/configs/notOnTabListener';
@@ -37,6 +38,7 @@ app.loadModule(searchModule);
 app.loadModule(notificationsModule);
 app.loadModule(imagesModule);
 app.loadModule(translationModule);
+app.loadModule(widgetsModule);
 
 app.loadModule(testModule);
 
