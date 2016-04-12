@@ -3,13 +3,13 @@ import _ from 'lodash';
 
 import Paper from 'material-ui/lib/paper';
 
-import Header from './Header';
+import TitleBar from './TitleBar';
 import Body from './Body';
 // import './app.css';
 // import './placeholder.css';
 
 import {addTask, removeTask, toggleTask,
-  updateTask, toggleAll, clearCompleted} from '../actions/actions';
+  updateTask, toggleAll, clearCompleted, updateTitle} from '../actions/actions';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,9 +17,8 @@ export default class App extends React.Component {
 
     const {data} = props;
     this.state = {
-      todos: canSetStateFromProps(data) ?
-        data.todos :
-        []
+      title: canSetStateFromProps(data) ? data.title : 'To Do List',
+      todos: canSetStateFromProps(data) ? data.todos : [],
     };
   }
 
@@ -31,21 +30,22 @@ export default class App extends React.Component {
       updateTask: updateTask.bind(this),
       toggleAll: toggleAll.bind(this),
       clearCompleted: clearCompleted.bind(this),
+      updateTitle: updateTitle.bind(this),
     };
   }
 
   componentWillReceiveProps(nextProps) {
     const {data} = nextProps;
     if (canSetStateFromProps(data)) {
-      this.setState({todos: data.todos});
+      this.setState({todos: data.todos, title: data.title});
     }
   }
 
-  updateState(todos) {
+  updateState(todos, title) {
     const {widgetId, update} = this.props;
 
-    this.setState({todos});
-    update(widgetId, {todos});
+    this.setState({todos, title});
+    update(widgetId, {todos, title});
   }
 
   render() {
@@ -54,11 +54,11 @@ export default class App extends React.Component {
       boxSizing: 'border-box',
       width: '100%',
     };
-    const {todos} = this.state;
+    const {todos, title} = this.state;
     const actions = this.getActions();
     return (
       <Paper className='todoapp' style={style}>
-        <Header addTask={actions.addTask} />
+        <TitleBar title={title} updateTitle={actions.updateTitle} />
         <Body todos={todos} actions={actions} />
       </Paper>
     );
@@ -70,3 +70,11 @@ function canSetStateFromProps(data) {
   const hasTodos = hasData && _.has(data, 'todos');
   return hasTodos;
 }
+
+App.defaultProps = {
+  data: {
+    title: 'To Do List',
+    todos: [],
+  },
+  update: () => console.log('update function'),
+};
