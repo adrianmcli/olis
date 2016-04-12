@@ -7,6 +7,7 @@ storiesOf('Todo App', module)
     return <App todos={[]} />;
   })
   .add('sample data', () => {
+    const title = 'Stuff To Do';
     const todos = [
       {
         id: 'id_one',
@@ -24,9 +25,10 @@ storiesOf('Todo App', module)
         completed: false,
       },
     ];
-    return <App data={{todos}} />;
+    return <App data={{todos, title}} />;
   })
   .add('all selected', () => {
+    const title = 'Stuff To Do';
     const todos = [
       {
         id: 'id_one',
@@ -44,9 +46,10 @@ storiesOf('Todo App', module)
         completed: true,
       },
     ];
-    return <App data={{todos}} />;
+    return <App data={{todos, title}} />;
   })
   .add('none selected', () => {
+    const title = 'Stuff To Do';
     const todos = [
       {
         id: 'id_one',
@@ -64,5 +67,5 @@ storiesOf('Todo App', module)
         completed: false,
       },
     ];
-    return <App data={{todos}} />;
+    return <App data={{todos, title}} />;
   });

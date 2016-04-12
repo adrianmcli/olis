@@ -1,9 +1,8 @@
 import { configure } from '@kadira/storybook';
 
 function loadStories() {
-  require('../.stories/button');
-  require('../.stories/login');
-  // require as many as stories you need.
+  require('../client/modules/widgets/todoWidget/components/stories/App');
+  require('../client/modules/widgets/voteWidget/components/stories/App');
 }
 
 configure(loadStories, module);

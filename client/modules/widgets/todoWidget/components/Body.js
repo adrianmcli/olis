@@ -3,6 +3,7 @@ import React from 'react';
 import IconButton from 'material-ui/lib/icon-button';
 import ToggleIcon from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-down';
 
+import TodoInput from './TodoInput';
 import Footer from './Footer';
 import TodoItem from './TodoItem';
 
@@ -32,6 +33,14 @@ export default class Body extends React.Component {
         left: '8px',
       }
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const numTasksOld = this.props.todos.length;
+    const numTasksNew = nextProps.todos.length;
+    if (numTasksOld === 0 && numTasksNew > 0) {
+      this._input.setFocus();
+    }
   }
 
   renderTodoList() {
@@ -79,26 +88,39 @@ export default class Body extends React.Component {
     this.setState({filter});
   }
 
+  renderList() {
+    const styles = this.getStyles().main;
+    return (
+      <section style={styles}>
+        {this.renderToggleAll()}
+        {this.renderTodoList()}
+      </section>
+    );
+  }
+
+  renderFooter() {
+    const {todos, actions} = this.props;
+    return (
+      <Footer
+        todos={todos}
+        filter={this.state.filter}
+        actions={actions}
+        setFilter={this.setFilter.bind(this)}
+      />
+    );
+  }
+
   render() {
     const {todos, actions} = this.props;
-    const styles = this.getStyles().main;
-
-    if (todos.length > 0) {
-      return (
+    return (
       <div>
-        <section style={styles}>
-          {this.renderToggleAll()}
-          {this.renderTodoList()}
-        </section>
-        <Footer
-          todos={todos}
-          filter={this.state.filter}
-          actions={actions}
-          setFilter={this.setFilter.bind(this)}
+        { todos.length > 0 ? this.renderList() : null }
+        <TodoInput
+          addTask={actions.addTask}
+          ref={x => this._input = x}
         />
-        </div>
-      );
-    }
-    return null;
+        { todos.length > 0 ? this.renderFooter() : null }
+      </div>
+    );
   }
 }

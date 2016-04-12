@@ -1,21 +1,25 @@
 import React from 'react';
 
-export default class Header extends React.Component {
+export default class TodoInput extends React.Component {
   getStyles() {
     return {
       input: {
         // layout
         width: '100%',
-        padding: '16px 16px 16px 60px',
+        padding: '15px',
         border: 'none',
         outline: 'none',
         boxShadow: 'inset 0 -2px 1px rgba(0,0,0,0.03)',
         boxSizing: 'border-box',
         // typography
-        fontSize: '24px',
+        fontSize: '16px',
         lineHeight: '1.4em',
       }
     };
+  }
+
+  setFocus() {
+    this._input.focus();
   }
 
   handleKeyDown(e) {
