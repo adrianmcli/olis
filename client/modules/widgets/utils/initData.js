@@ -13,7 +13,7 @@ export default {
       key: Random.id(keyLength)
     });
     const dateHeader = new ContentBlock({
-      text: `Date: ${date.toUTCString()}`,
+      text: `Date: ${date.toLocaleString()}`,
       type: 'header-three',
     });
     const participantsHeader = new ContentBlock({
