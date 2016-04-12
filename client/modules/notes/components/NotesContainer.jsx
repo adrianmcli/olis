@@ -4,7 +4,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import NotesHeader from './NotesHeader.jsx';
-import DraggableWidget from '/client/modules/widgets/draggableWidget/components/DraggableWidget.jsx';
+import { Widgets } from '/client/modules/widgets';
 import Widget from '/client/modules/widgets/widget/containers/widget';
 
 class NotesContainer extends React.Component {
@@ -18,6 +18,8 @@ class NotesContainer extends React.Component {
       userId, note, widgets,
       removeWidget, moveWidget
     } = this.props;
+
+    const DraggableWidget = Widgets['draggable'];
 
     return widgets.map((widget, index) => {
       return (
