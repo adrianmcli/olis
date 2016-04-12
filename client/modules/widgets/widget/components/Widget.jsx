@@ -4,7 +4,10 @@ import RemoveIcon from 'material-ui/lib/svg-icons/navigation/close';
 
 export default class Widget extends Component {
   render() {
-    const { widget, remove, update } = this.props;
+    const {
+      widget, lock, userId,
+      remove, update, requestAndReleaseLock
+    } = this.props;
     const { _id: widgetId, noteId, type, data } = widget;
 
     const WidgetType = Widgets[type];
@@ -15,6 +18,10 @@ export default class Widget extends Component {
           noteId={noteId}
           data={data}
           update={update}
+
+          lock={lock}
+          userId={userId}
+          requestAndReleaseLock={requestAndReleaseLock}
         />
         <div style={getRemoveStyle().container} onClick={remove.bind(this, noteId, widgetId)}>
           <RemoveIcon style={getRemoveStyle().icon} color='rgba(0,0,0,0.5)'/>

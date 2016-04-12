@@ -21,5 +21,11 @@ export default {
     Meteor.call('widgets.update', {widgetId, data}, err => {
       if (err) { alert(err); }
     });
+  },
+
+  lock({Meteor}, noteId, widgetId) {
+    Meteor.call('locks.requestAndRelease',{noteId, requestedWidgetId: widgetId}, err => {
+      if (err) { alert(err); }
+    });
   }
 };

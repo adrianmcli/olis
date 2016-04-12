@@ -11,7 +11,8 @@ export const depsMapper = (context, actions) => ({
   addWidget: actions.widgets.add,
   removeWidget: actions.widgets.remove,
   moveWidget: actions.widgets.move,
-  updateWidget: actions.widgets.update
+  updateWidget: actions.widgets.update,
+  requestAndReleaseLock: actions.widgets.lock
 });
 
 export const composer = ({context, actions}, onData) => {
@@ -22,15 +23,20 @@ export const composer = ({context, actions}, onData) => {
     const subNote = NotesSubs.subscribe('notes.single', {convoId});
     if (subNote.ready()) {
       const note = Collections.Notes.findOne({convoId});
+      const noteId = note._id;
 
-      const unorderedWidgets = Collections.Widgets.find({noteId: note._id}).fetch();
+      const unorderedWidgets = Collections.Widgets.find({noteId}).fetch();
       const widgetOrder = note.widgetIds;
       const widgets = getOrderedWidgets(unorderedWidgets, widgetOrder);
+
+      const locksArr = Collections.Locks.find({noteId}).fetch();
+      const locks = R.zipObj(locksArr.map(lock => lock.widgetId), locksArr);
 
       onData(null, {
         note,
         userId: Meteor.userId(),
-        widgets
+        widgets,
+        locks
       });
     }
   }

@@ -27,14 +27,17 @@ export default class EditorWidget extends React.Component {
 
   onChange(editorState) {
     const {
+      noteId,
       widgetId,
-      update
+      update,
+      requestAndReleaseLock
     } = this.props;
 
     const contentState = editorState.getCurrentContent();
     const raw = convertToRaw(contentState);
 
     update(widgetId, raw);
+    requestAndReleaseLock(noteId, widgetId);
     this.setState({editorState});
   }
 
@@ -80,6 +83,8 @@ export default class EditorWidget extends React.Component {
   }
 
   render() {
+    const {lock, userId} = this.props;
+
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
     let className = 'RichEditor-editor';
@@ -102,6 +107,8 @@ export default class EditorWidget extends React.Component {
       marginRight: '16px',
     };
 
+    const readOnly = lock ? lock.userId !== userId : false;
+
     return (
       <Paper style={{padding: '12px', width: '100%'}}>
         <div style={controlsContainerStyle}>
@@ -121,6 +128,7 @@ export default class EditorWidget extends React.Component {
             onChange={this.onChange}
             placeholder="Type something..."
             handleDrop={() => true} // Prevent other React DnD things from being dropped into it
+            readOnly={readOnly}
 
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
@@ -133,6 +141,9 @@ export default class EditorWidget extends React.Component {
     );
   }
 }
+EditorWidget.defaultProps = {
+  lock: undefined
+};
 
 // Custom overrides for "code" style.
 const styleMap = {

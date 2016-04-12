@@ -15,13 +15,14 @@ class NotesContainer extends React.Component {
 
   renderWidgets() {
     const {
-      userId, note, widgets,
-      removeWidget, moveWidget, updateWidget
+      userId, note, widgets, locks,
+      removeWidget, moveWidget, updateWidget, requestAndReleaseLock
     } = this.props;
 
     const DraggableWidget = Widgets['draggable'];
 
     return widgets.map((widget, index) => {
+      const lock = locks[widget._id];
       return (
         <DraggableWidget
           key={widget._id}
@@ -30,7 +31,14 @@ class NotesContainer extends React.Component {
           widgetId={widget._id}
           moveWidget={moveWidget}
         >
-          <Widget widget={widget} remove={removeWidget} update={updateWidget} />
+          <Widget
+            widget={widget}
+            remove={removeWidget}
+            update={updateWidget}
+            userId={userId}
+            lock={lock}
+            requestAndReleaseLock={requestAndReleaseLock}
+          />
         </DraggableWidget>
       );
     });

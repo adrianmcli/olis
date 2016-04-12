@@ -10,6 +10,7 @@ import images from './images';
 import invites from './invites';
 import translation from './translation';
 import widgets from './widgets';
+import locks from './locks';
 
 export default function () {
   test();
@@ -24,4 +25,5 @@ export default function () {
   invites();
   translation();
   widgets();
+  locks();
 }
