@@ -8,7 +8,9 @@ const NotesSubs = new SubsManager();
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  addWidget: actions.widgets.add
+  addWidget: actions.widgets.add,
+  removeWidget: actions.widgets.remove,
+  moveWidget: actions.widgets.move
 });
 
 export const composer = ({context, actions}, onData) => {
