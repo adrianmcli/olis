@@ -2,7 +2,7 @@
   // Server authentication info
   "servers": [
     {
-      "host": "olisapp.com",
+      "host": "128.199.73.174",
       "username": "root",
       // "password": "password"
       // or pem file (ssh based authentication)
