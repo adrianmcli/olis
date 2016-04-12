@@ -45,6 +45,7 @@ export default composeAll(
 function getOrderedWidgets(widgets, widgetOrder) {
   if (!R.isEmpty(widgets)) {
     const groupById = R.groupBy(R.prop('_id'), widgets);
+    console.log(groupById);
     const sortById = R.map(id => groupById[id][0]);
     return sortById(widgetOrder);
   }
