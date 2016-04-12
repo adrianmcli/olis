@@ -1,5 +1,7 @@
 import {
-  Posts, Comments, Messages, Teams, Convos, Notifications, Invites, Notes, Sections, Translations
+  Posts, Comments, Messages, Teams, Convos,
+  Notifications, Invites, Notes, Sections, Translations,
+  Widgets, Locks
 } from '../../lib/collections';
 import Team from '/lib/team';
 import {Meteor} from 'meteor/meteor';
@@ -20,14 +22,16 @@ export default function () {
   Meteor.methods({
     '_wipeDbAndInitialize'() {
       Meteor.users.remove({});
-      Messages.remove({});
       Teams.remove({});
       Convos.remove({});
-      Notifications.remove({});
-      Invites.remove({});
+      Messages.remove({});
       Notes.remove({});
       Sections.remove({});
+      Notifications.remove({});
+      Invites.remove({});
       Translations.remove({});
+      Widgets.remove({});
+      Locks.remove({});
 
       const langCode = 'en';
 
