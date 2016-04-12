@@ -1,5 +1,8 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import TimeAgo from 'react-timeago';
+import initData from '/client/modules/widgets/utils/initData';
+import MsgUtils from '/client/modules/core/libs/msgs';
 
 import UndoIcon from 'material-ui/lib/svg-icons/content/undo';
 import RedoIcon from 'material-ui/lib/svg-icons/content/redo';
@@ -10,7 +13,11 @@ import AddIcon from 'material-ui/lib/svg-icons/content/add';
 import Popover from 'material-ui/lib/popover/popover';
 import Menu from 'material-ui/lib/menus/menu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import EditorIcon from 'material-ui/lib/svg-icons/editor/insert-drive-file';
+
+import EditorIcon from 'material-ui/lib/svg-icons/action/description';
+import TodoIcon from 'material-ui/lib/svg-icons/toggle/check-box';
+import VoteIcon from 'material-ui/lib/svg-icons/action/thumb-up';
+import MeetingMinutesIcon from 'material-ui/lib/svg-icons/action/hourglass-empty';
 
 export default class NotesHeader extends React.Component {
   constructor(props) {
@@ -20,13 +27,13 @@ export default class NotesHeader extends React.Component {
       open: false
     };
 
-    this.handleAddWidget = this.handleAddWidget.bind(this);
+    this.handleOpenWidgetsList = this.handleOpenWidgetsList.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleItemTouchTap = this.handleItemTouchTap.bind(this);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
-  handleAddWidget(event) {
+  handleOpenWidgetsList(event) {
     this.setState({
       open: true,
       anchorEl: event.currentTarget
@@ -41,12 +48,23 @@ export default class NotesHeader extends React.Component {
     this.handleRequestClose();
   }
 
+
+
   render() {
-    const { addWidget } = this.props;
+    const { addWidget, noteId, updatedAt } = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
     return (
       <div className="notes-header">
-        <div className="notes-status">Last Updated: 23 min ago</div>
+        <div className="notes-status">
+          Last Updated:
+          <span>
+            <TimeAgo
+              date={updatedAt}
+              formatter={MsgUtils.timestampFormatter}
+              title={updatedAt}
+            />
+          </span>
+        </div>
         <div className="notes-icon-bar">
           {/*<IconButton tooltip="Share">
             <ShareIcon color={iconColor}/>
@@ -60,7 +78,7 @@ export default class NotesHeader extends React.Component {
           <IconButton tooltip="Redo">
             <RedoIcon color={iconColor}/>
           </IconButton>*/}
-          <IconButton tooltip="Add widget" onTouchTap={this.handleAddWidget}>
+          <IconButton tooltip="Add widget" onTouchTap={this.handleOpenWidgetsList}>
             <AddIcon color={iconColor}/>
           </IconButton>
           <Popover
@@ -78,11 +96,25 @@ export default class NotesHeader extends React.Component {
               <MenuItem
                 primaryText="Text Editor"
                 leftIcon={<EditorIcon />}
-                onClick={addWidget}
+                onClick={addWidget.bind(null, noteId, 'editor', null)}
+              />
+              <MenuItem
+                primaryText="Meeting Minutes"
+                leftIcon={<MeetingMinutesIcon />}
+                onClick={addWidget.bind(null, noteId, 'meeting-minutes', initData.meetingMinutes())}
+              />
+              <MenuItem
+                primaryText="Todos"
+                leftIcon={<TodoIcon />}
+                onClick={addWidget.bind(null, noteId, 'todo', null)}
+              />
+              <MenuItem
+                primaryText="Vote"
+                leftIcon={<VoteIcon />}
+                onClick={addWidget.bind(null, noteId, 'vote', null)}
               />
             </Menu>
-        </Popover>
-
+          </Popover>
         </div>
       </div>
     );

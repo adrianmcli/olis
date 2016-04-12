@@ -1,4 +1,4 @@
-import {Convos, Notes, Teams, Widgets} from '/lib/collections';
+import {Convos, Notes, Teams, Widgets, Locks} from '/lib/collections';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 
@@ -28,10 +28,12 @@ export default function () {
     }
 
     const note = Notes.findOne({convoId});
+    const noteId = note._id;
 
     return [
       Notes.find({convoId}),
-      Widgets.find({noteId: note._id})
+      Widgets.find({noteId}),
+      Locks.find({noteId})
     ];
   });
 }

@@ -41,7 +41,7 @@ meteorhacks:search-source
 email
 meteorhacks:subs-manager
 lepozepo:cloudinary
-# kadira:debug
+kadira:debug
 devian:mstranslate
 easysearch:core
 peerlibrary:user-extra
