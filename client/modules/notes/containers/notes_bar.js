@@ -10,7 +10,8 @@ export const depsMapper = (context, actions) => ({
   context: () => context,
   addWidget: actions.widgets.add,
   removeWidget: actions.widgets.remove,
-  moveWidget: actions.widgets.move
+  moveWidget: actions.widgets.move,
+  updateWidget: actions.widgets.update
 });
 
 export const composer = ({context, actions}, onData) => {

@@ -5,7 +5,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import NotesHeader from './NotesHeader.jsx';
 import { Widgets } from '/client/modules/widgets';
-import Widget from '/client/modules/widgets/widget/containers/widget';
+import Widget from '/client/modules/widgets/widget/components/Widget.jsx';
 
 class NotesContainer extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class NotesContainer extends React.Component {
   renderWidgets() {
     const {
       userId, note, widgets,
-      removeWidget, moveWidget
+      removeWidget, moveWidget, updateWidget
     } = this.props;
 
     const DraggableWidget = Widgets['draggable'];
@@ -30,7 +30,7 @@ class NotesContainer extends React.Component {
           widgetId={widget._id}
           moveWidget={moveWidget}
         >
-          <Widget widget={widget} removeWidget={removeWidget} />
+          <Widget widget={widget} remove={removeWidget} update={updateWidget} />
         </DraggableWidget>
       );
     });
