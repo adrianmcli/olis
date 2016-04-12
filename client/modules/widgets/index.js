@@ -3,6 +3,7 @@ import actions from './actions';
 import DraggableWidget from './draggableWidget/components/DraggableWidget.jsx';
 import EditorWidget from './editorWidget/components/EditorWidget.jsx';
 import TodoWidget from './todoWidget/components/App';
+import VoteWidget from './voteWidget/components/App';
 
 export default {
   actions
@@ -11,5 +12,6 @@ export default {
 export const Widgets = {
   draggable: DraggableWidget,
   editor: EditorWidget,
-  todo: TodoWidget
+  todo: TodoWidget,
+  vote: VoteWidget
 };

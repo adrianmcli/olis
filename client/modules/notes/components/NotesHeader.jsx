@@ -85,6 +85,11 @@ export default class NotesHeader extends React.Component {
                 leftIcon={<EditorIcon />}
                 onClick={addWidget.bind(null, noteId, 'todo', null)}
               />
+              <MenuItem
+                primaryText="Vote"
+                leftIcon={<EditorIcon />}
+                onClick={addWidget.bind(null, noteId, 'vote', null)}
+              />
             </Menu>
         </Popover>
 
