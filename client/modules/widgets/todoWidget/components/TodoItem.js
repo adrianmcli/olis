@@ -109,7 +109,7 @@ function getStyles() {
     },
     label: {
       whiteSpace: 'pre-line',
-      wordBreak: 'break-all',
+      // wordBreak: 'break-all',
       padding: '15px',
       display: 'block',
       lineHeight: '1.2',

@@ -54,18 +54,10 @@ function getStyles() {
     },
     title: {
       fontSize: '16px',
-      fontWeight: '500',
+      fontWeight: '700',
       flexGrow: '1',
       cursor: 'pointer',
       lineHeight: '30px',
-    },
-    input: {
-      width: '100%',
-      border: 'none',
-      outline: 'none',
-      boxSizing: 'border-box',
-      fontSize: '16px',
-      fontWeight: '500',
     },
   };
 }

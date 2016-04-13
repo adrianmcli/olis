@@ -82,7 +82,10 @@ export default class OptionItem extends React.Component {
     const percentage = getPercentage(option.voters.length, totalVotes);
     const barStyle = Object.assign({width: percentage}, getStyles().bar);
 
-    const renderNumbers = () => <div style={styles.numbers}>{votes}{' / '}{percentage}</div>;
+    const renderNumbers = () => {
+      const desc = votes === 1 ? 'vote' : 'votes';
+      return <div style={styles.numbers}>{votes}&nbsp;{desc}&nbsp;({percentage})</div>;
+    };
     const renderLabel = () => {
       const labelStyle = voted ?
         Object.assign(styles.label, {color: styles.labelAccent}) : styles.label;

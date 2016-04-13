@@ -82,3 +82,7 @@ function canSetStateFromProps(data) {
 
   return hasPrompt && hasOptions;
 }
+
+App.defaultProps = {
+  update: () => console.log('update()'),
+}
