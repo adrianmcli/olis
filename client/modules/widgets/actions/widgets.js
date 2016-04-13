@@ -6,9 +6,11 @@ export default {
   },
 
   remove({Meteor}, noteId, widgetId) {
-    Meteor.call('widgets.remove', {noteId, widgetId}, err => {
-      if (err) { alert(err); }
-    });
+    if (confirm('You are about to delete this widget!\nAre you sure?')) {
+      Meteor.call('widgets.remove', {noteId, widgetId}, err => {
+        if (err) { alert(err); }
+      });
+    }
   },
 
   move({Meteor}, noteId, widgetId, position) {
