@@ -31,9 +31,15 @@ export default class ChatMessageTranslation extends React.Component {
         width: '20px',
         height: '20px',
       };
+      const hrStyle = {
+        borderTop: 'none',
+        borderLeft: 'none',
+        borderRight: 'none',
+        borderBottom: '1px solid rgba(0,0,0,0.12)}',
+      };
       return (
         <div className="translation">
-          <hr />
+          <hr style={hrStyle}/>
           <Loading spinnerName='cube-grid' style={loadingStyle} color={loadingColor}/>
         </div>
       );
