@@ -17,7 +17,7 @@ export default class App extends React.Component {
 
     const {data} = props;
     this.state = {
-      title: canSetStateFromProps(data) ? data.title : 'To Do List',
+      title: canSetStateFromProps(data) ? data.title : 'Tasks',
       todos: canSetStateFromProps(data) ? data.todos : [],
     };
   }
@@ -73,7 +73,7 @@ function canSetStateFromProps(data) {
 
 App.defaultProps = {
   data: {
-    title: 'To Do List',
+    title: 'Tasks',
     todos: [],
   },
   update: () => console.log('update function'),

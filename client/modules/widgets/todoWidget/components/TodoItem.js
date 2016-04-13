@@ -15,42 +15,6 @@ export default class TodoItem extends React.Component {
     };
   }
 
-  getStyles() {
-    return {
-      item: {
-        position: 'relative',
-        fontSize: '24px',
-        borderBottom: '1px solid #ededed',
-      },
-      view: {
-        display: 'flex',
-      },
-      contentContainer: {
-        display: 'flex',
-        width: '100%',
-      },
-      checkbox: {
-        width: '55px',
-        display: 'flex',
-        alignItems: 'center',
-        left: '20px',
-        boxSizing: 'border-box',
-      },
-      label: {
-        whiteSpace: 'pre-line',
-        wordBreak: 'break-all',
-        padding: '15px',
-        display: 'block',
-        lineHeight: '1.2',
-        transition: 'color 0.4s',
-        fontSize: '16px',
-      },
-      removeBtn: {
-        marginLeft: 'auto',
-      },
-    };
-  }
-
   handleMouseEnter() {
     this.setState({hovering: true});
   }
@@ -62,7 +26,7 @@ export default class TodoItem extends React.Component {
   renderItemContent() {
     const {id, text, completed} = this.props.todo;
     const {removeTask, toggleTask} = this.props.actions;
-    const styles = this.getStyles();
+    const styles = getStyles();
 
     const labelText = completed ? <s>{text}</s> : text;
     const labelStyle = completed ? Object.assign(styles.label, {opacity: '0.3'}) : styles.label;
@@ -106,7 +70,7 @@ export default class TodoItem extends React.Component {
 
   render() {
     const {editing} = this.state;
-    const styles = this.getStyles();
+    const styles = getStyles();
 
     return (
       <li
@@ -120,4 +84,40 @@ export default class TodoItem extends React.Component {
       </li>
     );
   }
+}
+
+function getStyles() {
+  return {
+    item: {
+      position: 'relative',
+      fontSize: '24px',
+      borderBottom: '1px solid #ededed',
+    },
+    view: {
+      display: 'flex',
+    },
+    contentContainer: {
+      display: 'flex',
+      width: '100%',
+    },
+    checkbox: {
+      width: '55px',
+      display: 'flex',
+      alignItems: 'center',
+      left: '20px',
+      boxSizing: 'border-box',
+    },
+    label: {
+      whiteSpace: 'pre-line',
+      wordBreak: 'break-all',
+      padding: '15px',
+      display: 'block',
+      lineHeight: '1.2',
+      transition: 'color 0.4s',
+      fontSize: '16px',
+    },
+    removeBtn: {
+      marginLeft: 'auto',
+    },
+  };
 }
