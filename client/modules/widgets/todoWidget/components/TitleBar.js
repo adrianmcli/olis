@@ -53,17 +53,11 @@ function getStyles() {
       boxSizing: 'border-box',
     },
     title: {
-      fontSize: '24px',
+      fontSize: '16px',
+      fontWeight: '700',
       flexGrow: '1',
       cursor: 'pointer',
       lineHeight: '30px',
-    },
-    input: {
-      width: '100%',
-      border: 'none',
-      outline: 'none',
-      boxSizing: 'border-box',
-      fontSize: '24px',
     },
   };
 }

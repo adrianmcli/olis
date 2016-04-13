@@ -64,7 +64,7 @@ export default class App extends React.Component {
     };
     const {prompt, options} = this.state;
     const actions = this.getActions();
-    const user = 'userOne';   // hardcoded user for testing purposes, replace with real userId
+    const user = this.props.userId;
     return (
       <Paper className='voteapp' style={style}>
         <Header prompt={prompt} updatePrompt={actions.updatePrompt}/>
@@ -81,4 +81,8 @@ function canSetStateFromProps(data) {
   const hasOptions = hasData && data.options;
 
   return hasPrompt && hasOptions;
+}
+
+App.defaultProps = {
+  update: () => console.log('update()'),
 }
