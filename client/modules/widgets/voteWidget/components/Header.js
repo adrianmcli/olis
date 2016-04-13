@@ -53,7 +53,8 @@ function getStyles() {
       boxSizing: 'border-box',
     },
     prompt: {
-      fontSize: '24px',
+      fontSize: '16px',
+      fontWeight: '500',
       flexGrow: '1',
       cursor: 'pointer',
       lineHeight: '30px',
@@ -63,7 +64,8 @@ function getStyles() {
       border: 'none',
       outline: 'none',
       boxSizing: 'border-box',
-      fontSize: '24px',
+      fontSize: '16px',
+      fontWeight: '500',
     },
   };
 }

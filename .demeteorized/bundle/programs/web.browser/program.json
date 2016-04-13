@@ -1,0 +1,707 @@
+{
+  "format": "web-program-pre1",
+  "manifest": [
+    {
+      "path": "d0d8098684eb4b1b32271210dd3ca33fd0d9b300.js",
+      "where": "client",
+      "type": "js",
+      "cacheable": true,
+      "url": "/d0d8098684eb4b1b32271210dd3ca33fd0d9b300.js?meteor_js_resource=true",
+      "size": 2996182,
+      "hash": "d0d8098684eb4b1b32271210dd3ca33fd0d9b300"
+    },
+    {
+      "path": "6d7999b2ae69f33ada33864f8c3daaa147fe23db.css",
+      "where": "client",
+      "type": "css",
+      "cacheable": true,
+      "url": "/6d7999b2ae69f33ada33864f8c3daaa147fe23db.css?meteor_css_resource=true",
+      "size": 71993,
+      "hash": "6d7999b2ae69f33ada33864f8c3daaa147fe23db"
+    },
+    {
+      "path": "app/favicon.ico",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/favicon.ico",
+      "size": 5430,
+      "hash": "e2e82571a84d94153ceb2eb63d2cf4cf0f460436"
+    },
+    {
+      "path": "app/sounds/beer_can_opening.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/beer_can_opening.aac",
+      "size": 11180,
+      "hash": "bff42ff365ea243c3edb01ddcd1b75dcdbca9638"
+    },
+    {
+      "path": "app/sounds/beer_can_opening.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/beer_can_opening.mp3",
+      "size": 16655,
+      "hash": "b7b9cde359cb59dd99091f45343aeb4f23dc53f5"
+    },
+    {
+      "path": "app/sounds/beer_can_opening.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/beer_can_opening.ogg",
+      "size": 13617,
+      "hash": "3bd1298d593964ce9f20b389a98ece33ee820da5"
+    },
+    {
+      "path": "app/sounds/bell_ring.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/bell_ring.aac",
+      "size": 38842,
+      "hash": "d0592f765958dd451d375e41154fb71e5320f040"
+    },
+    {
+      "path": "app/sounds/bell_ring.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/bell_ring.mp3",
+      "size": 31561,
+      "hash": "50507443d6e4d940f8b8a5710726e08e12cb1303"
+    },
+    {
+      "path": "app/sounds/bell_ring.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/bell_ring.ogg",
+      "size": 33005,
+      "hash": "3a1299eb6dfc3b7ae19e9e1adf505fa39d33bf37"
+    },
+    {
+      "path": "app/sounds/branch_break.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/branch_break.aac",
+      "size": 5403,
+      "hash": "4fde6d688a2aa0b0f9d2d67a1443e9c9738ead96"
+    },
+    {
+      "path": "app/sounds/branch_break.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/branch_break.mp3",
+      "size": 13103,
+      "hash": "7f2678a37449c935b35be550d90e404bd1e82aee"
+    },
+    {
+      "path": "app/sounds/branch_break.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/branch_break.ogg",
+      "size": 9671,
+      "hash": "b0599659536100b73f0ee68841182ee967c41340"
+    },
+    {
+      "path": "app/sounds/button_click.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_click.aac",
+      "size": 7873,
+      "hash": "57595a8b8756638bff86a78e554dfc1037144735"
+    },
+    {
+      "path": "app/sounds/button_click.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_click.mp3",
+      "size": 13990,
+      "hash": "94050b381b02bcbae07530531993e1e78042160a"
+    },
+    {
+      "path": "app/sounds/button_click.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_click.ogg",
+      "size": 11378,
+      "hash": "0a23534adf5ae990e7adc5d02381def2469bd667"
+    },
+    {
+      "path": "app/sounds/button_click_on.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_click_on.aac",
+      "size": 6459,
+      "hash": "c803efb307062ca3859c3656f957309462537f24"
+    },
+    {
+      "path": "app/sounds/button_click_on.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_click_on.mp3",
+      "size": 13886,
+      "hash": "c0da0b9135d804ca62db36d24e1aded46ee4ca85"
+    },
+    {
+      "path": "app/sounds/button_click_on.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_click_on.ogg",
+      "size": 10078,
+      "hash": "5b8331b9d9e18af8f27735ee8580cf772d3e57fc"
+    },
+    {
+      "path": "app/sounds/button_push.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_push.aac",
+      "size": 6429,
+      "hash": "459343214e6e5e73ff357a5fdeb15a994d609c6a"
+    },
+    {
+      "path": "app/sounds/button_push.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_push.mp3",
+      "size": 13155,
+      "hash": "5067a5980b350f2f945e040f72bc162118f6b1b5"
+    },
+    {
+      "path": "app/sounds/button_push.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_push.ogg",
+      "size": 9640,
+      "hash": "af5eadc5e31cd88722542f8d3e2169839415ea4c"
+    },
+    {
+      "path": "app/sounds/button_tiny.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_tiny.aac",
+      "size": 2907,
+      "hash": "f06e8d2f43bb523bcf0a3e14dc51f7da67733635"
+    },
+    {
+      "path": "app/sounds/button_tiny.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_tiny.mp3",
+      "size": 10447,
+      "hash": "498e88c5f246b5b859c3e708a4c35de9a4a238de"
+    },
+    {
+      "path": "app/sounds/button_tiny.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/button_tiny.ogg",
+      "size": 7033,
+      "hash": "b9d7faaf73f1ba7b6c925db78c7d5ebe24e85fbc"
+    },
+    {
+      "path": "app/sounds/camera_flashing.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/camera_flashing.aac",
+      "size": 7947,
+      "hash": "45d5348e9c151580fd6b7487904d79a4a77f05ed"
+    },
+    {
+      "path": "app/sounds/camera_flashing.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/camera_flashing.mp3",
+      "size": 14785,
+      "hash": "2e9d0c1b88c81091f7f971a571f21bbc953ce507"
+    },
+    {
+      "path": "app/sounds/camera_flashing.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/camera_flashing.ogg",
+      "size": 10915,
+      "hash": "3f48e1a314c34466337e740304a49bd898c7e657"
+    },
+    {
+      "path": "app/sounds/camera_flashing_2.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/camera_flashing_2.aac",
+      "size": 8473,
+      "hash": "ff03edff22ef1722d6ec17e0a356b099570724bd"
+    },
+    {
+      "path": "app/sounds/camera_flashing_2.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/camera_flashing_2.mp3",
+      "size": 12130,
+      "hash": "ec3e0b417862c7b42de7850f302a7b3a81c7451f"
+    },
+    {
+      "path": "app/sounds/camera_flashing_2.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/camera_flashing_2.ogg",
+      "size": 11106,
+      "hash": "5e5b5c70efae0e746106e4d160db201b19685c20"
+    },
+    {
+      "path": "app/sounds/cd_tray.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/cd_tray.aac",
+      "size": 29986,
+      "hash": "68dc7331c71b68a4031a4c03f6553f8075585e4d"
+    },
+    {
+      "path": "app/sounds/cd_tray.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/cd_tray.mp3",
+      "size": 61649,
+      "hash": "8f5673cc447d2d3e14ad37ce5aba9d0674dabc43"
+    },
+    {
+      "path": "app/sounds/cd_tray.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/cd_tray.ogg",
+      "size": 29177,
+      "hash": "c658ce2fbdafe8b17a75425e99b91f8c18fbd5dc"
+    },
+    {
+      "path": "app/sounds/computer_error.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/computer_error.aac",
+      "size": 4022,
+      "hash": "82b600adb5be99f83ca090f0ddde44d26abddef6"
+    },
+    {
+      "path": "app/sounds/computer_error.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/computer_error.mp3",
+      "size": 11118,
+      "hash": "3340f5bc0cb1cd56bbe6a64e0e44f742cfb2747f"
+    },
+    {
+      "path": "app/sounds/computer_error.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/computer_error.ogg",
+      "size": 7539,
+      "hash": "1098878a50267a2f0ab52401bde270b2903be697"
+    },
+    {
+      "path": "app/sounds/door_bell.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/door_bell.aac",
+      "size": 35092,
+      "hash": "74ac91dfd6bce071370ad41f2f27d56c1781c201"
+    },
+    {
+      "path": "app/sounds/door_bell.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/door_bell.mp3",
+      "size": 18372,
+      "hash": "960a835b55bf6a4caf3bafd06bd020463f4b1ef8"
+    },
+    {
+      "path": "app/sounds/door_bell.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/door_bell.ogg",
+      "size": 25472,
+      "hash": "5ae2cbc994aee07789b737906e70191392b0e8cb"
+    },
+    {
+      "path": "app/sounds/door_bump.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/door_bump.aac",
+      "size": 5386,
+      "hash": "3f6cff41c8bc3d63df0f242c2af5ee6370966056"
+    },
+    {
+      "path": "app/sounds/door_bump.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/door_bump.mp3",
+      "size": 6378,
+      "hash": "bf5b92d43ae95cbea7a8e84116980b0ec477396f"
+    },
+    {
+      "path": "app/sounds/door_bump.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/door_bump.ogg",
+      "size": 9930,
+      "hash": "34d04d981a78e41c71cfa5e7d69e98bec1c43edf"
+    },
+    {
+      "path": "app/sounds/glass.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/glass.aac",
+      "size": 3438,
+      "hash": "436c6438a780c5988726b14b55e7d131bc1d4aa8"
+    },
+    {
+      "path": "app/sounds/glass.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/glass.mp3",
+      "size": 3495,
+      "hash": "17be1986f4e64b7a6852248f6507cf572a8100da"
+    },
+    {
+      "path": "app/sounds/glass.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/glass.ogg",
+      "size": 7334,
+      "hash": "62648dbb5afacc24d27aa151ad02035e1a53d2b2"
+    },
+    {
+      "path": "app/sounds/keyboard_desk.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/keyboard_desk.aac",
+      "size": 32605,
+      "hash": "63435a7b78ded92cfd971537210ab449a21fc828"
+    },
+    {
+      "path": "app/sounds/keyboard_desk.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/keyboard_desk.mp3",
+      "size": 27585,
+      "hash": "4b33e3522fa94a056334e2650b08a08eabef8d07"
+    },
+    {
+      "path": "app/sounds/keyboard_desk.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/keyboard_desk.ogg",
+      "size": 27035,
+      "hash": "206061f6d0b3ed38cabb74fac347ebffe41edafd"
+    },
+    {
+      "path": "app/sounds/light_bulb_breaking.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/light_bulb_breaking.aac",
+      "size": 18971,
+      "hash": "c3ca126acef7e5c8c066af71e5f0f34b49996081"
+    },
+    {
+      "path": "app/sounds/light_bulb_breaking.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/light_bulb_breaking.mp3",
+      "size": 26027,
+      "hash": "506cc8ff08447e87be861bc11c4208f5c3ec39bd"
+    },
+    {
+      "path": "app/sounds/light_bulb_breaking.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/light_bulb_breaking.ogg",
+      "size": 20712,
+      "hash": "1c64a9262c599aa80677bc5ebf68dccd73cc5f3a"
+    },
+    {
+      "path": "app/sounds/metal_plate.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/metal_plate.aac",
+      "size": 7634,
+      "hash": "d3257811eabd539543a50c3a8eeab23c4c6a2262"
+    },
+    {
+      "path": "app/sounds/metal_plate.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/metal_plate.mp3",
+      "size": 14354,
+      "hash": "df5e46899ab7cd6c4144e6aca42c913b4ef0c8ad"
+    },
+    {
+      "path": "app/sounds/metal_plate.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/metal_plate.ogg",
+      "size": 11636,
+      "hash": "fef41d19b898319512c49b0bb6472becd8a2dd6a"
+    },
+    {
+      "path": "app/sounds/metal_plate_2.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/metal_plate_2.aac",
+      "size": 25716,
+      "hash": "0587c6817ebbdb9d2a38fcb38e6a6f80af971b75"
+    },
+    {
+      "path": "app/sounds/metal_plate_2.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/metal_plate_2.mp3",
+      "size": 16512,
+      "hash": "021ddc9b00903151874b06d11f5bda0a37b51196"
+    },
+    {
+      "path": "app/sounds/metal_plate_2.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/metal_plate_2.ogg",
+      "size": 21194,
+      "hash": "71e195cc1134aeff0ff50a448863462d0c50f3fa"
+    },
+    {
+      "path": "app/sounds/pop_cork.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/pop_cork.aac",
+      "size": 5607,
+      "hash": "34ba7060ebd0c96a9bccef27c5475b1d443d4e95"
+    },
+    {
+      "path": "app/sounds/pop_cork.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/pop_cork.mp3",
+      "size": 11788,
+      "hash": "89acc1a8628e8ac13f17f6394d57ef8f83f5547c"
+    },
+    {
+      "path": "app/sounds/pop_cork.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/pop_cork.ogg",
+      "size": 8458,
+      "hash": "26f1cff50b741a67437a620ce4b644f5c38292d5"
+    },
+    {
+      "path": "app/sounds/snap.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/snap.aac",
+      "size": 9420,
+      "hash": "b8addc2a790a3f855cd604981ac18b705c3ab2ef"
+    },
+    {
+      "path": "app/sounds/snap.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/snap.mp3",
+      "size": 6313,
+      "hash": "c4d8bf0b2130acbf1024ec48db5b709781f865a0"
+    },
+    {
+      "path": "app/sounds/snap.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/snap.ogg",
+      "size": 12177,
+      "hash": "d968d848c5ba0b0976fc20239ef8b1d3e417e195"
+    },
+    {
+      "path": "app/sounds/staple_gun.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/staple_gun.aac",
+      "size": 4810,
+      "hash": "9ada4ed8795493e796611d2f97fc75ae9e6bc1cb"
+    },
+    {
+      "path": "app/sounds/staple_gun.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/staple_gun.mp3",
+      "size": 10675,
+      "hash": "814d8fdf1062b0a7b0b2ff6364f79b2778b3f9e7"
+    },
+    {
+      "path": "app/sounds/staple_gun.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/staple_gun.ogg",
+      "size": 8059,
+      "hash": "fa2192ef4b295f83b03fd6ea5de422d1ddf5169f"
+    },
+    {
+      "path": "app/sounds/tap.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/tap.aac",
+      "size": 7460,
+      "hash": "542fc0804d15aa977f0b7e31bfb152618e9db1dd"
+    },
+    {
+      "path": "app/sounds/tap.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/tap.mp3",
+      "size": 5167,
+      "hash": "c67c521b1af75dba1d8b5a2947a79b01a9605a1e"
+    },
+    {
+      "path": "app/sounds/tap.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/tap.ogg",
+      "size": 11266,
+      "hash": "c4728ac7540369f391008960f8508c771f4131bc"
+    },
+    {
+      "path": "app/sounds/water_droplet.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet.aac",
+      "size": 2350,
+      "hash": "f28dea34135a90f774d524ba60f273ae42f08615"
+    },
+    {
+      "path": "app/sounds/water_droplet.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet.mp3",
+      "size": 9667,
+      "hash": "521eeaadbc9d3d2d1cbb5a967de367db6390eb99"
+    },
+    {
+      "path": "app/sounds/water_droplet.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet.ogg",
+      "size": 6239,
+      "hash": "4aea0d235b5aa23e641baf69cd7fac5e4580d840"
+    },
+    {
+      "path": "app/sounds/water_droplet_2.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet_2.aac",
+      "size": 14474,
+      "hash": "aac917c51dc4949bbd79e944af2f8f3f93027f72"
+    },
+    {
+      "path": "app/sounds/water_droplet_2.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet_2.mp3",
+      "size": 16366,
+      "hash": "4405d5bc5a8fa0220de1a5665c34215e4befaf6e"
+    },
+    {
+      "path": "app/sounds/water_droplet_2.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet_2.ogg",
+      "size": 18280,
+      "hash": "088bdfb60680ed56e4b7b2617bfa9e16cf1ebc90"
+    },
+    {
+      "path": "app/sounds/water_droplet_3.aac",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet_3.aac",
+      "size": 8508,
+      "hash": "87ae6c62f76624e487bc7cfc66c700ca4206964c"
+    },
+    {
+      "path": "app/sounds/water_droplet_3.mp3",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet_3.mp3",
+      "size": 9002,
+      "hash": "f0bd9a107b162d75408367aa0776ab1a24c3aa0d"
+    },
+    {
+      "path": "app/sounds/water_droplet_3.ogg",
+      "where": "client",
+      "type": "asset",
+      "cacheable": false,
+      "url": "/sounds/water_droplet_3.ogg",
+      "size": 13588,
+      "hash": "aa92bc4e9e5bc45f9c23fbc422993ed6ea2317ed"
+    }
+  ]
+}
