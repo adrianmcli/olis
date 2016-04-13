@@ -5,6 +5,7 @@ import DraggableWidget from './draggableWidget/components/DraggableWidget.jsx';
 import EditorWidget from './editorWidget/components/EditorWidget.jsx';
 import TodoWidget from './todoWidget/components/App';
 import VoteWidget from './voteWidget/components/App';
+import ListWidget from './draftListWidget/components/App';
 
 export default {
   actions,
@@ -16,7 +17,7 @@ export default {
 export const Widgets = {
   draggable: DraggableWidget,
   editor: EditorWidget,
-  'meeting-minutes': EditorWidget,
+  list: ListWidget,
   todo: TodoWidget,
   vote: VoteWidget
 };

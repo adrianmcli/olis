@@ -63,5 +63,26 @@ export default {
     const contentState = ContentState.createFromBlockArray(blockArray);
     const raw = convertToRaw(contentState);
     return raw;
+  },
+
+  list() {
+    const keyLength = 5;
+
+    const header = new ContentBlock({
+      text: 'My List',
+      type: 'header-one',
+      key: Random.id(keyLength)
+    });
+    const bullet = new ContentBlock({
+      text: '',
+      type: 'unordered-list-item',
+      key: Random.id(keyLength)
+    });
+
+    const blockArray = [ header, bullet ];
+
+    const contentState = ContentState.createFromBlockArray(blockArray);
+    const raw = convertToRaw(contentState);
+    return raw;
   }
 };
