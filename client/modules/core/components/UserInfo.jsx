@@ -14,8 +14,7 @@ export default class UserInfo extends React.Component {
             secondary={true}
             style={{marginTop: '12px', width: '100%'}}
             onClick={makeTeamAdmin.bind(null, user._id)}
-          />
-          :
+          /> :
           null}
         <RaisedButton
           label="Remove"
