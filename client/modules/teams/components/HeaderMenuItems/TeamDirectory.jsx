@@ -3,6 +3,7 @@ import React from 'react';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import PeopleList from '/client/modules/core/components/PeopleList.jsx';
 import UserInfo from '/client/modules/core/components/UserInfo.jsx';
+import TeamUserButtons from './TeamUserButtons';
 
 export default class TeamDirectory extends React.Component {
   constructor(props) {
@@ -31,6 +32,15 @@ export default class TeamDirectory extends React.Component {
       showUserInfo, userShown, isAdmin,
       makeUserTeamAdmin, removeUserFromTeam
     } = this.props;
+
+    const buttons = (
+      <TeamUserButtons
+        user={userShown}
+        showMakeAdminButton={userShown ? !team.isUserAdmin(userShown._id) : true}
+        makeTeamAdmin={makeUserTeamAdmin}
+        removeFromTeam={removeUserFromTeam}
+      />
+    );
 
     return (
       <Dialog
@@ -62,9 +72,7 @@ export default class TeamDirectory extends React.Component {
             <UserInfo
               user={userShown}
               showButtons={isAdmin}
-              showMakeAdminButton={userShown ? !team.isUserAdmin(userShown._id) : true}
-              makeTeamAdmin={makeUserTeamAdmin}
-              removeFromTeam={removeUserFromTeam}
+              buttons={buttons}
             />
           </div>
         </div>
