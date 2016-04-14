@@ -1,33 +1,28 @@
-import {Meteor} from 'meteor/meteor';
-import {Locks} from '/lib/collections';
+import { Meteor } from 'meteor/meteor';
+import { Locks, Widgets, Notes } from '/lib/collections';
 import R from 'ramda';
-import {check} from 'meteor/check';
-import Lock from '/lib/lock';
+import { check } from 'meteor/check';
+import { TIMEOUT } from '/lib/constants/widgets';
 
 export default function () {
   Meteor.methods({
-    'locks.requestAndRelease'({noteId, requestedWidgetId}) {
+    'locks.requestAndRelease'({widgetId}) {
       check(arguments[0], {
-        noteId: String,
-        requestedWidgetId: String
+        widgetId: String
       });
 
       const userId = this.userId;
       const user = Meteor.users.findOne(userId);
 
-      const lock = Locks.findOne(requestedWidgetId);
-      const getCanTakeOver = () => {
-        if (lock) {
-          const timeout = 5000;
-          const timeDiff = new Date() - lock.updatedAt;
-          return timeDiff >= timeout;
-        }
-        return true;
-      };
-      const canTakeOver = getCanTakeOver();
+      const widget = Widgets.findOne(widgetId);
+      const lock = Locks.findOne({widgetId});
+      const note = Notes.findOne(widget.noteId);
 
-      if (!lock || canTakeOver) {
-        Locks.upsert({noteId, widgetId: requestedWidgetId}, {
+      const canTakeOver = getCanTakeOver(lock);
+      const isMyLock = lock.userId === userId;
+
+      if (!lock || canTakeOver || isMyLock) {
+        Locks.upsert({noteId: note._id, widgetId}, {
           $set: {
             userId,
             username: user.username,
@@ -85,4 +80,13 @@ export default function () {
   //     }
   //   }
   // });
+}
+
+
+function getCanTakeOver(_lock) {
+  if (_lock) {
+    const timeDiff = new Date() - _lock.updatedAt;
+    return timeDiff >= TIMEOUT;
+  }
+  return true;
 }

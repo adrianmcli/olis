@@ -23,11 +23,18 @@ export default class EditorWidget extends React.Component {
     this.handleKeyCommand = (command) => this._handleKeyCommand(command);
     this.toggleBlockType = (type) => this._toggleBlockType(type);
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+    this.handleEditorClick = () => this._handleEditorClick();
+  }
+
+  _handleEditorClick() {
+    const { widgetId, requestAndReleaseLock } = this.props;
+
+    requestAndReleaseLock(widgetId);
+    this.focus();
   }
 
   onChange(editorState) {
     const {
-      noteId,
       widgetId,
       update,
       requestAndReleaseLock
@@ -36,7 +43,7 @@ export default class EditorWidget extends React.Component {
     const contentState = editorState.getCurrentContent();
     const raw = convertToRaw(contentState);
 
-    requestAndReleaseLock(noteId, widgetId);
+    requestAndReleaseLock(widgetId);
     update(widgetId, raw);
 
     this.setState({editorState});
@@ -76,8 +83,6 @@ export default class EditorWidget extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-
     const { data } = nextProps;
     if (canSetStateFromProps(data)) {
       this._injectChanges.bind(this)(this.state.editorState, data);
@@ -110,7 +115,6 @@ export default class EditorWidget extends React.Component {
     };
 
     const readOnly = lock ? lock.userId !== userId : false;
-    console.log(`readOnly ${readOnly}`)
 
     return (
       <Paper style={{padding: '12px', width: '100%'}}>
@@ -125,7 +129,7 @@ export default class EditorWidget extends React.Component {
             onToggle={this.toggleBlockType}
           />
         </div>
-        <div className={className} onClick={this.focus}>
+        <div className={className} onClick={this.handleEditorClick}>
           <Editor
             editorState={this.state.editorState}
             onChange={this.onChange}

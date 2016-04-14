@@ -3,6 +3,7 @@ import { Notes, Locks, Widgets, Convos } from '/lib/collections';
 import Widget from '/lib/widget';
 import R from 'ramda';
 import { check, Match } from 'meteor/check';
+import { TIMEOUT } from '/lib/constants/widgets';
 
 export default function () {
   const WIDGETS_ADD = 'widgets.add';
@@ -147,14 +148,21 @@ export default function () {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
       }
 
-      widget.set({data});
-      widget.save();
-
-      // To trigger the updated at change
-      note.set({
-        updatedAt: new Date()
-      });
-      note.save();
+      const lock = Locks.findOne({widgetId});
+      if (lock) {
+        const timeDiff = new Date() - lock.updatedAt;
+        if (timeDiff >= TIMEOUT || lock.userId === userId) { doUpdate(widget, note, data); }
+      }
+      else { doUpdate(widget, note, data); }
     }
   });
+}
+
+function doUpdate(widget, note, data) {
+  widget.set({data});
+  widget.save();
+
+  // To trigger the updated at change
+  note.set({ updatedAt: new Date() });
+  note.save();
 }

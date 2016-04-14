@@ -25,8 +25,8 @@ export default {
     });
   },
 
-  lock({Meteor}, noteId, widgetId) {
-    Meteor.call('locks.requestAndRelease',{noteId, requestedWidgetId: widgetId}, err => {
+  lock({Meteor}, widgetId) {
+    Meteor.call('locks.requestAndRelease',{widgetId}, err => {
       if (err) { alert(err); }
     });
   }
