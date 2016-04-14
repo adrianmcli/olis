@@ -5,10 +5,9 @@ import RemoveIcon from 'material-ui/lib/svg-icons/navigation/close';
 export default class Widget extends Component {
   render() {
     const {
-      widget, lock, userId,
+      data, widgetId, noteId, userId, lock, type,
       remove, update, requestAndReleaseLock
     } = this.props;
-    const { _id: widgetId, noteId, type, data } = widget;
 
     const WidgetType = Widgets[type];
     return (

@@ -35,17 +35,22 @@ class NotesContainer extends React.Component {
     const DraggableWidget = Widgets['draggable'];
 
     return widgets.map((widget, index) => {
-      const lock = locks[widget._id];
+      const {data, _id, noteId, type} = widget;
+
+      const lock = locks[_id];
       return (
         <DraggableWidget
-          key={widget._id}
+          key={_id}
           index={index}
           noteId={note._id}
-          widgetId={widget._id}
+          widgetId={_id}
           moveWidget={moveWidget}
         >
           <Widget
-            widget={widget}
+            data={data}
+            type={type}
+            widgetId={_id}
+            noteId={noteId}
             remove={removeWidget}
             update={updateWidget}
             userId={userId}

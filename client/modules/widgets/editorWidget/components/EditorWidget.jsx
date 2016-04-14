@@ -36,8 +36,9 @@ export default class EditorWidget extends React.Component {
     const contentState = editorState.getCurrentContent();
     const raw = convertToRaw(contentState);
 
-    update(widgetId, raw);
     requestAndReleaseLock(noteId, widgetId);
+    update(widgetId, raw);
+
     this.setState({editorState});
   }
 
@@ -75,10 +76,11 @@ export default class EditorWidget extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { widget } = nextProps;
+    console.log(nextProps);
 
-    if (canSetStateFromProps(widget)) {
-      this._injectChanges.bind(this)(this.state.editorState, widget.data);
+    const { data } = nextProps;
+    if (canSetStateFromProps(data)) {
+      this._injectChanges.bind(this)(this.state.editorState, data);
     }
   }
 
@@ -108,6 +110,7 @@ export default class EditorWidget extends React.Component {
     };
 
     const readOnly = lock ? lock.userId !== userId : false;
+    console.log(`readOnly ${readOnly}`)
 
     return (
       <Paper style={{padding: '12px', width: '100%'}}>
