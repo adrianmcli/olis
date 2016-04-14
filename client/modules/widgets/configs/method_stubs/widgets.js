@@ -1,8 +1,11 @@
 import Widget from '/lib/widget';
 import R from 'ramda';
 import { check, Match } from 'meteor/check';
+import { TIMEOUT } from '/lib/constants/widgets';
 
 export default function ({Meteor, Collections}) {
+  const {Notes, Convos, Widgets, Locks} = Collections;
+
   const WIDGETS_ADD = 'widgets.add';
   Meteor.methods({
     'widgets.add'({noteId, type, data}) {
@@ -16,11 +19,11 @@ export default function ({Meteor, Collections}) {
       if (!userId) {
         throw new Meteor.Error(WIDGETS_ADD, 'Must be logged in to add widgets.');
       }
-      const note = Collections.Notes.findOne(noteId);
+      const note = Notes.findOne(noteId);
       if (!note) {
         throw new Meteor.Error(WIDGETS_ADD, 'Must add widget to existing note.');
       }
-      const convo = Collections.Convos.findOne(note.convoId);
+      const convo = Convos.findOne(note.convoId);
       if (!convo) {
         throw new Meteor.Error(WIDGETS_ADD, 'Must add widgets to an existing convo.');
       }
@@ -59,11 +62,11 @@ export default function ({Meteor, Collections}) {
       if (!userId) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
       }
-      const note = Collections.Notes.findOne(noteId);
+      const note = Notes.findOne(noteId);
       if (!note) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widget to existing note.');
       }
-      const convo = Collections.Convos.findOne(note.convoId);
+      const convo = Convos.findOne(note.convoId);
       if (!convo) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widgets to an existing convo.');
       }
@@ -71,7 +74,7 @@ export default function ({Meteor, Collections}) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
       }
 
-      Collections.Widgets.remove(widgetId);
+      Widgets.remove(widgetId);
 
       // Update note's widget array
       const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
@@ -95,11 +98,11 @@ export default function ({Meteor, Collections}) {
       if (!userId) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
       }
-      const note = Collections.Notes.findOne(noteId);
+      const note = Notes.findOne(noteId);
       if (!note) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widget to existing note.');
       }
-      const convo = Collections.Convos.findOne(note.convoId);
+      const convo = Convos.findOne(note.convoId);
       if (!convo) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widgets to an existing convo.');
       }
@@ -129,15 +132,15 @@ export default function ({Meteor, Collections}) {
       if (!userId) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
       }
-      const widget = Collections.Widgets.findOne(widgetId);
+      const widget = Widgets.findOne(widgetId);
       if (!widget) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must remove an existing widget.');
       }
-      const note = Collections.Notes.findOne(widget.noteId);
+      const note = Notes.findOne(widget.noteId);
       if (!note) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widget to existing note.');
       }
-      const convo = Collections.Convos.findOne(note.convoId);
+      const convo = Convos.findOne(note.convoId);
       if (!convo) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must add widgets to an existing convo.');
       }
@@ -145,14 +148,21 @@ export default function ({Meteor, Collections}) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
       }
 
-      widget.set({data});
-      widget.save();
-
-      // To trigger the updated at change
-      note.set({
-        updatedAt: new Date()
-      });
-      note.save();
+      const lock = Locks.findOne({widgetId});
+      if (lock) {
+        const timeDiff = new Date() - lock.updatedAt;
+        if (timeDiff >= TIMEOUT || lock.userId === userId) { doUpdate(widget, note, data); }
+      }
+      else { doUpdate(widget, note, data); }
     }
   });
+}
+
+function doUpdate(widget, note, data) {
+  widget.set({data});
+  widget.save();
+
+  // To trigger the updated at change
+  note.set({ updatedAt: new Date() });
+  note.save();
 }
