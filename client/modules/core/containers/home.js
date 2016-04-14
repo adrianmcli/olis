@@ -28,6 +28,9 @@ export const composer = ({context}, onData) => {
         else if (recentTeamId && !recentConvoId) { FlowRouter.go(`/team/${recentTeamId}`); }
         else if (!recentTeamId && !recentConvoId) { FlowRouter.go(`/team`); }
       }
+      else if (!Meteor.userId()) {
+        FlowRouter.go('/login');
+      }
     }
   });
 
