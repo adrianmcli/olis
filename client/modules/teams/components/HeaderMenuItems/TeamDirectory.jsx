@@ -5,12 +5,24 @@ import PeopleList from '/client/modules/core/components/PeopleList.jsx';
 import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class TeamDirectory extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClose = () => this._handleClose();
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     const {open} = this.props;
     return (
       open ||
       open !== nextProps.open
     );
+  }
+
+  _handleClose() {
+    const { searchTeamUsers, showUserInfo, onRequestClose } = this.props;
+    searchTeamUsers(undefined);
+    showUserInfo(undefined);
+    onRequestClose();
   }
 
   render() {
@@ -24,7 +36,7 @@ export default class TeamDirectory extends React.Component {
       <Dialog
         title={`${team.name}: Directory`}
         open={this.props.open}
-        onRequestClose={this.props.onRequestClose}
+        onRequestClose={this.handleClose}
         closeActionOnly
         width={600}
         actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}

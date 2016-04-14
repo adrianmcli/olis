@@ -11,7 +11,7 @@ const depsMapper = (context, actions) => ({
   removeUserFromTeam: actions.teams.removeUser
 });
 
-export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
+export const composer = ({context}, onData) => {
   const {Meteor, LocalState, Collections, FlowRouter} = context();
 
   const teamId = FlowRouter.getParam('teamId');
@@ -43,13 +43,6 @@ export const composer = ({context, searchTeamUsers, showUserInfo}, onData) => {
       });
     }
   }
-
-  const cleanup = () => {
-    // console.log('team_directory cleanup'); // Not sure why this is called when stuff is updated
-    searchTeamUsers(undefined);
-    showUserInfo(undefined);
-  };
-  return cleanup;
 };
 
 export default composeAll(

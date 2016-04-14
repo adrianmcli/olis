@@ -43,7 +43,7 @@ export default class ChatMembers extends React.Component {
             <UserInfo
               user={userShown}
               showButtons={isAdmin}
-              showMakeAdminButton={userShown ? !team.isUserAdmin(userShown._id) : true}
+              showMakeAdminButton={false}
             />
           </div>
         </div>
