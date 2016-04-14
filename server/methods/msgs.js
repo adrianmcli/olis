@@ -78,14 +78,18 @@ export default function () {
             teamId: convo.teamId,
             convoId: convo._id,
             convoName: convo.name,
-            recentUsernames: [ username ]
+            recentUsernames: [ username ],
+            lastProfileImageUrl: user.profileImageUrl
           });
           notif.save();
         }
         else {
           const oldRecentUsernames = oldNotif.recentUsernames;
           const notifRecentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
-          oldNotif.set({recentUsernames: notifRecentUsernames});
+          oldNotif.set({
+            recentUsernames: notifRecentUsernames,
+            lastProfileImageUrl: user.profileImageUrl
+          });
           oldNotif.save();
         }
       });

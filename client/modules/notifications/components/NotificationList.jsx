@@ -1,7 +1,7 @@
 import React from 'react';
 import R from 'ramda';
 
-import Avatar from 'material-ui/lib/avatar';
+import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault';
 import ListItem from 'material-ui/lib/lists/list-item';
 
 export default class NotificationList extends React.Component {
@@ -52,7 +52,12 @@ export default class NotificationList extends React.Component {
                 key={ notif._id }
                 primaryText={ notif.convoName }
                 secondaryText={ this._renderSecondaryText.bind(this, notif.recentUsernames)() }
-                leftAvatar={ <Avatar src="https://www.placecage.com/100/100" /> }
+                leftAvatar={
+                  <AvatarWithDefault
+                    username={R.last(notif.recentUsernames)}
+                    avatarSrc={notif.lastProfileImageUrl}
+                  />
+                }
                 onTouchTap={ this.handleClick.bind(this, notif.teamId, notif.convoId) }
               />
             );
