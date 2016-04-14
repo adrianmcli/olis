@@ -6,7 +6,7 @@ export default class Widget extends Component {
   render() {
     const {
       data, widgetId, noteId, userId, lock, type,
-      remove, update, requestAndReleaseLock
+      remove, update, requestAndReleaseOtherLocks, releaseLock
     } = this.props;
 
     const WidgetType = Widgets[type];
@@ -20,7 +20,8 @@ export default class Widget extends Component {
 
           lock={lock}
           userId={userId}
-          requestAndReleaseLock={requestAndReleaseLock}
+          requestAndReleaseOtherLocks={requestAndReleaseOtherLocks}
+          releaseLock={releaseLock}
         />
         <div style={getRemoveStyle().container} onClick={remove.bind(this, noteId, widgetId)}>
           <RemoveIcon style={getRemoveStyle().icon} color='rgba(0,0,0,0.5)'/>

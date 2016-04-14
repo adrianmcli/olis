@@ -29,7 +29,7 @@ class NotesContainer extends React.Component {
   renderWidgets() {
     const {
       userId, note, widgets, locks,
-      removeWidget, moveWidget, updateWidget, requestAndReleaseLock
+      removeWidget, moveWidget, updateWidget, requestAndReleaseOtherLocks, releaseLock
     } = this.props;
 
     const DraggableWidget = Widgets['draggable'];
@@ -55,7 +55,8 @@ class NotesContainer extends React.Component {
             update={updateWidget}
             userId={userId}
             lock={lock}
-            requestAndReleaseLock={requestAndReleaseLock}
+            requestAndReleaseOtherLocks={requestAndReleaseOtherLocks}
+            releaseLock={releaseLock}
           />
         </DraggableWidget>
       );

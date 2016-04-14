@@ -43,16 +43,24 @@ export default function () {
     }
   });
 
-  // Meteor.methods({
-  //   releaseLocks({rawId, blockKeys, user}) {
-  //     const userId = user._id;
-  //     Locks.remove({
-  //       userId,
-  //       rawId,
-  //       blockKey: { $in: blockKeys }
-  //     });
-  //   }
-  // });
+  const LOCKS_RELEASE = 'locks.release';
+  Meteor.methods({
+    'locks.release'({widgetId}) {
+      check(arguments[0], {
+        widgetId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(LOCKS_RELEASE, 'Must be logged in to release lock.');
+      }
+
+      Locks.remove({
+        userId,
+        widgetId
+      });
+    }
+  });
 
   const LOCKS_REL_ALL_OTHERS = 'locks.releaseAllOthers';
   Meteor.methods({
@@ -63,7 +71,8 @@ export default function () {
 
       const userId = this.userId;
       if (!userId) {
-        throw new Meteor.Error(LOCKS_REL_ALL_OTHERS, 'Must be logged in to release all your other locks.');
+        throw new Meteor.Error(LOCKS_REL_ALL_OTHERS,
+          'Must be logged in to release all your other locks.');
       }
 
       Locks.remove({

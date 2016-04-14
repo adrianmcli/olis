@@ -27,9 +27,9 @@ export default class EditorWidget extends React.Component {
   }
 
   _handleEditorClick() {
-    const { widgetId, requestAndReleaseLock } = this.props;
+    const { widgetId, requestAndReleaseOtherLocks } = this.props;
 
-    requestAndReleaseLock(widgetId);
+    requestAndReleaseOtherLocks(widgetId);
     this.focus();
   }
 
@@ -37,16 +37,24 @@ export default class EditorWidget extends React.Component {
     const {
       widgetId,
       update,
-      requestAndReleaseLock
+      requestAndReleaseOtherLocks,
+      releaseLock
     } = this.props;
 
     const contentState = editorState.getCurrentContent();
-    const raw = convertToRaw(contentState);
+    const selectionState = editorState.getSelection();
+    const hasFocus = selectionState.getHasFocus();
 
-    requestAndReleaseLock(widgetId);
-    update(widgetId, raw);
-
-    this.setState({editorState});
+    if (hasFocus) {
+      const raw = convertToRaw(contentState);
+      requestAndReleaseOtherLocks(widgetId);
+      update(widgetId, raw);
+      this.setState({editorState});
+    }
+    else {
+      releaseLock(widgetId);
+      this.setState({editorState});
+    }
   }
 
   _handleKeyCommand(command) {
@@ -143,7 +151,7 @@ export default class EditorWidget extends React.Component {
             ref="editor"
             spellCheck={true}
           />
-          {lock ? <div>{lock.username} is typing...</div> : null}
+          {lock && new Date() - lock.updatedAt < 5000 ? <div>{lock.username} is typing...</div> : null}
         </div>
       </Paper>
     );

@@ -29,5 +29,11 @@ export default {
     Meteor.call('locks.requestAndRelease',{widgetId}, err => {
       if (err) { alert(err); }
     });
+  },
+
+  releaseLock({Meteor}, widgetId) {
+    Meteor.call('locks.release', {widgetId}, err => {
+      if (err) { alert(err); }
+    });
   }
 };

@@ -12,7 +12,8 @@ export const depsMapper = (context, actions) => ({
   removeWidget: actions.widgets.remove,
   moveWidget: actions.widgets.move,
   updateWidget: actions.widgets.update,
-  requestAndReleaseLock: actions.widgets.lock
+  requestAndReleaseOtherLocks: actions.widgets.lock,
+  releaseLock: actions.widgets.releaseLock
 });
 
 export const composer = ({context, actions}, onData) => {
