@@ -9,6 +9,12 @@ import {check} from 'meteor/check';
 
 export default function () {
   Meteor.methods({
+    '_wipeLocks'() {
+      Locks.remove({});
+    }
+  });
+
+  Meteor.methods({
     '_makeFakeConvo'(teamId, num) {
       check(teamId, String);
       check(num, Number);

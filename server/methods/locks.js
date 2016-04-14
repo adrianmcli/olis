@@ -13,6 +13,7 @@ export default function () {
       });
 
       const userId = this.userId;
+      const user = Meteor.users.findOne(userId);
 
       const lock = Locks.findOne(requestedWidgetId);
       const getCanTakeOver = () => {
@@ -26,13 +27,13 @@ export default function () {
       const canTakeOver = getCanTakeOver();
 
       if (!lock || canTakeOver) {
-        const newLock = new Lock();
-        newLock.set({
-          noteId,
-          widgetId: requestedWidgetId,
-          userId
+        Locks.upsert({noteId, widgetId: requestedWidgetId}, {
+          $set: {
+            userId,
+            username: user.username,
+            updatedAt: new Date()
+          }
         });
-        newLock.save();
       }
       // Meteor.call('releaseLocks', {rawId, user, blockKeys: releaseBlockKeys});
     }
