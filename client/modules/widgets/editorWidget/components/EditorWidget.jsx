@@ -143,6 +143,7 @@ export default class EditorWidget extends React.Component {
             ref="editor"
             spellCheck={true}
           />
+          {lock ? <div>{lock.username} is typing...</div> : null}
         </div>
       </Paper>
     );

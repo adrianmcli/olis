@@ -5,6 +5,7 @@ import { check } from 'meteor/check';
 import { TIMEOUT } from '/lib/constants/widgets';
 
 export default function () {
+  const LOCKS_REQ_REL = 'locks.requestAndRelease';
   Meteor.methods({
     'locks.requestAndRelease'({widgetId}) {
       check(arguments[0], {
@@ -12,16 +13,25 @@ export default function () {
       });
 
       const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(LOCKS_REQ_REL, 'Must be logged in to request locks.');
+      }
       const user = Meteor.users.findOne(userId);
-
       const widget = Widgets.findOne(widgetId);
-      const lock = Locks.findOne({widgetId});
+      if (!widget) {
+        throw new Meteor.Error(LOCKS_REQ_REL, 'Must request lock for existing widget.');
+      }
       const note = Notes.findOne(widget.noteId);
+      if (!note) {
+        throw new Meteor.Error(LOCKS_REQ_REL, 'Must request lock for widget of existing note.');
+      }
 
-      const canTakeOver = getCanTakeOver(lock);
-      const isMyLock = lock.userId === userId;
+      const lock = Locks.findOne({widgetId});
+      const canTakeOver = getCanTakeOver(lock, userId);
 
-      if (!lock || canTakeOver || isMyLock) {
+      Meteor.call('locks.releaseAllOthers', {widgetId});
+
+      if (!lock || canTakeOver) {
         Locks.upsert({noteId: note._id, widgetId}, {
           $set: {
             userId,
@@ -30,7 +40,6 @@ export default function () {
           }
         });
       }
-      // Meteor.call('releaseLocks', {rawId, user, blockKeys: releaseBlockKeys});
     }
   });
 
@@ -45,16 +54,24 @@ export default function () {
   //   }
   // });
 
-  // Meteor.methods({
-  //   releaseAllLocks({user}) {
-  //     if (user) {
-  //       const userId = user._id;
-  //       Locks.remove({ userId });
-  //     }
-  //     else { Locks.remove({}); }
+  const LOCKS_REL_ALL_OTHERS = 'locks.releaseAllOthers';
+  Meteor.methods({
+    'locks.releaseAllOthers'({widgetId}) {
+      check(arguments[0], {
+        widgetId: String
+      });
 
-  //   }
-  // });
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(LOCKS_REL_ALL_OTHERS, 'Must be logged in to release all your other locks.');
+      }
+
+      Locks.remove({
+        userId,
+        widgetId: { $ne: widgetId }
+      });
+    }
+  });
 
   // Meteor.methods({
   //   releaseOtherLocks({rawId, blockKeys, user}) {
@@ -83,8 +100,11 @@ export default function () {
 }
 
 
-function getCanTakeOver(_lock) {
+function getCanTakeOver(_lock, userId) {
   if (_lock) {
+    const isMyLock = _lock.userId === userId;
+    if (isMyLock) { return true; }
+
     const timeDiff = new Date() - _lock.updatedAt;
     return timeDiff >= TIMEOUT;
   }
