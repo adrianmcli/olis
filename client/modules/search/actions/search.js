@@ -55,6 +55,7 @@ export default {
 
   'select.msg'({FlowRouter}, convoId, msgId) {
     const teamId = FlowRouter.getParam('teamId');
+    FlowRouter.go(`/team/${teamId}/convo/${convoId}`); // Route them out first, prevent double highlight
     FlowRouter.go(`/team/${teamId}/convo/${convoId}/msg/${msgId}`);
   }
 };
