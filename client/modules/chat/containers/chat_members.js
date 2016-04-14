@@ -42,7 +42,8 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
 
     const convoUsersSearchResult = Meteor.users.find(selector(), options).fetch();
     const userIdShown = LocalState.get('convoDirectory.userIdShown');
-    const userShown = Meteor.users.findOne(userIdShown);
+    const isUserInConvo = R.contains(userIdShown, convo.userIds);
+    const userShown = isUserInConvo ? Meteor.users.findOne(userIdShown) : undefined;
 
     onData(null, {
       team,
@@ -51,13 +52,6 @@ export const composer = ({context, searchConvoUsers, showUserInfo}, onData) => {
       isAdmin: team.isUserAdmin(Meteor.userId())
     });
   }
-
-  const cleanup = () => {
-    console.log('chat_members cleanup'); // Not sure why this is called when stuff is updated
-    searchConvoUsers(undefined);
-    showUserInfo(undefined);
-  };
-  // return cleanup;
 };
 
 export default composeAll(
