@@ -92,7 +92,9 @@ export default class EditorWidget extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { data, lock, userId } = nextProps;
-    if (lock.userId !== userId && canSetStateFromProps(data)) {
+
+    const isMyLock = lock && lock.userId === userId;
+    if (!isMyLock && canSetStateFromProps(data)) {
       this._injectChanges.bind(this)(this.state.editorState, data);
     }
   }
