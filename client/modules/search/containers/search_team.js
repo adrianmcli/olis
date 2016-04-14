@@ -14,21 +14,23 @@ export const composer = ({context, search}, onData) => {
   const teamId = FlowRouter.getParam('teamId');
   const text = LocalState.get('searchText.team.all') ? LocalState.get('searchText.team.all') : '';
 
-  const subSearch = Meteor.subscribe('search.results', {teamId, text});
-  if (subSearch.ready()) {
-    const selector = { score: { $exists: true } };
-    const options = { sort: { score: -1 } };
+  if (teamId) {
+    const subSearch = Meteor.subscribe('search.results', {teamId, text});
+    if (subSearch.ready()) {
+      const selector = { score: { $exists: true } };
+      const options = { sort: { score: -1 } };
 
-    const resultMsgs = Collections.SearchMessages.find(selector, options).fetch();
-    const resultConvos = Collections.Convos.find(selector, options).fetch();
-    const resultUsers = Meteor.users.find(selector, options).fetch();
+      const resultMsgs = Collections.SearchMessages.find(selector, options).fetch();
+      const resultConvos = Collections.Convos.find(selector, options).fetch();
+      const resultUsers = Meteor.users.find(selector, options).fetch();
 
-    onData(null, {
-      msgs: resultMsgs, convos: resultConvos, users: resultUsers, text
-    });
-  }
-  else {
-    onData(null, {waiting: true});
+      onData(null, {
+        msgs: resultMsgs, convos: resultConvos, users: resultUsers, text
+      });
+    }
+    else {
+      onData(null, {waiting: true});
+    }
   }
 };
 

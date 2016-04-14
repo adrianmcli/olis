@@ -15,17 +15,6 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
     if (!Meteor.userId()) { redirect('/login'); }
   }
 
-  function rootRedirect(context, redirect) {
-    if (Meteor.userId()) {
-      const teamId = AccountUtils.getMostRecentTeamId({Meteor});
-      const convoId = AccountUtils.getMostRecentConvoId({Meteor});
-
-      if (teamId && convoId) { redirect(`/team/${teamId}/convo/${convoId}`); }
-      else if (teamId && !convoId) { redirect(`/team/${teamId}`); }
-    }
-    else { redirect('/login'); }
-  }
-
   function setLastTimeInTeam({params}) {
     TeamUtils.setLastTimeInTeam({Meteor}, params.teamId);
   }
@@ -49,7 +38,11 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
 
   FlowRouter.route('/', {
     name: 'root',
-    triggersEnter: [ rootRedirect ]
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<Home />)
+      });
+    }
   });
 
   FlowRouter.route('/team', {
