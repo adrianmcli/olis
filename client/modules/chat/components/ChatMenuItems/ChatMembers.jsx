@@ -3,6 +3,7 @@ import React from 'react';
 import Dialog from '/client/modules/core/components/Dialog.jsx';
 import PeopleList from '/client/modules/core/components/PeopleList.jsx';
 import UserInfo from '/client/modules/core/components/UserInfo.jsx';
+import ChatUserButtons from './ChatUserButtons';
 
 export default class ChatMembers extends React.Component {
   constructor(props) {
@@ -19,8 +20,17 @@ export default class ChatMembers extends React.Component {
 
   render() {
     const {
-      convoUsersSearchResult, showUserInfo, searchConvoUsers, userShown, isAdmin, team
+      convoUsersSearchResult, showUserInfo, searchConvoUsers,
+      userShown, isAdmin, team, removeFromConvo
     } = this.props;
+
+    const buttons = (
+      <ChatUserButtons
+        user={userShown}
+        removeFromConvo={removeFromConvo}
+      />
+    );
+
     return (
       <Dialog
         title="Chat Members"
@@ -38,7 +48,7 @@ export default class ChatMembers extends React.Component {
               ref={ x => this._peopleList = x }
               users={convoUsersSearchResult}
               userClickHandler={showUserInfo}
-              team={team} // TODO make people list team and convo agnostic
+              team={team}
               search={searchConvoUsers}
             />
           </div>
@@ -51,7 +61,7 @@ export default class ChatMembers extends React.Component {
             <UserInfo
               user={userShown}
               showButtons={isAdmin}
-              showMakeAdminButton={false}
+              buttons={buttons}
             />
           </div>
         </div>

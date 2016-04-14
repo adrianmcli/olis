@@ -98,6 +98,40 @@ export default function () {
     }
   });
 
+  const CONVOS_REMOVE_MEMBER = 'convos.removeMember';
+  Meteor.methods({
+    'convos.removeMember'({convoId, removeUserId}) {
+      check(arguments[0], {
+        convoId: String,
+        removeUserId: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(CONVOS_REMOVE_MEMBER, 'Must be logged in to remove member from convo.');
+      }
+      const convo = Convos.findOne(convoId);
+      if (!convo) {
+        throw new Meteor.Error(CONVOS_REMOVE_MEMBER, 'Must remove user from existing convo.');
+      }
+      if (!convo.isUserInConvo(removeUserId)) {
+        throw new Meteor.Error(CONVOS_REMOVE_MEMBER, 'Must remove a user who is in the convo.');
+      }
+      const team = Teams.findOne(convo.teamId);
+      if (!team) {
+        throw new Meteor.Error(CONVOS_REMOVE_MEMBER, 'Must remove a user from a convo in an existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(CONVOS_REMOVE_MEMBER, 'Must be admin to remove users from convo.');
+      }
+
+      convo.set({
+        userIds: R.filter(id => id !== removeUserId, convo.userIds)
+      });
+      convo.save();
+    }
+  });
+
   // SERVER ONLY
   const CONVOS_REMOVE_USER_FROM_TEAM = 'convos.removeUserFromTeam';
   Meteor.methods({

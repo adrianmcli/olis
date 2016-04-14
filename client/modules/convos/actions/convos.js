@@ -21,6 +21,13 @@ export default {
     });
   },
 
+  removeMember({Meteor, FlowRouter}, removeUserId) {
+    const convoId = FlowRouter.getParam('convoId');
+    Meteor.call('convos.removeMember', {convoId, removeUserId}, err => {
+      if (err) { alert(err); }
+    });
+  },
+
   changeName({Meteor, FlowRouter}, name) {
     const convoId = FlowRouter.getParam('convoId');
     Meteor.call('convos.setName', {convoId, name}, (err, res) => {

@@ -8,6 +8,7 @@ export const depsMapper = (context, actions) => ({
   context: () => context,
   searchConvoUsers: actions.search['searchText.convoUsers.set'],
   showUserInfo: actions.convos.setUserIdShown,
+  removeFromConvo: actions.convos.removeMember
   // makeUserTeamAdmin: actions.convos.makeUserAdmin,
   // removeUserFromTeam: actions.convos.removeUser
 });
