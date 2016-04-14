@@ -265,7 +265,12 @@ export default function () {
 
       function _create(email) {
         const newId = Accounts.createUser({username: email, email});
-        Meteor.users.update(newId, { $set: {invitedBy: user.username} }); // This is so we can send the proper email
+        Meteor.users.update(newId, {
+          $set: {
+            invitedBy: user.username, // This is so we can send the invite email with who invited them
+            translationLangCode: 'en'
+          }
+        });
         return newId;
       }
       function _invite(newId) {
