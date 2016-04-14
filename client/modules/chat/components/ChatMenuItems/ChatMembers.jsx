@@ -5,8 +5,16 @@ import PeopleList from '/client/modules/core/components/PeopleList.jsx';
 import UserInfo from '/client/modules/core/components/UserInfo.jsx';
 
 export default class ChatMembers extends React.Component {
-  handleClose() {
-    this.props.onRequestClose();
+  constructor(props) {
+    super(props);
+    this.handleClose = () => this._handleClose();
+  }
+
+  _handleClose() {
+    const { searchConvoUsers, showUserInfo, onRequestClose } = this.props;
+    searchConvoUsers(undefined);
+    showUserInfo(undefined);
+    onRequestClose();
   }
 
   render() {
@@ -17,7 +25,7 @@ export default class ChatMembers extends React.Component {
       <Dialog
         title="Chat Members"
         open={this.props.open}
-        onRequestClose={this.handleClose.bind(this)}
+        onRequestClose={this.handleClose}
         closeActionOnly
         width={600}
         actionsContainerStyle={{borderTop: '1px solid rgba(0,0,0,0.15)'}}
