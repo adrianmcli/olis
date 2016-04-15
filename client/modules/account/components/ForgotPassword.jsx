@@ -24,7 +24,7 @@ export default class ForgotPassword extends React.Component {
         backgroundColor: '#2F3F70',
       }}>
         <div>
-          <div>Forgot your password?</div>
+          <h1>Forgot your password?</h1>
           <div>Enter your account's email and we'll send you a link to reset your password.</div>
         </div>
 
