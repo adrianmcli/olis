@@ -32,21 +32,14 @@ export default function () {
       }
 
       const convo = new Convo();
-      const newUserIds = [ userId, ...userIds ];
-      const uniqueUserIds = R.uniq(newUserIds);
-      const recentUserIds = R.takeLast(2, uniqueUserIds);
-      const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}}).fetch();
-      const recentUsernames = recentUsers.map(x => x.username);
-
       convo.set({
         name,
-        userIds: uniqueUserIds,
-        recentUserIds,
-        recentUsernames,
+        userIds: [ userId ], // Add yourself first so you can call addMembers method
         teamId});
       convo.save();
       const convoId = convo._id;
 
+      Meteor.call('convos.addMembers', {convoId, userIds: [ userId, ...userIds ]});
       Meteor.call('notes.add', {convoId});
 
       return convoId;
