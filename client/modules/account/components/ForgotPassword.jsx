@@ -10,7 +10,7 @@ export default class ForgotPassword extends React.Component {
   }
 
   _onEmailSent() {
-    this.text.innerHTML = 'Password reset link sent; check your email!';
+    this.text.textContent = 'Password reset link sent; check your email!';
   }
 
   handleSubmit() {
