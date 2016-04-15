@@ -14,7 +14,8 @@ export default class MyAccount extends React.Component {
       uploadImage, profileImageUrl,
       changePassword,
       email, setEmail,
-      setTranslationLanguage, translationLangCode
+      setTranslationLanguage, translationLangCode,
+      setMuteNotificationSound, muteNotificationSound
     } = this.props;
 
     const dataSource = [
@@ -67,15 +68,20 @@ export default class MyAccount extends React.Component {
         label: 'Notifications',
         icon: 'notifications',
         listItems: [
+          // {
+          //   label: 'Email Settings',
+          //   icon: 'mail_outline',
+          //   content: <div>Email Notification Settings</div>
+          // },
           {
-            label: 'Email Settings',
-            icon: 'mail_outline',
-            content: <div>Email Notification Settings</div>,
-          },
-          {
-            label: 'Mute Alerts',
+            label: 'Alerts',
             icon: 'volume_off',
-            content: <div>Mute Alerts</div>,
+            content:
+              <div>
+                <button onClick={setMuteNotificationSound.bind(null, !muteNotificationSound)}>
+                  Toggle {muteNotificationSound.toString()}
+                </button>
+              </div>,
           },
         ],
       },

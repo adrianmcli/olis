@@ -252,5 +252,11 @@ export default {
       });
     }
     catch (e) { alert(e); }
+  },
+
+  setMuteNotificationSound({Meteor}, mute) {
+    Meteor.call('account.setMuteNotificationSound', {mute}, err => {
+      if (err) { alert(err); }
+    });
   }
 };
