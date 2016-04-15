@@ -32,7 +32,7 @@ export default class ResultItem extends React.Component {
 
   renderConvoItem() {
     const {title, onClick} = this.props;
-    const primaryText = makePrimaryText('Conversation', title);
+    const primaryText = makePrimaryText('Chat', title);
     return (
       <ListItem
         leftAvatar={<Avatar icon={<ConvoIcon/>} backgroundColor={colors.blue300}/>}
