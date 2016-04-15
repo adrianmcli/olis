@@ -59,10 +59,10 @@ export default class NewConvoDialog extends React.Component {
   renderTitlePicker() {
     return (
       <div>
-        <p>Enter a name for your new conversation.</p>
+        <p>Enter a name for your new chat.</p>
         <TextField
           hintText="Sales Report, Issue #24, etc."
-          floatingLabelText="Conversation Name"
+          floatingLabelText="Chat Name"
           onEnterKeyDown={this.handleNext.bind(this)}
           ref={(x) => this._textField = x}
           fullWidth
@@ -105,7 +105,7 @@ export default class NewConvoDialog extends React.Component {
         width: 360,
         submitFunc: this.handleNext.bind(this),
         submitLabel: 'Next',
-        title: 'Choose Conversation Name',
+        title: 'Choose Chat Name',
         style: {
           body: {padding: '24px'},
           actionsContainer: {},

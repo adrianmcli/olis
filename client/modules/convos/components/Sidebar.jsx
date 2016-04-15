@@ -79,7 +79,7 @@ export default class Sidebar extends React.Component {
 
   render() {
     const { convos } = this.props;
-    const emptyState = <div className="empty-state">No Conversations Found</div>;
+    const emptyState = <div className="empty-state">No Chats Found</div>;
     return (
       <div id="sidebar-container">
         <div id="sidebar-header">

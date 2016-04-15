@@ -15,7 +15,7 @@ export default class HeaderNewConversation extends React.Component {
         <div className="header-icon">
           <IconButton
             onClick={this.handleOpen.bind(this)}
-            tooltip="New Conversation"
+            tooltip="New Chat"
           >
             <ActionQuestionAnswer color="white" />
           </IconButton>

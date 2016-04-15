@@ -36,10 +36,10 @@ export default function NoConvoSelected(props) {
       <div style={styles.content}>
         <ChatIcon style={styles.icon} color={colors.foreground}/>
         <h1>Welcome to Olis!</h1>
-        <p>Click the button to begin your first conversation:</p>
+        <p>Click the button to start a chat:</p>
         <div style={{marginBottom: '50px'}}>
           <RaisedButton
-            label="Create Your First Conversation"
+            label="Start a Chat"
             secondary={true}
             onClick={() => this._dialog.handleOpen()}
           />
