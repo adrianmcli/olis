@@ -25,7 +25,9 @@ export default class ForgotPassword extends React.Component {
       }}>
         <div>
           <h1>Forgot your password?</h1>
-          <div style={{fontWeight: '300'}}>Enter your account's email and we'll send you a link to reset your password.</div>
+          <div style={{fontWeight: '300'}}>
+            Enter your account's email and we'll send you a link to reset your password.
+          </div>
         </div>
 
         <TextField
