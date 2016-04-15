@@ -291,6 +291,14 @@ export default function () {
         throw new Meteor.Error(CONVOS_LEAVE, 'Must leave a convo you are a part of.');
       }
 
+      // Send msg before you leave
+      const user = Meteor.users.findOne(userId);
+      Meteor.call('msgs.add', {
+        text: `${user.username} has left the chat.`,
+        convoId,
+        isSystemMsg: true
+      });
+
       // Update user
       const selector = userId;
       const unsetObj = { [`lastTimeInConvo.${convoId}`]: '' };
