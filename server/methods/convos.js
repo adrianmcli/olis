@@ -171,8 +171,10 @@ export default function () {
 
       const convos = Convos.find({userIds: removeUserId}).fetch();
       convos.forEach(convo => {
-        convo.set({userIds: R.filter(id => id !== removeUserId, convo.userIds)});
-        convo.save();
+        Meteor.call('convos.removeMember', {convoId: convo._id, removeUserId});
+
+        // convo.set({userIds: R.filter(id => id !== removeUserId, convo.userIds)});
+        // convo.save();
       });
     }
   });
