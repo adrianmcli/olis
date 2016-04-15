@@ -7,7 +7,8 @@ const selfFields = {
   lastTimeInConvo: 1,
   lastTimeInTeam: 1,
   profileImageUrl: 1,
-  translationLangCode: 1
+  translationLangCode: 1,
+  muteNotificationSound: 1
 };
 
 export const othersFields = {
