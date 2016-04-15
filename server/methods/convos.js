@@ -92,6 +92,21 @@ export default function () {
       });
       convo.save();
 
+      const addedUsers = Meteor.users.find({
+        _id: { $in: userIds }
+      }).fetch();
+      const addedUsernames = addedUsers.map(newUser => newUser.username);
+      const addedString = addedUsernames.reduce((prev, curr, index) => {
+        if (index > 0) { return `${prev}, ${curr}`; }
+        return `${curr}`;
+      }, '');
+
+      Meteor.call('msgs.add', {
+        text: `${addedString} ${addedUsernames.length > 1 ? 'were' : 'was'} added to the chat.`,
+        convoId,
+        isSystemMsg: true
+      });
+
       return convo;
     }
   });

@@ -17,14 +17,14 @@ export default {
   addMembers({Meteor}, convoId, userIds) {
     Meteor.call('convos.addMembers', {convoId, userIds}, (err, res) => {
       if (err) { alert(err); }
-      else { console.log(res); }
+      // else { console.log(res); }
     });
   },
 
   removeMember({Meteor, FlowRouter}, removeUserId) {
     const convoId = FlowRouter.getParam('convoId');
     Meteor.call('convos.removeMember', {convoId, removeUserId}, err => {
-      if (err) { alert(err); }
+      // if (err) { alert(err); }
     });
   },
 
@@ -32,7 +32,7 @@ export default {
     const convoId = FlowRouter.getParam('convoId');
     Meteor.call('convos.setName', {convoId, name}, (err, res) => {
       if (err) { alert(err); }
-      else { console.log(res); }
+      // else { console.log(res); }
     });
   },
 
