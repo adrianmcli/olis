@@ -23,10 +23,10 @@ export default class AddPeopleToConvo extends React.Component {
     } = this.props;
     return (
       <Dialog
-        title="Add People to Conversation"
+        title="Add People to Chat"
         open={this.props.open}
         onRequestClose={this.handleClose.bind(this)}
-        submitLabel="Add to Conversation"
+        submitLabel="Add to Chat"
         onSubmit={this.handleSubmit.bind(this)}
         onShow={() => {this._peoplePicker.focusSearchField();}}
         bodyStyle={{padding: '0'}}
