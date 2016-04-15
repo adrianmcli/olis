@@ -185,7 +185,7 @@ export default {
     catch (e) { alert(e); }
   },
 
-  submitForgotPasswordEmail({Meteor}, email) {
+  submitForgotPasswordEmail({Meteor}, email, callback) {
     try {
       if (!EmailValidator.validate(email)) {
         throw new Meteor.Error(
@@ -194,6 +194,9 @@ export default {
 
       Meteor.call('account.forgotPassword', {email}, err => {
         if (err) { alert(err); }
+        else {
+          if (callback) { callback(); }
+        }
       });
     }
     catch (e) { alert(e); }

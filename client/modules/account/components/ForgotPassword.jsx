@@ -4,10 +4,19 @@ import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class ForgotPassword extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onEmailSent = () => this._onEmailSent();
+  }
+
+  _onEmailSent() {
+    this.text.innerHTML = 'Password reset link sent; check your email!';
+  }
+
   handleSubmit() {
     const {submitForgotPasswordEmail} = this.props;
     const email = this.email.getValue();
-    submitForgotPasswordEmail(email);
+    submitForgotPasswordEmail(email, this.onEmailSent);
   }
 
   render() {
@@ -25,7 +34,7 @@ export default class ForgotPassword extends React.Component {
       }}>
         <div>
           <h1>Forgot your password?</h1>
-          <div style={{fontWeight: '300'}}>
+          <div style={{fontWeight: '300'}} ref={ref => this.text = ref}>
             Enter your account's email and we'll send you a link to reset your password.
           </div>
         </div>
