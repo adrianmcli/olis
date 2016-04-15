@@ -14,7 +14,7 @@ export default function ({Meteor, Collections, Schemas}) {
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean))
       });
 
-      const userId = this.userId;
+      const userId = Meteor.userId();
       if (!userId) {
         throw new Meteor.Error(MSGS_ADD, 'Must be logged in to insert msgs.');
       }
