@@ -19,13 +19,13 @@ export default function ({LocalState, FlowRouter, Meteor, Collections}) {
   }
 
   $(window).focus(function () {
-    // console.log('window focus');
+    console.log('window focus');
     LocalState.set('window.isFocused', true);
     handle();
   });
 
   $(window).blur(function () {
-    // console.log('window blur');
+    console.log('window blur');
     LocalState.set('window.isFocused', false);
     handle();
   });
