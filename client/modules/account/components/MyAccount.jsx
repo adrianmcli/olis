@@ -1,9 +1,10 @@
 import React from 'react';
 
-import SettingsWrapper from '/client/modules/core/components/SettingsWrapper.jsx';
+import SettingsWrapper from '/client/modules/core/components/SettingsWrapper';
 
-import { Username, Password, Email, TranslateLanguage } from './MyAccountSettings.jsx';
-import { ProfilePic } from './MyAccountProfile.jsx';
+import { Username, Password, Email, TranslateLanguage } from './MyAccountSettings';
+import { ProfilePic } from './MyAccountProfile';
+import { MuteSound } from './MyAccountNotifications';
 
 export default class MyAccount extends React.Component {
 
@@ -77,11 +78,10 @@ export default class MyAccount extends React.Component {
             label: 'Alerts',
             icon: 'volume_off',
             content:
-              <div>
-                <button onClick={setMuteNotificationSound.bind(null, !muteNotificationSound)}>
-                  Toggle {muteNotificationSound.toString()}
-                </button>
-              </div>,
+              <MuteSound
+                muteNotificationSound={muteNotificationSound}
+                setMuteNotificationSound={setMuteNotificationSound}
+              />
           },
         ],
       },
