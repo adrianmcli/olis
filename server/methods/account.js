@@ -261,8 +261,14 @@ export default function () {
         );
       }
 
+      const transform = {
+        width: 100,
+        height: 100,
+        quality: 80,
+        sign_url: true
+      };
       Meteor.users.update(userId, {
-        $set: {profileImageUrl: Cloudinary.url(cloudinaryPublicId)}
+        $set: {profileImageUrl: Cloudinary.url(cloudinaryPublicId, transform)}
       });
     }
   });
