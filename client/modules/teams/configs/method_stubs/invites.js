@@ -1,6 +1,6 @@
 import {check} from 'meteor/check';
 
-export default function ({Meteor, Collections, Models}) {
+export default function ({Meteor, Collections, Schemas}) {
   const INVITES_REMOVE = 'invites.remove';
   Meteor.methods({
     'invites.remove'({teamId}) {

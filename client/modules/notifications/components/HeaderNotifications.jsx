@@ -27,7 +27,10 @@ export default class HeaderNotifications extends React.Component {
       titleCount.set(after);
 
       if (after > 0) FaviconNotification.add();
-      if (after === 0) FaviconNotification.remove();
+      if (after === 0) {
+        try { FaviconNotification.remove(); }
+        catch (err) { console.log(err); }
+      }
       if (after > before) {
         if (!this.props.muteSound) {
           // make audible alert

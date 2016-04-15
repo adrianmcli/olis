@@ -1,7 +1,7 @@
 import {check} from 'meteor/check';
 import R from 'ramda';
 
-export default function ({Meteor, Collections, Models}) {
+export default function ({Meteor, Collections, Schemas}) {
   const CONVOS_ADD = 'convos.add';
   Meteor.methods({
     'convos.add'({name, userIds, teamId}) {
@@ -26,7 +26,7 @@ export default function ({Meteor, Collections, Models}) {
         throw new Meteor.Error(CONVOS_ADD, 'Only users in the team can be added to the convo.');
       }
 
-      const convo = new Models.Convo();
+      const convo = new Schemas.Convo();
       const newUserIds = [ userId, ...userIds ];
       const uniqueUserIds = R.uniq(newUserIds);
       const recentUserIds = R.takeLast(2, uniqueUserIds);

@@ -2,7 +2,7 @@ import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
 
-export default function ({Meteor, Collections, Models}) {
+export default function ({Meteor, Collections, Schemas}) {
   const TEAMS_ADD = 'teams.add';
   Meteor.methods({
     'teams.add'({name, userIds}) {
@@ -24,7 +24,7 @@ export default function ({Meteor, Collections, Models}) {
       // The simulated insert will revert to nothing. Then X time later the server will actually insert.
       // Meteor._sleepForMs(3000);
 
-      const team = new Models.Team();
+      const team = new Schemas.Team();
       team.set({name, userIds: uniqueUserIds});
       team.save();
 

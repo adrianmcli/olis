@@ -1,7 +1,7 @@
 import {check} from 'meteor/check';
 import R from 'ramda';
 
-export default function ({Meteor, Collections, Models}) {
+export default function ({Meteor, Collections, Schemas}) {
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
     'msgs.add'({text, convoId}) {
@@ -24,7 +24,7 @@ export default function ({Meteor, Collections, Models}) {
         throw new Meteor.Error(MSGS_ADD, 'Must be a part of convo to add msgs');
       }
 
-      const msg = new Models.Message();
+      const msg = new Schemas.Message();
       msg.set({text, userId, username: user.username, convoId, convoName: convo.name});
       msg.save();
 

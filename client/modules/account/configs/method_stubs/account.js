@@ -1,6 +1,6 @@
 import {check} from 'meteor/check';
 
-export default function ({Meteor, Collections, Models}) {
+export default function ({Meteor, Collections}) {
   const ACCOUNT_LAST_TIME_CONVO = 'account.setLastTimeInConvo';
   Meteor.methods({
     'account.setLastTimeInConvo'({convoId}) {

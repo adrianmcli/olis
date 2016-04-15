@@ -6,7 +6,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {Tracker} from 'meteor/tracker';
 
-// Models
+// Schemas
 import Convo from '/lib/convo';
 import Message from '/lib/msg';
 import Note from '/lib/note';
@@ -20,7 +20,7 @@ export default function () {
     Meteor,
     FlowRouter,
     Collections: R.merge(GlobalCollections, ClientCollections),
-    Models: {
+    Schemas: {
       Convo,
       Message,
       Note,
