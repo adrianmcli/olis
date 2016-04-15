@@ -10,7 +10,6 @@ import EmailValidator from 'email-validator';
 import {Cloudinary} from 'meteor/lepozepo:cloudinary';
 
 export default function () {
-
   const ACCOUNT_REGISTER_TEAM = 'account.register.createTeam';
   Meteor.methods({
     'account.register.createTeam'({teamName}) {
@@ -23,7 +22,6 @@ export default function () {
       if (!userId) {
         throw new Meteor.Error(ACCOUNT_REGISTER_TEAM, 'Must be logged in to create team.');
       }
-      Meteor.call('account.setTranslationLanguage', {langCode: 'en'});
 
       // Add users to team and set roles
       const team = new Team();
@@ -317,6 +315,24 @@ export default function () {
       }
       Meteor.users.update(userId, {
         $set: {translationLangCode: langCode}
+      });
+    }
+  });
+
+  const ACCOUNT_SET_MUTE_NOTIFICATION_SOUND = 'account.setMuteNotificationSound';
+  Meteor.methods({
+    'account.setMuteNotificationSound'({mute}) {
+      check(arguments[0], {
+        mute: Boolean
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_SET_MUTE_NOTIFICATION_SOUND, 'Must be logged in to toggle notification sound.');
+      }
+
+      Meteor.users.update(userId, {
+        $set: { muteNotificationSound: mute}
       });
     }
   });

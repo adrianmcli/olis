@@ -29,23 +29,25 @@ export default class HeaderNotifications extends React.Component {
       if (after > 0) FaviconNotification.add();
       if (after === 0) FaviconNotification.remove();
       if (after > before) {
-        // make audible alert
-        // init bunch of sounds
-        ion.sound({
-          sounds: [
-            // {name: 'beer_can_opening'},
-            {name: 'button_tiny'},
-          ],
-          // main config
-          path: '/sounds/',
-          preload: true,
-          multiplay: true,
-          volume: 0.9
-        });
+        if (!this.props.muteSound) {
+          // make audible alert
+          // init bunch of sounds
+          ion.sound({
+            sounds: [
+              // {name: 'beer_can_opening'},
+              {name: 'button_tiny'},
+            ],
+            // main config
+            path: '/sounds/',
+            preload: true,
+            multiplay: true,
+            volume: 0.9
+          });
 
-        // play sound
-        ion.sound.play('button_tiny');
-        // fire native alert
+          // play sound
+          ion.sound.play('button_tiny');
+          // fire native alert
+        }
       }
     }
   }

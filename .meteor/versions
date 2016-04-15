@@ -60,6 +60,7 @@ less@2.5.8-rc.5
 livedata@1.0.18-rc.5
 localstorage@1.0.9-rc.5
 logging@1.0.12-rc.5
+matb33:collection-hooks@0.8.1
 meteor@1.1.14-rc.5
 meteor-base@1.0.4-rc.5
 meteorhacks:kadira@2.23.4

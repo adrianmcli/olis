@@ -24,6 +24,9 @@ export const composer = ({context}, onData) => {
   if (teamId) {
     if (Meteor.subscribe('notifications.list', {teamId, convoId}).ready()) {
       const userId = Meteor.userId();
+      const user = Meteor.user();
+      const muteSound = user.muteNotificationSound ? user.muteNotificationSound : false;
+
       const selector = {
         userId,
         teamId,
@@ -31,7 +34,10 @@ export const composer = ({context}, onData) => {
       };
 
       const notifications = Collections.Notifications.find(selector).fetch();
-      onData(null, {notifications});
+      onData(null, {
+        notifications,
+        muteSound
+      });
     }
   }
 };

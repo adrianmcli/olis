@@ -268,7 +268,6 @@ export default function () {
         Meteor.users.update(newId, {
           $set: {
             invitedBy: user.username, // This is so we can send the invite email with who invited them
-            translationLangCode: 'en'
           }
         });
         return newId;
