@@ -42,7 +42,7 @@
   "enableUploadProgressBar": true,
 
   "buildOptions": {
-    // build with the debug mode on
-    "debug": true
+    // build with the debug mode on, will show as localhost in Meteor.absoluteUrl()
+    // "debug": true
   }  
 }
