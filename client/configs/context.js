@@ -5,30 +5,14 @@ import {Meteor} from 'meteor/meteor';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveDict} from 'meteor/reactive-dict';
 import {Tracker} from 'meteor/tracker';
-
-// Schemas
-import Convo from '/lib/convo';
-import Message from '/lib/msg';
-import Note from '/lib/note';
-import Notification from '/lib/notification';
-import Section from '/lib/section';
-import Team from '/lib/team';
-import Invite from '/lib/invite';
+import Schemas from '/lib/schemas';
 
 export default function () {
   return {
     Meteor,
     FlowRouter,
     Collections: R.merge(GlobalCollections, ClientCollections),
-    Schemas: {
-      Convo,
-      Message,
-      Note,
-      Notification,
-      Section,
-      Team,
-      Invite
-    },
+    Schemas,
     LocalState: new ReactiveDict(),
     Tracker
   };

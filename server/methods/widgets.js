@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Notes, Locks, Widgets, Convos } from '/lib/collections';
-import Widget from '/lib/widget';
+import Widget from '/lib/schemas/widget';
 import R from 'ramda';
 import { check, Match } from 'meteor/check';
 import { TIMEOUT } from '/lib/constants/widgets';

@@ -2,8 +2,8 @@ import {
   Posts, Comments, Messages, Teams, Convos,
   Notifications, Invites, Notes, Sections, Translations,
   Widgets, Locks
-} from '../../lib/collections';
-import Team from '/lib/team';
+} from '/lib/collections';
+import {Team} from '/lib/schemas';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 
