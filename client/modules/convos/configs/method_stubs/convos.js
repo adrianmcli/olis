@@ -52,7 +52,7 @@ export default function ({Meteor, Collections, Schemas}) {
         userIds: [ String ]
       });
 
-      const userId = Meteor.userId;
+      const userId = Meteor.userId();
       if (!userId) {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must be logged in to add members to convo.');
       }
