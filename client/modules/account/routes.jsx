@@ -2,7 +2,7 @@ import React from 'react';
 import {mount} from 'react-mounter';
 
 import MainLayout from '../core/components/main_layout.jsx';
-import SetPassword from './containers/set_password';
+import ResetPasswordOnboard from './containers/reset_password_onboard';
 import FindMyTeam from './containers/find_my_team';
 import Login from './containers/login';
 import MyAccount from './containers/my_account';
@@ -117,7 +117,7 @@ export default function (injectDeps, {FlowRouter}) {
     name: 'reset-password',
     action(params) {
       mount(MainLayoutCtx, {
-        content: () => (<SetPassword token={params.token} />)
+        content: () => (<ResetPasswordOnboard token={params.token} />)
       });
     }
   });

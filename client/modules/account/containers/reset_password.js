@@ -1,5 +1,5 @@
 import {useDeps, composeAll} from 'mantra-core';
-import SetPassword from '../components/onboarding/SetPassword.jsx';
+import ResetPasswordOnboard from '../components/onboarding/ResetPasswordOnboard';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
@@ -8,4 +8,5 @@ export const depsMapper = (context, actions) => ({
 
 export default composeAll(
   useDeps(depsMapper)
-)(SetPassword);
+)(ResetPasswordOnboard);
+
