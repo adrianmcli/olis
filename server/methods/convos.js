@@ -2,9 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {
   Convos, Teams, Notifications, Messages, Notes, Sections
 } from '/lib/collections';
-import Convo from '/lib/convo';
-import Note from '/lib/note';
-import Section from '/lib/section';
+import Convo from '/lib/schemas/convo';
 import {check} from 'meteor/check';
 import R from 'ramda';
 

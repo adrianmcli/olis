@@ -3,7 +3,7 @@ import {
   Notifications, Invites, Notes, Sections, Translations,
   Widgets, Locks
 } from '../../lib/collections';
-import Team from '/lib/team';
+import Team from '/lib/schemas/team';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 

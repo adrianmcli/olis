@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import {Convos, Teams, Messages} from '/lib/collections';
-import Team from '/lib/team';
-import Convo from '/lib/convo';
+import Team from '/lib/schemas/team';
+import Convo from '/lib/schemas/convo';
 import {check} from 'meteor/check';
 import {Random} from 'meteor/random';
 import {Roles} from 'meteor/alanning:roles';

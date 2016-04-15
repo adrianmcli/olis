@@ -7,13 +7,14 @@ import {ReactiveDict} from 'meteor/reactive-dict';
 import {Tracker} from 'meteor/tracker';
 
 // Schemas
-import Convo from '/lib/convo';
-import Message from '/lib/msg';
-import Note from '/lib/note';
-import Notification from '/lib/notification';
-import Section from '/lib/section';
-import Team from '/lib/team';
-import Invite from '/lib/invite';
+import Convo from '/lib/schemas/convo';
+import Message from '/lib/schemas/msg';
+import Note from '/lib/schemas/note';
+import Notification from '/lib/schemas/notification';
+import Section from '/lib/schemas/section';
+import Team from '/lib/schemas/team';
+import Invite from '/lib/schemas/invite';
+import Widget from '/lib/schemas/widget';
 
 export default function () {
   return {
@@ -27,7 +28,8 @@ export default function () {
       Notification,
       Section,
       Team,
-      Invite
+      Invite,
+      Widget
     },
     LocalState: new ReactiveDict(),
     Tracker

@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Convos, Teams} from '/lib/collections';
-import Note from '/lib/note';
+import Note from '/lib/schemas/note';
 import {check} from 'meteor/check';
 
 export default function () {

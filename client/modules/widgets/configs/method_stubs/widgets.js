@@ -1,10 +1,10 @@
-import Widget from '/lib/widget';
 import R from 'ramda';
 import { check, Match } from 'meteor/check';
 import { TIMEOUT } from '/lib/constants/widgets';
 
-export default function ({Meteor, Collections}) {
+export default function ({Meteor, Collections, Schemas}) {
   const {Notes, Convos, Widgets, Locks} = Collections;
+  const {Widget} = Schemas;
 
   const WIDGETS_ADD = 'widgets.add';
   Meteor.methods({
