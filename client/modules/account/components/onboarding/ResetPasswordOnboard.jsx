@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ResetPassword from './ResetPassword';
+import ResetPassword from '../../containers/reset_password';
 import OnboardingWrapper from './OnboardingWrapper';
 
 export default class ResetPasswordOnboard extends React.Component {

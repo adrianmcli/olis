@@ -1,12 +1,25 @@
-import {useDeps, composeAll} from 'mantra-core';
-import ResetPasswordOnboard from '../components/onboarding/ResetPasswordOnboard';
+import React from 'react';
+import {useDeps, composeWithTracker, composeAll} from 'mantra-core';
+import CreateAccountPassword from '../components/onboarding/CreateAccountPassword';
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  resetPassword: actions.account.resetPassword
+  resetPassword: actions.account.resetPassword,
+  setRegisterPassword: actions.account.setRegisterPassword
 });
 
-export default composeAll(
-  useDeps(depsMapper)
-)(ResetPasswordOnboard);
 
+export const composer = ({context}, onData) => {
+  const {LocalState} = context();
+  const registerPassword = LocalState.get('register.password');
+  onData(null, {
+    registerPassword
+  });
+};
+
+export default composeAll(
+  composeWithTracker(composer, function () {
+    return React.createElement('div', null);
+  }),
+  useDeps(depsMapper)
+)(CreateAccountPassword);

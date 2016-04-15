@@ -142,7 +142,10 @@ export default {
     });
   },
 
-  resetPassword({Meteor, FlowRouter}, token, pwd1, pwd2) {
+  resetPassword({Meteor, FlowRouter, LocalState}) {
+    const token = FlowRouter.getParam('token');
+    const pwd = LocalState.get('register.password');
+
     function _reset(newPassword) {
       return new Promise((resolve, reject) => {
         Accounts.resetPassword(token, newPassword, (err) => {
@@ -152,20 +155,12 @@ export default {
       });
     }
 
-    try {
-      if (pwd1 !== pwd2) {
-        throw new Meteor.Error('actions.account.resetPassword', 'Your passwords must match.');
-      }
-
-      const newPassword = pwd1;
-      _reset(newPassword)
-      .then(() => {
-        const teamId = AccountUtils.getMostRecentTeamId({Meteor});
-        FlowRouter.go(`/team/${teamId ? teamId : ''}`);
-      })
-      .catch((err) => alert(err));
-    }
-    catch (e) { alert(e); }
+    _reset(pwd)
+    .then(() => {
+      const teamId = AccountUtils.getMostRecentTeamId({Meteor});
+      FlowRouter.go(`/team/${teamId ? teamId : ''}`);
+    })
+    .catch((err) => alert(err));
   },
 
   goToMyAccount({Meteor, FlowRouter}) {
