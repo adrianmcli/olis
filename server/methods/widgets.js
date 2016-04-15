@@ -151,18 +151,21 @@ export default function () {
       const lock = Locks.findOne({widgetId});
       if (lock) {
         const timeDiff = new Date() - lock.updatedAt;
-        if (timeDiff >= TIMEOUT || lock.userId === userId) { doUpdate(widget, note, data); }
+        if (timeDiff >= TIMEOUT || lock.userId === userId) { doUpdate({widget, note, convo, data}); }
       }
-      else { doUpdate(widget, note, data); }
+      else { doUpdate({widget, note, convo, data}); }
     }
   });
 }
 
-function doUpdate(widget, note, data) {
+function doUpdate({widget, note, convo, data}) {
   widget.set({data});
   widget.save();
 
   // To trigger the updated at change
   note.set({ updatedAt: new Date() });
   note.save();
+
+  convo.set({ updatedAt: new Date() });
+  convo.save();
 }
