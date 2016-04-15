@@ -49,12 +49,12 @@ export default function () {
   const CONVOS_ADD_MEMBERS = 'convos.addMembers';
   Meteor.methods({
     'convos.addMembers'({convoId, userIds}) {
-      const userId = this.userId;
       check(arguments[0], {
         convoId: String,
         userIds: [ String ]
       });
 
+      const userId = this.userId;
       if (!userId) {
         throw new Meteor.Error(CONVOS_ADD_MEMBERS, 'Must be logged in to add members to convo.');
       }
@@ -226,6 +226,12 @@ export default function () {
 
       convo.set({name});
       convo.save();
+
+      Meteor.call('msgs.add', {
+        text: `Chat name changed to "${name}"`,
+        convoId,
+        isSystemMsg: true
+      });
     }
   });
 
