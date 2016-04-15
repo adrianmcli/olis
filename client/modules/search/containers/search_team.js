@@ -16,7 +16,8 @@ export const composer = ({context, search}, onData) => {
 
   if (teamId) {
     const subSearch = Meteor.subscribe('search.results', {teamId, text});
-    if (subSearch.ready()) {
+    const subTeam = Meteor.subscribe('teams.single', {teamId});
+    if (subSearch.ready() && subTeam.ready()) {
       const selector = { score: { $exists: true } };
       const options = { sort: { score: -1 } };
 
@@ -24,8 +25,12 @@ export const composer = ({context, search}, onData) => {
       const resultConvos = Collections.Convos.find(selector, options).fetch();
       const resultUsers = Meteor.users.find(selector, options).fetch();
 
+      const team = Collections.Teams.findOne(teamId);
+      const teamName = team.name;
+
       onData(null, {
-        msgs: resultMsgs, convos: resultConvos, users: resultUsers, text
+        msgs: resultMsgs, convos: resultConvos, users: resultUsers, text,
+        teamName
       });
     }
     else {

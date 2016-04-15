@@ -32,6 +32,8 @@ export default class HeaderSearch extends React.Component {
   }
 
   renderDialog() {
+    const {teamName} = this.props;
+
     const style = {
       searchBar: {
         position: 'absolute',
@@ -49,7 +51,7 @@ export default class HeaderSearch extends React.Component {
     };
     return (
       <Dialog
-        title="Search: Team Name"
+        title={`Search Team: ${teamName}`}
         open={this.state.open}
         onRequestClose={this.handleClose.bind(this)}
         bodyStyle={{paddingTop: '0'}}
