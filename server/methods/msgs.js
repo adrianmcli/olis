@@ -1,5 +1,7 @@
 import {Meteor} from 'meteor/meteor';
-import {Convos, Message, Notification} from '/lib/schemas';
+import Convos from '/lib/convo';
+import Message from '/lib/msg';
+import Notification from '/lib/notification';
 import {Messages, Notifications} from '/lib/collections';
 import {check} from 'meteor/check';
 import R from 'ramda';

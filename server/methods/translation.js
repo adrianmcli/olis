@@ -2,7 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import {Microsoft} from 'meteor/devian:mstranslate';
 import {Messages, Translations} from '/lib/collections';
-import {Translation} from '/lib/schemas';
+import Translation from '/lib/translation';
 
 export default function () {
   const TRANSLATION_GET = 'translation.get';

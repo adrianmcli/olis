@@ -1,10 +1,11 @@
 import {Meteor} from 'meteor/meteor';
 import {Teams} from '/lib/collections';
+import Team from '/lib/team';
 import {check} from 'meteor/check';
 import {Roles} from 'meteor/alanning:roles';
 import R from 'ramda';
 import EmailValidator from 'email-validator';
-import {Invite, Team} from '/lib/schemas';
+import Invite from '/lib/invite';
 
 export default function () {
   const TEAMS_ADD = 'teams.add';
