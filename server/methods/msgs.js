@@ -3,16 +3,17 @@ import Convos from '/lib/schemas/convo';
 import Message from '/lib/schemas/msg';
 import Notification from '/lib/schemas/notification';
 import {Messages, Notifications} from '/lib/collections';
-import {check} from 'meteor/check';
+import {check, Match} from 'meteor/check';
 import R from 'ramda';
 
 export default function () {
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId}) {
+    'msgs.add'({text, convoId, isSystemMsg}) {
       check(arguments[0], {
         text: String,
-        convoId: String
+        convoId: String,
+        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean))
       });
 
       const userId = this.userId;
@@ -30,7 +31,14 @@ export default function () {
       }
 
       const msg = new Message();
-      msg.set({text, userId, username: user.username, convoId, convoName: convo.name});
+      msg.set({
+        text,
+        userId,
+        username: user.username,
+        convoId,
+        convoName: convo.name,
+        isSystemMsg
+      });
       msg.save();
 
       // Update convo with last msg text

@@ -127,6 +127,13 @@ export default function () {
         userIds: R.filter(id => id !== removeUserId, convo.userIds)
       });
       convo.save();
+
+      const removeUser = Meteor.users.findOne(removeUserId);
+      Meteor.call('msgs.add', {
+        text: `${removeUser.username} was removed from the chat.`,
+        convoId,
+        isSystemMsg: true
+      });
     }
   });
 
