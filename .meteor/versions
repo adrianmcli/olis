@@ -6,6 +6,7 @@ alanning:roles@1.2.15
 allow-deny@1.0.4-rc.5
 audit-argument-checks@1.0.7-rc.5
 autoupdate@1.2.8-rc.5
+awsp:handsontable@0.16.1
 babel-compiler@6.6.4-rc.5
 babel-runtime@0.1.8-rc.5
 base64@1.0.8-rc.5
