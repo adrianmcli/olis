@@ -32,7 +32,7 @@ export default class EditorWidget extends React.Component {
       const raw = convertToRaw(contentState);
       requestAndReleaseOtherLocks(widgetId);
       update(widgetId, raw);
-    }, 2500);
+    }, 1250);
   }
 
   _handleEditorClick() {
