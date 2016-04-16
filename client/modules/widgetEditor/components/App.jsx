@@ -35,13 +35,6 @@ export default class EditorWidget extends React.Component {
     }, 1250);
   }
 
-  // _handleEditorClick() {
-  //   const { widgetId, requestAndReleaseOtherLocks } = this.props;
-
-  //   requestAndReleaseOtherLocks(widgetId);
-  //   this.focus();
-  // }
-
   onChange(editorState) {
     const {
       widgetId,
