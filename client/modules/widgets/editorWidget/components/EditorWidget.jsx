@@ -53,7 +53,6 @@ export default class EditorWidget extends React.Component {
     }
     else {
       releaseLock(widgetId);
-      this.setState({editorState});
     }
   }
 
@@ -195,5 +194,13 @@ function getNewState(editorState, raw) {
   // Wrapping it all back up into an EditorState object
   const newContentState = ContentState.createFromBlockArray(newContentBlocks);
   const newEditorState = EditorState.push(editorState, newContentState);
-  return newEditorState;
+
+  // Selection state
+  const currentSelectionState = editorState.getSelection();
+  const hasFocus = currentSelectionState.getHasFocus();
+  const maintainSelection = hasFocus ? EditorState.forceSelection : EditorState.acceptSelection;
+  const newState = maintainSelection(newEditorState, currentSelectionState);
+
+  // return newEditorState;
+  return newState;
 }
