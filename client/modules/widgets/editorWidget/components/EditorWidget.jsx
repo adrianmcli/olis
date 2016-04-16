@@ -1,5 +1,6 @@
 import React from 'react';
 import R from 'ramda';
+import _ from 'lodash';
 import { Editor, EditorState, ContentState } from 'draft-js';
 import { convertToRaw, convertFromRaw } from 'draft-js';
 import { RichUtils } from 'draft-js';
@@ -24,6 +25,14 @@ export default class EditorWidget extends React.Component {
     this.toggleBlockType = (type) => this._toggleBlockType(type);
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
     this.handleEditorClick = () => this._handleEditorClick();
+
+    this.throttledHandleChange = _.throttle((editorState) => {
+      const { requestAndReleaseOtherLocks, update, widgetId } = this.props;
+      const contentState = editorState.getCurrentContent();
+      const raw = convertToRaw(contentState);
+      requestAndReleaseOtherLocks(widgetId);
+      update(widgetId, raw);
+    }, 2500);
   }
 
   _handleEditorClick() {
@@ -36,20 +45,15 @@ export default class EditorWidget extends React.Component {
   onChange(editorState) {
     const {
       widgetId,
-      update,
-      requestAndReleaseOtherLocks,
       releaseLock
     } = this.props;
 
-    const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
     const hasFocus = selectionState.getHasFocus();
 
     if (hasFocus) {
-      const raw = convertToRaw(contentState);
-      requestAndReleaseOtherLocks(widgetId);
-      update(widgetId, raw);
       this.setState({editorState});
+      this.throttledHandleChange(editorState);
     }
     else {
       releaseLock(widgetId);
