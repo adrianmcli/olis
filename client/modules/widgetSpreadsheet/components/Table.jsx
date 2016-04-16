@@ -37,6 +37,13 @@ export default class Table extends React.Component {
 
     console.log('---componentWillReceiveProps----');
     console.table(data.tableValues);
+
+    data.tableValues.forEach((row, i) => {
+      row.forEach((col, j) => {
+        this.tableValues[i][j] = col;
+      });
+    });
+    this.hot.render();
   }
 
   componentDidUpdate() {
