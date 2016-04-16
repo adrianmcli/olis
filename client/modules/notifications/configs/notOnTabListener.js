@@ -20,13 +20,22 @@ export default function ({LocalState, FlowRouter, Meteor, Collections}) {
 
   $(window).focus(function () {
     console.log('window focus');
-    LocalState.set('window.isFocused', true);
+    // LocalState.set('window.isFocused', true);
     handle();
   });
 
   $(window).blur(function () {
-    console.log('window blur');
+    // console.log('window blur');
     LocalState.set('window.isFocused', false);
     handle();
   });
+
+  const intervalId = setInterval(() => {
+    const hasFocus = document.hasFocus();
+    if (hasFocus) {
+      // console.log('document has focus');
+      LocalState.set('window.isFocused', true);
+      clearInterval(intervalId);
+    }
+  }, 500);
 }

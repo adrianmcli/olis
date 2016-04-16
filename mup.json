@@ -43,6 +43,6 @@
 
   "buildOptions": {
     // build with the debug mode on, will show as localhost in Meteor.absoluteUrl()
-    // "debug": true
+    "debug": true
   }  
 }

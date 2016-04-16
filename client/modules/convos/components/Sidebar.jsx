@@ -52,7 +52,7 @@ export default class Sidebar extends React.Component {
           }
           unread = unreadCount > 0;
 
-          if (convoId === convo._id) {console.log(`convoId ${convoId}, convo._id ${convo._id}, windowIsFocused ${windowIsFocused}`)}
+          // if (convoId === convo._id) {console.log(`convoId ${convoId}, convo._id ${convo._id}, windowIsFocused ${windowIsFocused}`)}
 
           // No idea why R.filter doesn't work on an object, even tho it worked on Ramda's website test.
           const convoUsersArr = R.filter(teamUser => R.contains(teamUser._id, convo.userIds), teamUsersArr);
