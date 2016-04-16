@@ -60,6 +60,7 @@ export default class Table extends React.Component {
     console.log('---componentWillReceiveProps----');
     console.table(data.tableValues);
 
+    // Need both lines here for it to work
     this.tableValues = data.tableValues;
     this.hot.loadData(data.tableValues);
   }
