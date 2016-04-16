@@ -35,12 +35,12 @@ export default class EditorWidget extends React.Component {
     }, 1250);
   }
 
-  _handleEditorClick() {
-    const { widgetId, requestAndReleaseOtherLocks } = this.props;
+  // _handleEditorClick() {
+  //   const { widgetId, requestAndReleaseOtherLocks } = this.props;
 
-    requestAndReleaseOtherLocks(widgetId);
-    this.focus();
-  }
+  //   requestAndReleaseOtherLocks(widgetId);
+  //   this.focus();
+  // }
 
   onChange(editorState) {
     const {
@@ -57,7 +57,9 @@ export default class EditorWidget extends React.Component {
     }
     else {
       releaseLock(widgetId);
+      this.setState({editorState}); // This is so when you lose focus the editor state reflects that
     }
+    // console.log(`onChange ${widgetId}, hasFocus ${hasFocus}`);
   }
 
   _handleKeyCommand(command) {
@@ -147,7 +149,7 @@ export default class EditorWidget extends React.Component {
               onToggle={this.toggleBlockType}
             />
           </div> : null}
-        <div className={className} onClick={this.handleEditorClick}>
+        <div className={className}>
           <Editor
             editorState={this.state.editorState}
             onChange={this.onChange}
