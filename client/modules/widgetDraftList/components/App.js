@@ -1,6 +1,6 @@
 import React from 'react';
 
-import EditorWidget from '/client/modules/widgets/editorWidget/components/App';
+import EditorWidget from '/client/modules/widgetEditor/components/App';
 
 export default class ListWidget extends React.Component {
   render() {

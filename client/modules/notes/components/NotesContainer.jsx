@@ -5,7 +5,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import NotesHeader from './NotesHeader.jsx';
 import { Widgets } from '/client/modules/widgets';
-import Widget from '/client/modules/widgets/widget/components/Widget.jsx';
+import Widget from '/client/modules/widget/components/Widget.jsx';
 
 class NotesContainer extends React.Component {
   constructor(props) {

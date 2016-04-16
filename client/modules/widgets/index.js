@@ -1,11 +1,11 @@
 import actions from './actions';
 import methodStubs from './configs/method_stubs';
 
-import DraggableWidget from './draggableWidget/components/DraggableWidget.jsx';
-import EditorWidget from './editorWidget/components/App';
-import ListWidget from './draftListWidget/components/App';
-import TodoWidget from './todoWidget/components/App';
-import VoteWidget from './voteWidget/components/App';
+import DraggableWidget from '../widgetDraggable/components/DraggableWidget.jsx';
+import EditorWidget from '../widgetEditor/components/App';
+import ListWidget from '../widgetDraftList/components/App';
+import TodoWidget from '../widgetTodo/components/App';
+import VoteWidget from '../widgetVote/components/App';
 
 export default {
   actions,
