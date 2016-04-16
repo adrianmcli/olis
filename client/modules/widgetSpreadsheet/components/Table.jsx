@@ -34,11 +34,13 @@ export default class Table extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { data } = nextProps;
-    console.table(data.tableValues);
+    const { tableValues } = data;
+
+    console.log('---componentWillReceiveProps----');
+    console.table(tableValues);
   }
 
   componentDidUpdate() {
-    console.log('componentDidUpdate');
   }
 
   render() {
