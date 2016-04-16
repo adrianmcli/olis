@@ -2,7 +2,7 @@ import actions from './actions';
 import methodStubs from './configs/method_stubs';
 
 import DraggableWidget from './draggableWidget/components/DraggableWidget.jsx';
-import EditorWidget from './editorWidget/components/EditorWidget.jsx';
+import EditorWidget from './editorWidget/components/App';
 import ListWidget from './draftListWidget/components/App';
 import TodoWidget from './todoWidget/components/App';
 import VoteWidget from './voteWidget/components/App';
