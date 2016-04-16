@@ -5,25 +5,25 @@ import React from 'react';
 class Table extends React.Component {
   constructor(props) {
     super(props);
+    this.tableValues = [
+      [ 1, 2, 3 ],
+      [ 4, 5, 6 ]
+    ];
   }
 
   componentDidMount() {
     const {update, widgetId} = this.props;
-    let tableValues = [
-      [ 1, 2, 3 ],
-      [ 4, 5, 6 ]
-    ];
 
     this.hot = new Handsontable(this.root, {
       rowHeaders: true,
       colHeaders: true,
-      data: tableValues,
+      data: this.tableValues,
       contextMenu: true,
       afterChange: (change, source) => {
         console.log('-----afterChange------');
-        console.table(tableValues);
+        console.table(this.tableValues);
 
-        update(widgetId, {tableValues});
+        update(widgetId, {tableValues: this.tableValues});
       }
     });
   }
