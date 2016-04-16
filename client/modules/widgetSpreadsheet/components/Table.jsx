@@ -2,13 +2,10 @@ import React from 'react';
 // import Handsontable from 'handsontable/dist/handsontable';
 // import Handsontable from 'meteor/awsp:handsontable';
 
-class Table extends React.Component {
+export default class Table extends React.Component {
   constructor(props) {
     super(props);
-    this.tableValues = [
-      [ 1, 2, 3 ],
-      [ 4, 5, 6 ]
-    ];
+    this.tableValues = props.data.tableValues;
   }
 
   componentDidMount() {
@@ -47,4 +44,8 @@ class Table extends React.Component {
   }
 }
 
-export default Table;
+Table.defaultProps = {
+  data: {
+    tableValues: []
+  }
+};
