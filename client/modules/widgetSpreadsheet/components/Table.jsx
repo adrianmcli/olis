@@ -23,11 +23,27 @@ export default class Table extends React.Component {
       colHeaders: true,
       data: this.tableValues,
       contextMenu: true,
-      afterChange: (change, source) => {
+      afterChange: (changes, source) => {
         // this.tableValues is mutated
         if (source === 'edit') {
+          console.log('-----afterChange-----');
+          console.table(this.tableValues);
+
+          changes.forEach(change => {
+            const row = change[0];
+            const col = change[1];
+            const newVal = change[3];
+            this.tableValues[row][col] = newVal;
+          });
+
           update(widgetId, {tableValues: this.tableValues});
         }
+      },
+      afterCreateRow: (index, amount) => {
+        update(widgetId, {tableValues: this.tableValues});
+      },
+      afterCreateCol: (index, amount) => {
+        update(widgetId, {tableValues: this.tableValues});
       }
     });
   }
@@ -38,12 +54,7 @@ export default class Table extends React.Component {
     console.log('---componentWillReceiveProps----');
     console.table(data.tableValues);
 
-    data.tableValues.forEach((row, i) => {
-      row.forEach((col, j) => {
-        this.tableValues[i][j] = col;
-      });
-    });
-    this.hot.render();
+    this.hot.loadData(data.tableValues);
   }
 
   componentDidUpdate() {
