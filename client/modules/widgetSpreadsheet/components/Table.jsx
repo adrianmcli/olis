@@ -17,9 +17,7 @@ export default class Table extends React.Component {
       data: this.tableValues,
       contextMenu: true,
       afterChange: (change, source) => {
-        console.log('-----afterChange------');
-        console.table(this.tableValues);
-
+        // this.tableValues is mutated
         update(widgetId, {tableValues: this.tableValues});
       }
     });
@@ -27,10 +25,7 @@ export default class Table extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { data } = nextProps;
-    const { tableValues: newValues } = data;
-
-    console.log('------componentWillReceiveProps-----');
-    console.table(newValues);
+    console.table(data.tableValues);
   }
 
   componentDidUpdate() {
