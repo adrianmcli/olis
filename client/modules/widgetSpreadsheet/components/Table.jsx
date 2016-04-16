@@ -8,6 +8,7 @@ class Table extends React.Component {
   }
 
   componentDidMount() {
+    const {update, widgetId} = this.props;
     let tableValues = [
       [ 1, 2, 3 ],
       [ 4, 5, 6 ]
@@ -21,6 +22,8 @@ class Table extends React.Component {
       afterChange: (change, source) => {
         console.log('-----afterChange------');
         console.table(tableValues);
+
+        update(widgetId, {tableValues});
       }
     });
   }
