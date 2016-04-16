@@ -13,10 +13,8 @@ class Table extends React.Component {
       ],
       contextMenu: true,
       afterChange: (change, source) => {
-        // change is array of length 4
-        // index 0 = row, 1 = col, 2 = prev val, 3 = new val
         console.log(change);
-        console.log(source); // emits actions, e.g load data, edit, ...
+        console.log(source);
       }
     });
   }
