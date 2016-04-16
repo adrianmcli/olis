@@ -6,6 +6,7 @@ import EditorWidget from '../widgetEditor/components/App';
 import ListWidget from '../widgetDraftList/components/App';
 import TodoWidget from '../widgetTodo/components/App';
 import VoteWidget from '../widgetVote/components/App';
+import SpreadsheetWidget from '../widgetSpreadsheet/components/App';
 
 export default {
   actions,
@@ -19,5 +20,6 @@ export const Widgets = {
   editor: EditorWidget,
   list: ListWidget,
   todo: TodoWidget,
-  vote: VoteWidget
+  vote: VoteWidget,
+  spreadsheet: SpreadsheetWidget
 };
