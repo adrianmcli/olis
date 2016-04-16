@@ -44,6 +44,12 @@ export default class Table extends React.Component {
       },
       afterCreateCol: (index, amount) => {
         update(widgetId, {tableValues: this.tableValues});
+      },
+      afterRemoveRow: (index, amount) => {
+        update(widgetId, {tableValues: this.tableValues});
+      },
+      afterRemoveCol: (index, amount) => {
+        update(widgetId, {tableValues: this.tableValues});
       }
     });
   }
