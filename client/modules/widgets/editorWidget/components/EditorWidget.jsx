@@ -103,17 +103,21 @@ export default class EditorWidget extends React.Component {
   }
 
   render() {
-    const {lock, userId} = this.props;
+    const {lock, userId, hideControls} = this.props;
 
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
-    let className = 'RichEditor-editor';
-    var contentState = this.state.editorState.getCurrentContent();
-    if (!contentState.hasText()) {
-      if (contentState.getBlockMap().first().getType() !== 'unstyled') {
-        className += ' RichEditor-hidePlaceholder';
+    let className = '';
+    if (!hideControls) {
+      className = 'RichEditor-editor';
+      var contentState = this.state.editorState.getCurrentContent();
+      if (!contentState.hasText()) {
+        if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+          className += ' RichEditor-hidePlaceholder';
+        }
       }
     }
+
 
     const controlsContainerStyle = {
       display: 'flex',
@@ -131,17 +135,18 @@ export default class EditorWidget extends React.Component {
 
     return (
       <Paper style={{padding: '12px', width: '100%'}}>
-        <div style={controlsContainerStyle}>
-          <InlineStyleControls
-            editorState={this.state.editorState}
-            onToggle={this.toggleInlineStyle}
-          />
-          <div style={separatorStyle} />
-          <BlockStyleControls
-            editorState={this.state.editorState}
-            onToggle={this.toggleBlockType}
-          />
-        </div>
+        {!hideControls ?
+          <div style={controlsContainerStyle}>
+            <InlineStyleControls
+              editorState={this.state.editorState}
+              onToggle={this.toggleInlineStyle}
+            />
+            <div style={separatorStyle} />
+            <BlockStyleControls
+              editorState={this.state.editorState}
+              onToggle={this.toggleBlockType}
+            />
+          </div> : null}
         <div className={className} onClick={this.handleEditorClick}>
           <Editor
             editorState={this.state.editorState}
@@ -208,3 +213,11 @@ function getNewState(editorState, raw) {
   // return newEditorState;
   return newState;
 }
+
+EditorWidget.defaultProps = {
+  hideControls: false,
+  widgetId: 'fakeWidgetId',
+  update: () => console.log('update called'),
+  requestAndReleaseOtherLocks: () => console.log('requestAndReleaseOtherLocks called'),
+  releaseLock: () => console.log('releaseLock called')
+};
