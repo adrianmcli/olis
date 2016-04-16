@@ -34,10 +34,9 @@ export default class Table extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { data } = nextProps;
-    const { tableValues } = data;
 
     console.log('---componentWillReceiveProps----');
-    console.table(tableValues);
+    console.table(data.tableValues);
   }
 
   componentDidUpdate() {
