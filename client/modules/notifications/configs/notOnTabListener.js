@@ -19,8 +19,8 @@ export default function ({LocalState, FlowRouter, Meteor, Collections}) {
   }
 
   $(window).focus(function () {
-    console.log('window focus');
-    // LocalState.set('window.isFocused', true);
+    // console.log('window focus');
+    LocalState.set('window.isFocused', true);
     handle();
   });
 
