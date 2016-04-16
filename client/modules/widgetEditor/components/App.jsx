@@ -43,15 +43,12 @@ export default class EditorWidget extends React.Component {
 
     const selectionState = editorState.getSelection();
     const hasFocus = selectionState.getHasFocus();
+    
+    this.setState({editorState});
 
-    if (hasFocus) {
-      this.setState({editorState});
-      this.throttledHandleChange(editorState);
-    }
-    else {
-      releaseLock(widgetId);
-      this.setState({editorState}); // This is so when you lose focus the editor state reflects that
-    }
+    if (hasFocus) { this.throttledHandleChange(editorState); }
+    else { releaseLock(widgetId); }
+    
     // console.log(`onChange ${widgetId}, hasFocus ${hasFocus}`);
   }
 
