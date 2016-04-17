@@ -1,6 +1,7 @@
 import React from 'react';
 import R from 'ramda';
 import Handsontable from 'handsontable';
+// The following 3 imports are required for handsontable to work
 import moment from 'moment';
 import pikaday from 'pikaday';
 import Zeroclipboard from 'zeroclipboard';
