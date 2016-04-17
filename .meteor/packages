@@ -46,5 +46,3 @@ devian:mstranslate
 easysearch:core
 peerlibrary:user-extra
 matb33:collection-hooks
-
-awsp:handsontable # use npm version when fixed

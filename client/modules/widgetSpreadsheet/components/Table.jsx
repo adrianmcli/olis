@@ -1,7 +1,9 @@
 import React from 'react';
 import R from 'ramda';
-// import Handsontable from 'handsontable/dist/handsontable';
-// import Handsontable from 'meteor/awsp:handsontable';
+import Handsontable from 'handsontable';
+import moment from 'moment';
+import pikaday from 'pikaday';
+import Zeroclipboard from 'zeroclipboard';
 
 export default class Table extends React.Component {
   constructor(props) {
@@ -9,9 +11,9 @@ export default class Table extends React.Component {
 
     this.tableValues = canSetStateFromProps(props.data) ?
       props.data.tableValues : [
-        [ '', '', '' ],
-        [ '', '', '' ],
-        [ '', '', '' ]
+        [ null, null, null ],
+        [ null, null, null ],
+        [ null, null, null ]
       ];
   }
 
@@ -60,9 +62,12 @@ export default class Table extends React.Component {
     console.log('---componentWillReceiveProps----');
     console.table(data.tableValues);
 
-    // Need both lines here for it to work
-    this.tableValues = data.tableValues;
-    this.hot.loadData(data.tableValues);
+    if (canSetStateFromProps(data)) {
+      // Need both lines here for it to work
+      this.tableValues = data.tableValues;
+      this.hot.loadData(data.tableValues);
+    }
+
   }
 
   componentDidUpdate() {
@@ -76,9 +81,12 @@ export default class Table extends React.Component {
 }
 
 function canSetStateFromProps(data) {
-  const expectedKeys = [ 'tableValues' ];
-  const keys = R.keys(data);
-  const hasExpectedKeys = R.intersection(expectedKeys, keys).length === expectedKeys.length;
-  return hasExpectedKeys;
+  if (data) {
+    const expectedKeys = [ 'tableValues' ];
+    const keys = R.keys(data);
+    const hasExpectedKeys = R.intersection(expectedKeys, keys).length === expectedKeys.length;
+    return hasExpectedKeys;
+  }
+  return false;
 }
 
