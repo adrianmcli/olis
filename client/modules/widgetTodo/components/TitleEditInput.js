@@ -20,8 +20,10 @@ export default class TitleEditInput extends React.Component {
 
   updateAndClose() {
     const {updateTitle, stopEditing} = this.props;
-    const input = this._input.value;
-    updateTitle(input.trim());
+    const input = this._input.value.trim();
+    if (input !== '') {
+      updateTitle(input);
+    }
     stopEditing();
   }
 

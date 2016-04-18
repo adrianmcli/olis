@@ -1,17 +1,17 @@
 .listapp input::-webkit-input-placeholder {
   font-style: italic;
   font-weight: 300;
-  color: #e6e6e6;
+  color: #9197a3;
 }
 
 .listapp input::-moz-placeholder {
   font-style: italic;
   font-weight: 300;
-  color: #e6e6e6;
+  color: #9197a3;
 }
 
 .listapp input::input-placeholder {
   font-style: italic;
   font-weight: 300;
-  color: #e6e6e6;
+  color: #9197a3;
 }
