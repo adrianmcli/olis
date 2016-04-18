@@ -6,6 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import NotesHeader from './NotesHeader.jsx';
 import { Widgets } from '/client/modules/widgets';
 import Widget from '/client/modules/widget/components/Widget.jsx';
+import WidgetWrapper from '/client/modules/widgets/components/WidgetWrapper';
 
 class NotesContainer extends React.Component {
   constructor(props) {
@@ -32,14 +33,12 @@ class NotesContainer extends React.Component {
       removeWidget, moveWidget, updateWidget, requestAndReleaseOtherLocks, releaseLock
     } = this.props;
 
-    const DraggableWidget = Widgets['draggable'];
-
     return widgets.map((widget, index) => {
       const {data, _id, noteId, type} = widget;
 
       const lock = locks[_id];
       return (
-        <DraggableWidget
+        <WidgetWrapper
           key={_id}
           index={index}
           noteId={note._id}
@@ -58,7 +57,7 @@ class NotesContainer extends React.Component {
             requestAndReleaseOtherLocks={requestAndReleaseOtherLocks}
             releaseLock={releaseLock}
           />
-        </DraggableWidget>
+        </WidgetWrapper>
       );
     });
   }
