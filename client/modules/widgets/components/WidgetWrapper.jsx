@@ -5,6 +5,7 @@ import { ItemTypes } from '/lib/constants/widgets';
 import { widgetSource, collectSource, widgetTarget, collectTarget } from '../utils/draggable';
 
 import DragHandle from './DragHandle.jsx';
+import Paper from 'material-ui/lib/paper';
 import RemoveIcon from 'material-ui/lib/svg-icons/navigation/close';
 
 class WidgetWrapper extends Component {
@@ -18,17 +19,22 @@ class WidgetWrapper extends Component {
       opacity: isDragging ? 0 : 1,
       display: 'flex',
       padding: '12px 12px 12px 0',
+      position: 'relative',
+    };
+    const widgetContainerStyle = {
+      flexGrow: '1',
+      maxWidth: 'calc(100% - 22px)',
+      overflow: 'auto',
     };
 
     return connectDropTarget(connectDragPreview(
       <div style={containerStyle}>
         { connectDragSource(<div><DragHandle /></div>) } {/* div must be there */}
-        <div style={{flexGrow: '1', maxWidth: 'calc(100% - 22px)'}}>
+        <Paper style={widgetContainerStyle}>
           { children }
-
-          <div style={getRemoveStyle().container} onClick={remove.bind(this, noteId, widgetId)}>
-            <RemoveIcon style={getRemoveStyle().icon} color='rgba(0,0,0,0.5)'/>
-          </div>
+        </Paper>
+        <div style={getRemoveStyle().container} onClick={remove.bind(this, noteId, widgetId)}>
+          <RemoveIcon style={getRemoveStyle().icon} color='rgba(0,0,0,0.5)'/>
         </div>
       </div>
     ));
@@ -56,8 +62,8 @@ function getRemoveStyle() {
   return {
     container: {
       position: 'absolute',
-      top: '-12px',
-      right: '-12px',
+      top: '0',
+      right: '0',
       backgroundColor: '#EEE',
       width: '24px',
       height: '24px',
