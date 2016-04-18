@@ -7,6 +7,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import ChatInput from './ChatInput.jsx';
 import GeminiScrollbar from 'react-gemini-scrollbar';
 import ChatMessageItem from './ChatMessageItem.jsx';
+import SystemMessageItem from './SystemMessageItem.jsx';
 import ChatHeader from './ChatHeader.jsx';
 
 export default class ChatContainer extends React.Component {
@@ -124,8 +125,26 @@ export default class ChatContainer extends React.Component {
       const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
       const highlight = searchMsgId ? searchMsgId === msg._id : false;
 
+      if (msg.isSystemMsg) {
+        return (
+          <SystemMessageItem
+            key={msg._id}
+            msgId={msg._id}
+            authorName={authorName}
+            avatarSrc={avatarSrc}
+            content={msg.text}
+            timestamp={msg.createdAt}
+            selfAuthor={msg.userId === userId}
+            translation={translations[msg._id] ? translations[msg._id].text : undefined}
+            langCode={langCode}
+            translate={translate}
+            highlight={highlight}
+            ref={x => this.messageRefs[msg._id] = x}
+          />
+        );
+      }
       return (
-        <ChatMessageItem
+       <ChatMessageItem
           key={msg._id}
           msgId={msg._id}
           authorName={authorName}
