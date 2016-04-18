@@ -12,17 +12,19 @@ export default class Widget extends Component {
     const WidgetType = Widgets[type];
     return (
       <div style={{position: 'relative', display: 'flex'}}>
-        <WidgetType
-          widgetId={widgetId}
-          noteId={noteId}
-          data={data}
-          update={update}
+        <div style={{overflow: 'auto'}}>
+          <WidgetType
+            widgetId={widgetId}
+            noteId={noteId}
+            data={data}
+            update={update}
 
-          lock={lock}
-          userId={userId}
-          requestAndReleaseOtherLocks={requestAndReleaseOtherLocks}
-          releaseLock={releaseLock}
-        />
+            lock={lock}
+            userId={userId}
+            requestAndReleaseOtherLocks={requestAndReleaseOtherLocks}
+            releaseLock={releaseLock}
+          />
+        </div>
         <div style={getRemoveStyle().container} onClick={remove.bind(this, noteId, widgetId)}>
           <RemoveIcon style={getRemoveStyle().icon} color='rgba(0,0,0,0.5)'/>
         </div>
