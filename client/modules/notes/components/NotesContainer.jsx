@@ -5,7 +5,6 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import NotesHeader from './NotesHeader.jsx';
 import { Widgets } from '/client/modules/widgets';
-import Widget from '/client/modules/widget/components/Widget.jsx';
 import WidgetWrapper from '/client/modules/widgets/components/WidgetWrapper';
 
 class NotesContainer extends React.Component {
@@ -37,6 +36,8 @@ class NotesContainer extends React.Component {
       const {data, _id, noteId, type} = widget;
 
       const lock = locks[_id];
+      const Widget = Widgets[type];
+
       return (
         <WidgetWrapper
           key={_id}
@@ -44,19 +45,20 @@ class NotesContainer extends React.Component {
           noteId={note._id}
           widgetId={_id}
           moveWidget={moveWidget}
+          remove={removeWidget}
         >
-          <Widget
-            data={data}
-            type={type}
-            widgetId={_id}
-            noteId={noteId}
-            remove={removeWidget}
-            update={updateWidget}
-            userId={userId}
-            lock={lock}
-            requestAndReleaseOtherLocks={requestAndReleaseOtherLocks}
-            releaseLock={releaseLock}
-          />
+          <div style={{position: 'relative', display: 'flex'}}>
+            <Widget
+              data={data}
+              widgetId={_id}
+              noteId={noteId}
+              update={updateWidget}
+              userId={userId}
+              lock={lock}
+              requestAndReleaseOtherLocks={requestAndReleaseOtherLocks}
+              releaseLock={releaseLock}
+            />
+          </div>
         </WidgetWrapper>
       );
     });
