@@ -5,3 +5,4 @@ ssl/
 ssl.pem
 node_modules
 *.log
+.meteor-electron

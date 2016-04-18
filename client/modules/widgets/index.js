@@ -3,7 +3,7 @@ import methodStubs from './configs/method_stubs';
 
 import DraggableWidget from '../widgetDraggable/components/DraggableWidget.jsx';
 import EditorWidget from '../widgetEditor/components/App';
-import ListWidget from '../widgetDraftList/components/App';
+import ListWidget from '../widgetList/components/App';
 import TodoWidget from '../widgetTodo/components/App';
 import VoteWidget from '../widgetVote/components/App';
 import SpreadsheetWidget from '../widgetSpreadsheet/components/App';
