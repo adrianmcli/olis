@@ -123,6 +123,12 @@ export default class EditorWidget extends React.Component {
       marginRight: '16px',
     };
 
+    const statusStyle = {
+      fontStyle: 'italic',
+      fontWeight: '300',
+      color: '#e6e6e6',
+    };
+
     const readOnly = lock ? lock.userId !== userId : false;
 
     return (
@@ -153,7 +159,7 @@ export default class EditorWidget extends React.Component {
             ref="editor"
             spellCheck={true}
           />
-          {lock && new Date() - lock.updatedAt < 5000 ? <div>{lock.username} is typing...</div> : null}
+          {lock && new Date() - lock.updatedAt < 5000 ? <div style={statusStyle}>{lock.username} is typing...</div> : null}
         </div>
       </Paper>
     );
