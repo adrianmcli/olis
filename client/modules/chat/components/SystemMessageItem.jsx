@@ -22,6 +22,7 @@ function getStyles() {
       background: 'rgba(255,255,255,0.5)',
       color: 'grey',
       borderRadius: '2px',
+      fontSize: '14px',
       fontWeight: '300',
     },
   };
