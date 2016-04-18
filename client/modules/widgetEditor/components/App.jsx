@@ -132,7 +132,7 @@ export default class EditorWidget extends React.Component {
     const statusStyle = {
       fontStyle: 'italic',
       fontWeight: '300',
-      color: '#e6e6e6',
+      color: '#9197a3',
     };
 
     const readOnly = lock ? lock.userId !== userId : false;
