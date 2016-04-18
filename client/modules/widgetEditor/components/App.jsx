@@ -52,6 +52,12 @@ export default class EditorWidget extends React.Component {
     // console.log(`onChange ${widgetId}, hasFocus ${hasFocus}`);
   }
 
+  _handleEditorClick() {
+    const { widgetId, requestAndReleaseOtherLocks } = this.props;
+    requestAndReleaseOtherLocks(widgetId);
+    this.editor.focus();
+  }
+
   _handleKeyCommand(command) {
     const {editorState} = this.state;
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -156,7 +162,7 @@ export default class EditorWidget extends React.Component {
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
             handleKeyCommand={this.handleKeyCommand}
-            ref="editor"
+            ref={ref => this.editor = ref}
             spellCheck={true}
           />
           {lock && new Date() - lock.updatedAt < 5000 ? <div style={statusStyle}>{lock.username} is typing...</div> : null}
