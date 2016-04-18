@@ -26,6 +26,7 @@ export default class Table extends React.Component {
       colHeaders: true,
       data: this.tableValues,
       contextMenu: true,
+      formulas: true,
       afterChange: (changes, source) => {
         // this.tableValues is mutated
         if (source === 'edit') {
