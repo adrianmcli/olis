@@ -5,5 +5,20 @@ export default {
         // if (err) { alert(err); }
       });
     }
+  },
+
+  checkForExistingPrivate({Meteor, Collections}, userIds) {
+    if (userIds.length === 1) {
+      const { Convos } = Collections;
+      const userId = Meteor.userId();
+
+      const convo = Convos.findOne({
+        userIds: {
+          $size: 2,
+          $all: [ userId, ...userIds ]
+        }
+      });
+      return convo ? convo._id : null;
+    }
   }
 };

@@ -11,7 +11,7 @@ export const depsMapper = (context, actions) => ({
   addUserId: actions.convos['newConvo.addUserId'],
   removeUserId: actions.convos['newConvo.removeUserId'],
   setNewConvoName: actions.convos['newConvo.setName'],
-  clearAddedUserIds: actions.convos['newConvo.clearAddedUserIds'],
+  clearAddedUserIds: actions.convos['newConvo.clearAddedUserIds']
 });
 
 export const composer = ({context}, onData) => {
@@ -24,8 +24,6 @@ export const composer = ({context}, onData) => {
 
   const newConvoName = LocalState.get('newConvo.name') ?
     LocalState.get('newConvo.name') : '';
-
-  console.log(`container ${newConvoName}`);
 
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {

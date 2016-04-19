@@ -1,12 +1,18 @@
 import R from 'ramda';
+import ConvoUtils from '/client/modules/core/libs/convos';
 
 export default {
-  add({Meteor, LocalState, FlowRouter}, name, userIds) {
+  add({Meteor, Collections, LocalState, FlowRouter}, name = '', userIds) {
+    const privateConvoId = ConvoUtils.checkForExistingPrivate({Meteor, Collections}, userIds);
     const teamId = FlowRouter.getParam('teamId');
-    Meteor.call('convos.add', {name, userIds, teamId}, (err, convoId) => {
-      if (err) { alert(err); }
-      else { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
-    });
+
+    if (!privateConvoId) {
+      Meteor.call('convos.add', {name, userIds, teamId}, (err, convoId) => {
+        if (err) { alert(err); }
+        else { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
+      });
+    }
+    else { FlowRouter.go(`/team/${teamId}/convo/${privateConvoId}`); }
   },
 
   select({Meteor, FlowRouter}, convoId) {

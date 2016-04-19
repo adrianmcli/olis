@@ -59,8 +59,9 @@ export default class NewConvoDialog extends React.Component {
   }
 
   handlePickerSubmit() {
-    this.nextStage.bind(this)();
-    // this.submitAndClose.bind(this)();
+    const {usersToAdd} = this.props;
+    if (usersToAdd.length === 1) { this.submitAndClose(); }
+    else { this.nextStage(); }
   }
 
   handleTitleSubmit() {
@@ -80,7 +81,8 @@ export default class NewConvoDialog extends React.Component {
   }
 
   submitAndClose(newConvoName) {
-    const {addConvo, usersToAdd} = this.props; // props of newConvoName are stale, just pass them in from title submit
+     // props of newConvoName are stale, just pass them in from title submit
+    const {addConvo, usersToAdd} = this.props;
     addConvo(newConvoName, usersToAdd.map(x => x._id));
     this.handleClose();
   }
