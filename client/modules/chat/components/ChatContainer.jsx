@@ -132,7 +132,7 @@ export default class ChatContainer extends React.Component {
             msgId={msg._id}
             authorName={authorName}
             avatarSrc={avatarSrc}
-            content={msg.content}
+            content={msg.text}
             timestamp={msg.createdAt}
             selfAuthor={msg.userId === userId}
             translation={translations[msg._id] ? translations[msg._id].text : undefined}
