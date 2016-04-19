@@ -103,7 +103,7 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div>
             {
-              isHovering || menuOpen ?
+              (isHovering || menuOpen) && (!translation) ?
               <ChatMessageItemContextMenu
                 isHovering={this.state.isHovering}
                 langCode={langCode}
