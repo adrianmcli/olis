@@ -19,13 +19,34 @@ export default class NewConvoDialog extends React.Component {
       open: false,
       stage: 0,
     };
+    this.stageData = {
+      picker: {
+        width: 540,
+        onShowFunc: () => this._peoplePicker.focusSearchField(),
+        submitFunc: this.handlePickerSubmit.bind(this),
+        submitLabel: 'Next',
+        title: 'Add Participants',
+        style: {
+          body: {padding: '0'},
+          actionsContainer: {borderTop: '1px solid rgba(0,0,0,0.15)'},
+        },
+      },
+      title: {
+        width: 360,
+        onShowFunc: () => this._textField.focus(),
+        submitFunc: this.handleTitleSubmit.bind(this),
+        submitLabel: 'Next',
+        title: 'Choose Chat Name',
+        style: {
+          body: {padding: '24px'},
+          actionsContainer: {},
+        },
+      },
+    };
   }
 
   handleOpen() {
-    this.setState({
-      open: true,
-      stage: 0
-    });
+    this.setState({ open: true, stage: 0});
   }
 
   handleClose() {
@@ -37,21 +58,29 @@ export default class NewConvoDialog extends React.Component {
     setNewConvoName(undefined);
   }
 
-  handleNext() {
+  handlePickerSubmit() {
+    this.nextStage.bind(this)();
+    // this.submitAndClose.bind(this)();
+  }
+
+  handleTitleSubmit() {
     const {setNewConvoName} = this.props;
     const convoName = this._textField.getValue();
     setNewConvoName(convoName);
+    // this.nextStage.bind(this)();
+    this.submitAndClose.bind(this)();
+  }
 
-    this.setState({
-      stage: 1,
-    });
+  nextStage() {
+    this.setState({stage: this.state.stage + 1});
     setTimeout(() => {
-      this._peoplePicker.focusSearchField();
+      this.stageData.title.onShowFunc();
     }, 500);
   }
 
-  handleSubmit() {
+  submitAndClose() {
     const {addConvo, usersToAdd, newConvoName} = this.props;
+    console.log(newConvoName);  // BUG - newConvoName is blank
     addConvo(newConvoName, usersToAdd.map(x => x._id));
     this.handleClose();
   }
@@ -63,7 +92,7 @@ export default class NewConvoDialog extends React.Component {
         <TextField
           hintText="Sales Report, Issue #24, etc."
           floatingLabelText="Chat Name"
-          onEnterKeyDown={this.handleNext.bind(this)}
+          onEnterKeyDown={this.handleTitleSubmit.bind(this)}
           ref={(x) => this._textField = x}
           fullWidth
         />
@@ -90,30 +119,8 @@ export default class NewConvoDialog extends React.Component {
   }
 
   render() {
-    const stageData = {
-      picker: {
-        width: 540,
-        submitFunc: this.handleSubmit.bind(this),
-        submitLabel: 'Next',
-        title: 'Add Participants',
-        style: {
-          body: {padding: '0'},
-          actionsContainer: {borderTop: '1px solid rgba(0,0,0,0.15)'},
-        },
-      },
-      title: {
-        width: 360,
-        submitFunc: this.handleNext.bind(this),
-        submitLabel: 'Next',
-        title: 'Choose Chat Name',
-        style: {
-          body: {padding: '24px'},
-          actionsContainer: {},
-        },
-      },
-    };
-
-    const data = this.state.stage !== 0 ? stageData.picker : stageData.title;
+    const {picker, title} = this.stageData;
+    const data = this.state.stage === 0 ? picker : title;
 
     return (
       <Dialog
@@ -122,12 +129,12 @@ export default class NewConvoDialog extends React.Component {
         onRequestClose={this.handleClose.bind(this)}
         submitLabel={data.submitLabel}
         onSubmit={data.submitFunc}
-        onShow={() => {this._textField.focus();}}
+        onShow={data.onShowFunc}
         width={data.width}
         actionsContainerStyle={data.style.actionsContainer}
         bodyStyle={data.style.body}
       >
-        { this.state.stage === 0 ? this.renderTitlePicker() : this.renderPeoplePicker() }
+        { this.state.stage === 0 ? this.renderPeoplePicker() : this.renderTitlePicker() }
       </Dialog>
     );
   }
