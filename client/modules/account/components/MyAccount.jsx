@@ -99,11 +99,11 @@ export default class MyAccount extends React.Component {
                 profileImageUrl={profileImageUrl}
               />,
           },
-          {
-            label: 'Blurb',
-            icon: 'chat_bubble',
-            content: <div>Edit Blurb</div>,
-          },
+          // {
+          //   label: 'Blurb',
+          //   icon: 'chat_bubble',
+          //   content: <div>Edit Blurb</div>,
+          // },
         ],
       },
     ];
