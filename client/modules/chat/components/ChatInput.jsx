@@ -1,5 +1,5 @@
 import React from 'react';
-import {Editor, EditorState} from 'draft-js';
+import {Editor, EditorState, convertToRaw} from 'draft-js';
 
 export default class ChatInput extends React.Component {
   constructor(props) {
@@ -9,18 +9,22 @@ export default class ChatInput extends React.Component {
     this.focus = () => this.refs.editor.focus();
   }
 
-  handleEnterKeyDown(e) {
+  handleReturn(e) {
     const {addMsg} = this.props;
     if (e.shiftKey === true) {
-      // shift key pressed, do nothing
-    } else {
-      e.preventDefault();
-      const text = e.target.value;
-      if (text.trim() !== '') {
-        addMsg(text);
-        e.target.value = '';
-      }
+      return false;
     }
+    const contentState = this.state.editorState.getCurrentContent();
+    const plainText = contentState.getPlainText();
+    if (contentState.hasText()) {
+      // const rawContentState = convertToRaw(contentState);
+      // addMsg(rawContentState);
+      addMsg(plainText);
+      const empty = EditorState.createEmpty();
+      this.setState({editorState: EditorState.moveFocusToEnd(empty)});
+      this.focus();
+    }
+    return true;
   }
 
   render() {
@@ -33,6 +37,7 @@ export default class ChatInput extends React.Component {
             onChange={this.onChange}
             placeholder="Type your message here..."
             ref="editor"
+            handleReturn={this.handleReturn.bind(this)}
           />
         </div>
       </div>
