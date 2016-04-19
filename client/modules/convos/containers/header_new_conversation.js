@@ -25,6 +25,8 @@ export const composer = ({context}, onData) => {
   const newConvoName = LocalState.get('newConvo.name') ?
     LocalState.get('newConvo.name') : '';
 
+  console.log(`container ${newConvoName}`);
+
   const teamId = FlowRouter.getParam('teamId');
   if (teamId) {
     if (Meteor.subscribe('teams.single', {teamId}).ready()) {

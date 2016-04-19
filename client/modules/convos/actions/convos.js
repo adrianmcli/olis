@@ -37,6 +37,7 @@ export default {
   },
 
   'newConvo.setName'({LocalState}, name) {
+    console.log(`newConvo.setName ${name}`);
     LocalState.set('newConvo.name', name);
   },
 

@@ -67,8 +67,9 @@ export default class NewConvoDialog extends React.Component {
     const {setNewConvoName} = this.props;
     const convoName = this._textField.getValue();
     setNewConvoName(convoName);
+
     // this.nextStage.bind(this)();
-    this.submitAndClose.bind(this)();
+    this.submitAndClose(convoName);
   }
 
   nextStage() {
@@ -78,9 +79,8 @@ export default class NewConvoDialog extends React.Component {
     }, 500);
   }
 
-  submitAndClose() {
-    const {addConvo, usersToAdd, newConvoName} = this.props;
-    console.log(newConvoName);  // BUG - newConvoName is blank
+  submitAndClose(newConvoName) {
+    const {addConvo, usersToAdd} = this.props; // props of newConvoName are stale, just pass them in from title submit
     addConvo(newConvoName, usersToAdd.map(x => x._id));
     this.handleClose();
   }
