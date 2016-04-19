@@ -11,7 +11,7 @@ export default function () {
   Meteor.methods({
     'msgs.add'({text, convoId, isSystemMsg}) {
       check(arguments[0], {
-        text: String,
+        text: Object,
         convoId: String,
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean))
       });

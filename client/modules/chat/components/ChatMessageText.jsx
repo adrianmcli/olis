@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {convertFromRaw, ContentState} from 'draft-js';
+import {stateToHTML} from 'draft-js-export-html';
 
 export default class ChatMessageText extends React.Component {
   constructor(props) {
@@ -9,15 +11,18 @@ export default class ChatMessageText extends React.Component {
   }
 
   render() {
-    const {content} = this.props;
-    // console.log(`ChatMessageText ${content}`);
-    return (
-      <ReactMarkdown
-        source={content}
-        softBreak="br"
-        escapeHtml
-      />
-    );
+    const rawContentState = this.props.content;
+    const contentState = ContentState.createFromBlockArray(convertFromRaw(rawContentState));
+    const html = stateToHTML(contentState);
+    return <div>{html}</div>;
+
+    // return (
+    //   <ReactMarkdown
+    //     source={content}
+    //     softBreak="br"
+    //     escapeHtml
+    //   />
+    // );
   }
 }
 ChatMessageText.defaultProps = {
