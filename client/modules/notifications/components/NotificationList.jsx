@@ -50,7 +50,7 @@ export default class NotificationList extends React.Component {
             return (
               <ListItem
                 key={ notif._id }
-                primaryText={ notif.convoName }
+                primaryText={ getConvoName(notif) }
                 secondaryText={ this._renderSecondaryText.bind(this, notif.recentUsernames)() }
                 leftAvatar={
                   <AvatarWithDefault
@@ -70,3 +70,7 @@ export default class NotificationList extends React.Component {
 NotificationList.defaultProps = {
   notifications: []
 };
+
+function getConvoName(notif) {
+  return notif.convoName !== '' ? notif.convoName : R.last(notif.recentUsernames);
+}
