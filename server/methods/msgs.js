@@ -9,11 +9,12 @@ import R from 'ramda';
 export default function () {
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId, isSystemMsg}) {
+    'msgs.add'({text, convoId, isSystemMsg, content}) {
       check(arguments[0], {
         text: String,
         convoId: String,
-        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean))
+        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
+        content: Match.Optional(Match.OneOf(undefined, null, Object))
       });
 
       const userId = this.userId;
@@ -37,7 +38,8 @@ export default function () {
         username: user.username,
         convoId,
         convoName: convo.name,
-        isSystemMsg
+        isSystemMsg,
+        content
       });
       msg.save();
 
