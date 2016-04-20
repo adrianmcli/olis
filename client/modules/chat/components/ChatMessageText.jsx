@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {convertFromRaw, ContentState} from 'draft-js';
 import {stateToHTML} from 'draft-js-export-html';
@@ -14,15 +13,7 @@ export default class ChatMessageText extends React.Component {
     const rawContentState = this.props.content;
     const contentState = ContentState.createFromBlockArray(convertFromRaw(rawContentState));
     const html = stateToHTML(contentState);
-    return <div>{html}</div>;
-
-    // return (
-    //   <ReactMarkdown
-    //     source={content}
-    //     softBreak="br"
-    //     escapeHtml
-    //   />
-    // );
+    return <div dangerouslySetInnerHTML={{__html: html}} />;
   }
 }
 ChatMessageText.defaultProps = {
