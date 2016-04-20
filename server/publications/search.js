@@ -93,7 +93,7 @@ export default function () {
         limit: 10
       };
       Mongo.Collection._publishCursor(
-        Meteor.users.find(selector, options), this, 'users');
+        Meteor.users.find(selector, options), this, 'searchUsers');
     };
 
     _getMsgs();

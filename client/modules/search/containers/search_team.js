@@ -10,7 +10,9 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context, search}, onData) => {
-  const {Meteor, FlowRouter, LocalState, Collections} = context();
+  const { Meteor, FlowRouter, LocalState, Collections } = context();
+  const { Convos, Teams, SearchMessages, SearchUsers } = Collections;
+
   const teamId = FlowRouter.getParam('teamId');
   const text = LocalState.get('searchText.team.all') ? LocalState.get('searchText.team.all') : '';
 
@@ -18,14 +20,16 @@ export const composer = ({context, search}, onData) => {
     const subSearch = Meteor.subscribe('search.results', {teamId, text});
     const subTeam = Meteor.subscribe('teams.single', {teamId});
     if (subSearch.ready() && subTeam.ready()) {
+      // Full text search
       const selector = { score: { $exists: true } };
       const options = { sort: { score: -1 } };
+      const resultMsgs = SearchMessages.find(selector, options).fetch();
+      const resultConvos = Convos.find(selector, options).fetch();
 
-      const resultMsgs = Collections.SearchMessages.find(selector, options).fetch();
-      const resultConvos = Collections.Convos.find(selector, options).fetch();
-      const resultUsers = Meteor.users.find(selector, options).fetch();
+      // Regex search
+      const resultUsers = SearchUsers.find().fetch();
 
-      const team = Collections.Teams.findOne(teamId);
+      const team = Teams.findOne(teamId);
       const teamName = team.name;
 
       onData(null, {
