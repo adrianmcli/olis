@@ -36,8 +36,8 @@ export default function (injectDeps, {FlowRouter}) {
     }
   });
 
-  FlowRouter.route('/register/username', {
-    name: 'register-username',
+  FlowRouter.route('/register/displayName', {
+    name: 'register-displayName',
     action() {
       mount(MainLayoutCtx, {
         content: () => (<Registration />)

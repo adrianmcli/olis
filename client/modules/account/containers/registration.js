@@ -15,7 +15,7 @@ export const composer = ({context}, onData) => {
     case '/register/email':
       currentStep = 0;
       break;
-    case '/register/username':
+    case '/register/displayName':
       currentStep = 1;
       break;
     case '/register/password':
