@@ -6,7 +6,9 @@ export default class ChatMessageImage extends React.Component {
 
     return (
       <div>
-        {imageUrl}
+        <a href={imageUrl} target='_blank'>
+          <img src={imageUrl} alt="user uploaded image" style={{width: '100%'}}/>
+        </a>
       </div>
     );
   }
