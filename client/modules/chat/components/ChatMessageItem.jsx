@@ -72,7 +72,8 @@ export default class ChatMessageItem extends React.Component {
       timestamp,
       selfAuthor,
       langCode,
-      translation
+      translation,
+      cloudinaryPublicId,
     } = this.props;
     const {gettingTranslation, isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
@@ -92,12 +93,13 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
-              <ChatMessageText content={content} />
+              {!cloudinaryPublicId ? <ChatMessageText content={content} /> : null}
               <ChatMessageTranslation
                 translation={translation}
                 gettingTranslation={gettingTranslation}
                 selfAuthor={selfAuthor}
               />
+              {cloudinaryPublicId ? <div>{cloudinaryPublicId}</div> : null}
             </div>
             <ChatMessageTimestamp timestamp={timestamp} />
           </div>
@@ -132,5 +134,5 @@ ChatMessageItem.defaultProps = {
   content: 'Form inputs offer a great opportunity to add some subtle and interesting effects to a web page.',
   timestamp: '5 minutes ago',
   selfAuthor: false,
-  highlight: false
+  highlight: false,
 };

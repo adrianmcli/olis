@@ -157,6 +157,7 @@ export default class ChatContainer extends React.Component {
           translate={translate}
           highlight={highlight}
           ref={x => this.messageRefs[msg._id] = x}
+          cloudinaryPublicId={msg.cloudinaryPublicId}
         />
       );
     });

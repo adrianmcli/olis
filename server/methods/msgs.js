@@ -10,12 +10,13 @@ import { Cloudinary } from 'meteor/lepozepo:cloudinary';
 export default function () {
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId, isSystemMsg, content}) {
+    'msgs.add'({text, convoId, isSystemMsg, content, cloudinaryPublicId}) {
       check(arguments[0], {
         text: String,
         convoId: String,
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
         content: Match.Optional(Match.OneOf(undefined, null, Object)),
+        cloudinaryPublicId: Match.Optional(Match.OneOf(undefined, null, String)),
       });
 
       const userId = this.userId;
@@ -41,6 +42,7 @@ export default function () {
         convoName: convo.name,
         isSystemMsg,
         content,
+        cloudinaryPublicId,
       });
       msg.save();
 
@@ -108,18 +110,4 @@ export default function () {
       return msg; // Will return _id, and the server side only stuff too
     },
   });
-
-  const MSGS_SEND_IMG = 'msgs.sendImage';
-  Meteor.methods({
-    'msgs.sendImage'({cloudinaryPublicId, convoId}) {
-      check(arguments[0], {
-        cloudinaryPublicId: String,
-        convoId: String,
-      });
-
-      console.log(MSGS_SEND_IMG);
-      console.log(`${cloudinaryPublicId} ${convoId}`);
-    },
-  });
-
 }
