@@ -8,13 +8,14 @@ const selfFields = {
   lastTimeInTeam: 1,
   profileImageUrl: 1,
   translationLangCode: 1,
-  muteNotificationSound: 1
+  muteNotificationSound: 1,
+  displayName: 1,
 };
 
 export const othersFields = {
-  username: 1,
+  displayName: 1,
   emails: 1,
-  profileImageUrl: 1
+  profileImageUrl: 1,
 };
 
 export default function () {

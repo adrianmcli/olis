@@ -5,11 +5,11 @@ import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class Login extends React.Component {
   handleSubmit() {
-    const usernameOrEmail = this.usernameOrEmail.getValue();
+    const email = this.email.getValue();
     const password = this.password.getValue();
 
     const {login} = this.props;
-    login(usernameOrEmail, password);
+    login(email, password);
   }
 
   render() {
@@ -40,11 +40,11 @@ export default class Login extends React.Component {
 
         <div>
           <TextField
-            floatingLabelText="Username or Email"
+            floatingLabelText="Email"
             floatingLabelStyle={{color: 'rgba(255,255,255,0.5)'}}
             inputStyle={{color: 'white'}}
             onEnterKeyDown={this.handleSubmit.bind(this)}
-            ref={ref => this.usernameOrEmail = ref}
+            ref={ref => this.email = ref}
           />
         </div>
 

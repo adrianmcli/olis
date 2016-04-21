@@ -32,7 +32,7 @@ export default function ({Meteor, Collections, Schemas}) {
       msg.set({
         text,
         userId,
-        username: user.username,
+        username: user.displayName,
         convoId,
         convoName: convo.name,
         isSystemMsg

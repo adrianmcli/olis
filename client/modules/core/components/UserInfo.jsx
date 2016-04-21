@@ -10,10 +10,10 @@ export default class UserInfo extends React.Component {
       <div>
         <AvatarWithDefault
           size={128}
-          username={user.username}
+          username={user.displayName}
           avatarSrc={user.profileImageUrl}
         />
-        <div style={{fontSize: '18px',lineHeight: '24px'}}>{user.username}</div>
+        <div style={{fontSize: '18px',lineHeight: '24px'}}>{user.displayName}</div>
         {showButtons ? buttons : null}
       </div>
     );

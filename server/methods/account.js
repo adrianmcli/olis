@@ -1,13 +1,14 @@
-import {Meteor} from 'meteor/meteor';
-import {Convos, Teams, Messages} from '/lib/collections';
+import { Meteor } from 'meteor/meteor';
+import { Convos, Teams, Messages } from '/lib/collections';
+import { Accounts } from 'meteor/accounts-base';
 import Team from '/lib/schemas/team';
 import Convo from '/lib/schemas/convo';
-import {check} from 'meteor/check';
-import {Random} from 'meteor/random';
-import {Roles} from 'meteor/alanning:roles';
+import { check } from 'meteor/check';
+import { Random } from 'meteor/random';
+import { Roles } from 'meteor/alanning:roles';
 import R from 'ramda';
 import EmailValidator from 'email-validator';
-import {Cloudinary} from 'meteor/lepozepo:cloudinary';
+import { Cloudinary } from 'meteor/lepozepo:cloudinary';
 
 export default function () {
   const ACCOUNT_REGISTER_TEAM = 'account.register.createTeam';
@@ -400,6 +401,24 @@ export default function () {
           `No user found with email: ${email}. Create an account.`);
       }
       Accounts.sendResetPasswordEmail(existingUser._id);
+    }
+  });
+
+  const ACCOUNT_DISPLAY_NAME = 'account.setDisplayName';
+  Meteor.methods({
+    'account.setDisplayName'({displayName}) {
+      check(arguments[0], {
+        displayName: String
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_DISPLAY_NAME, 'Must be logged in to set display name.');
+      }
+
+      Meteor.users.update(userId, {
+        $set: { displayName }
+      });
     }
   });
 }

@@ -17,10 +17,10 @@ export default class PeopleList extends React.Component {
       return (
         <div key={user._id}>
           <ListItem
-            primaryText={user.username}
+            primaryText={user.displayName}
             rightIcon={team.isUserAdmin(user._id) ? this.renderBadge('Admin') : null}
             secondaryText={user.emails[0].address}
-            leftAvatar={<AvatarWithDefault username={user.username} avatarSrc={user.profileImageUrl} />}
+            leftAvatar={<AvatarWithDefault username={user.displayName} avatarSrc={user.profileImageUrl} />}
             onClick={userClickHandler.bind(this, user._id)}
           />
           <Divider inset={true} />
@@ -67,7 +67,7 @@ export default class PeopleList extends React.Component {
 }
 PeopleList.defaultProps = {
   users: [],
-  userClickHandler: user => console.log(`You clicked ${user.username}`),
+  userClickHandler: user => console.log(`You clicked ${user.displayName}`),
   team: {
     isUserAdmin() { return false; }
   }

@@ -196,7 +196,7 @@ export default function ({Meteor, Collections, Schemas}) {
       // Send msg before you leave
       const user = Meteor.users.findOne(userId);
       Meteor.call('msgs.add', {
-        text: `${user.username} has left the chat.`,
+        text: `${user.displayName} has left the chat.`,
         convoId,
         isSystemMsg: true
       });

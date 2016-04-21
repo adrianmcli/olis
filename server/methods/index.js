@@ -11,6 +11,7 @@ import invites from './invites';
 import translation from './translation';
 import widgets from './widgets';
 import locks from './locks';
+import register from './register';
 
 export default function () {
   test();
@@ -26,4 +27,5 @@ export default function () {
   translation();
   widgets();
   locks();
+  register();
 }

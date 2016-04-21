@@ -24,9 +24,9 @@ export default class ModalResultsList extends React.Component {
           <ResultItem
             key={user._id}
             type='user'
-            name={user.username}
+            name={user.displayName}
             email={user.emails[0].address}
-            avatar={<AvatarWithDefault avatarSrc={user.profileImageUrl} username={user.username} />}
+            avatar={<AvatarWithDefault avatarSrc={user.profileImageUrl} username={user.displayName} />}
             closeModal={closeModal}
             onClick={onClickUser.bind(null, user._id)}
           />

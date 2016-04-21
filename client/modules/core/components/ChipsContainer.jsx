@@ -12,7 +12,7 @@ export default class ChipsContainer extends React.Component {
           <Chip
             // NOTE: avatarSrc is optional, Chip can generate an avatar w/ the username alone
             avatarSrc={user.profileImageUrl}
-            username={user.username}
+            username={user.displayName}
             onRemoveClick={removeUserId.bind(null, user._id)}
           />
         </div>

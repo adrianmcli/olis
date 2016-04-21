@@ -1,5 +1,6 @@
-import {Meteor} from 'meteor/meteor';
-import {Teams} from '/lib/collections';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+import { Teams } from '/lib/collections';
 import R from 'ramda';
 import _ from 'lodash';
 
@@ -32,7 +33,7 @@ export default function () {
     console.log('enrollAccount subject');
     console.log(user);
 
-    // const prepend = `Welcome to Olis, ${user.username}!`;
+    // const prepend = `Welcome to Olis, ${user.displayName}!`;
     // const text =
     //   user.invitedBy ? `${prepend} An account has been created for you by ${user.invitedBy}.` :
     //   `${prepend}`;
@@ -81,7 +82,7 @@ export default function () {
     // console.log('resetPassword subject');
     // console.log(user);
     if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
-      return `Welcome to Olis ${user.username}! Set Your Olis Account Password.`;
+      return `Welcome to Olis ${user.displayName}! Set Your Olis Account Password.`;
     }
     return `Reset Your Olis Account Password`;
   };
