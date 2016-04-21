@@ -1,14 +1,14 @@
 import React from 'react';
 import {EditorState, convertToRaw} from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
-// import createLinkifyPlugin from 'draft-js-linkify-plugin';
-
-// const linkifyPlugin = createLinkifyPlugin({ target: '_blank' });
+import UploadImage from './UploadImage';
 
 export default class ChatInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {editorState: EditorState.createEmpty()};
+    this.state = {
+      editorState: EditorState.createEmpty(),
+    };
     this.onChange = (editorState) => this.setState({editorState});
     this.focus = () => this.refs.editor.focus();
   }
@@ -34,6 +34,7 @@ export default class ChatInput extends React.Component {
     const {editorState} = this.state;
     return (
       <div id="chat-input">
+        <UploadImage uploadImage={this.props.uploadImage}/>
         <div className="chat-input-container" onClick={this.focus}>
           <Editor
             editorState={editorState}
@@ -41,7 +42,6 @@ export default class ChatInput extends React.Component {
             placeholder="Type your message here..."
             ref="editor"
             handleReturn={this.handleReturn.bind(this)}
-            // plugins={[linkifyPlugin]}
           />
         </div>
       </div>

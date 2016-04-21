@@ -116,7 +116,7 @@ export default class ChatContainer extends React.Component {
 
   renderMsgs() {
     const {
-      msgs, userId, translations, langCode, convoUsers, translate, searchMsgId
+      msgs, userId, translations, langCode, convoUsers, translate, searchMsgId,
     } = this.props;
 
     return msgs.map((msg, index) => {
@@ -176,6 +176,7 @@ export default class ChatContainer extends React.Component {
           ref={x => this.messageRefs[msg._id] = x}
           isConsecutiveMsg={isConsecutiveMsg()}
           showTimestamp={showTimestamp()}
+          imageUrl={msg.imageUrl}
         />
       );
     });
@@ -191,7 +192,8 @@ export default class ChatContainer extends React.Component {
       starred,
       addMsg,
       showLoadOldBtn,
-      showLoadOldBtnSearch, showLoadNewBtnSearch
+      showLoadOldBtnSearch, showLoadNewBtnSearch,
+      uploadImage,
     } = this.props;
 
     const loadMoreBtn = (onClick) => (
@@ -220,12 +222,12 @@ export default class ChatContainer extends React.Component {
           </GeminiScrollbar>
         </div>
 
-        <ChatInput addMsg={addMsg} />
+        <ChatInput addMsg={addMsg} uploadImage={uploadImage} />
       </div>
     );
   }
 }
 
 ChatContainer.defaultProps = {
-  msgs: []
+  msgs: [],
 };

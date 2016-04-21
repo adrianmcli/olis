@@ -1,11 +1,13 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import R from 'ramda';
 
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import ChatMessageItemContextMenu from './ChatMessageItemContextMenu.jsx';
 import ChatMessageText from './ChatMessageText.jsx';
 import ChatMessageTranslation from './ChatMessageTranslation.jsx';
 import ChatMessageTimestamp from './ChatMessageTimestamp.jsx';
+import ChatMessageImage from './ChatMessageImage';
 
 export default class ChatMessageItem extends React.Component {
 
@@ -64,19 +66,46 @@ export default class ChatMessageItem extends React.Component {
     this.setState({menuOpen: false});
   }
 
+  renderBubbleBody() {
+    const {
+      imageUrl, content,
+      translation, selfAuthor,
+    } = this.props;
+    const { gettingTranslation } = this.state;
+
+    const hasContent = R.keys(content).length > 0;
+    const hasImage = Boolean(imageUrl);
+
+    if (hasImage) {
+      return <ChatMessageImage imageUrl={imageUrl} />;
+    }
+    else if (hasContent) {
+      return (
+        <div>
+          <ChatMessageText content={content} />
+          <ChatMessageTranslation
+            translation={translation}
+            gettingTranslation={gettingTranslation}
+            selfAuthor={selfAuthor}
+          />
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
     const {
       authorName,
       avatarSrc,
-      content,
-      timestamp,
       selfAuthor,
       langCode,
       translation,
       isConsecutiveMsg,
+      timestamp,
       showTimestamp,
     } = this.props;
-    const {gettingTranslation, isHovering, menuOpen} = this.state;
+    const {isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
     const messageClass = isConsecutiveMsg ? ' not-first-of-batch' : ' first-of-batch';
 
@@ -94,12 +123,7 @@ export default class ChatMessageItem extends React.Component {
           <div className="chat-body">
             <div className="chat-bubble">
               <div className="chat-author">{authorName}</div>
-              <ChatMessageText content={content} />
-              <ChatMessageTranslation
-                translation={translation}
-                gettingTranslation={gettingTranslation}
-                selfAuthor={selfAuthor}
-              />
+              { this.renderBubbleBody() }
               {showTimestamp ? <ChatMessageTimestamp timestamp={timestamp} /> : null}
             </div>
           </div>
@@ -126,5 +150,5 @@ ChatMessageItem.defaultProps = {
   timestamp: '5 minutes ago',
   selfAuthor: false,
   highlight: false,
-  isConsecutiveMsg: false
+  isConsecutiveMsg: false,
 };

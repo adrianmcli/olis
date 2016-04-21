@@ -5,16 +5,19 @@ import Notification from '/lib/schemas/notification';
 import {Messages, Notifications} from '/lib/collections';
 import {check, Match} from 'meteor/check';
 import R from 'ramda';
+import { Cloudinary } from 'meteor/lepozepo:cloudinary';
+import DraftUtils from '/lib/utils/draft-js';
 
 export default function () {
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId, isSystemMsg, content}) {
+    'msgs.add'({text, convoId, isSystemMsg, content, cloudinaryPublicId}) {
       check(arguments[0], {
         text: String,
         convoId: String,
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
-        content: Match.Optional(Match.OneOf(undefined, null, Object))
+        content: Match.Optional(Match.OneOf(undefined, null, Object)),
+        cloudinaryPublicId: Match.Optional(Match.OneOf(undefined, null, String)),
       });
 
       const userId = this.userId;
@@ -31,6 +34,13 @@ export default function () {
         throw new Meteor.Error(MSGS_ADD, 'Must be a part of convo to add msgs');
       }
 
+      const transform = {
+        // width: 100,
+        // height: 100,
+        quality: 80,
+        sign_url: true,
+      };
+
       const msg = new Message();
       msg.set({
         text,
@@ -39,7 +49,8 @@ export default function () {
         convoId,
         convoName: convo.name,
         isSystemMsg,
-        content
+        content,
+        imageUrl: Cloudinary.url(cloudinaryPublicId, transform), // SERVER ONLY
       });
       msg.save();
 
@@ -53,12 +64,19 @@ export default function () {
       const recentUsernames = recentUsers.map(recentUser => recentUser.displayName);
 
       const getConvoFields = () => {
+        const hasImage = msg.imageUrl ? true : false;
+        const hasContent = R.keys(msg.content).length > 0;
+
+        let lastMsgText = '';
+        if (hasImage) { lastMsgText = msg.imageUrl; }
+        else if (hasContent) { lastMsgText = DraftUtils.getPlainTextFromRaw(msg.content); }
+
         const baseFields = {
-          lastMsgText: text,
+          lastMsgText,
           lastMsgCreatedAt: msg.createdAt,
           recentUserIds,
           recentUsernames,
-          numMsgs: Messages.find({convoId}).count() // SERVER ONLY
+          numMsgs: Messages.find({convoId}).count(), // SERVER ONLY
         };
 
         if (Messages.find({convoId}).count() === 1) {
@@ -79,7 +97,7 @@ export default function () {
         const oldNotif = Notifications.findOne({
           userId: otherId,
           teamId: convo.teamId,
-          convoId: convo._id
+          convoId: convo._id,
         });
         if (!oldNotif) {
           const notif = new Notification();
@@ -89,7 +107,7 @@ export default function () {
             convoId: convo._id,
             convoName: convo.name,
             recentUsernames: [ username ],
-            lastProfileImageUrl: user.profileImageUrl
+            lastProfileImageUrl: user.profileImageUrl,
           });
           notif.save();
         }
@@ -98,13 +116,13 @@ export default function () {
           const notifRecentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
           oldNotif.set({
             recentUsernames: notifRecentUsernames,
-            lastProfileImageUrl: user.profileImageUrl
+            lastProfileImageUrl: user.profileImageUrl,
           });
           oldNotif.save();
         }
       });
 
       return msg; // Will return _id, and the server side only stuff too
-    }
+    },
   });
 }
