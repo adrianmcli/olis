@@ -7,11 +7,12 @@ export default function ({Meteor, Collections, Schemas}) {
 
   const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId, isSystemMsg}) {
+    'msgs.add'({text, convoId, isSystemMsg, content}) {
       check(arguments[0], {
         text: String,
         convoId: String,
-        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean))
+        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
+        content: Match.Optional(Match.OneOf(undefined, null, Object))
       });
 
       const userId = Meteor.userId();
@@ -35,7 +36,8 @@ export default function ({Meteor, Collections, Schemas}) {
         username: user.displayName,
         convoId,
         convoName: convo.name,
-        isSystemMsg
+        isSystemMsg,
+        content
       });
       msg.save();
 
