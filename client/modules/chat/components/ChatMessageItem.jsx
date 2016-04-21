@@ -74,6 +74,7 @@ export default class ChatMessageItem extends React.Component {
       langCode,
       translation,
       isConsecutiveMsg,
+      showTimestamp,
     } = this.props;
     const {gettingTranslation, isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
@@ -87,10 +88,11 @@ export default class ChatMessageItem extends React.Component {
         ref={ x => this._container = x }
       >
         <div className="chat-primary">
-          <div className="chat-avatar">
-            <div className="chat-author">{authorName} isConsecutiveMsg: {isConsecutiveMsg.toString()}</div>
-            <AvatarWithDefault size={51} username={authorName} avatarSrc={avatarSrc} />
-          </div>
+          {!isConsecutiveMsg ?
+            <div className="chat-avatar">
+              <div className="chat-author">{authorName} isConsecutiveMsg: {isConsecutiveMsg.toString()}</div>
+              <AvatarWithDefault size={51} username={authorName} avatarSrc={avatarSrc} />
+            </div> : null}
           <div className="chat-body">
             <div className="chat-bubble">
               <ChatMessageText content={content} />
@@ -100,7 +102,7 @@ export default class ChatMessageItem extends React.Component {
                 selfAuthor={selfAuthor}
               />
             </div>
-            <ChatMessageTimestamp timestamp={timestamp} />
+            {showTimestamp ? <ChatMessageTimestamp timestamp={timestamp} /> : null}
           </div>
           <div>
             {
