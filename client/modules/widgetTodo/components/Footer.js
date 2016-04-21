@@ -10,57 +10,12 @@ const FILTER_TITLES = {
 
 export default class Footer extends React.Component {
 
-  getStyles() {
-    return {
-      footer: {
-        color: '#777',
-        padding: '10px 15px',
-        textAlign: 'center',
-        borderTop: '1px solid #e6e6e6',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      },
-      todoCount: {
-        fontSize: '14px',
-        fontWeight: '300',
-      },
-      filterList: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        flexGrow: '1',
-        padding: '0 12px',
-        fontSize: '12px',
-        maxWidth: '200px',
-      },
-      filter: {
-        default: {
-          cursor: 'pointer',
-          borderRadius: '5px',
-          padding: '4px 8px',
-          border: '1px solid transparent',
-        },
-        active: {
-          border: '1px solid #00bcd4',
-          color: '#00bcd4',
-        },
-      },
-      clearCompleted: {
-        fontSize: '12px',
-        color: 'inherit',
-        opacity: '0.6',
-        cursor: 'pointer',
-      },
-    };
-  }
-
   renderFilterBtn(filter, active) {
     const {setFilter} = this.props;
     const title = FILTER_TITLES[filter];
 
-    const defaultStyle = this.getStyles().filter.default;
-    const activeStyle = this.getStyles().filter.active;
+    const defaultStyle = getStyles().filter.default;
+    const activeStyle = getStyles().filter.active;
     const style = active ? Object.assign(defaultStyle, activeStyle) : defaultStyle;
 
     return (
@@ -76,7 +31,7 @@ export default class Footer extends React.Component {
 
   renderClearComplete(numComplete) {
     const {clearCompleted} = this.props.actions;
-    const defaultStyle = this.getStyles().clearCompleted;
+    const defaultStyle = getStyles().clearCompleted;
     const disabledStyle = {cursor: 'default', color: 'transparent'};
 
     let styles;
@@ -94,7 +49,7 @@ export default class Footer extends React.Component {
 
   render() {
     const {todos, filter} = this.props;
-    const styles = this.getStyles();
+    const styles = getStyles();
 
     const completedTasks = todos.filter(todo => todo.completed);
     const numComplete = completedTasks.length;
@@ -121,4 +76,50 @@ export default class Footer extends React.Component {
       </footer>
     );
   }
+}
+
+function getStyles() {
+  return {
+    footer: {
+      color: '#777',
+      padding: '6px 12px',
+      textAlign: 'center',
+      borderTop: '1px solid #e6e6e6',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    todoCount: {
+      fontSize: '14px',
+      fontWeight: '300',
+    },
+    filterList: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      flexGrow: '1',
+      padding: '0 12px',
+      fontSize: '12px',
+      maxWidth: '200px',
+    },
+    filter: {
+      default: {
+        fontSize: '12px',
+        cursor: 'pointer',
+        borderRadius: '5px',
+        padding: '2px 6px',
+        border: '1px solid transparent',
+      },
+      active: {
+        border: '1px solid #00bcd4',
+        color: '#00bcd4',
+      },
+    },
+    clearCompleted: {
+      fontSize: '12px',
+      color: 'inherit',
+      opacity: '0.6',
+      cursor: 'pointer',
+    },
+  };
 }

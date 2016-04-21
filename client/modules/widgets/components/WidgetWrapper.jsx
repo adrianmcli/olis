@@ -25,6 +25,7 @@ class WidgetWrapper extends Component {
       flexGrow: '1',
       maxWidth: 'calc(100% - 22px)',
       overflow: 'auto',
+      fontFamily: 'inherit',
     };
 
     return connectDropTarget(connectDragPreview(

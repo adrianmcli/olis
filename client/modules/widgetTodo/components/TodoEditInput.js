@@ -7,13 +7,13 @@ export default class TodoEditInput extends React.Component {
         width: '100%',
       },
       input: {
-        padding: '15px',
+        padding: '8px',
         marginLeft: '55px',
         width: 'calc(100% - 55px)',
         border: 'none',
         outline: 'none',
         boxSizing: 'border-box',
-        fontSize: '16px',
+        fontSize: '14px',
       }
     };
   }

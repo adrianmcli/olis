@@ -34,8 +34,8 @@ function getStyles() {
       boxSizing: 'border-box',
     },
     input: {
-      padding: '14px',
-      fontSize: '18px',
+      padding: '8px',
+      fontSize: '14px',
       width: '100%',
       border: 'none',
       outline: 'none',

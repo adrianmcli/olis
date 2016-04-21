@@ -7,7 +7,7 @@ export default class Footer extends React.Component {
   renderVotingStatus(user, options) {
     if (didUserVote(user, options)) {
       const option = userVotedOption(user, options);
-      return <div>You have voted for: <strong>{option.label}</strong></div>;
+      return <div style={{fontSize: '12px'}}>You have voted for: <strong>{option.label}</strong></div>;
     }
     return <div>You have not voted yet.</div>;
   }
@@ -30,13 +30,13 @@ function getStyles() {
   return {
     footer: {
       color: '#777',
-      padding: '10px 15px',
+      padding: '6px 12px',
       textAlign: 'center',
       borderTop: '1px solid #e6e6e6',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'flex-end',
-      fontSize: '14px',
+      fontSize: '12px',
     },
   };
 }

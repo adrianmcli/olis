@@ -47,15 +47,15 @@ function getStyles() {
       position: 'absolute',
       backgroundColor: 'white',
       zIndex: '3',
-      margin: '-15px'
+      margin: '-8px -16px'
     },
     input: {
-      padding: '15px',
+      padding: '8px 16px',
       width: '100%',
       border: 'none',
       outline: 'none',
       boxSizing: 'border-box',
-      fontSize: '16px',
+      fontSize: '14px',
     }
   };
 }

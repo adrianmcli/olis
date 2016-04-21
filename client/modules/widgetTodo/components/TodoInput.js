@@ -6,13 +6,13 @@ export default class TodoInput extends React.Component {
       input: {
         // layout
         width: '100%',
-        padding: '15px',
+        padding: '8px 8px 8px 60px',
         border: 'none',
         outline: 'none',
         boxShadow: 'inset 0 -2px 1px rgba(0,0,0,0.03)',
         boxSizing: 'border-box',
         // typography
-        fontSize: '16px',
+        fontSize: '14px',
         lineHeight: '1.4em',
       }
     };
