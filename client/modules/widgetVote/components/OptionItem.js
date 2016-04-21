@@ -119,8 +119,8 @@ function getStyles() {
       display: 'flex',
       borderBottom: '1px solid #ededed',
       boxSizing: 'border-box',
-      padding: '15px',
-      fontSize: '16px',
+      padding: '8px 16px',
+      fontSize: '14px',
 
     },
     label: {

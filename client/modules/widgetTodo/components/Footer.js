@@ -82,7 +82,7 @@ function getStyles() {
   return {
     footer: {
       color: '#777',
-      padding: '10px 15px',
+      padding: '6px 12px',
       textAlign: 'center',
       borderTop: '1px solid #e6e6e6',
       display: 'flex',
