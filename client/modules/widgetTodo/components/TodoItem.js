@@ -44,7 +44,6 @@ export default class TodoItem extends React.Component {
           this.state.hovering ?
             <IconButton
               onClick={removeTask.bind(null, id)}
-              tooltip="Remove Task"
               style={styles.removeBtn}
             >
               <RemoveIcon />
