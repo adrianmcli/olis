@@ -50,7 +50,7 @@ export default function () {
 
       const recentUserIds = R.takeLast(2, R.uniq([ ...oldRecentUserIds, userId ]));
       const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}});
-      const recentUsernames = recentUsers.map(recentUser => recentUser.username);
+      const recentUsernames = recentUsers.map(recentUser => recentUser.displayName);
 
       const getConvoFields = () => {
         const baseFields = {
@@ -73,7 +73,7 @@ export default function () {
 
       // Notify convo users, other than yourself, SERVER ONLY
       const otherUserIds = R.filter(otherId => otherId !== userId, convo.userIds);
-      const username = Meteor.users.findOne(userId).username;
+      const username = Meteor.users.findOne(userId).displayName;
 
       otherUserIds.map(otherId => {
         const oldNotif = Notifications.findOne({
