@@ -1,3 +1,4 @@
+import { Accounts } from 'meteor/accounts-base';
 import AccountUtils from '/client/modules/core/libs/account';
 import MsgUtils from '/client/modules/core/libs/msgs';
 import EmailValidator from 'email-validator';
@@ -5,16 +6,16 @@ import R from 'ramda';
 import LangCodes from '/lib/constants/lang_codes';
 
 export default {
-  login({Meteor, LocalState, FlowRouter}, usernameOrEmail, password) {
+  login({Meteor, LocalState, FlowRouter}, email, password) {
     try {
-      if (R.isEmpty(usernameOrEmail)) {
-        throw new Meteor.Error('actions.account.login', 'Username or email must not be empty.');
+      if (R.isEmpty(email)) {
+        throw new Meteor.Error('actions.account.login', 'Email must not be empty.');
       }
       if (R.isEmpty(password)) {
         throw new Meteor.Error('actions.account.login', 'Password must not be empty.');
       }
 
-      Meteor.loginWithPassword(usernameOrEmail, password, (err) => {
+      Meteor.loginWithPassword(email, password, (err) => {
         if (err) { alert(err); }
         else {
           const teamId = AccountUtils.getMostRecentTeamId({Meteor});
@@ -203,9 +204,9 @@ export default {
   },
 
   setUsername({Meteor}, username) {
-    Meteor.call('account.setUsername', {username}, (err) => {
+    Meteor.call('account.setDisplayName', {displayName: username}, (err) => {
       if (err) { alert(err); }
-      else { alert('Username changed!'); }
+      else { alert('Display name changed!'); }
     });
   },
 

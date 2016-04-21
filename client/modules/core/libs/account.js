@@ -1,5 +1,6 @@
 import R from 'ramda';
 import TeamUtils from '/client/modules/core/libs/teams';
+import { Accounts } from 'meteor/accounts-base';
 
 export default {
   register({Meteor, LocalState, FlowRouter}) {
@@ -23,10 +24,19 @@ export default {
 
     function _register() {
       return new Promise((resolve, reject) => {
-        Accounts.createUser({username, email, password}, (err) => {
+        Accounts.createUser({email, password}, (err) => {
           if (err) { reject(err); }
           else { resolve(); }
         });
+      });
+    }
+
+    function _setDisplayName() {
+      return new Promise((resolve, reject) => {
+        Meteor.call('account.setDisplayName', {displayname: username}, err => {
+          if (err) { reject(err); }
+        });
+        resolve();
       });
     }
 
@@ -42,7 +52,9 @@ export default {
       });
     }
 
-    function _route({teamId}) {
+    function _route([ x, {teamId} ]) {
+      console.log(x);
+      console.log(teamId);
       return new Promise((resolve, reject) => {
         FlowRouter.go(`/team/${teamId}/`);
         resolve({teamId});
@@ -59,10 +71,11 @@ export default {
     }
 
     _register()
-    .then(_createTeam)
+    .then(() => {
+      return Promise.all([ _setDisplayName(), _createTeam() ]);
+    })
     .then(_route)
     .then(_sendInvites)
-    
     .catch((err) => {
       console.log('REGISTRATION_ERROR');
       console.log(err);

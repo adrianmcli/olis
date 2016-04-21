@@ -43,7 +43,6 @@ export default function () {
 
       const userId = Accounts.createUser({
         email: 'test@test.com',
-        username: 'test',
         password: '1'
       });
       Meteor.users.update(userId, {
@@ -52,7 +51,6 @@ export default function () {
 
       const userId2 = Accounts.createUser({
         email: 'invite@test.com',
-        username: 'invite',
         password: '1'
       });
       Meteor.users.update(userId2, {
@@ -61,7 +59,6 @@ export default function () {
 
       const userId3 = Accounts.createUser({
         email: 'invite2@test.com',
-        username: 'invite2',
         password: '1'
       });
       Meteor.users.update(userId3, {

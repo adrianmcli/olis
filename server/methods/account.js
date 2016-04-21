@@ -402,4 +402,23 @@ export default function () {
       Accounts.sendResetPasswordEmail(existingUser._id);
     }
   });
+
+  const ACCOUNT_DISPLAY_NAME = 'account.setDisplayName';
+  Meteor.methods({
+    'account.setDisplayName'({displayName}) {
+      check(arguments[0], {
+        displayName: String
+      });
+
+      // Account creation called from client side, so user is logged in already.
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_DISPLAY_NAME, 'Must be logged in to create team.');
+      }
+
+      Meteor.users.update(userId, {
+        $set: { displayName }
+      });
+    }
+  });
 }
