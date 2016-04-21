@@ -4,7 +4,7 @@ export default function () {
   DocHead.setTitle('Olis');
   DocHead.addLink({
     rel: 'icon',
-    href: '/favicon.ico?v=1.0.0'
+    href: '/favicon.ico?v=1.0.1'
   });
   DocHead.addLink({
     href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
