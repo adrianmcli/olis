@@ -41,28 +41,30 @@ export default class ChatMessageItemContextMenu extends React.Component {
     };
 
     return (
-      <IconMenu
-        open={this.state.isMenuOpen}
-        onRequestChange={this._handleRequestChange.bind(this)}
-        iconButtonElement={
-          <IconButton
-            style={buttonStyle}
-          >
-            <MoreVertIcon color="rgba(0,0,0,0.5)" />
-          </IconButton>
+      <div>
+        <IconMenu
+          open={this.state.isMenuOpen}
+          onRequestChange={this._handleRequestChange.bind(this)}
+          iconButtonElement={
+            <IconButton
+              style={buttonStyle}
+            >
+              <MoreVertIcon color="rgba(0,0,0,0.5)" />
+            </IconButton>
+          }
+          anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+        >
+        {
+          showTranslation ?
+          <MenuItem
+            primaryText={`Translate to ${LangCodes[langCode]}`}
+            onTouchTap={getTranslation}
+          />
+          : null
         }
-        anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
-        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-      >
-      {
-        showTranslation ?
-        <MenuItem
-          primaryText={`Translate to ${LangCodes[langCode]}`}
-          onTouchTap={getTranslation}
-        />
-        : null
-      }
-      </IconMenu>
+        </IconMenu>
+      </div>
     );
   }
 }

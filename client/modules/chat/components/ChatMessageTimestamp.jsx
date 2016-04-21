@@ -13,9 +13,7 @@ export default class ChatMessageTimestamp extends React.Component {
     const {timestamp} = this.props;
     return (
       <div className="chat-timestamp">
-        <div className="chat-timestamp-string">
-          <TimeAgo date={timestamp} formatter={MsgUtils.timestampFormatter} title={timestamp}/>
-        </div>
+        <TimeAgo date={timestamp} formatter={MsgUtils.timestampFormatter} title={timestamp}/>
       </div>
     );
   }

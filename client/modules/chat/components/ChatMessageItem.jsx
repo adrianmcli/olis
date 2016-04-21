@@ -72,55 +72,48 @@ export default class ChatMessageItem extends React.Component {
       timestamp,
       selfAuthor,
       langCode,
-      translation
+      translation,
+      isConsecutiveMsg,
+      showTimestamp,
     } = this.props;
     const {gettingTranslation, isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
+    const messageClass = isConsecutiveMsg ? ' not-first-of-batch' : ' first-of-batch';
 
     return (
       <div
-        className={'chat-msg-item' + authorClass}
-        // onMouseEnter={this.handleMouseEnter.bind(this)}
+        className={'chat-msg-item' + authorClass + messageClass}
         onMouseOver={this.handleMouseEnter.bind(this)}
         onMouseLeave={this.handleMouseLeave.bind(this)}
         ref={ x => this._container = x }
       >
         <div className="chat-primary">
           <div className="chat-avatar">
-            <div className="chat-author">{authorName}</div>
-            <AvatarWithDefault size={51} username={authorName} avatarSrc={avatarSrc} />
+            <AvatarWithDefault size={36} username={authorName} avatarSrc={avatarSrc} />
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
+              <div className="chat-author">{authorName}</div>
               <ChatMessageText content={content} />
               <ChatMessageTranslation
                 translation={translation}
                 gettingTranslation={gettingTranslation}
                 selfAuthor={selfAuthor}
               />
+              {showTimestamp ? <ChatMessageTimestamp timestamp={timestamp} /> : null}
             </div>
-            <ChatMessageTimestamp timestamp={timestamp} />
           </div>
-          <div>
-            {
-              (isHovering || menuOpen) && (!translation) ?
-              <ChatMessageItemContextMenu
-                isHovering={this.state.isHovering}
-                langCode={langCode}
-                showTranslation={!translation || this.state.gettingTranslation}
-                getTranslation={this.getTranslation}
-                closeMenu={this.closeMenu.bind(this)}
-                openMenu={this.openMenu.bind(this)}
-              />
-              :
-              <div style={{
-                display: 'inline-block',
-                position: 'relative',
-                width: '36px',
-                height: '36px',
-              }}>
-              </div>
-            }
+          <div className="chat-msg-ctx-menu">
+            { (isHovering || menuOpen) && !translation ?
+                <ChatMessageItemContextMenu
+                  isHovering={this.state.isHovering}
+                  langCode={langCode}
+                  showTranslation={!translation || this.state.gettingTranslation}
+                  getTranslation={this.getTranslation}
+                  closeMenu={this.closeMenu.bind(this)}
+                  openMenu={this.openMenu.bind(this)}
+                />
+              : null }
           </div>
         </div>
       </div>
@@ -132,5 +125,6 @@ ChatMessageItem.defaultProps = {
   content: 'Form inputs offer a great opportunity to add some subtle and interesting effects to a web page.',
   timestamp: '5 minutes ago',
   selfAuthor: false,
-  highlight: false
+  highlight: false,
+  isConsecutiveMsg: false
 };

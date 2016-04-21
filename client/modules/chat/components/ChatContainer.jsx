@@ -119,11 +119,28 @@ export default class ChatContainer extends React.Component {
       msgs, userId, translations, langCode, convoUsers, translate, searchMsgId
     } = this.props;
 
-    return msgs.map(msg => {
+    return msgs.map((msg, index) => {
       const otherUser = convoUsers[msg.userId];
       const authorName = otherUser ? otherUser.displayName : msg.username;
       const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
       const highlight = searchMsgId ? searchMsgId === msg._id : false;
+
+      const isConsecutiveMsg = () => {
+        if (index === 0) { return false; }
+
+        const prevMsg = msgs[index - 1];
+        if (prevMsg.isSystemMsg) { return false; }
+        if (msg.userId === prevMsg.userId) { return true; }
+        return false;
+      }
+
+      const showTimestamp = () => {
+        const lastMsg = index === msgs.length - 1;
+        if (lastMsg) { return true; }
+
+        const nextMsg = msgs[index + 1];  
+        if (nextMsg.createdAt - msg.createdAt > 1000 * 60) { return true; }
+      }
 
       if (msg.isSystemMsg) {
         return (
@@ -157,6 +174,8 @@ export default class ChatContainer extends React.Component {
           translate={translate}
           highlight={highlight}
           ref={x => this.messageRefs[msg._id] = x}
+          isConsecutiveMsg={isConsecutiveMsg()}
+          showTimestamp={showTimestamp()}
         />
       );
     });
