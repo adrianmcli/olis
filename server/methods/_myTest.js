@@ -1,18 +1,34 @@
 import {
   Posts, Comments, Messages, Teams, Convos,
   Notifications, Invites, Notes, Sections, Translations,
-  Widgets, Locks
+  Widgets, Locks,
 } from '../../lib/collections';
 import Team from '/lib/schemas/team';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
+import DraftUtils from '/lib/utils/draft-js';
+import R from 'ramda';
 
 export default function () {
   Meteor.methods({
+    '_fixMsgsWithoutContentField'() {
+      const msgs = Messages.find().fetch();
+      msgs.forEach(msg => {
+        if (!msg.content || R.keys(msg.content).length === 0) {
+          console.log(msg.text);
+          Messages.update(msg._id, {
+            $set: { content: DraftUtils.getRawFromHTML(`${msg.text}`) },
+          });
+        }
+      });
+    },
+  });
+
+  Meteor.methods({
     '_wipeLocks'() {
       Locks.remove({});
-    }
+    },
   });
 
   Meteor.methods({
@@ -23,7 +39,7 @@ export default function () {
       for (let i = 1; i <= num; i++) {
         Meteor.call('msgs.add', {text: `${i}`, convoId});
       }
-    }
+    },
   });
 
   Meteor.methods({
@@ -44,26 +60,26 @@ export default function () {
 
       const userId = Accounts.createUser({
         email: 'test@test.com',
-        password: '1'
+        password: '1',
       });
       Meteor.users.update(userId, {
-        $set: {displayName: 'test'}
+        $set: {displayName: 'test'},
       });
 
       const userId2 = Accounts.createUser({
         email: 'invite@test.com',
-        password: '1'
+        password: '1',
       });
       Meteor.users.update(userId2, {
-        $set: {displayName: 'invite'}
+        $set: {displayName: 'invite'},
       });
 
       const userId3 = Accounts.createUser({
         email: 'invite2@test.com',
-        password: '1'
+        password: '1',
       });
       Meteor.users.update(userId3, {
-        $set: {displayName: 'invite2'}
+        $set: {displayName: 'invite2'},
       });
 
       const team = new Team();
@@ -72,7 +88,7 @@ export default function () {
 
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Roles.addUsersToRoles([ userId2, userId3 ], [ 'member' ], team._id);
-    }
+    },
   });
 
   Meteor.methods({
@@ -88,7 +104,7 @@ export default function () {
       const createdAt = new Date();
       const post = {_id, title, content, createdAt};
       Posts.insert(post);
-    }
+    },
   });
 
   Meteor.methods({
@@ -105,7 +121,7 @@ export default function () {
       const author = 'The User';
       const comment = {_id, postId, author, text, createdAt};
       Comments.insert(comment);
-    }
+    },
   });
 
   const ACCOUNT_REGISTER = 'test.register';
@@ -114,7 +130,7 @@ export default function () {
       check(arguments[0], {
         email: String,
         username: String,
-        password: String
+        password: String,
       });
 
       function create(reject) {
@@ -164,6 +180,6 @@ export default function () {
         console.log(err);
         throw new Meteor.Error(ACCOUNT_REGISTER, err.reason); // Sent back to client
       });
-    }
+    },
   });
 }
