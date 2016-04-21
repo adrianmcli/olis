@@ -78,10 +78,10 @@ export default class ConversationItem extends React.Component {
                 style={{padding: '0',display: 'block'}}
                 badgeStyle={badgeStyle}
               >
-              <AvatarWithDefault size={51} username={username} avatarSrc={avatarSrc} />
+              <AvatarWithDefault size={36} username={username} avatarSrc={avatarSrc} />
             </Badge>
             :
-            <AvatarWithDefault size={51} username={username} avatarSrc={avatarSrc} />
+            <AvatarWithDefault size={36} username={username} avatarSrc={avatarSrc} />
           }
         </div>
         <div className="chat-body">
