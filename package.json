@@ -28,13 +28,16 @@
   },
   "dependencies": {
     "domready": "^1.0.8",
-    "draft-js": "^0.3.0",
+    "draft-js": "^0.5.0",
     "draft-js-export-html": "^0.1.12",
+    "draft-js-linkify-plugin": "^1.0.0",
+    "draft-js-plugins-editor": "^1.0.0",
     "email-validator": "^1.0.4",
     "favicon-notification": "^0.1.4",
     "get-emails": "^1.0.1",
     "handsontable": "github:adrianmc/handsontable",
     "ion-sound": "^3.0.7",
+    "linkify-it": "^1.2.0",
     "lodash": "^4.5.1",
     "mantra-core": "^1.4.0",
     "material-ui": "^0.14.4 ",
@@ -63,6 +66,7 @@
     "react-timeago": "^2.2.1",
     "spinkit": "^1.2.5",
     "style-loader": "^0.13.1",
+    "tlds": "^1.110.0",
     "underscore": "^1.8.3"
   },
   "private": true

@@ -1,5 +1,9 @@
 import React from 'react';
-import {Editor, EditorState, convertToRaw} from 'draft-js';
+import {EditorState, convertToRaw} from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
+
+const linkifyPlugin = createLinkifyPlugin({ target: '_blank' });
 
 export default class ChatInput extends React.Component {
   constructor(props) {
@@ -37,6 +41,7 @@ export default class ChatInput extends React.Component {
             placeholder="Type your message here..."
             ref="editor"
             handleReturn={this.handleReturn.bind(this)}
+            plugins={ [linkifyPlugin] }
           />
         </div>
       </div>
