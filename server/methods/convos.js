@@ -76,7 +76,7 @@ export default function () {
       const uniqueUserIds = R.uniq(newUserIds);
       const recentUserIds = R.takeLast(2, uniqueUserIds);
       const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}}).fetch();
-      const recentUsernames = recentUsers.map(x => x.username);
+      const recentUsernames = recentUsers.map(x => x.displayName);
 
       convo.set({
         userIds: uniqueUserIds,
@@ -88,7 +88,7 @@ export default function () {
       const addedUsers = Meteor.users.find({
         _id: { $in: userIds }
       }).fetch();
-      const addedUsernames = addedUsers.map(newUser => newUser.username);
+      const addedUsernames = addedUsers.map(newUser => newUser.displayName);
       const addedString = addedUsernames.reduce((prev, curr, index) => {
         if (index > 0) { return `${prev}, ${curr}`; }
         return `${curr}`;
@@ -138,7 +138,7 @@ export default function () {
 
       const removeUser = Meteor.users.findOne(removeUserId);
       Meteor.call('msgs.add', {
-        text: `${removeUser.username} was removed from the chat.`,
+        text: `${removeUser.displayName} was removed from the chat.`,
         convoId,
         isSystemMsg: true
       });

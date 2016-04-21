@@ -48,7 +48,7 @@ export default function ({Meteor, Collections, Schemas}) {
 
       const recentUserIds = R.takeLast(2, R.uniq([ ...oldRecentUserIds, userId ]));
       const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}});
-      const recentUsernames = recentUsers.map(recentUser => recentUser.username);
+      const recentUsernames = recentUsers.map(recentUser => recentUser.displayName);
 
       const getConvoFields = () => {
         const baseFields = {
