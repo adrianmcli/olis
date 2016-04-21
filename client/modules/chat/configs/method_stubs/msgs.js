@@ -39,7 +39,6 @@ export default function ({Meteor, Collections, Schemas}) {
         convoName: convo.name,
         isSystemMsg,
         content,
-        cloudinaryPublicId,
       });
       msg.save();
 
@@ -58,7 +57,6 @@ export default function ({Meteor, Collections, Schemas}) {
           lastMsgCreatedAt: msg.createdAt,
           recentUserIds,
           recentUsernames,
-          numMsgs: Messages.find({convoId}).count() // SERVER ONLY
         };
 
         if (Messages.find({convoId}).count() === 1) {
@@ -70,7 +68,6 @@ export default function ({Meteor, Collections, Schemas}) {
 
       convo.set(getConvoFields());
       convo.save();
-
-    }
+    },
   });
 }

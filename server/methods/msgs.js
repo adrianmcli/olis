@@ -33,6 +33,13 @@ export default function () {
         throw new Meteor.Error(MSGS_ADD, 'Must be a part of convo to add msgs');
       }
 
+      const transform = {
+        // width: 100,
+        // height: 100,
+        quality: 80,
+        sign_url: true,
+      };
+
       const msg = new Message();
       msg.set({
         text,
@@ -42,7 +49,7 @@ export default function () {
         convoName: convo.name,
         isSystemMsg,
         content,
-        cloudinaryPublicId,
+        imageUrl: Cloudinary.url(cloudinaryPublicId, transform),
       });
       msg.save();
 

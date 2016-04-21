@@ -6,6 +6,7 @@ import ChatMessageItemContextMenu from './ChatMessageItemContextMenu.jsx';
 import ChatMessageText from './ChatMessageText.jsx';
 import ChatMessageTranslation from './ChatMessageTranslation.jsx';
 import ChatMessageTimestamp from './ChatMessageTimestamp.jsx';
+import ChatMessageImage from './ChatMessageImage';
 
 export default class ChatMessageItem extends React.Component {
 
@@ -73,7 +74,7 @@ export default class ChatMessageItem extends React.Component {
       selfAuthor,
       langCode,
       translation,
-      cloudinaryPublicId,
+      imageUrl,
     } = this.props;
     const {gettingTranslation, isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
@@ -93,13 +94,18 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
-              {!cloudinaryPublicId ? <ChatMessageText content={content} /> : null}
-              <ChatMessageTranslation
-                translation={translation}
-                gettingTranslation={gettingTranslation}
-                selfAuthor={selfAuthor}
-              />
-              {cloudinaryPublicId ? <div>{cloudinaryPublicId}</div> : null}
+
+              {imageUrl ?
+                <ChatMessageImage imageUrl={imageUrl} /> :
+                <div>
+                  <ChatMessageText content={content} />
+                  <ChatMessageTranslation
+                    translation={translation}
+                    gettingTranslation={gettingTranslation}
+                    selfAuthor={selfAuthor}
+                  />
+                </div>}
+
             </div>
             <ChatMessageTimestamp timestamp={timestamp} />
           </div>
