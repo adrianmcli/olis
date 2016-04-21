@@ -72,7 +72,8 @@ export default class ChatMessageItem extends React.Component {
       timestamp,
       selfAuthor,
       langCode,
-      translation
+      translation,
+      isConsecutiveMsg,
     } = this.props;
     const {gettingTranslation, isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
@@ -87,7 +88,7 @@ export default class ChatMessageItem extends React.Component {
       >
         <div className="chat-primary">
           <div className="chat-avatar">
-            <div className="chat-author">{authorName}</div>
+            <div className="chat-author">{authorName} isConsecutiveMsg: {isConsecutiveMsg.toString()}</div>
             <AvatarWithDefault size={51} username={authorName} avatarSrc={avatarSrc} />
           </div>
           <div className="chat-body">
@@ -132,5 +133,6 @@ ChatMessageItem.defaultProps = {
   content: 'Form inputs offer a great opportunity to add some subtle and interesting effects to a web page.',
   timestamp: '5 minutes ago',
   selfAuthor: false,
-  highlight: false
+  highlight: false,
+  isConsecutiveMsg: false
 };
