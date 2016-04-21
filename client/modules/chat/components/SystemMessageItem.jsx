@@ -15,6 +15,7 @@ function getStyles() {
   return {
     container: {
       padding: '6px',
+      marginTop: '12px',
     },
     text: {
       textAlign: 'center',
