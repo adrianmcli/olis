@@ -121,7 +121,7 @@ export default class ChatContainer extends React.Component {
 
     return msgs.map((msg, index) => {
       const otherUser = convoUsers[msg.userId];
-      const authorName = otherUser ? otherUser.username : msg.username;
+      const authorName = otherUser ? otherUser.displayName : msg.username;
       const avatarSrc = otherUser ? otherUser.profileImageUrl : undefined;
       const highlight = searchMsgId ? searchMsgId === msg._id : false;
       const isConsecutiveMsg = () => {

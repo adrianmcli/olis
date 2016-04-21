@@ -107,8 +107,8 @@ function _fetchConvoInfo(convo, Meteor) {
     const convoUsers = R.zipObj(convoUsersArr.map(item => item._id), convoUsersArr);
 
     const usersListString = convoUsersArr.reduce((prev, curr, index) => {
-      if (index > 0) { return `${prev}, ${curr.username}`; }
-      return `${curr.username}`;
+      if (index > 0) { return `${prev}, ${curr.displayName}`; }
+      return `${curr.displayName}`;
     }, '');
 
     return {convoUsers, usersListString};
