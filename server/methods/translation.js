@@ -3,6 +3,7 @@ import {check} from 'meteor/check';
 import {Microsoft} from 'meteor/devian:mstranslate';
 import {Messages, Translations} from '/lib/collections';
 import Translation from '/lib/schemas/translation';
+import DraftUtils from '/lib/utils/draft-js';
 
 export default function () {
   const TRANSLATION_GET = 'translation.get';
@@ -23,7 +24,7 @@ export default function () {
       }
       const existingTrans = Translations.findOne({msgId, langCode});
       if (!existingTrans) {
-        const text = msg.text;
+        const text = DraftUtils.getPlainTextFromRaw(msg.content);
         const translated = Microsoft.translate(text, langCode);
 
         const translation = new Translation({

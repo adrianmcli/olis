@@ -19,11 +19,10 @@ export default class ChatInput extends React.Component {
       return false;
     }
     const contentState = this.state.editorState.getCurrentContent();
-    // const plainText = contentState.getPlainText();
     if (contentState.hasText()) {
       const rawContentState = convertToRaw(contentState);
       addMsg(rawContentState);
-      // addMsg(plainText);
+
       const empty = EditorState.createEmpty();
       this.setState({editorState: EditorState.moveFocusToEnd(empty)});
       this.focus();
