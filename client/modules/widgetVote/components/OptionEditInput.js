@@ -56,6 +56,7 @@ function getStyles() {
       outline: 'none',
       boxSizing: 'border-box',
       fontSize: '14px',
+      fontFamily: 'inherit',
     }
   };
 }

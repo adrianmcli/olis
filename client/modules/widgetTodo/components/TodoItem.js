@@ -78,7 +78,7 @@ export default class TodoItem extends React.Component {
         onMouseLeave={this.handleMouseLeave.bind(this)}
       >
         <div style={styles.view}>
-          { editing ? this.renderEditing() : this.renderItemContent() }
+          { !editing ? this.renderEditing() : this.renderItemContent() }
         </div>
       </li>
     );
