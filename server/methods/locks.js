@@ -35,7 +35,7 @@ export default function () {
         Locks.upsert({noteId: note._id, widgetId}, {
           $set: {
             userId,
-            username: user.username,
+            username: user.displayName,
             updatedAt: new Date()
           }
         });

@@ -143,7 +143,7 @@ class AddTeamModal extends React.Component {
                     <ListItem
                       key={user._id}
                       rightToggle={<Checkbox value={user._id} onCheck={this.handleCheckboxChange.bind(this)}/>}
-                      primaryText={user.username}
+                      primaryText={user.displayName}
                       secondaryText={user.emails[0].address}
                       leftAvatar={<Avatar src="https://www.placecage.com/100/100" />}
                     />

@@ -267,7 +267,7 @@ export default function () {
         const newId = Accounts.createUser({username: email, email});
         Meteor.users.update(newId, {
           $set: {
-            invitedBy: user.username, // This is so we can send the invite email with who invited them
+            invitedBy: user.displayName, // This is so we can send the invite email with who invited them
           }
         });
         return newId;
@@ -277,7 +277,7 @@ export default function () {
         invite.set({
           userId: newId,
           teamId,
-          invitedBy: user.username
+          invitedBy: user.displayName
         });
         invite.save();
       }
@@ -308,7 +308,7 @@ export default function () {
           from: 'Olis <contact.aheadstudios@gmail.com>',
           to: email,
           subject: 'You have been invited to a new Olis Team.',
-          text: `${user.username} has invited you to join their Olis team ${team.name}!\n\n
+          text: `${user.displayName} has invited you to join their Olis team ${team.name}!\n\n
             Sign in and accept their invite.`,
         });
       });

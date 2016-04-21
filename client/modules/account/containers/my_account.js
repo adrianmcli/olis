@@ -20,7 +20,7 @@ export const composer = ({context}, onData) => {
     const email = user.emails ? user.emails[0] ? user.emails[0].address : null : null;
 
     onData(null, {
-      username: user.username,
+      username: user.displayName,
       profileImageUrl: user.profileImageUrl ? user.profileImageUrl : null,
       email,
       translationLangCode: user.translationLangCode,

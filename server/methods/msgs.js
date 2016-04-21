@@ -34,7 +34,7 @@ export default function () {
       msg.set({
         text,
         userId,
-        username: user.username,
+        username: user.displayName,
         convoId,
         convoName: convo.name,
         isSystemMsg

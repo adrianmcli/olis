@@ -13,7 +13,7 @@ export const composer = ({context}, onData) => {
   const {Meteor, Collections, FlowRouter} = context();
 
   const user = Meteor.user();
-  const username = user ? user.username : undefined;
+  const username = user ? user.displayName : undefined;
   const profileImageUrl = user ? user.profileImageUrl : undefined;
   let teamName;
   let isAdmin = false;

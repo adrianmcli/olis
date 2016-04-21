@@ -166,7 +166,7 @@ export default {
 
   goToMyAccount({Meteor, FlowRouter}) {
     const user = Meteor.user();
-    if (user) { FlowRouter.go(`/account/${user.username}`); }
+    if (user) { FlowRouter.go(`/account/${user.displayName}`); }
   },
 
   submitFindMyTeamEmail({Meteor}, email, callback) {

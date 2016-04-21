@@ -32,7 +32,7 @@ export default function () {
     console.log('enrollAccount subject');
     console.log(user);
 
-    // const prepend = `Welcome to Olis, ${user.username}!`;
+    // const prepend = `Welcome to Olis, ${user.displayName}!`;
     // const text =
     //   user.invitedBy ? `${prepend} An account has been created for you by ${user.invitedBy}.` :
     //   `${prepend}`;
@@ -81,7 +81,7 @@ export default function () {
     // console.log('resetPassword subject');
     // console.log(user);
     if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
-      return `Welcome to Olis ${user.username}! Set Your Olis Account Password.`;
+      return `Welcome to Olis ${user.displayName}! Set Your Olis Account Password.`;
     }
     return `Reset Your Olis Account Password`;
   };
