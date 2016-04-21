@@ -29,7 +29,8 @@ export default class Body extends React.Component {
       },
       toggleAll: {
         position: 'absolute',
-        top: '-54px',
+        padding: '6px',
+        top: '-44px',
         left: '8px',
       }
     };

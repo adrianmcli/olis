@@ -46,7 +46,7 @@ function getStyles() {
     container: {
       display: 'flex',
       width: '100%',
-      padding: '15px',
+      padding: '8px 10px',
       border: 'none',
       outline: 'none',
       boxShadow: 'inset 0 -2px 1px rgba(0,0,0,0.03)',

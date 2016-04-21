@@ -109,15 +109,16 @@ function getStyles() {
     },
     label: {
       whiteSpace: 'pre-line',
-      // wordBreak: 'break-all',
-      padding: '15px',
+      padding: '8px',
       display: 'block',
-      lineHeight: '1.2',
       transition: 'color 0.4s',
-      fontSize: '16px',
+      fontSize: '14px',
     },
     removeBtn: {
       marginLeft: 'auto',
+      position: 'absolute',
+      right: '0',
+      top: '-6px',
     },
   };
 }
