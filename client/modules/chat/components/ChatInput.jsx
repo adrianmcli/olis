@@ -8,7 +8,13 @@ const linkifyPlugin = createLinkifyPlugin({ target: '_blank' });
 export default class ChatInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {editorState: EditorState.createEmpty()};
+    this.state = {
+      editorState: EditorState.createEmpty(),
+      files: [],
+      fileName: null,
+      uploading: false,
+      uploadComplete: false,
+    };
     this.onChange = (editorState) => this.setState({editorState});
     this.focus = () => this.refs.editor.focus();
   }
@@ -30,6 +36,20 @@ export default class ChatInput extends React.Component {
     return true;
   }
 
+  handleFileChange(e) {
+    const files = e.currentTarget.files;
+    const fileName = files[0].name;
+    console.log(files);
+    console.log(fileName);
+    this.setState({files, fileName, uploadComplete: false});
+  }
+
+  handleUpload() {
+    const { uploadImage } = this.props;
+    uploadImage(this.state.files);
+    this.setState({fileName: null, uploading: true});
+  }
+
   render() {
     const {editorState} = this.state;
     return (
@@ -41,9 +61,11 @@ export default class ChatInput extends React.Component {
             placeholder="Type your message here..."
             ref="editor"
             handleReturn={this.handleReturn.bind(this)}
-            plugins={ [linkifyPlugin] }
+            plugins={ [ linkifyPlugin ] }
           />
         </div>
+        <input type="file" onChange={this.handleFileChange.bind(this)} />
+        <button onClick={this.handleUpload.bind(this)}>Upload</button>
       </div>
     );
   }

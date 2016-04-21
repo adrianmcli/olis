@@ -15,7 +15,8 @@ export const depsMapper = (context, actions) => ({
   loadMoreOlderSearch: actions.msgs.loadMoreOlderSearch,
   loadMoreNewerSearch: actions.msgs.loadMoreNewerSearch,
   translate: actions.translation.get,
-  incrementNumVisibleMsgs: actions.msgs.incrementNumVisible
+  incrementNumVisibleMsgs: actions.msgs.incrementNumVisible,
+  uploadImage: actions.images.sendMsg,
 });
 
 export const composer = ({context}, onData) => {
@@ -62,7 +63,7 @@ export const composer = ({context}, onData) => {
           translations,
           needsCentering,
           showLoadOldBtnSearch,
-          showLoadNewBtnSearch
+          showLoadNewBtnSearch,
         });
       }
     }

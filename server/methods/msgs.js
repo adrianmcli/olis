@@ -14,7 +14,7 @@ export default function () {
         text: String,
         convoId: String,
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
-        content: Match.Optional(Match.OneOf(undefined, null, Object))
+        content: Match.Optional(Match.OneOf(undefined, null, Object)),
       });
 
       const userId = this.userId;
@@ -39,7 +39,7 @@ export default function () {
         convoId,
         convoName: convo.name,
         isSystemMsg,
-        content
+        content,
       });
       msg.save();
 
@@ -58,7 +58,7 @@ export default function () {
           lastMsgCreatedAt: msg.createdAt,
           recentUserIds,
           recentUsernames,
-          numMsgs: Messages.find({convoId}).count() // SERVER ONLY
+          numMsgs: Messages.find({convoId}).count(), // SERVER ONLY
         };
 
         if (Messages.find({convoId}).count() === 1) {
@@ -79,7 +79,7 @@ export default function () {
         const oldNotif = Notifications.findOne({
           userId: otherId,
           teamId: convo.teamId,
-          convoId: convo._id
+          convoId: convo._id,
         });
         if (!oldNotif) {
           const notif = new Notification();
@@ -89,7 +89,7 @@ export default function () {
             convoId: convo._id,
             convoName: convo.name,
             recentUsernames: [ username ],
-            lastProfileImageUrl: user.profileImageUrl
+            lastProfileImageUrl: user.profileImageUrl,
           });
           notif.save();
         }
@@ -98,13 +98,27 @@ export default function () {
           const notifRecentUsernames = R.uniq([ ...oldRecentUsernames, username ]);
           oldNotif.set({
             recentUsernames: notifRecentUsernames,
-            lastProfileImageUrl: user.profileImageUrl
+            lastProfileImageUrl: user.profileImageUrl,
           });
           oldNotif.save();
         }
       });
 
       return msg; // Will return _id, and the server side only stuff too
-    }
+    },
   });
+
+  const MSGS_SEND_IMG = 'msgs.sendImage';
+  Meteor.methods({
+    'msgs.sendImage'({cloudinaryPublicId, convoId}) {
+      check(arguments[0], {
+        cloudinaryPublicId: String,
+        convoId: String,
+      });
+
+      console.log(MSGS_SEND_IMG);
+      console.log(`${cloudinaryPublicId} ${convoId}`);
+    },
+  });
+
 }
