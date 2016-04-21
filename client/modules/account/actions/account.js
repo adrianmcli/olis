@@ -206,7 +206,7 @@ export default {
   setUsername({Meteor}, username) {
     Meteor.call('account.setDisplayName', {displayName: username}, (err) => {
       if (err) { alert(err); }
-      else { alert('Display name changed!'); }
+      else { alert('Username changed!'); }
     });
   },
 

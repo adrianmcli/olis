@@ -15,11 +15,11 @@ export default class Registration extends React.Component {
       {
         title: 'Your Email Address',
         description: 'Enter an email address',
-        content: <CreateAccountEmail key={1} nextPath={'/register/displayName'} />,
+        content: <CreateAccountEmail key={1} nextPath={'/register/username'} />,
       },
       {
-        title: 'Your Display Name',
-        description: 'Choose a display name',
+        title: 'Your Username',
+        description: 'Choose a username',
         content: <CreateAccountUsername key={2} nextPath={'/register/password'} />,
       },
       {

@@ -27,7 +27,7 @@ export default class CreateAccountUsername extends React.Component {
         <p>You can always change this later.</p>
         <TextField
           hintText="John Doe"
-          floatingLabelText="Display Name"
+          floatingLabelText="Username"
           defaultValue={registerUsername}
           ref={(ref) => this.input = ref}
           onEnterKeyDown={this.handleEnterKeyDown.bind(this)}
