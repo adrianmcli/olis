@@ -6,6 +6,7 @@ import {Messages, Notifications} from '/lib/collections';
 import {check, Match} from 'meteor/check';
 import R from 'ramda';
 import { Cloudinary } from 'meteor/lepozepo:cloudinary';
+import DraftUtils from '/lib/utils/draft-js';
 
 export default function () {
   const MSGS_ADD = 'msgs.add';
@@ -49,7 +50,7 @@ export default function () {
         convoName: convo.name,
         isSystemMsg,
         content,
-        imageUrl: Cloudinary.url(cloudinaryPublicId, transform),
+        imageUrl: Cloudinary.url(cloudinaryPublicId, transform), // SERVER ONLY
       });
       msg.save();
 
@@ -63,8 +64,15 @@ export default function () {
       const recentUsernames = recentUsers.map(recentUser => recentUser.displayName);
 
       const getConvoFields = () => {
+        const hasImage = msg.imageUrl ? true : false;
+        const hasContent = R.keys(msg.content).length > 0;
+
+        let lastMsgText = '';
+        if (hasImage) { lastMsgText = msg.imageUrl; }
+        else if (hasContent) { DraftUtils.getPlainTextFromRaw(msg.content); }
+
         const baseFields = {
-          lastMsgText: text,
+          lastMsgText,
           lastMsgCreatedAt: msg.createdAt,
           recentUserIds,
           recentUsernames,

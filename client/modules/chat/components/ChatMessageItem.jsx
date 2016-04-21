@@ -1,5 +1,6 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import R from 'ramda';
 
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import ChatMessageItemContextMenu from './ChatMessageItemContextMenu.jsx';
@@ -65,18 +66,44 @@ export default class ChatMessageItem extends React.Component {
     this.setState({menuOpen: false});
   }
 
+  renderBubbleBody() {
+    const {
+      imageUrl, content,
+      translation, selfAuthor,
+    } = this.props;
+    const { gettingTranslation } = this.state;
+
+    const hasContent = R.keys(content).length > 0;
+    const hasImage = imageUrl ? true : false;
+
+    if (hasImage) {
+      return <ChatMessageImage imageUrl={imageUrl} />;
+    }
+    else if (hasContent) {
+      return (
+        <div>
+          <ChatMessageText content={content} />
+          <ChatMessageTranslation
+            translation={translation}
+            gettingTranslation={gettingTranslation}
+            selfAuthor={selfAuthor}
+          />
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
     const {
       authorName,
       avatarSrc,
-      content,
       timestamp,
       selfAuthor,
       langCode,
       translation,
-      imageUrl,
     } = this.props;
-    const {gettingTranslation, isHovering, menuOpen} = this.state;
+    const {isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
 
     return (
@@ -94,18 +121,7 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
-
-              {imageUrl ?
-                <ChatMessageImage imageUrl={imageUrl} /> :
-                <div>
-                  <ChatMessageText content={content} />
-                  <ChatMessageTranslation
-                    translation={translation}
-                    gettingTranslation={gettingTranslation}
-                    selfAuthor={selfAuthor}
-                  />
-                </div>}
-
+              {this.renderBubbleBody()}
             </div>
             <ChatMessageTimestamp timestamp={timestamp} />
           </div>

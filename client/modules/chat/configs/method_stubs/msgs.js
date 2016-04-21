@@ -1,5 +1,6 @@
 import {check, Match} from 'meteor/check';
 import R from 'ramda';
+import DraftUtils from '/lib/utils/draft-js';
 
 export default function ({Meteor, Collections, Schemas}) {
   const {Message} = Schemas;
@@ -39,6 +40,7 @@ export default function ({Meteor, Collections, Schemas}) {
         convoName: convo.name,
         isSystemMsg,
         content,
+        imageUrl: '',
       });
       msg.save();
 
@@ -52,11 +54,19 @@ export default function ({Meteor, Collections, Schemas}) {
       const recentUsernames = recentUsers.map(recentUser => recentUser.displayName);
 
       const getConvoFields = () => {
+        const hasImage = msg.imageUrl ? true : false;
+        const hasContent = R.keys(msg.content).length > 0;
+
+        let lastMsgText = '';
+        if (hasImage) { lastMsgText = msg.imageUrl; }
+        else if (hasContent) { DraftUtils.getPlainTextFromRaw(msg.content); }
+
         const baseFields = {
-          lastMsgText: text,
+          lastMsgText,
           lastMsgCreatedAt: msg.createdAt,
           recentUserIds,
           recentUsernames,
+          numMsgs: Messages.find({convoId}).count(), // SERVER ONLY
         };
 
         if (Messages.find({convoId}).count() === 1) {
