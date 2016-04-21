@@ -5,6 +5,7 @@ import Notification from '/lib/schemas/notification';
 import {Messages, Notifications} from '/lib/collections';
 import {check, Match} from 'meteor/check';
 import R from 'ramda';
+import { Cloudinary } from 'meteor/lepozepo:cloudinary';
 
 export default function () {
   const MSGS_ADD = 'msgs.add';

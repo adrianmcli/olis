@@ -158,7 +158,7 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
             usersListString,
             langCode,
             translations,
-            showLoadOldBtn
+            showLoadOldBtn,
           });
         } else {
           LocalState.set(`${convoId}.msgs.visibleAfterDate`, msgsAfterThisOne.createdAt);
@@ -180,7 +180,7 @@ function _doRegularConvo(LocalState, convoId, langCode, Collections, Meteor, onD
           title,
           usersListString,
           langCode,
-          translations
+          translations,
         });
       }
     }
