@@ -411,10 +411,9 @@ export default function () {
         displayName: String
       });
 
-      // Account creation called from client side, so user is logged in already.
       const userId = this.userId;
       if (!userId) {
-        throw new Meteor.Error(ACCOUNT_DISPLAY_NAME, 'Must be logged in to create team.');
+        throw new Meteor.Error(ACCOUNT_DISPLAY_NAME, 'Must be logged in to set display name.');
       }
 
       Meteor.users.update(userId, {
