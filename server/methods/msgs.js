@@ -69,7 +69,7 @@ export default function () {
 
         let lastMsgText = '';
         if (hasImage) { lastMsgText = msg.imageUrl; }
-        else if (hasContent) { DraftUtils.getPlainTextFromRaw(msg.content); }
+        else if (hasContent) { lastMsgText = DraftUtils.getPlainTextFromRaw(msg.content); }
 
         const baseFields = {
           lastMsgText,

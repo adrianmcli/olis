@@ -17,7 +17,7 @@ export default function ({Meteor, Collections, Schemas}) {
         cloudinaryPublicId: Match.Optional(Match.OneOf(undefined, null, String)),
       });
 
-      const userId = Meteor.userId();
+      const userId = this.userId;
       if (!userId) {
         throw new Meteor.Error(MSGS_ADD, 'Must be logged in to insert msgs.');
       }
@@ -40,7 +40,6 @@ export default function ({Meteor, Collections, Schemas}) {
         convoName: convo.name,
         isSystemMsg,
         content,
-        imageUrl: '',
       });
       msg.save();
 
@@ -59,14 +58,13 @@ export default function ({Meteor, Collections, Schemas}) {
 
         let lastMsgText = '';
         if (hasImage) { lastMsgText = msg.imageUrl; }
-        else if (hasContent) { DraftUtils.getPlainTextFromRaw(msg.content); }
+        else if (hasContent) { lastMsgText = DraftUtils.getPlainTextFromRaw(msg.content); }
 
         const baseFields = {
           lastMsgText,
           lastMsgCreatedAt: msg.createdAt,
           recentUserIds,
           recentUsernames,
-          numMsgs: Messages.find({convoId}).count(), // SERVER ONLY
         };
 
         if (Messages.find({convoId}).count() === 1) {
