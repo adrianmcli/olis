@@ -6,6 +6,7 @@ import {
 import Team from '/lib/schemas/team';
 import {Meteor} from 'meteor/meteor';
 import {check} from 'meteor/check';
+import { Accounts } from 'meteor/accounts-base';
 
 export default function () {
   Meteor.methods({
@@ -46,7 +47,7 @@ export default function () {
         password: '1'
       });
       Meteor.users.update(userId, {
-        $set: {translationLangCode: langCode}
+        $set: {displayName: 'test'}
       });
 
       const userId2 = Accounts.createUser({
@@ -54,7 +55,7 @@ export default function () {
         password: '1'
       });
       Meteor.users.update(userId2, {
-        $set: {translationLangCode: langCode}
+        $set: {displayName: 'invite'}
       });
 
       const userId3 = Accounts.createUser({
@@ -62,7 +63,7 @@ export default function () {
         password: '1'
       });
       Meteor.users.update(userId3, {
-        $set: {translationLangCode: langCode}
+        $set: {displayName: 'invite2'}
       });
 
       const team = new Team();

@@ -1,8 +1,9 @@
-import {Meteor} from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import {Teams} from '/lib/collections';
 import Team from '/lib/schemas/team';
-import {check} from 'meteor/check';
-import {Roles} from 'meteor/alanning:roles';
+import { check } from 'meteor/check';
+import { Roles } from 'meteor/alanning:roles';
 import R from 'ramda';
 import EmailValidator from 'email-validator';
 import Invite from '/lib/schemas/invite';

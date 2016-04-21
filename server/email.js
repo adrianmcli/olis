@@ -1,5 +1,6 @@
-import {Meteor} from 'meteor/meteor';
-import {Teams} from '/lib/collections';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
+import { Teams } from '/lib/collections';
 import R from 'ramda';
 import _ from 'lodash';
 
