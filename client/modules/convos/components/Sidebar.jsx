@@ -35,7 +35,7 @@ export default class Sidebar extends React.Component {
               convo.recentUsernames);
             lastUsername = R.last(otherRecentUsernames);
           }
-          else { lastUsername = lastUser.username; }
+          else { lastUsername = lastUser.displayName; }
 
           let unread = false;
           let unreadCount = 0;
