@@ -370,12 +370,10 @@ export default function () {
         userIds: [ String ],
       });
 
-      const userId = this.userId;
-
        // Regular team
       const teamId = Meteor.call('teams.add', {
         name,
-        userIds: [ userId, ...userIds ],
+        userIds,
       });
 
       // Shadow team
@@ -386,10 +384,13 @@ export default function () {
       const superUserIds = superUsers.map(superUser => superUser._id);
       const shadowId = Meteor.call('teams.add', {
         name: `Olis Support - ${name}`,
-        userIds: [ userId, ...userIds, ...superUserIds ],
+        userIds: [ ...userIds, ...superUserIds ],
       });
 
-      // Make super users admin of shadow team
+      // Make super users admin of shadow team, all other users are members
+      Roles.removeUsersFromRoles(userIds, 'admin', shadowId);
+      Roles.addUsersToRoles(userIds, 'member', shadowId);
+      Roles.addUsersToRoles(superUserIds, 'admin', shadowId);
 
       // In shadow team, create convo with everyone in it
 
