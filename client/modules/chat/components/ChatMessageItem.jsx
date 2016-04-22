@@ -104,10 +104,12 @@ export default class ChatMessageItem extends React.Component {
       isConsecutiveMsg,
       timestamp,
       showTimestamp,
+      imageUrl,
     } = this.props;
     const {isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
     const messageClass = isConsecutiveMsg ? ' not-first-of-batch' : ' first-of-batch';
+    const hasImage = Boolean(imageUrl);
 
     return (
       <div
@@ -128,7 +130,7 @@ export default class ChatMessageItem extends React.Component {
             </div>
           </div>
           <div className="chat-msg-ctx-menu">
-            { (isHovering || menuOpen) && !translation ?
+            { (isHovering || menuOpen) && !translation && !hasImage ?
                 <ChatMessageItemContextMenu
                   isHovering={this.state.isHovering}
                   langCode={langCode}

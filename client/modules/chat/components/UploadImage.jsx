@@ -1,4 +1,5 @@
 import React from 'react';
+import ImageIcon from 'material-ui/lib/svg-icons/editor/insert-photo';
 
 export default class UploadImage extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class UploadImage extends React.Component {
           onChange={this.handleFileChange.bind(this)}
         />
         <label htmlFor="file">
-          <div style={styles.uploadBtn}>Upload Image</div>
+          <ImageIcon color='#AAA' style={styles.uploadBtn}/>
         </label>
       </div>
     );
@@ -44,10 +45,8 @@ export default class UploadImage extends React.Component {
 function getStyles() {
   return {
     uploadBtn: {
-      background: 'grey',
-      color: 'white',
-      padding: '6px',
       cursor: 'pointer',
+      marginTop: '6px',
     },
   };
 }
