@@ -136,6 +136,7 @@ export default class EditorWidget extends React.Component {
     };
 
     const readOnly = lock ? lock.userId !== userId : false;
+    const showIsTyping = lock && lock.userId !== userId;
 
     return (
       <Paper style={{padding: '12px', width: '100%'}}>
@@ -165,7 +166,7 @@ export default class EditorWidget extends React.Component {
             ref={ref => this.editor = ref}
             spellCheck={true}
           />
-          {lock && new Date() - lock.updatedAt < 5000 ? <div style={statusStyle}>{lock.username} is typing...</div> : null}
+          {showIsTyping ? <div style={statusStyle}>{lock.username} is typing...</div> : null}
         </div>
       </Paper>
     );
