@@ -8,39 +8,54 @@ meta-font-color = #efefef - 50%
   display -webkit-flex
   flex-direction column
   align-items flex-start
-  padding 3px 0
   
-  // .chat-msg-menu
-  //   transition opacity 0.2s
-  //   opacity 0
-  //   pointer-events none
-  // &:hover .chat-msg-menu
-  //   opacity 1
-  //   pointer-events auto
+  &.not-first-of-batch
+    
+    .chat-avatar,
+    .chat-author
+      display none
+    
+    .chat-primary
+      margin 0
+      padding-right 0
+      padding-left 48px
   
+  &.not-first-of-batch.you
+    
+    .chat-primary
+      padding-right 48px
+      padding-left 0
+      
+  .chat-msg-ctx-menu
+    position relative
+    height 36px
+    width 36px
+    margin -12px 0
+    align-self center
+    flex-shrink 0
+
   .chat-author
-    position absolute
     font-size 12px
-    text-align center
-    min-width 51px
-    top -21px
-    color meta-font-color
+    font-weight 500
+    margin -3px 0 5px
   .chat-primary
     margin-top 20px
     width 88%
     display flex
     display -webkit-flex
     position relative
+    align-items flex-end
   .chat-body
     word-break break-word
   .chat-avatar
-    padding 0 6px 6px
+    padding 0 6px 0
     flex-shrink 0
+    align-self flex-start
   .chat-bubble
     border-radius 6px
     padding 8px
-    margin-bottom 6px
-    font-size 12px
+    margin-bottom 4px
+    font-size 12.5px
     font-weight 300
     background bubble-color
     
@@ -54,17 +69,6 @@ meta-font-color = #efefef - 50%
       
       &:last-child
         margin-bottom 0
-
-    &:after
-      content ''
-      position absolute
-      top 0
-      left 52px
-      width 0
-      height 0
-      border-style solid
-      border-width 0 16px 16px 0
-      border-color transparent white transparent transparent
     
     .translation
       
@@ -79,26 +83,20 @@ meta-font-color = #efefef - 50%
         &:last-child
           margin-bottom 0
 
-
   .chat-timestamp
     font-size 10px
     color meta-font-color
-    position relative
-    height 18px
-    
-  .chat-timestamp-string
-    position absolute
-    left 0
-    white-space no-wrap  
+    white-space no-wrap
+    margin 5px 0 -2px
   
   &.you
     text-align right
     align-items flex-end
     .chat-primary 
       flex-direction row-reverse
-      
+    
     .chat-author
-      right 4px
+      display none
 
     .chat-bubble
       text-align left
@@ -107,19 +105,7 @@ meta-font-color = #efefef - 50%
       white-space pre-wrap
       a
         color white
-      &:after
-        content ''
-        position absolute
-        top 0
-        right 52px
-        left auto
-        width 0
-        height 0
-        border-style solid
-        border-width 16px 16px 0 0
-        border-color bubble-color-me transparent transparent transparent
     
-    .chat-timestamp-string
-      left auto
-      right 0
-      
+    .chat-timestamp
+      text-align right
+      color rgba(255,255,255,0.5)

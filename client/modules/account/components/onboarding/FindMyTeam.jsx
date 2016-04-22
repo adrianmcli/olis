@@ -30,46 +30,75 @@ export default class FindMyTeam extends React.Component {
     }
   }
 
-  render() {
-    if (this.state.submitted) {
-      return (
-        <PageWrapper
-          title="Sent!"
-          description="Check your inbox to join the teams you belong to."
-          showDescription={true}
-          fullHeight={false}
-          width="420px"
-        >
-        </PageWrapper>
-      );
-    } else {
-      return (
-        <PageWrapper
-          title="Find My Team"
-          description="Enter in your email address and you will receive an email listing all the teams that you have been invited to."
-          showDescription={true}
-          fullHeight={false}
-          width="420px"
-        >
-          <TextField
-            type="email"
-            hintText="your.name@example.com"
-            floatingLabelText="Email"
-            fullWidth
-            ref={(ref) => this.input = ref}
-            errorText={this.state.showErrorText ? 'Enter a proper email.' : null}
-            onChange={this.handleChange.bind(this)}
+  renderForm() {
+    const styles = getStyles();
+    return (
+      <div>
+        <h1 style={styles.title}>Find My Team</h1>
+        <p style={styles.desc}>Enter your email below and we'll send you an email<br />letting you know what teams you have been invited to.</p>
+        <TextField
+          type="email"
+          hintText="your.name@example.com"
+          floatingLabelText="Email"
+          floatingLabelStyle={{color: 'rgba(255,255,255,0.5)'}}
+          ref={(ref) => this.input = ref}
+          errorText={this.state.showErrorText ? 'Enter a proper email.' : null}
+          onChange={this.handleChange.bind(this)}
+          onEnterKeyDown={this.submitHandler.bind(this)}
+          inputStyle={{color: 'white'}}
+        />
+        <div style={{margin: '14px 0'}}>
+          <RaisedButton
+            onClick={this.submitHandler.bind(this)}
+            label="Submit"
+            primary={true}
           />
-
-          <div style={{margin: '14px 0'}}>
-            <RaisedButton
-              onClick={this.submitHandler.bind(this)}
-              label="Submit"
-              secondary={true}
-            />
-          </div>
-        </PageWrapper>
-      );
-    }
+        </div>
+      </div>
+    );
   }
+
+  renderDone() {
+    const styles = getStyles();
+    return (
+      <div>
+        <h1 style={styles.title}>Sent!</h1>
+        <p style={styles.desc}>Check your inbox in a few minutes to find and join the teams you belong to.</p>
+        <p style={styles.desc}>You may now close this page.</p>
+      </div>
+    );
+  }
+
+  render() {
+    const styles = getStyles();
+    const done = this.renderDone.bind(this)();
+    const form = this.renderForm.bind(this)();
+    return (
+      <div style={styles.page}>
+        { this.state.submitted ? done : form }
+      </div>
+    );
+  }
+}
+
+function getStyles() {
+  return {
+    page: {
+      height: '100%',
+      width: '100%',
+      backgroundColor: '#2F3F70',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+      color: 'white',
+    },
+    title: {
+      fontSize: '36px',
+    },
+    desc: {
+      fontSize: '18px',
+      fontWeight: '300',
+    },
+  };
 }

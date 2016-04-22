@@ -46,5 +46,6 @@ function getStyles() {
     fontSize: '16px',
     fontWeight: '700',
     lineHeight: '30px',
+    fontFamily: 'inherit',
   };
 }

@@ -6,6 +6,7 @@ import ResetPasswordOnboard from './containers/reset_password_onboard';
 import FindMyTeam from './containers/find_my_team';
 import Login from './containers/login';
 import MyAccount from './containers/my_account';
+import NoAccount from './components/onboarding/NoAccount';
 
 import Registration from './containers/registration';
 import InviteeOnboard from './containers/invitee_onboard';
@@ -21,6 +22,15 @@ export default function (injectDeps, {FlowRouter}) {
   function redirectToInviteUsername(context, redirect) {
     redirect(`/invite/username/${context.params.token}`);
   }
+
+  FlowRouter.route('/no-account', {
+    name: 'no-account',
+    action() {
+      mount(MainLayoutCtx, {
+        content: () => (<NoAccount />)
+      });
+    }
+  });
 
   FlowRouter.route('/register', {
     name: 'register',

@@ -14,7 +14,8 @@ export default class TodoEditInput extends React.Component {
         outline: 'none',
         boxSizing: 'border-box',
         fontSize: '14px',
-      }
+        fontFamily: 'inherit',
+      },
     };
   }
 

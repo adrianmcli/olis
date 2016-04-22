@@ -44,7 +44,6 @@ export default class TodoItem extends React.Component {
           this.state.hovering ?
             <IconButton
               onClick={removeTask.bind(null, id)}
-              tooltip="Remove Task"
               style={styles.removeBtn}
             >
               <RemoveIcon />
@@ -79,7 +78,7 @@ export default class TodoItem extends React.Component {
         onMouseLeave={this.handleMouseLeave.bind(this)}
       >
         <div style={styles.view}>
-          { editing ? this.renderEditing() : this.renderItemContent() }
+          { !editing ? this.renderEditing() : this.renderItemContent() }
         </div>
       </li>
     );
