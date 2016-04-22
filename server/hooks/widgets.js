@@ -25,8 +25,29 @@ export default function () {
   });
 
   // Collection hooks better than Astro events, you can retrieve the previous doc after update
-  Widgets.after.update(function (userId, doc, fieldNames, modifier, options) {
+  // Use this.previous for prev doc
+  Widgets.after.update(function (userId, widget, fieldNames, modifier, options) {
+    const prev = this.previous;
+    const note = Notes.findOne(widget.noteId);
+    const user = Meteor.users.findOne(userId);
 
+    // To trigger the updated at change
+    note.set({ updatedAt: new Date(), updatedByUsername: user.displayName });
+    note.save();
+
+    // Send system msg
+    const now = new Date();
+    const timeDiff = now - widget.updatedAt;
+    const minutes = 1;
+    const justCreated = prev.createdAt - prev.updatedAt === 0;
+
+    if (timeDiff > minutes * 60 * 1000 || justCreated) {
+      Meteor.call('msgs.add.text', {
+        text: `${user.displayName} updated ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
+        convoId: note.convoId,
+        isSystemMsg: true,
+      });
+    }
   });
 
   Widgets.after.remove(function (userId, widget) {

@@ -139,45 +139,17 @@ export default function () {
       }
 
       const lock = Locks.findOne({widgetId});
-      const user = Meteor.users.findOne(userId);
       if (lock) {
         const timeDiff = new Date() - lock.updatedAt;
         if (timeDiff >= TIMEOUT || lock.userId === userId) {
-          doUpdate({widget, note, convo, data, user});
+          widget.set({data});
+          widget.save();
         }
       }
-      else { doUpdate({widget, note, convo, data, user}); }
+      else {
+        widget.set({data});
+        widget.save();
+      }
     },
   });
-}
-
-function doUpdate({widget, note, convo, data, user}) {
-  widget.set({data});
-  widget.save();
-
-  // To trigger the updated at change
-  note.set({ updatedAt: new Date(), updatedByUsername: user.displayName });
-  note.save();
-
-  // Send system msg
-  const now = new Date();
-  const timeDiff = now - widget.updatedAt;
-  const minutes = 5;
-
-  if (timeDiff > minutes * 60 * 1000) {
-    Meteor.call('msgs.add.text', {
-      text: `${user.displayName} updated ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
-      convoId: convo._id,
-      isSystemMsg: true,
-    });
-  }
-}
-
-function getIndefiniteArticle(word) {
-  const vowels = [ 'a', 'e', 'i', 'o', 'u' ];
-  const firstLetter = word[0];
-  const firstLetterIsVowel = R.contains(firstLetter, vowels);
-
-  if (firstLetterIsVowel) { return 'an'; }
-  return 'a';
 }
