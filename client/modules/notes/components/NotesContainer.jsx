@@ -73,7 +73,12 @@ class NotesContainer extends React.Component {
     const { note, addWidget } = this.props;
     return (
       <div id="notes-container">
-        <NotesHeader noteId={note._id} updatedAt={note.updatedAt} addWidget={addWidget} />
+        <NotesHeader
+          noteId={note._id}
+          updatedAt={note.updatedAt}
+          updatedBy={note.updatedByUsername}
+          addWidget={addWidget}
+        />
         <div className="notes-data-wrapper" ref={x => this._container = x}>
           {this.renderWidgets()}
         </div>

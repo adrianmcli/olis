@@ -32,11 +32,13 @@ export default function () {
       }
 
       // Insert new widget
+      const user = Meteor.users.findOne(userId);
       const widget = new Widget();
       widget.set({
         noteId,
         type,
         data: data ? data : null,
+        updatedByUsername: user.displayName,
       });
       widget.save();
       const widgetId = widget._id;
@@ -45,6 +47,7 @@ export default function () {
       const newWidgets = R.append(widgetId, note.widgetIds);
       note.set({
         widgetIds: newWidgets,
+        updatedByUsername: user.displayName,
       });
       note.save();
     },
@@ -79,8 +82,10 @@ export default function () {
       // Update note's widget array
       const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
       const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
+      const user = Meteor.users.findOne(userId);
       note.set({
         widgetIds: newWidgets,
+        updatedByUsername: user.displayName,
       });
       note.save();
     },
@@ -149,21 +154,24 @@ export default function () {
       }
 
       const lock = Locks.findOne({widgetId});
+      const user = Meteor.users.findOne(userId);
       if (lock) {
         const timeDiff = new Date() - lock.updatedAt;
-        if (timeDiff >= TIMEOUT || lock.userId === userId) { doUpdate({widget, note, convo, data}); }
+        if (timeDiff >= TIMEOUT || lock.userId === userId) {
+          doUpdate({widget, note, convo, data, user});
+        }
       }
-      else { doUpdate({widget, note, convo, data}); }
+      else { doUpdate({widget, note, convo, data, user}); }
     },
   });
 }
 
-function doUpdate({widget, note, convo, data}) {
+function doUpdate({widget, note, convo, data, user}) {
   widget.set({data});
   widget.save();
 
   // To trigger the updated at change
-  note.set({ updatedAt: new Date() });
+  note.set({ updatedAt: new Date(), updatedByUsername: user.displayName });
   note.save();
 
   convo.set({ updatedAt: new Date() });
