@@ -41,15 +41,6 @@ export default function () {
         updatedByUsername: user.displayName,
       });
       widget.save();
-      const widgetId = widget._id;
-
-      // Insert widget id into note
-      const newWidgets = R.append(widgetId, note.widgetIds);
-      note.set({
-        widgetIds: newWidgets,
-        updatedByUsername: user.displayName,
-      });
-      note.save();
     },
   });
 
@@ -81,25 +72,7 @@ export default function () {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must remove an existing widget.');
       }
 
-      const type = widget.type;
       widget.remove();
-
-      // Update note's widget array
-      const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
-      const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
-      const user = Meteor.users.findOne(userId);
-      note.set({
-        widgetIds: newWidgets,
-        updatedByUsername: user.displayName,
-      });
-      note.save();
-
-      // Send system msg
-      Meteor.call('msgs.add.text', {
-        text: `${user.displayName} removed ${getIndefiniteArticle(type)} ${type} tool.`,
-        convoId: convo._id,
-        isSystemMsg: true,
-      });
     },
   });
 
