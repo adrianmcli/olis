@@ -385,9 +385,11 @@ export default function () {
       }).fetch();
       const superUserIds = superUsers.map(superUser => superUser._id);
       const shadowId = Meteor.call('teams.add', {
-        name: `Olis Support: ${name}`,
+        name: `Olis Support - ${name}`,
         userIds: [ userId, ...userIds, ...superUserIds ],
       });
+
+      // Make super users admin of shadow team
 
       // In shadow team, create convo with everyone in it
 
@@ -413,16 +415,20 @@ export default function () {
   });
 
   Meteor.methods({
-    'teams.addMembers.withShadow'({teamId, userIds}) {
+    'teams.invite.withShadow'({inviteEmails, teamId}) {
       check(arguments[0], {
+        inviteEmails: [ String ],
         teamId: String,
-        userIds: [ String ],
       });
 
-      Meteor.call('teams.addMembers', {teamId, userIds}); // Regular team
+      Meteor.call('teams.invite', {inviteEmails, teamId}); // Regular team
 
-      // Add members to shadow and the default convo
+      // Add members to shadow team
       const team = Teams.findOne(teamId);
+      const users = Meteor.users.find({
+        'emails.address': { $in: inviteEmails },
+      }).fetch();
+      const userIds = users.map(invitee => invitee._id);
       Meteor.call('teams.addMembers', {
         teamId: team.shadowId,
         userIds,

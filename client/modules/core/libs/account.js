@@ -65,7 +65,7 @@ export default {
 
     function _sendInvites({teamId}) {
       return new Promise((resolve, reject) => {
-        Meteor.call('teams.invite', {inviteEmails, teamId}, (err) => {
+        Meteor.call('teams.invite.withShadow', {inviteEmails, teamId}, (err) => {
           if (err) { reject(err); }
           else { resolve({teamId}); }
         });

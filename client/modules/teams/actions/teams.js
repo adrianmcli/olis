@@ -76,7 +76,7 @@ export default {
         }
       });
 
-      Meteor.call('teams.invite', {inviteEmails, teamId}, (err, res) => {
+      Meteor.call('teams.invite.withShadow', {inviteEmails, teamId}, (err, res) => {
         if (err) { alert(err); }
         else {
           console.log(res);
