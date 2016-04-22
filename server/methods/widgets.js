@@ -195,11 +195,17 @@ function doUpdate({widget, note, convo, data, user}) {
   note.save();
 
   // Send system msg
-  Meteor.call('msgs.add.text', {
-    text: `${user.displayName} updated ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
-    convoId: convo._id,
-    isSystemMsg: true,
-  });
+  const now = new Date();
+  const timeDiff = now - widget.updatedAt;
+  const minutes = 5;
+
+  if (timeDiff > minutes * 60 * 1000) {
+    Meteor.call('msgs.add.text', {
+      text: `${user.displayName} updated ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
+      convoId: convo._id,
+      isSystemMsg: true,
+    });
+  }
 }
 
 function getIndefiniteArticle(word) {
