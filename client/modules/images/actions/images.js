@@ -40,7 +40,7 @@ export default {
       const cloudinaryPublicId = cloudinaryRes.public_id;
 
       return new Promise((resolve, reject) => {
-        Meteor.call('msgs.add', {text: 'dummy text', convoId, cloudinaryPublicId}, err => {
+        Meteor.call('msgs.add', {convoId, cloudinaryPublicId}, err => {
           if (err) { reject(err); }
           else { resolve(); }
         });

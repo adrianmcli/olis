@@ -6,11 +6,27 @@ export default function ({Meteor, Collections, Schemas}) {
   const {Message} = Schemas;
   const {Messages, Convos} = Collections;
 
-  const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId, isSystemMsg, content, cloudinaryPublicId}) {
+    'msgs.add.text'({text, convoId, isSystemMsg}) {
       check(arguments[0], {
         text: String,
+        convoId: String,
+        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
+      });
+
+      Meteor.call('msgs.add', {
+        convoId,
+        isSystemMsg,
+        content: DraftUtils.getRawFromHTML(text),
+        cloudinaryPublicId: undefined,
+      });
+    },
+  });
+
+  const MSGS_ADD = 'msgs.add';
+  Meteor.methods({
+    'msgs.add'({convoId, isSystemMsg, content, cloudinaryPublicId}) {
+      check(arguments[0], {
         convoId: String,
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
         content: Match.Optional(Match.OneOf(undefined, null, Object)),
@@ -33,7 +49,6 @@ export default function ({Meteor, Collections, Schemas}) {
 
       const msg = new Message();
       msg.set({
-        text,
         userId,
         username: user.displayName,
         convoId,
@@ -58,7 +73,7 @@ export default function ({Meteor, Collections, Schemas}) {
 
         let lastMsgText = '';
         if (hasImage) { lastMsgText = msg.imageUrl; }
-        else if (hasContent) { lastMsgText = DraftUtils.getPlainTextFromRaw(msg.content); }
+        else if (hasContent) { lastMsgText = msg.getPlainText(); }
 
         const baseFields = {
           lastMsgText,

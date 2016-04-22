@@ -84,7 +84,7 @@ export default function ({Meteor, Collections, Schemas}) {
       convo.save();
 
       const addedUsers = Meteor.users.find({
-        _id: { $in: userIds }
+        _id: { $in: userIds },
       }).fetch();
       const addedUsernames = addedUsers.map(newUser => newUser.displayName);
       const addedString = addedUsernames.reduce((prev, curr, index) => {
@@ -92,14 +92,14 @@ export default function ({Meteor, Collections, Schemas}) {
         return `${curr}`;
       }, '');
 
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `${addedString} ${addedUsernames.length > 1 ? 'were' : 'was'} added to the chat.`,
         convoId,
-        isSystemMsg: true
+        isSystemMsg: true,
       });
 
       return convo;
-    }
+    },
   });
 
   const CONVOS_REMOVE_MEMBER = 'convos.removeMember';
@@ -107,7 +107,7 @@ export default function ({Meteor, Collections, Schemas}) {
     'convos.removeMember'({convoId, removeUserId}) {
       check(arguments[0], {
         convoId: String,
-        removeUserId: String
+        removeUserId: String,
       });
 
       const userId = Meteor.userId();
@@ -135,7 +135,7 @@ export default function ({Meteor, Collections, Schemas}) {
       convo.save();
 
       const removeUser = Meteor.users.findOne(removeUserId);
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `${removeUser.displayName} was removed from the chat.`,
         convoId,
         isSystemMsg: true
@@ -166,7 +166,7 @@ export default function ({Meteor, Collections, Schemas}) {
       convo.set({name});
       convo.save();
 
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `Chat name changed to "${name}"`,
         convoId,
         isSystemMsg: true
@@ -195,7 +195,7 @@ export default function ({Meteor, Collections, Schemas}) {
 
       // Send msg before you leave
       const user = Meteor.users.findOne(userId);
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `${user.displayName} has left the chat.`,
         convoId,
         isSystemMsg: true

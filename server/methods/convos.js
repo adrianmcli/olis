@@ -94,7 +94,7 @@ export default function () {
         return `${curr}`;
       }, '');
 
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `${addedString} ${addedUsernames.length > 1 ? 'were' : 'was'} added to the chat.`,
         convoId,
         isSystemMsg: true
@@ -137,7 +137,7 @@ export default function () {
       convo.save();
 
       const removeUser = Meteor.users.findOne(removeUserId);
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `${removeUser.displayName} was removed from the chat.`,
         convoId,
         isSystemMsg: true
@@ -227,7 +227,7 @@ export default function () {
       convo.set({name});
       convo.save();
 
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `Chat name changed to "${name}"`,
         convoId,
         isSystemMsg: true
@@ -301,7 +301,7 @@ export default function () {
 
       // Send msg before you leave
       const user = Meteor.users.findOne(userId);
-      Meteor.call('msgs.add', {
+      Meteor.call('msgs.add.text', {
         text: `${user.displayName} has left the chat.`,
         convoId,
         isSystemMsg: true
