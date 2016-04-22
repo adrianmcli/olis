@@ -36,7 +36,7 @@ export default function () {
       widget.set({
         noteId,
         type,
-        data: data ? data : null
+        data: data ? data : null,
       });
       widget.save();
       const widgetId = widget._id;
@@ -44,10 +44,10 @@ export default function () {
       // Insert widget id into note
       const newWidgets = R.append(widgetId, note.widgetIds);
       note.set({
-        widgetIds: newWidgets
+        widgetIds: newWidgets,
       });
       note.save();
-    }
+    },
   });
 
   const WIDGETS_REMOVE = 'widgets.remove';
@@ -55,7 +55,7 @@ export default function () {
     'widgets.remove'({noteId, widgetId}) {
       check(arguments[0], {
         noteId: String,
-        widgetId: String
+        widgetId: String,
       });
 
       const userId = this.userId;
@@ -80,10 +80,10 @@ export default function () {
       const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
       const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
       note.set({
-        widgetIds: newWidgets
+        widgetIds: newWidgets,
       });
       note.save();
-    }
+    },
   });
 
   Meteor.methods({
@@ -91,7 +91,7 @@ export default function () {
       check(arguments[0], {
         noteId: String,
         widgetId: String,
-        position: Number
+        position: Number,
       });
 
       const userId = this.userId;
@@ -115,17 +115,17 @@ export default function () {
       const newOrderedWidgets = R.insert(position, widgetId, widgetsLessRemoved);
 
       note.set({
-        widgetIds: newOrderedWidgets
+        widgetIds: newOrderedWidgets,
       });
       note.save();
-    }
+    },
   });
 
   Meteor.methods({
     'widgets.update'({widgetId, data}) {
       check(arguments[0], {
         widgetId: String,
-        data: Object
+        data: Object,
       });
 
       const userId = this.userId;
@@ -154,7 +154,7 @@ export default function () {
         if (timeDiff >= TIMEOUT || lock.userId === userId) { doUpdate({widget, note, convo, data}); }
       }
       else { doUpdate({widget, note, convo, data}); }
-    }
+    },
   });
 }
 
