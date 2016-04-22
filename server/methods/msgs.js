@@ -9,11 +9,27 @@ import { Cloudinary } from 'meteor/lepozepo:cloudinary';
 import DraftUtils from '/lib/utils/draft-js';
 
 export default function () {
-  const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId, isSystemMsg, content, cloudinaryPublicId}) {
+    'msgs.add.text'({text, convoId, isSystemMsg}) {
       check(arguments[0], {
         text: String,
+        convoId: String,
+        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
+      });
+
+      Meteor.call('msgs.add', {
+        convoId,
+        isSystemMsg,
+        content: DraftUtils.getRawFromHTML(text),
+        cloudinaryPublicId: undefined,
+      });
+    },
+  });
+
+  const MSGS_ADD = 'msgs.add';
+  Meteor.methods({
+    'msgs.add'({convoId, isSystemMsg, content, cloudinaryPublicId}) {
+      check(arguments[0], {
         convoId: String,
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
         content: Match.Optional(Match.OneOf(undefined, null, Object)),
@@ -43,7 +59,6 @@ export default function () {
 
       const msg = new Message();
       msg.set({
-        text,
         userId,
         username: user.displayName,
         convoId,
