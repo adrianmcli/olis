@@ -41,23 +41,6 @@ export default function ({Meteor, Collections, Schemas}) {
         updatedByUsername: user.displayName,
       });
       widget.save();
-      const widgetId = widget._id;
-
-      // Insert widget id into note
-      const newWidgets = R.append(widgetId, note.widgetIds);
-      note.set({
-        widgetIds: newWidgets,
-        updatedByUsername: user.displayName,
-      });
-      note.save();
-
-      // Send system msg
-      Meteor.call('msgs.add.text', {
-        text: `${user.displayName} added ${getIndefiniteArticle(type)} ${type} tool.`,
-        convoId: convo._id,
-        isSystemMsg: true,
-      });
-
     },
   });
 
@@ -89,25 +72,7 @@ export default function ({Meteor, Collections, Schemas}) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must remove an existing widget.');
       }
 
-      const type = widget.type;
       widget.remove();
-
-      // Update note's widget array
-      const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
-      const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
-      const user = Meteor.users.findOne(userId);
-      note.set({
-        widgetIds: newWidgets,
-        updatedByUsername: user.displayName,
-      });
-      note.save();
-
-      // Send system msg
-      Meteor.call('msgs.add.text', {
-        text: `${user.displayName} removed ${getIndefiniteArticle(type)} ${type} tool.`,
-        convoId: convo._id,
-        isSystemMsg: true,
-      });
     },
   });
 
@@ -119,7 +84,7 @@ export default function ({Meteor, Collections, Schemas}) {
         position: Number,
       });
 
-      const userId = this.userId;
+      const userId = Meteor.userId();
       if (!userId) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
       }
@@ -153,7 +118,7 @@ export default function ({Meteor, Collections, Schemas}) {
         data: Object,
       });
 
-      const userId = this.userId;
+      const userId = Meteor.userId();
       if (!userId) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be logged in to add widgets.');
       }
@@ -174,45 +139,17 @@ export default function ({Meteor, Collections, Schemas}) {
       }
 
       const lock = Locks.findOne({widgetId});
-      const user = Meteor.users.findOne(userId);
       if (lock) {
         const timeDiff = new Date() - lock.updatedAt;
         if (timeDiff >= TIMEOUT || lock.userId === userId) {
-          doUpdate({Meteor, widget, note, convo, data, user});
+          widget.set({data});
+          widget.save();
         }
       }
-      else { doUpdate({Meteor, widget, note, convo, data, user}); }
+      else {
+        widget.set({data});
+        widget.save();
+      }
     },
   });
-}
-
-function doUpdate({Meteor, widget, note, convo, data, user}) {
-  widget.set({data});
-  widget.save();
-
-  // To trigger the updated at change
-  note.set({ updatedAt: new Date(), updatedByUsername: user.displayName });
-  note.save();
-
-  // Send system msg
-  const now = new Date();
-  const timeDiff = now - widget.updatedAt;
-  const minutes = 5;
-
-  if (timeDiff > minutes * 60 * 1000) {
-    Meteor.call('msgs.add.text', {
-      text: `${user.displayName} updated ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
-      convoId: convo._id,
-      isSystemMsg: true,
-    });
-  }
-}
-
-function getIndefiniteArticle(word) {
-  const vowels = [ 'a', 'e', 'i', 'o', 'u' ];
-  const firstLetter = word[0];
-  const firstLetterIsVowel = R.contains(firstLetter, vowels);
-
-  if (firstLetterIsVowel) { return 'an'; }
-  return 'a';
 }
