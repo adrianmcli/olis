@@ -50,6 +50,14 @@ export default function () {
         updatedByUsername: user.displayName,
       });
       note.save();
+
+      // Send system msg
+      Meteor.call('msgs.add.text', {
+        text: `${user.displayName} added a ${type} tool.`,
+        convoId: convo._id,
+        isSystemMsg: true,
+      });
+
     },
   });
 
@@ -76,8 +84,13 @@ export default function () {
       if (!convo.isUserInConvo(userId)) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
       }
+      const widget = Widgets.findOne(widgetId);
+      if (!widget) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must remove an existing widget.');
+      }
 
-      Widgets.remove(widgetId);
+      const type = widget.type;
+      widget.remove();
 
       // Update note's widget array
       const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
@@ -88,6 +101,13 @@ export default function () {
         updatedByUsername: user.displayName,
       });
       note.save();
+
+      // Send system msg
+      Meteor.call('msgs.add.text', {
+        text: `${user.displayName} removed a ${type} tool.`,
+        convoId: convo._id,
+        isSystemMsg: true,
+      });
     },
   });
 
@@ -174,6 +194,10 @@ function doUpdate({widget, note, convo, data, user}) {
   note.set({ updatedAt: new Date(), updatedByUsername: user.displayName });
   note.save();
 
-  convo.set({ updatedAt: new Date() });
-  convo.save();
+  // Send system msg
+  Meteor.call('msgs.add.text', {
+    text: `${user.displayName} updated a ${widget.type} tool.`,
+    convoId: convo._id,
+    isSystemMsg: true,
+  });
 }
