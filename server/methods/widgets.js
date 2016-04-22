@@ -50,14 +50,6 @@ export default function () {
         updatedByUsername: user.displayName,
       });
       note.save();
-
-      // Send system msg
-      Meteor.call('msgs.add.text', {
-        text: `${user.displayName} added ${getIndefiniteArticle(type)} ${type} tool.`,
-        convoId: convo._id,
-        isSystemMsg: true,
-      });
-
     },
   });
 
