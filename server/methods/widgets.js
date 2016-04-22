@@ -53,7 +53,7 @@ export default function () {
 
       // Send system msg
       Meteor.call('msgs.add.text', {
-        text: `${user.displayName} added a ${type} tool.`,
+        text: `${user.displayName} added ${getIndefiniteArticle(type)} ${type} tool.`,
         convoId: convo._id,
         isSystemMsg: true,
       });
@@ -104,7 +104,7 @@ export default function () {
 
       // Send system msg
       Meteor.call('msgs.add.text', {
-        text: `${user.displayName} removed a ${type} tool.`,
+        text: `${user.displayName} removed ${getIndefiniteArticle(type)} ${type} tool.`,
         convoId: convo._id,
         isSystemMsg: true,
       });
@@ -196,8 +196,17 @@ function doUpdate({widget, note, convo, data, user}) {
 
   // Send system msg
   Meteor.call('msgs.add.text', {
-    text: `${user.displayName} updated a ${widget.type} tool.`,
+    text: `${user.displayName} updated ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
     convoId: convo._id,
     isSystemMsg: true,
   });
+}
+
+function getIndefiniteArticle(word) {
+  const vowels = [ 'a', 'e', 'i', 'o', 'u' ];
+  const firstLetter = word[0];
+  const firstLetterIsVowel = R.contains(firstLetter, vowels);
+
+  if (firstLetterIsVowel) { return 'an'; }
+  return 'a';
 }
