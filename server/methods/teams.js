@@ -392,7 +392,7 @@ export default function () {
       const superUserIds = superUsers.map(superUser => superUser._id);
       const shadowUserIds = [ ...userIds, ...superUserIds ];
       const shadowId = Meteor.call('teams.add', {
-        name: `Olis Support - ${name}`,
+        name: `Olis Support`,
         userIds: shadowUserIds,
       });
       Teams.update(shadowId, {
@@ -422,7 +422,7 @@ export default function () {
         content: DraftUtils.getRawFromHTML(
           `Thanks for joining the Olis Beta!\n
           You can chat with the Olis Support Team here directly.\n
-          We'd love to hear your comments about app and help you out with any problems.\n`
+          We'd love to hear your comments about the app, any new features you want to see, and help you out with any problems.\n`
         ),
         userId: superUser._id,
         username: superUser.displayName,
