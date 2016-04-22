@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import {Teams} from '/lib/collections';
+import { Teams, Convos } from '/lib/collections';
 import Team from '/lib/schemas/team';
 import Message from '/lib/schemas/msg';
 import { check } from 'meteor/check';
@@ -419,8 +419,9 @@ export default function () {
       const superUser = superUsers[0];
       msg.set({
         content: DraftUtils.getRawFromHTML(
-          `You can chat with the Olis Support Team here directly. 
-          We'd love to help you with any problems.`
+          `Thanks for joining the Olis Beta!\n
+          You can chat with the Olis Support Team here directly.\n
+          We'd love to hear your comments about app and help you out with any problems.\n`
         ),
         userId: superUser._id,
         username: superUser.displayName,
@@ -480,6 +481,14 @@ export default function () {
       });
 
       // Add members to shadow team default convo
+      const selector = { teamId: team.shadowId };
+      const options = {
+        sort: [ [ 'createdAt', 'asc' ] ],
+        limit: 1,
+      };
+      const convos = Convos.find(selector, options).fetch();
+      const firstConvo = convos[0];
+      Meteor.call('convos.addMembers', { convoId: firstConvo._id, userIds });
     },
   });
 }
