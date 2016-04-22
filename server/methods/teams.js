@@ -266,9 +266,10 @@ export default function () {
       const newEmails = R.difference(validatedEmails, existingEmails);
 
       function _create(email) {
-        const newId = Accounts.createUser({username: email, email});
+        const newId = Accounts.createUser({email});
         Meteor.users.update(newId, {
           $set: {
+            displayName: email,
             invitedBy: user.displayName, // This is so we can send the invite email with who invited them
           }
         });
