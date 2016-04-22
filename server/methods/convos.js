@@ -38,8 +38,7 @@ export default function () {
         teamId});
       convo.save();
       const convoId = convo._id;
-
-      Meteor.call('convos.addMembers', {convoId, userIds: [ userId, ...userIds ]});
+      Meteor.call('convos.addMembers', {convoId, userIds});
       Meteor.call('notes.add', {convoId});
 
       return convoId;

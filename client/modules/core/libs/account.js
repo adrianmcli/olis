@@ -42,10 +42,12 @@ export default {
 
     function _createTeam() {
       return new Promise((resolve, reject) => {
-        Meteor.call('account.register.createTeam', {teamName}, (err, res) => {
+        Meteor.call('teams.add.withShadow', {
+          name: teamName,
+          userIds: [ Meteor.userId() ],
+        }, (err, teamId) => {
           if (err) { reject(err); }
           else {
-            const {teamId} = res;
             resolve({teamId});
           }
         });
@@ -63,7 +65,7 @@ export default {
 
     function _sendInvites({teamId}) {
       return new Promise((resolve, reject) => {
-        Meteor.call('teams.invite', {inviteEmails, teamId}, (err) => {
+        Meteor.call('teams.invite.withShadow', {inviteEmails, teamId}, (err) => {
           if (err) { reject(err); }
           else { resolve({teamId}); }
         });

@@ -1,12 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import {Teams} from '/lib/collections';
+import { Teams, Convos } from '/lib/collections';
 import Team from '/lib/schemas/team';
+import Message from '/lib/schemas/msg';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import R from 'ramda';
 import EmailValidator from 'email-validator';
 import Invite from '/lib/schemas/invite';
+import DraftUtils from '/lib/utils/draft-js';
 
 export default function () {
   const TEAMS_ADD = 'teams.add';
@@ -22,8 +24,7 @@ export default function () {
         throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
       }
 
-      const newUserIds = [ userId, ...userIds ];
-      const uniqueUserIds = R.uniq(newUserIds);
+      const uniqueUserIds = R.uniq(userIds);
 
       // Can't use Meteor.setTimeout here
       // Cuz simulation will insert obj, but server looks like it inserted nothing since we didn't block it.
@@ -36,7 +37,9 @@ export default function () {
 
       // Add users to roles
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
-      Roles.addUsersToRoles(userIds, [ 'member' ], team._id);
+
+      const otherUserIds = R.filter(id => id !== userId, userIds);
+      Roles.addUsersToRoles(otherUserIds, [ 'member' ], team._id);
 
       // return team; // Will return _id, and the server side only stuff too
       return team._id;
@@ -70,8 +73,6 @@ export default function () {
 
       team.set({userIds: uniqueUserIds});
       team.save();
-
-      return team;
     }
   });
 
@@ -265,9 +266,10 @@ export default function () {
       const newEmails = R.difference(validatedEmails, existingEmails);
 
       function _create(email) {
-        const newId = Accounts.createUser({username: email, email});
+        const newId = Accounts.createUser({email});
         Meteor.users.update(newId, {
           $set: {
+            displayName: email,
             invitedBy: user.displayName, // This is so we can send the invite email with who invited them
           }
         });
@@ -362,5 +364,132 @@ export default function () {
 
       return team.isUserAdmin(userId);
     }
+  });
+
+  Meteor.methods({
+    'teams.add.withShadow'({name, userIds}) {
+      check(arguments[0], {
+        name: String,
+        userIds: [ String ],
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+
+       // Create regular team
+      const teamId = Meteor.call('teams.add', {
+        name,
+        userIds,
+      });
+
+      // Create shadow team
+      const superUserEmails = Meteor.settings.superUserEmails;
+      const superUsers = Meteor.users.find({
+        'emails.address': { $in: superUserEmails },
+      }).fetch();
+      const superUserIds = superUsers.map(superUser => superUser._id);
+      const shadowUserIds = [ ...userIds, ...superUserIds ];
+      const shadowId = Meteor.call('teams.add', {
+        name: `Olis Support - ${name}`,
+        userIds: shadowUserIds,
+      });
+      Teams.update(shadowId, {
+        $set: { info: `Provide any feedback or issues about the app directly to the support team here!` },
+      });
+
+      // Make super users admin of shadow team, all other users are members
+      Roles.removeUsersFromRoles(userIds, 'admin', shadowId);
+      Roles.addUsersToRoles(userIds, 'member', shadowId);
+
+      Roles.removeUsersFromRoles(superUserIds, 'member', shadowId);
+      Roles.addUsersToRoles(superUserIds, 'admin', shadowId);
+
+      // In shadow team, create convo with everyone in it
+      const convoName = 'Welcome to Olis!';
+      const convoId = Meteor.call('convos.add', {
+        name: convoName,
+        userIds: shadowUserIds,
+        teamId: shadowId,
+      });
+
+      // Add a msg from super user, can't use Meteor.call,
+      // since it would insert a msg from a regular user that called this
+      const msg = new Message();
+      const superUser = superUsers[0];
+      msg.set({
+        content: DraftUtils.getRawFromHTML(
+          `Thanks for joining the Olis Beta!\n
+          You can chat with the Olis Support Team here directly.\n
+          We'd love to hear your comments about app and help you out with any problems.\n`
+        ),
+        userId: superUser._id,
+        username: superUser.displayName,
+        convoId,
+        convoName,
+      });
+      msg.save();
+
+      // Original team should reference its shadow
+      Meteor.call('teams.setShadow', {teamId, shadowId});
+
+      return teamId;
+    },
+  });
+
+  Meteor.methods({
+    'teams.setShadow'({teamId, shadowId}) {
+      check(arguments[0], {
+        teamId: String,
+        shadowId: String,
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+
+      const team = Teams.findOne(teamId);
+      team.set({shadowId});
+      team.save();
+    },
+  });
+
+  Meteor.methods({
+    'teams.invite.withShadow'({inviteEmails, teamId}) {
+      check(arguments[0], {
+        inviteEmails: [ String ],
+        teamId: String,
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+
+      Meteor.call('teams.invite', {inviteEmails, teamId}); // Regular team
+
+      // Add members to shadow team, don't send invite
+      const team = Teams.findOne(teamId);
+      const users = Meteor.users.find({
+        'emails.address': { $in: inviteEmails },
+      }).fetch();
+      const userIds = users.map(invitee => invitee._id);
+      Meteor.call('teams.addMembers', {
+        teamId: team.shadowId,
+        userIds,
+      });
+
+      // Add members to shadow team default convo
+      const selector = { teamId: team.shadowId };
+      const options = {
+        sort: [ [ 'createdAt', 'asc' ] ],
+        limit: 1,
+      };
+      const convos = Convos.find(selector, options).fetch();
+      const firstConvo = convos[0];
+      Meteor.call('convos.addMembers', { convoId: firstConvo._id, userIds });
+    },
   });
 }

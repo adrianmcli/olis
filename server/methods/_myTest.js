@@ -56,8 +56,18 @@ export default function () {
       Widgets.remove({});
       Locks.remove({});
 
-      const langCode = 'en';
+      // Super users
+      Meteor.settings.superUserEmails.forEach(email => {
+        const userId = Accounts.createUser({
+          email,
+          password: '1',
+        });
+        Meteor.users.update(userId, {
+          $set: {displayName: email},
+        });
+      });
 
+      // Regular users
       const userId = Accounts.createUser({
         email: 'test@test.com',
         password: '1',
