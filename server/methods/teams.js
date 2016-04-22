@@ -370,34 +370,54 @@ export default function () {
         userIds: [ String ],
       });
 
-       // Regular team
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+
+       // Create regular team
       const teamId = Meteor.call('teams.add', {
         name,
         userIds,
       });
 
-      // Shadow team
+      // Create shadow team
       const superUserEmails = Meteor.settings.superUserEmails;
       const superUsers = Meteor.users.find({
         'emails.address': { $in: superUserEmails },
       }).fetch();
       const superUserIds = superUsers.map(superUser => superUser._id);
+      const shadowUserIds = [ ...userIds, ...superUserIds ];
       const shadowId = Meteor.call('teams.add', {
         name: `Olis Support - ${name}`,
-        userIds: [ ...userIds, ...superUserIds ],
+        userIds: shadowUserIds,
+      });
+      Teams.update(shadowId, {
+        $set: { info: `Provide your feedback about the app directly to the support team here!` },
       });
 
       // Make super users admin of shadow team, all other users are members
       Roles.removeUsersFromRoles(userIds, 'admin', shadowId);
       Roles.addUsersToRoles(userIds, 'member', shadowId);
+
+      Roles.removeUsersFromRoles(superUserIds, 'member', shadowId);
       Roles.addUsersToRoles(superUserIds, 'admin', shadowId);
 
       // In shadow team, create convo with everyone in it
+      console.log(shadowUserIds);
+      console.log(Teams.findOne(shadowId).userIds);
+      Meteor.call('convos.add', {
+        name: 'Welcome to Olis!',
+        userIds: shadowUserIds,
+        teamId: shadowId,
+      });
+
+      // Add a msg from super user
+
 
       // Original team should reference its shadow
       Meteor.call('teams.setShadow', {teamId, shadowId});
 
-      console.log(teamId);
       return teamId;
     },
   });
@@ -408,6 +428,11 @@ export default function () {
         teamId: String,
         shadowId: String,
       });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
 
       const team = Teams.findOne(teamId);
       team.set({shadowId});
@@ -422,9 +447,14 @@ export default function () {
         teamId: String,
       });
 
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
+      }
+
       Meteor.call('teams.invite', {inviteEmails, teamId}); // Regular team
 
-      // Add members to shadow team
+      // Add members to shadow team, don't send invite
       const team = Teams.findOne(teamId);
       const users = Meteor.users.find({
         'emails.address': { $in: inviteEmails },
