@@ -363,4 +363,50 @@ export default function () {
       return team.isUserAdmin(userId);
     }
   });
+
+  Meteor.methods({
+    'teams.add.withShadow'({name, userIds}) {
+      check(arguments[0], {
+        name: String,
+        userIds: [ String ],
+      });
+
+      const teamId = Meteor.call('teams.add', {name, userIds}); // Regular team
+
+      // Shadow team
+      const superUserEmails = Meteor.settings.superUserEmails;
+      const superUserIds = Meteor.users.find({
+        'emails.address': { $in: superUserEmails },
+      }).fetch();
+      const shadowId = Meteor.call('teams.add', {
+        name: `Olis Support Team: ${name}`,
+        userIds: [ ...userIds, ...superUserIds ],
+      });
+
+      // In shadow team, create convo with everyone in it
+
+      // Original team should reference its shadow
+      Meteor.call('teams.setShadow', {teamId, shadowId});
+
+      return teamId;
+    },
+  });
+
+  Meteor.methods({
+    'teams.addMembers.withShadow'({teamId, userIds}) {
+      check(arguments[0], {
+        teamId: String,
+        userIds: [ String ],
+      });
+
+      Meteor.call('teams.addMembers', {teamId, userIds}); // Regular team
+
+      // Add members to shadow and the default convo
+      const team = Teams.findOne(teamId);
+      Meteor.call('teams.addMembers', {
+        teamId: team.shadowId,
+        userIds,
+      });
+    },
+  });
 }
