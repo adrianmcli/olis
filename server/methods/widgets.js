@@ -32,11 +32,13 @@ export default function () {
       }
 
       // Insert new widget
+      const user = Meteor.users.findOne(userId);
       const widget = new Widget();
       widget.set({
         noteId,
         type,
-        data: data ? data : null
+        data: data ? data : null,
+        updatedByUsername: user.displayName,
       });
       widget.save();
       const widgetId = widget._id;
@@ -44,10 +46,19 @@ export default function () {
       // Insert widget id into note
       const newWidgets = R.append(widgetId, note.widgetIds);
       note.set({
-        widgetIds: newWidgets
+        widgetIds: newWidgets,
+        updatedByUsername: user.displayName,
       });
       note.save();
-    }
+
+      // Send system msg
+      Meteor.call('msgs.add.text', {
+        text: `${user.displayName} added ${getIndefiniteArticle(type)} ${type} tool.`,
+        convoId: convo._id,
+        isSystemMsg: true,
+      });
+
+    },
   });
 
   const WIDGETS_REMOVE = 'widgets.remove';
@@ -55,7 +66,7 @@ export default function () {
     'widgets.remove'({noteId, widgetId}) {
       check(arguments[0], {
         noteId: String,
-        widgetId: String
+        widgetId: String,
       });
 
       const userId = this.userId;
@@ -73,17 +84,31 @@ export default function () {
       if (!convo.isUserInConvo(userId)) {
         throw new Meteor.Error(WIDGETS_REMOVE, 'Must be a part of convo to add widgets.');
       }
+      const widget = Widgets.findOne(widgetId);
+      if (!widget) {
+        throw new Meteor.Error(WIDGETS_REMOVE, 'Must remove an existing widget.');
+      }
 
-      Widgets.remove(widgetId);
+      const type = widget.type;
+      widget.remove();
 
       // Update note's widget array
       const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
       const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
+      const user = Meteor.users.findOne(userId);
       note.set({
-        widgetIds: newWidgets
+        widgetIds: newWidgets,
+        updatedByUsername: user.displayName,
       });
       note.save();
-    }
+
+      // Send system msg
+      Meteor.call('msgs.add.text', {
+        text: `${user.displayName} removed ${getIndefiniteArticle(type)} ${type} tool.`,
+        convoId: convo._id,
+        isSystemMsg: true,
+      });
+    },
   });
 
   Meteor.methods({
@@ -91,7 +116,7 @@ export default function () {
       check(arguments[0], {
         noteId: String,
         widgetId: String,
-        position: Number
+        position: Number,
       });
 
       const userId = this.userId;
@@ -115,17 +140,17 @@ export default function () {
       const newOrderedWidgets = R.insert(position, widgetId, widgetsLessRemoved);
 
       note.set({
-        widgetIds: newOrderedWidgets
+        widgetIds: newOrderedWidgets,
       });
       note.save();
-    }
+    },
   });
 
   Meteor.methods({
     'widgets.update'({widgetId, data}) {
       check(arguments[0], {
         widgetId: String,
-        data: Object
+        data: Object,
       });
 
       const userId = this.userId;
@@ -149,23 +174,45 @@ export default function () {
       }
 
       const lock = Locks.findOne({widgetId});
+      const user = Meteor.users.findOne(userId);
       if (lock) {
         const timeDiff = new Date() - lock.updatedAt;
-        if (timeDiff >= TIMEOUT || lock.userId === userId) { doUpdate({widget, note, convo, data}); }
+        if (timeDiff >= TIMEOUT || lock.userId === userId) {
+          doUpdate({widget, note, convo, data, user});
+        }
       }
-      else { doUpdate({widget, note, convo, data}); }
-    }
+      else { doUpdate({widget, note, convo, data, user}); }
+    },
   });
 }
 
-function doUpdate({widget, note, convo, data}) {
+function doUpdate({widget, note, convo, data, user}) {
   widget.set({data});
   widget.save();
 
   // To trigger the updated at change
-  note.set({ updatedAt: new Date() });
+  note.set({ updatedAt: new Date(), updatedByUsername: user.displayName });
   note.save();
 
-  convo.set({ updatedAt: new Date() });
-  convo.save();
+  // Send system msg
+  const now = new Date();
+  const timeDiff = now - widget.updatedAt;
+  const minutes = 5;
+
+  if (timeDiff > minutes * 60 * 1000) {
+    Meteor.call('msgs.add.text', {
+      text: `${user.displayName} updated ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
+      convoId: convo._id,
+      isSystemMsg: true,
+    });
+  }
+}
+
+function getIndefiniteArticle(word) {
+  const vowels = [ 'a', 'e', 'i', 'o', 'u' ];
+  const firstLetter = word[0];
+  const firstLetterIsVowel = R.contains(firstLetter, vowels);
+
+  if (firstLetterIsVowel) { return 'an'; }
+  return 'a';
 }

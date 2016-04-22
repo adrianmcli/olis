@@ -52,7 +52,7 @@ export default class NotesHeader extends React.Component {
 
 
   render() {
-    const { addWidget, noteId, updatedAt } = this.props;
+    const { addWidget, noteId, updatedAt, updatedBy } = this.props;
     const iconColor = 'rgba(0,0,0,0.8)';
     return (
       <div className="notes-header">
@@ -64,6 +64,7 @@ export default class NotesHeader extends React.Component {
               formatter={MsgUtils.timestampFormatter}
               title={updatedAt}
             />
+            <span> by {updatedBy}</span>
           </span>
         </div>
         <div className="notes-icon-bar">
