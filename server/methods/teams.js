@@ -393,6 +393,19 @@ export default function () {
   });
 
   Meteor.methods({
+    'teams.setShadow'({teamId, shadowId}) {
+      check(arguments[0], {
+        teamId: String,
+        shadowId: String,
+      });
+
+      const team = Teams.findOne(teamId);
+      team.set({shadowId});
+      team.save();
+    },
+  });
+
+  Meteor.methods({
     'teams.addMembers.withShadow'({teamId, userIds}) {
       check(arguments[0], {
         teamId: String,
