@@ -308,7 +308,7 @@ export default function () {
       newUserIds.forEach(id => Accounts.sendEnrollmentEmail(id));
       existingEmails.forEach(email => {
         Email.send({
-          from: 'Olis <contact.aheadstudios@gmail.com>',
+          from: `Olis <${Meteor.settings.public.contactEmail}>`,
           to: email,
           subject: 'You have been invited to a new Olis Team.',
           text: `${user.displayName} has invited you to join their Olis team ${team.name}!\n\n

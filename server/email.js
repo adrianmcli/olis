@@ -26,7 +26,7 @@ export default function () {
   };
 
   Accounts.emailTemplates.siteName = 'Olis';
-  Accounts.emailTemplates.from = 'Olis <contact.aheadstudios@gmail.com>';
+  Accounts.emailTemplates.from = `Olis <${Meteor.settings.public.contactEmail}>`;
 
   // Enroll account email
   Accounts.emailTemplates.enrollAccount.subject = function (user) {
