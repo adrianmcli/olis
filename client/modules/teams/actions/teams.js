@@ -4,7 +4,7 @@ import EmailValidator from 'email-validator';
 
 export default {
   add({Meteor, LocalState}, name, userIds) {
-    Meteor.call('teams.add', {name, userIds}, (err, teamId) => {
+    Meteor.call('teams.add.withShadow', {name, userIds}, (err, teamId) => {
       if (err) { alert(err); }
       else { TeamUtils.select({Meteor, LocalState}, teamId); }
     });
@@ -15,7 +15,7 @@ export default {
   },
 
   addMembers({Meteor, LocalState}, teamId, userIds) {
-    Meteor.call('teams.addMembers', {teamId, userIds}, (err, res) => {
+    Meteor.call('teams.addMembers.withShadow', {teamId, userIds}, (err, res) => {
       if (err) { alert(err); }
       else { console.log(res); }
     });

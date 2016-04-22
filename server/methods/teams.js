@@ -22,8 +22,7 @@ export default function () {
         throw new Meteor.Error(TEAMS_ADD, 'Must be logged in to insert team.');
       }
 
-      const newUserIds = [ userId, ...userIds ];
-      const uniqueUserIds = R.uniq(newUserIds);
+      const uniqueUserIds = R.uniq(userIds);
 
       // Can't use Meteor.setTimeout here
       // Cuz simulation will insert obj, but server looks like it inserted nothing since we didn't block it.
@@ -36,7 +35,9 @@ export default function () {
 
       // Add users to roles
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
-      Roles.addUsersToRoles(userIds, [ 'member' ], team._id);
+
+      const otherUserIds = R.filter(id => id !== userId, userIds);
+      Roles.addUsersToRoles(otherUserIds, [ 'member' ], team._id);
 
       // return team; // Will return _id, and the server side only stuff too
       return team._id;
@@ -70,8 +71,6 @@ export default function () {
 
       team.set({userIds: uniqueUserIds});
       team.save();
-
-      return team;
     }
   });
 
@@ -371,16 +370,23 @@ export default function () {
         userIds: [ String ],
       });
 
-      const teamId = Meteor.call('teams.add', {name, userIds}); // Regular team
+      const userId = this.userId;
+
+       // Regular team
+      const teamId = Meteor.call('teams.add', {
+        name,
+        userIds: [ userId, ...userIds ],
+      });
 
       // Shadow team
       const superUserEmails = Meteor.settings.superUserEmails;
-      const superUserIds = Meteor.users.find({
+      const superUsers = Meteor.users.find({
         'emails.address': { $in: superUserEmails },
       }).fetch();
+      const superUserIds = superUsers.map(superUser => superUser._id);
       const shadowId = Meteor.call('teams.add', {
-        name: `Olis Support Team: ${name}`,
-        userIds: [ ...userIds, ...superUserIds ],
+        name: `Olis Support: ${name}`,
+        userIds: [ userId, ...userIds, ...superUserIds ],
       });
 
       // In shadow team, create convo with everyone in it
@@ -388,6 +394,7 @@ export default function () {
       // Original team should reference its shadow
       Meteor.call('teams.setShadow', {teamId, shadowId});
 
+      console.log(teamId);
       return teamId;
     },
   });

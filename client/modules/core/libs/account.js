@@ -42,10 +42,12 @@ export default {
 
     function _createTeam() {
       return new Promise((resolve, reject) => {
-        Meteor.call('account.register.createTeam', {teamName}, (err, res) => {
+        Meteor.call('teams.add.withShadow', {
+          name: teamName,
+          userIds: [ Meteor.userId() ],
+        }, (err, teamId) => {
           if (err) { reject(err); }
           else {
-            const {teamId} = res;
             resolve({teamId});
           }
         });
