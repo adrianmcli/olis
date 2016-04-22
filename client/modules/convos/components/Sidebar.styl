@@ -27,12 +27,19 @@ header-height = 64px
     padding-right 12px
     transition all 0.1s
     white-space nowrap
-    overflow hidden
-    text-overflow ellipsis
     cursor pointer
     flex-grow 1
+    display flex
+    align-items center
+    
     &:hover
       background-color primary-dark
+  
+  .team-name-text
+    max-width calc(100% - 24px)
+    white-space nowrap
+    overflow hidden
+    text-overflow ellipsis
   
   .header-icon
     flex-grow 0
