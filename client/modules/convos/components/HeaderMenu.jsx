@@ -172,9 +172,10 @@ class HeaderMenu extends React.Component {
   render() {
     const { teamName } = this.props;
     return (
-      <div style={{flexGrow: '1'}}>
+      <div style={{flexGrow: '1', maxWidth: 'calc(100% - 144px)'}}>
         <div className="team-name" onClick={this.handleOpen.bind(this)}>
-          <span>{teamName}<i className="fa fa-fw fa-caret-down" /></span>
+          <div className="team-name-text" title={teamName}>{teamName}</div>
+          <i className="fa fa-fw fa-caret-down" />
         </div>
         { this.renderDialogs() }
         <Popover
@@ -193,7 +194,7 @@ class HeaderMenu extends React.Component {
 }
 HeaderMenu.timerCloseId = undefined;
 HeaderMenu.defaultProps = {
-  username: 'John Doe',
-  teamName: 'The A Team'
+  username: 'Default Name',
+  teamName: 'Default Team',
 };
 export default HeaderMenu;
