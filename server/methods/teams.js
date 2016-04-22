@@ -2,11 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import {Teams} from '/lib/collections';
 import Team from '/lib/schemas/team';
+import Message from '/lib/schemas/msg';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import R from 'ramda';
 import EmailValidator from 'email-validator';
 import Invite from '/lib/schemas/invite';
+import DraftUtils from '/lib/utils/draft-js';
 
 export default function () {
   const TEAMS_ADD = 'teams.add';
@@ -393,7 +395,7 @@ export default function () {
         userIds: shadowUserIds,
       });
       Teams.update(shadowId, {
-        $set: { info: `Provide your feedback about the app directly to the support team here!` },
+        $set: { info: `Provide any feedback or issues about the app directly to the support team here!` },
       });
 
       // Make super users admin of shadow team, all other users are members
@@ -404,16 +406,28 @@ export default function () {
       Roles.addUsersToRoles(superUserIds, 'admin', shadowId);
 
       // In shadow team, create convo with everyone in it
-      console.log(shadowUserIds);
-      console.log(Teams.findOne(shadowId).userIds);
-      Meteor.call('convos.add', {
-        name: 'Welcome to Olis!',
+      const convoName = 'Welcome to Olis!';
+      const convoId = Meteor.call('convos.add', {
+        name: convoName,
         userIds: shadowUserIds,
         teamId: shadowId,
       });
 
-      // Add a msg from super user
-
+      // Add a msg from super user, can't use Meteor.call,
+      // since it would insert a msg from a regular user that called this
+      const msg = new Message();
+      const superUser = superUsers[0];
+      msg.set({
+        content: DraftUtils.getRawFromHTML(
+          `You can chat with the Olis Support Team here directly. 
+          We'd love to help you with any problems.`
+        ),
+        userId: superUser._id,
+        username: superUser.displayName,
+        convoId,
+        convoName,
+      });
+      msg.save();
 
       // Original team should reference its shadow
       Meteor.call('teams.setShadow', {teamId, shadowId});
@@ -464,6 +478,8 @@ export default function () {
         teamId: team.shadowId,
         userIds,
       });
+
+      // Add members to shadow team default convo
     },
   });
 }
