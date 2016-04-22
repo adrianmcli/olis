@@ -1,11 +1,13 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import R from 'ramda';
 
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import ChatMessageItemContextMenu from './ChatMessageItemContextMenu.jsx';
 import ChatMessageText from './ChatMessageText.jsx';
 import ChatMessageTranslation from './ChatMessageTranslation.jsx';
 import ChatMessageTimestamp from './ChatMessageTimestamp.jsx';
+import ChatMessageImage from './ChatMessageImage';
 
 export default class ChatMessageItem extends React.Component {
 
@@ -64,17 +66,44 @@ export default class ChatMessageItem extends React.Component {
     this.setState({menuOpen: false});
   }
 
+  renderBubbleBody() {
+    const {
+      imageUrl, content,
+      translation, selfAuthor,
+    } = this.props;
+    const { gettingTranslation } = this.state;
+
+    const hasContent = R.keys(content).length > 0;
+    const hasImage = imageUrl ? true : false;
+
+    if (hasImage) {
+      return <ChatMessageImage imageUrl={imageUrl} />;
+    }
+    else if (hasContent) {
+      return (
+        <div>
+          <ChatMessageText content={content} />
+          <ChatMessageTranslation
+            translation={translation}
+            gettingTranslation={gettingTranslation}
+            selfAuthor={selfAuthor}
+          />
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
     const {
       authorName,
       avatarSrc,
-      content,
       timestamp,
       selfAuthor,
       langCode,
-      translation
+      translation,
     } = this.props;
-    const {gettingTranslation, isHovering, menuOpen} = this.state;
+    const {isHovering, menuOpen} = this.state;
     const authorClass = selfAuthor ? ' you' : '';
 
     return (
@@ -92,12 +121,7 @@ export default class ChatMessageItem extends React.Component {
           </div>
           <div className="chat-body">
             <div className="chat-bubble">
-              <ChatMessageText content={content} />
-              <ChatMessageTranslation
-                translation={translation}
-                gettingTranslation={gettingTranslation}
-                selfAuthor={selfAuthor}
-              />
+              {this.renderBubbleBody()}
             </div>
             <ChatMessageTimestamp timestamp={timestamp} />
           </div>
@@ -132,5 +156,5 @@ ChatMessageItem.defaultProps = {
   content: 'Form inputs offer a great opportunity to add some subtle and interesting effects to a web page.',
   timestamp: '5 minutes ago',
   selfAuthor: false,
-  highlight: false
+  highlight: false,
 };

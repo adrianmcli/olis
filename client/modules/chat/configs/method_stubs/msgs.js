@@ -1,21 +1,39 @@
 import {check, Match} from 'meteor/check';
 import R from 'ramda';
+import DraftUtils from '/lib/utils/draft-js';
 
 export default function ({Meteor, Collections, Schemas}) {
   const {Message} = Schemas;
   const {Messages, Convos} = Collections;
 
-  const MSGS_ADD = 'msgs.add';
   Meteor.methods({
-    'msgs.add'({text, convoId, isSystemMsg, content}) {
+    'msgs.add.text'({text, convoId, isSystemMsg}) {
       check(arguments[0], {
         text: String,
         convoId: String,
         isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
-        content: Match.Optional(Match.OneOf(undefined, null, Object))
       });
 
-      const userId = Meteor.userId();
+      Meteor.call('msgs.add', {
+        convoId,
+        isSystemMsg,
+        content: DraftUtils.getRawFromHTML(text),
+        cloudinaryPublicId: undefined,
+      });
+    },
+  });
+
+  const MSGS_ADD = 'msgs.add';
+  Meteor.methods({
+    'msgs.add'({convoId, isSystemMsg, content, cloudinaryPublicId}) {
+      check(arguments[0], {
+        convoId: String,
+        isSystemMsg: Match.Optional(Match.OneOf(undefined, null, Boolean)),
+        content: Match.Optional(Match.OneOf(undefined, null, Object)),
+        cloudinaryPublicId: Match.Optional(Match.OneOf(undefined, null, String)),
+      });
+
+      const userId = this.userId;
       if (!userId) {
         throw new Meteor.Error(MSGS_ADD, 'Must be logged in to insert msgs.');
       }
@@ -31,13 +49,12 @@ export default function ({Meteor, Collections, Schemas}) {
 
       const msg = new Message();
       msg.set({
-        text,
         userId,
         username: user.displayName,
         convoId,
         convoName: convo.name,
         isSystemMsg,
-        content
+        content,
       });
       msg.save();
 
@@ -51,12 +68,18 @@ export default function ({Meteor, Collections, Schemas}) {
       const recentUsernames = recentUsers.map(recentUser => recentUser.displayName);
 
       const getConvoFields = () => {
+        const hasImage = msg.imageUrl ? true : false;
+        const hasContent = R.keys(msg.content).length > 0;
+
+        let lastMsgText = '';
+        if (hasImage) { lastMsgText = msg.imageUrl; }
+        else if (hasContent) { lastMsgText = msg.getPlainText(); }
+
         const baseFields = {
-          lastMsgText: text,
+          lastMsgText,
           lastMsgCreatedAt: msg.createdAt,
           recentUserIds,
           recentUsernames,
-          numMsgs: Messages.find({convoId}).count() // SERVER ONLY
         };
 
         if (Messages.find({convoId}).count() === 1) {
@@ -68,7 +91,6 @@ export default function ({Meteor, Collections, Schemas}) {
 
       convo.set(getConvoFields());
       convo.save();
-
-    }
+    },
   });
 }

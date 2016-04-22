@@ -116,7 +116,7 @@ export default class ChatContainer extends React.Component {
 
   renderMsgs() {
     const {
-      msgs, userId, translations, langCode, convoUsers, translate, searchMsgId
+      msgs, userId, translations, langCode, convoUsers, translate, searchMsgId,
     } = this.props;
 
     return msgs.map(msg => {
@@ -132,7 +132,7 @@ export default class ChatContainer extends React.Component {
             msgId={msg._id}
             authorName={authorName}
             avatarSrc={avatarSrc}
-            content={msg.text}
+            content={msg.getPlainText()}
             timestamp={msg.createdAt}
             selfAuthor={msg.userId === userId}
             translation={translations[msg._id] ? translations[msg._id].text : undefined}
@@ -157,6 +157,7 @@ export default class ChatContainer extends React.Component {
           translate={translate}
           highlight={highlight}
           ref={x => this.messageRefs[msg._id] = x}
+          imageUrl={msg.imageUrl}
         />
       );
     });
@@ -172,7 +173,8 @@ export default class ChatContainer extends React.Component {
       starred,
       addMsg,
       showLoadOldBtn,
-      showLoadOldBtnSearch, showLoadNewBtnSearch
+      showLoadOldBtnSearch, showLoadNewBtnSearch,
+      uploadImage,
     } = this.props;
 
     const loadMoreBtn = (onClick) => (
@@ -201,12 +203,12 @@ export default class ChatContainer extends React.Component {
           </GeminiScrollbar>
         </div>
 
-        <ChatInput addMsg={addMsg} />
+        <ChatInput addMsg={addMsg} uploadImage={uploadImage} />
       </div>
     );
   }
 }
 
 ChatContainer.defaultProps = {
-  msgs: []
+  msgs: [],
 };

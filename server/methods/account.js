@@ -15,7 +15,7 @@ export default function () {
   Meteor.methods({
     'account.register.createTeam'({teamName}) {
       check(arguments[0], {
-        teamName: String
+        teamName: String,
       });
 
       // Account creation called from client side, so user is logged in already.
@@ -28,20 +28,20 @@ export default function () {
       const team = new Team();
       team.set({
         name: teamName,
-        userIds: [ userId ]
+        userIds: [ userId ],
       });
       team.save();
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
 
       return {teamId: team._id};
-    }
+    },
   });
 
   const ACCOUNT_REGISTER_TEAM_CONVO = 'account.register.createTeamAndConvo';
   Meteor.methods({
     'account.register.createTeamAndConvo'({teamName}) {
       check(arguments[0], {
-        teamName: String
+        teamName: String,
       });
 
       // Account creation called from client side, so user is logged in already.
@@ -55,7 +55,7 @@ export default function () {
       const team = new Team();
       team.set({
         name: teamName,
-        userIds: [ userId ]
+        userIds: [ userId ],
       });
       team.save();
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
@@ -67,7 +67,7 @@ export default function () {
       );
 
       return {teamId: team._id, convoId};
-    }
+    },
   });
 
   const ACCOUNT_REGISTER_NO_PWD = 'account.register.noPassword';
@@ -90,21 +90,21 @@ export default function () {
       const team = new Team();
       team.set({
         name: teamName,
-        userIds: [ userId ]
+        userIds: [ userId ],
       });
       team.save();
       Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
       Accounts.sendResetPasswordEmail(userId);
 
       return {password, teamId: team._id};
-    }
+    },
   });
 
   const ACCOUNT_LAST_TIME_CONVO = 'account.setLastTimeInConvo';
   Meteor.methods({
     'account.setLastTimeInConvo'({convoId}) {
       check(arguments[0], {
-        convoId: String
+        convoId: String,
       });
 
       const userId = this.userId;
@@ -122,18 +122,18 @@ export default function () {
       let setObj = {};
       setObj[`lastTimeInConvo.${convoId}`] = {
         timestamp: new Date(),
-        numMsgs: Messages.find({convoId}).count()
+        numMsgs: Messages.find({convoId}).count(),
       };
       const modifier = { $set: setObj };
       Meteor.users.update(userId, modifier);
-    }
+    },
   });
 
   const ACCOUNT_LAST_TIME_TEAM = 'account.setLastTimeInTeam';
   Meteor.methods({
     'account.setLastTimeInTeam'({teamId}) {
       check(arguments[0], {
-        teamId: String
+        teamId: String,
       });
 
       const userId = this.userId;
@@ -152,14 +152,14 @@ export default function () {
       setObj[`lastTimeInTeam.${teamId}`] = new Date();
       const modifier = { $set: setObj };
       Meteor.users.update(userId, modifier);
-    }
+    },
   });
 
   const ACCOUNT_VALIDATE_EMAIL = 'account.validateEmail';
   Meteor.methods({
     'account.validateEmail'({email}) {
       check(arguments[0], {
-        email: String
+        email: String,
       });
       if (!EmailValidator.validate(email)) {
         throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, 'Please enter a proper email.');
@@ -169,14 +169,14 @@ export default function () {
         throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL,
           `The email ${email} is taken. Please enter another one.`);
       }
-    }
+    },
   });
 
   const ACCOUNT_VALIDATE_USERNAME = 'account.validateUsername';
   Meteor.methods({
     'account.validateUsername'({username}) {
       check(arguments[0], {
-        username: String
+        username: String,
       });
 
       const nameTrim = username.trim();
@@ -189,28 +189,28 @@ export default function () {
         throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME,
           `The username ${username} is taken. Please enter another one.`);
       }
-    }
+    },
   });
 
   const ACCOUNT_VALIDATE_TEAMNAME = 'account.validateTeamName';
   Meteor.methods({
     'account.validateTeamName'({teamName}) {
       check(arguments[0], {
-        teamName: String
+        teamName: String,
       });
 
       const nameTrim = teamName.trim();
       if (nameTrim === '') {
         throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, 'Please enter a non-blank username.');
       }
-    }
+    },
   });
 
   const ACCOUNT_VALIDATE_PASSWORD = 'account.validatePassword';
   Meteor.methods({
     'account.validatePassword'({password}) {
       check(arguments[0], {
-        password: String
+        password: String,
       });
 
       const trimPwd = password.trim();
@@ -219,7 +219,7 @@ export default function () {
       }
 
       // Other things we want to validate...
-    }
+    },
   });
 
   const ACCOUNT_FIND_MY_TEAM = 'account.findMyTeam';
@@ -239,17 +239,17 @@ export default function () {
       }
 
       Meteor.users.update(existingUser._id, {
-        $set: {findingMyTeam: true}
+        $set: {findingMyTeam: true},
       });
       Accounts.sendEnrollmentEmail(existingUser._id);
-    }
+    },
   });
 
   const ACCOUNT_PROFILE_PIC = 'account.addProfilePic';
   Meteor.methods({
     'account.addProfilePic'({cloudinaryPublicId}) {
       check(arguments[0], {
-        cloudinaryPublicId: String
+        cloudinaryPublicId: String,
       });
 
       const userId = this.userId;
@@ -266,19 +266,19 @@ export default function () {
         width: 100,
         height: 100,
         quality: 80,
-        sign_url: true
+        sign_url: true,
       };
       Meteor.users.update(userId, {
-        $set: {profileImageUrl: Cloudinary.url(cloudinaryPublicId, transform)}
+        $set: {profileImageUrl: Cloudinary.url(cloudinaryPublicId, transform)},
       });
-    }
+    },
   });
 
   const ACCOUNT_SET_USERNAME = 'account.setUsername';
   Meteor.methods({
     'account.setUsername'({username}) {
       check(arguments[0], {
-        username: String
+        username: String,
       });
 
       const userId = this.userId;
@@ -287,14 +287,14 @@ export default function () {
       }
       Meteor.call('account.validateUsername', {username});
       Accounts.setUsername(userId, username);
-    }
+    },
   });
 
   const ACCOUNT_SET_EMAIL = 'account.setEmail';
   Meteor.methods({
     'account.setEmail'({email}) {
       check(arguments[0], {
-        email: String
+        email: String,
       });
 
       const userId = this.userId;
@@ -305,14 +305,14 @@ export default function () {
       Meteor.call('account.validateEmail', {email});
       Accounts.removeEmail(userId, user.emails[0].address);
       Accounts.addEmail(userId, email); // This does not check for proper email form, only existence in DB
-    }
+    },
   });
 
   const ACCOUNT_SET_TRANSLATION_LANG = 'account.setTranslationLanguage';
   Meteor.methods({
     'account.setTranslationLanguage'({langCode}) {
       check(arguments[0], {
-        langCode: String
+        langCode: String,
       });
 
       const userId = this.userId;
@@ -321,16 +321,16 @@ export default function () {
           'Must be logged in to change translation language.');
       }
       Meteor.users.update(userId, {
-        $set: {translationLangCode: langCode}
+        $set: {translationLangCode: langCode},
       });
-    }
+    },
   });
 
   const ACCOUNT_SET_MUTE_NOTIFICATION_SOUND = 'account.setMuteNotificationSound';
   Meteor.methods({
     'account.setMuteNotificationSound'({mute}) {
       check(arguments[0], {
-        mute: Boolean
+        mute: Boolean,
       });
 
       const userId = this.userId;
@@ -339,9 +339,9 @@ export default function () {
       }
 
       Meteor.users.update(userId, {
-        $set: { muteNotificationSound: mute}
+        $set: { muteNotificationSound: mute},
       });
-    }
+    },
   });
 
   // SERVER ONLY
@@ -350,7 +350,7 @@ export default function () {
     'account.removeFromTeam'({removeUserId, teamId}) {
       check(arguments[0], {
         removeUserId: String,
-        teamId: String
+        teamId: String,
       });
 
       const userId = this.userId;
@@ -368,7 +368,7 @@ export default function () {
       const convos = Convos.find({teamId}).fetch();
       const convoIdsToUnset = convos.reduce((prev, curr) => {
         const convo = {
-          [`lastTimeInConvo.${curr._id}`]: ''
+          [`lastTimeInConvo.${curr._id}`]: '',
         };
         return R.merge(prev, convo);
       }, {});
@@ -379,9 +379,9 @@ export default function () {
       }, convoIdsToUnset);
 
       Meteor.users.update(removeUserId, {
-        $unset: unsetObj
+        $unset: unsetObj,
       });
-    }
+    },
   });
 
   // SERVER ONLY
@@ -389,7 +389,7 @@ export default function () {
   Meteor.methods({
     'account.forgotPassword'({email}) {
       check(arguments[0], {
-        email: String
+        email: String,
       });
 
       if (!EmailValidator.validate(email)) {
@@ -401,14 +401,14 @@ export default function () {
           `No user found with email: ${email}. Create an account.`);
       }
       Accounts.sendResetPasswordEmail(existingUser._id);
-    }
+    },
   });
 
   const ACCOUNT_DISPLAY_NAME = 'account.setDisplayName';
   Meteor.methods({
     'account.setDisplayName'({displayName}) {
       check(arguments[0], {
-        displayName: String
+        displayName: String,
       });
 
       const userId = this.userId;
@@ -417,8 +417,8 @@ export default function () {
       }
 
       Meteor.users.update(userId, {
-        $set: { displayName }
+        $set: { displayName },
       });
-    }
+    },
   });
 }

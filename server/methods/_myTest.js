@@ -37,7 +37,7 @@ export default function () {
       check(num, Number);
       const convoId = Meteor.call('convos.add', {name: 'fake convo', userIds: [], teamId});
       for (let i = 1; i <= num; i++) {
-        Meteor.call('msgs.add', {text: `${i}`, convoId});
+        Meteor.call('msgs.add.text', {text: `${i}`, convoId});
       }
     },
   });

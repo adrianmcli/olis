@@ -12,7 +12,7 @@ export default {
     // With their view at the newest msg.
     if (msgId) { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
 
-    Meteor.call('msgs.add', {text: 'dummy text', content, convoId}, err => {
+    Meteor.call('msgs.add', {content, convoId}, err => {
       if (err) { alert(err); }
     });
   },
