@@ -63,9 +63,9 @@ export default function () {
     }
 
     const userFields = {
-      username: 1,
       [`roles.${teamId}`]: 1,
-      emails: 1
+      emails: 1,
+      displayName: 1,
     };
     const userSelector = { // Have to do it this way since {_id: {$in: team.userIds}} isn't reactive
       [`roles.${teamId}`]: {$exists: true}

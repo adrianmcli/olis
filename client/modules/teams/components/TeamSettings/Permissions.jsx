@@ -25,7 +25,7 @@ export default class Permissions extends React.Component {
     const userRowItems = users.map(user => {
       const {
         _id,
-        username,
+        displayName,
         profileImageUrl,
         roles,
         emails
@@ -41,13 +41,13 @@ export default class Permissions extends React.Component {
         >
           <TableRowColumn style={{width: '72px', lineHeight: '0'}}>
             <AvatarWithDefault
-              username={username}
+              username={displayName}
               avatarSrc={profileImageUrl}
               pointer={false}
             />
           </TableRowColumn>
           <TableRowColumn>
-            {username}
+            {displayName}
           </TableRowColumn>
           <TableRowColumn>
             {emails[0].address}
