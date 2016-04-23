@@ -8,7 +8,7 @@ const depsMapper = (context, actions) => ({
   selectInvite: actions.invites.select
 });
 
-export const composer = ({context}, onData) => {
+export const composer = ({context, selectInvite}, onData) => {
   const {Meteor, Collections, FlowRouter} = context();
 
   if (Meteor.subscribe('invites.list').ready()) {
@@ -21,8 +21,9 @@ export const composer = ({context}, onData) => {
       if (!R.isEmpty(invites)) {
         const teamId = invites[0].teamId;
         FlowRouter.go(`/team/${teamId}`);
+        selectInvite(teamId);
       }
-      
+
       // onData(null, {invites, teams});
     }
   }
