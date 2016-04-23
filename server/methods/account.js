@@ -446,7 +446,16 @@ export default function () {
     },
   });
 
-  const ACCOUNT_VALIDATE_INVITE_EMAIL = 'account.validate.inviteEmail';
+  Meteor.methods({
+    'account.validate.inviteEmails'({emails}) {
+      check(arguments[0], {
+        emails: [ String ],
+      });
+
+      emails.forEach(email => Meteor.call('account.validate.inviteEmail', { email }));
+    },
+  });
+
   Meteor.methods({
     'account.validate.inviteEmail'({email}) {
       check(arguments[0], {
@@ -455,6 +464,18 @@ export default function () {
 
       Meteor.call('account.isStringEmail', {email});
       Meteor.call('account.isEmailTaken', {email});
+    },
+  });
+
+  Meteor.methods({
+    'account.validate.registerEmail'({email}) {
+      check(arguments[0], {
+        email: String,
+      });
+
+      Meteor.call('account.isStringEmail', {email});
+      Meteor.call('account.isEmailTaken', {email});
+      Meteor.call('register.isEmailOnWhitelist', {email});
     },
   });
 }

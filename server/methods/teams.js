@@ -240,7 +240,7 @@ export default function () {
     'teams.invite'({inviteEmails, teamId}) {
       check(arguments[0], {
         inviteEmails: [ String ],
-        teamId: String
+        teamId: String,
       });
 
       const userId = this.userId;
@@ -257,7 +257,7 @@ export default function () {
       }
 
       const nonBlank = R.filter(email => email !== '', inviteEmails);
-      Meteor.call('account.validateEmails', {emails: nonBlank});
+      Meteor.call('account.validate.inviteEmails', {emails: nonBlank});
 
       const validatedEmails = R.filter(email => EmailValidator.validate(email), nonBlank);
 
