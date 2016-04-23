@@ -53,14 +53,14 @@ export default {
   },
 
   setRegisterUsername({Meteor, LocalState, FlowRouter}, username, nextPath) {
-    Meteor.call('account.validateUsername', {username}, (err, res) => {
-      if (err) { alert(err); }
-      else {
-        console.log(res);
+    // Meteor.call('account.validateUsername', {username}, (err, res) => {
+      // if (err) { alert(err); }
+      // else {
+        // console.log(res);
         LocalState.set('register.username', username);
         if (nextPath) { FlowRouter.go(nextPath); }
-      }
-    });
+      // }
+    // });
   },
 
   setRegisterPassword({Meteor, LocalState, FlowRouter}, password1, password2, nextPath) {
