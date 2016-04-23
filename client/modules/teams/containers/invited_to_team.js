@@ -9,7 +9,7 @@ const depsMapper = (context, actions) => ({
 });
 
 export const composer = ({context}, onData) => {
-  const {Meteor, Collections} = context();
+  const {Meteor, Collections, FlowRouter} = context();
 
   if (Meteor.subscribe('invites.list').ready()) {
     const invites = Collections.Invites.find({userId: Meteor.userId()}).fetch();
@@ -18,7 +18,12 @@ export const composer = ({context}, onData) => {
       const teamsArr = Collections.Teams.find({userIds: Meteor.userId()}).fetch();
       const teams = R.zipObj(teamsArr.map(team => team._id), teamsArr);
 
-      onData(null, {invites, teams});
+      if (!R.isEmpty(invites)) {
+        const teamId = invites[0].teamId;
+        FlowRouter.go(`/team/${teamId}`);
+      }
+      
+      // onData(null, {invites, teams});
     }
   }
 };
