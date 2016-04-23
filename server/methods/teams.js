@@ -366,6 +366,7 @@ export default function () {
     }
   });
 
+  // SERVER ONLY
   Meteor.methods({
     'teams.add.withShadow'({name, userIds}) {
       check(arguments[0], {
@@ -456,6 +457,7 @@ export default function () {
     },
   });
 
+  // SERVER ONLY
   Meteor.methods({
     'teams.invite.withShadow'({inviteEmails, teamId}) {
       check(arguments[0], {

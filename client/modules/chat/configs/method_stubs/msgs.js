@@ -1,10 +1,9 @@
 import {check, Match} from 'meteor/check';
-import R from 'ramda';
 import DraftUtils from '/lib/utils/draft-js';
 
 export default function ({Meteor, Collections, Schemas}) {
   const {Message} = Schemas;
-  const {Messages, Convos} = Collections;
+  const {Convos} = Collections;
 
   Meteor.methods({
     'msgs.add.text'({text, convoId, isSystemMsg}) {
@@ -57,40 +56,6 @@ export default function ({Meteor, Collections, Schemas}) {
         content,
       });
       msg.save();
-
-      // Update convo with last msg text
-      const uniqueRecentUserIds = R.uniq(convo.recentUserIds);
-      const oldRecentUserIds = uniqueRecentUserIds.length >= 2 ?
-        R.takeLast(2, uniqueRecentUserIds) : R.takeLast(2, convo.userIds);
-
-      const recentUserIds = R.takeLast(2, R.uniq([ ...oldRecentUserIds, userId ]));
-      const recentUsers = Meteor.users.find({_id: {$in: recentUserIds}});
-      const recentUsernames = recentUsers.map(recentUser => recentUser.displayName);
-
-      const getConvoFields = () => {
-        const hasImage = msg.imageUrl ? true : false;
-        const hasContent = R.keys(msg.content).length > 0;
-
-        let lastMsgText = '';
-        if (hasImage) { lastMsgText = msg.imageUrl; }
-        else if (hasContent) { lastMsgText = msg.getPlainText(); }
-
-        const baseFields = {
-          lastMsgText,
-          lastMsgCreatedAt: msg.createdAt,
-          recentUserIds,
-          recentUsernames,
-        };
-
-        if (Messages.find({convoId}).count() === 1) {
-          const firstMsgCreatedAt = msg.createdAt;
-          return R.merge(baseFields, {firstMsgCreatedAt});
-        }
-        return baseFields;
-      };
-
-      convo.set(getConvoFields());
-      convo.save();
     },
   });
 }
