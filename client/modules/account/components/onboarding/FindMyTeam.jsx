@@ -17,6 +17,7 @@ export default class FindMyTeam extends React.Component {
   submitHandler() {
     const {submitEmail} = this.props;
     const email = this.input.getValue();
+    this.setState({submitted: true});
     submitEmail(email, () => this.setState({submitted: true}));
   }
 

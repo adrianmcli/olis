@@ -21,6 +21,7 @@ export default class ForgotPassword extends React.Component {
   handleSubmit() {
     const {submitForgotPasswordEmail} = this.props;
     const email = this.email.getValue();
+    this.onEmailSent();
     submitForgotPasswordEmail(email, this.onEmailSent);
   }
 
