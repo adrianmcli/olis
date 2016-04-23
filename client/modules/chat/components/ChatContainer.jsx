@@ -10,6 +10,8 @@ import ChatMessageItem from './ChatMessageItem.jsx';
 import SystemMessageItem from './SystemMessageItem.jsx';
 import ChatHeader from './ChatHeader.jsx';
 
+import EmptyIcon from 'material-ui/lib/svg-icons/communication/chat';
+
 export default class ChatContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -182,6 +184,46 @@ export default class ChatContainer extends React.Component {
     });
   }
 
+  renderEmpty() {
+    const colors = {
+      foreground: '#999',
+      background: '#EEE',
+    };
+    const styles = {
+      container: {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)',
+      },
+      content: {
+        width: '80%',
+        textAlign: 'center',
+        color: colors.foreground,
+      },
+      icon: {
+        height: '72px',
+        width: '72px',
+        display: 'block',
+        margin: 'auto',
+      },
+    };
+    return (
+      <div style={styles.container}>
+        <div style={styles.content}>
+          <EmptyIcon style={styles.icon} color={colors.foreground}/>
+          <h1>Looks a little empty!</h1>
+          <p>Start typing in the box below to begin chatting, or add one of our useful tools on the right by clicking the plus symbol at the upper-right corner.</p>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const {
       msgs,
@@ -214,7 +256,7 @@ export default class ChatContainer extends React.Component {
               {showLoadOldBtnSearch ?
                 loadMoreBtn(loadMoreOlderSearch.bind(null, msgs[0]._id)) : null}
 
-              { this.renderMsgs() }
+              { msgs.length ? this.renderMsgs() : this.renderEmpty() }
 
               {showLoadNewBtnSearch ?
                 loadMoreBtn(loadMoreNewerSearch.bind(null, R.last(msgs)._id)) : null}
