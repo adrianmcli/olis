@@ -474,26 +474,28 @@ export default function () {
 
       Meteor.call('teams.invite', {inviteEmails, teamId}); // Regular team
 
-      // Add members to shadow team, don't send invite
       const team = Teams.findOne(teamId);
-      const users = Meteor.users.find({
-        'emails.address': { $in: inviteEmails },
-      }).fetch();
-      const userIds = users.map(invitee => invitee._id);
-      Meteor.call('teams.addMembers', {
-        teamId: team.shadowId,
-        userIds,
-      });
+      if (team.shadowId) {
+        // Add members to shadow team, don't send invite
+        const users = Meteor.users.find({
+          'emails.address': { $in: inviteEmails },
+        }).fetch();
+        const userIds = users.map(invitee => invitee._id);
+        Meteor.call('teams.addMembers', {
+          teamId: team.shadowId,
+          userIds,
+        });
 
-      // Add members to shadow team default convo
-      const selector = { teamId: team.shadowId };
-      const options = {
-        sort: [ [ 'createdAt', 'asc' ] ],
-        limit: 1,
-      };
-      const convos = Convos.find(selector, options).fetch();
-      const firstConvo = convos[0];
-      Meteor.call('convos.addMembers', { convoId: firstConvo._id, userIds });
+        // Add members to shadow team default convo
+        const selector = { teamId: team.shadowId };
+        const options = {
+          sort: [ [ 'createdAt', 'asc' ] ],
+          limit: 1,
+        };
+        const convos = Convos.find(selector, options).fetch();
+        const firstConvo = convos[0];
+        Meteor.call('convos.addMembers', { convoId: firstConvo._id, userIds });
+      }
     },
   });
 }
