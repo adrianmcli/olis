@@ -65,6 +65,7 @@ export default function () {
         convoName: convo.name,
         isSystemMsg,
         content,
+        text: DraftUtils.getPlainTextFromRaw(content),
         imageUrl: Cloudinary.url(cloudinaryPublicId, transform), // SERVER ONLY
       });
       msg.save();

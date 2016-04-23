@@ -13,7 +13,9 @@ export default function () {
       const betaWhitelistDomains = Meteor.settings.betaWhitelistDomains;
       const split = email.split('@');
       const domain = split[1];
-      const isAllowed = R.contains(domain, betaWhitelistDomains);
+      const domainIsAllowed = R.contains(domain, betaWhitelistDomains);
+      const emailIsAllowed = R.contains(email, Meteor.settings.whitelistEmails);
+      const isAllowed = domainIsAllowed || emailIsAllowed;
 
       if (!isAllowed) {
         throw new Meteor.Error(IS_EMAIL_WHITELIST,

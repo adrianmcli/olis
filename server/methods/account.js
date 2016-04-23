@@ -286,22 +286,6 @@ export default function () {
     },
   });
 
-  const ACCOUNT_SET_USERNAME = 'account.setUsername';
-  Meteor.methods({
-    'account.setUsername'({username}) {
-      check(arguments[0], {
-        username: String,
-      });
-
-      const userId = this.userId;
-      if (!userId) {
-        throw new Meteor.Error(ACCOUNT_SET_USERNAME, 'Must be logged in to change username.');
-      }
-      Meteor.call('account.validateUsername', {username});
-      Accounts.setUsername(userId, username);
-    },
-  });
-
   const ACCOUNT_SET_EMAIL = 'account.setEmail';
   Meteor.methods({
     'account.setEmail'({email}) {

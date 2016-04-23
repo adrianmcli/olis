@@ -3,7 +3,7 @@
   "servers": [
     {
       "host": "olisapp.com",
-      "username": "root",
+      "username": "hl",
       // "password": "password",
       // or pem file (ssh based authentication)
       // WARNING: Keys protected by a passphrase are not supported
@@ -43,6 +43,15 @@
 
   "buildOptions": {
     // build with the debug mode on, will show as localhost in Meteor.absoluteUrl()
-    "debug": true
+    "debug": false
+  },
+
+  // If you do the following link:
+  // https://medium.com/@timbrandin/host-your-own-secure-galaxy-with-let-s-encrypt-mongodb-and-meteor-up-mup-b657211d1268#.gcfi0nxnb
+  // Comment out the ssl field below, since mupx will try to setup its own nginx on port 80.
+  "ssl": {
+    "certificate": "./fullchain.pem", // this is a bundle of certificates
+    "key": "./privkey.pem", // this is the private key of the certificate
+    "port": 443 // 443 is the default value and it's the standard HTTPS port
   }  
 }

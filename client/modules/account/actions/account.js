@@ -114,7 +114,7 @@ export default {
     const token = FlowRouter.getParam('token');
 
     const _setUsername = () => {
-      Meteor.call('account.setUsername', {username}, (err) => {
+      Meteor.call('account.setDisplayName', {displayName: username}, (err) => {
         if (err) { alert(err); }
       });
     };
