@@ -256,7 +256,10 @@ export default function () {
         throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
       }
 
-      const validatedEmails = R.filter(email => EmailValidator.validate(email), inviteEmails);
+      const nonBlank = R.filter(email => email !== '', inviteEmails);
+      Meteor.call('account.validateEmails', {emails: nonBlank});
+
+      const validatedEmails = R.filter(email => EmailValidator.validate(email), nonBlank);
 
       const existingEmails = R.filter(email => {
         const existingUser = Accounts.findUserByEmail(email);
