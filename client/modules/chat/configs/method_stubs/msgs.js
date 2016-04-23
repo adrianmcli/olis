@@ -54,6 +54,7 @@ export default function ({Meteor, Collections, Schemas}) {
         convoName: convo.name,
         isSystemMsg,
         content,
+        text: DraftUtils.getPlainTextFromRaw(content),
       });
       msg.save();
     },
