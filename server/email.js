@@ -42,15 +42,17 @@ export default function () {
     const team = Teams.findOne(R.keys(user.roles)[0]);
 
     const append =
-      `In order to setup your account, click the link below:\r\n
-      ${url}`;
+      'In order to setup your account, click the link below:\r\n' +
+      url;
 
     // Got invited to a team
     if (user.invitedBy) {
       Meteor.users.update(user._id, {
         $unset: {invitedBy: ''},
       });
-      const text = `${user.invitedBy} has invited you to join ${team.name}, their team on Olis.\r\n${append}`;
+      const text =
+        user.invitedBy + 'has invited you to join' + team.name + ', their team on Olis.\r\n' +
+        append;
       return text;
     }
 
@@ -62,13 +64,13 @@ export default function () {
 
       const teams = Teams.find({userIds: user._id}).fetch();
       const teamsList = teams.reduce((prev, curr) => {
-        if (prev === '') { return `- ${curr.name}\r\n`; }
-        return `${prev}\r\n- ${curr.name}\r\n`;
+        if (prev === '') { return '-' + curr.name + '\r\n'; }
+        return prev + '\r\n' + '-' + curr.name + '\r\n';
       }, '');
 
-      const text = `Here are a list of the teams you belong to:\r\n
-        ${teamsList}\r\n
-        ${append}`;
+      const text = 'Here are a list of the teams you belong to:\r\n' +
+        teamsList + '\r\n' +
+        append;
       return text;
     }
     return append;
@@ -90,18 +92,20 @@ export default function () {
     // Register without a password
     if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
       Meteor.users.update(user._id, {
-        $unset: {isRegistering: ''}
+        $unset: {isRegistering: ''},
       });
 
-      const text = `To setup your password so that you can log into your account, click the link below:\r\n
-        ${url}`;
+      const text =
+        'To setup your password so that you can log into your account, click the link below:\r\n' +
+        url;
       return text;
     }
 
     // Forgot password
-    const text = `If you did not recently request to reset your password, you can ignore this email.\r\n
-      To reset your password, click the link below:\r\n
-      ${url}`;
+    const text =
+      'If you did not recently request to reset your password, you can ignore this email.\r\n' +
+      'To reset your password, click the link below:\r\n' +
+      url;
     return text;
   };
 }
