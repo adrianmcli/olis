@@ -152,7 +152,7 @@ export default class EditorWidget extends React.Component {
               onToggle={this.toggleBlockType}
             />
           </div> : null}
-        <div className={className}>
+        <div className={className} onClick={this.handleEditorClick}>
           <Editor
             editorState={this.state.editorState}
             onChange={this.onChange}
