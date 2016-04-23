@@ -93,22 +93,15 @@ export default {
   },
 
   setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails, callback) {
-    try {
-      inviteEmails.forEach(email => {
-        if (!EmailValidator.validate(email) && !R.isEmpty(email)) {
-          throw new Meteor.Error('actions.account.setRegisterInviteEmails', 'Enter proper emails.');
-        }
-      });
+    const nonBlanks = R.filter(email => email !== '', inviteEmails);
 
-      Meteor.call('account.validateEmails', {emails: inviteEmails}, err => {
-        if (err) { alert(err); }
-        else {
-          LocalState.set('register.inviteEmails', inviteEmails);
-          if (callback) { callback(); }
-        }
-      });
-    }
-    catch (e) { alert(e); }
+    Meteor.call('account.validateEmails', {emails: nonBlanks}, err => {
+      if (err) { alert(err); }
+      else {
+        LocalState.set('register.inviteEmails', nonBlanks);
+        if (callback) { callback(); }
+      }
+    });
   },
 
   finishRegistration({Meteor, LocalState, FlowRouter}) {

@@ -172,7 +172,7 @@ export default function () {
         email: String,
       });
       if (!EmailValidator.validate(email)) {
-        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, 'Please enter a proper email.');
+        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, `${email} is not a proper email.`);
       }
       const user = Accounts.findUserByEmail(email);
       if (user) {
