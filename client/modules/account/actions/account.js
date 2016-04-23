@@ -45,7 +45,6 @@ export default {
     Meteor.call('account.validateEmail', {email}, (err, res) => {
       if (err) { alert(err); }
       else {
-        console.log(res);
         LocalState.set('register.email', email);
         if (nextPath) { FlowRouter.go(nextPath); }
       }
@@ -57,8 +56,8 @@ export default {
       // if (err) { alert(err); }
       // else {
         // console.log(res);
-        LocalState.set('register.username', username);
-        if (nextPath) { FlowRouter.go(nextPath); }
+    LocalState.set('register.username', username);
+    if (nextPath) { FlowRouter.go(nextPath); }
       // }
     // });
   },
@@ -101,8 +100,13 @@ export default {
         }
       });
 
-      LocalState.set('register.inviteEmails', inviteEmails);
-      if (callback) { callback(); }
+      Meteor.call('account.validateEmails', {emails: inviteEmails}, err => {
+        if (err) { alert(err); }
+        else {
+          LocalState.set('register.inviteEmails', inviteEmails);
+          if (callback) { callback(); }
+        }
+      });
     }
     catch (e) { alert(e); }
   },
@@ -178,7 +182,6 @@ export default {
       Meteor.call('account.findMyTeam', {email}, (err, res) => {
         if (err) { alert(err); }
         else {
-          console.log(res);
           callback();
         }
       });
@@ -257,5 +260,5 @@ export default {
     Meteor.call('account.setMuteNotificationSound', {mute}, err => {
       if (err) { alert(err); }
     });
-  }
+  },
 };

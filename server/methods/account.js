@@ -155,6 +155,16 @@ export default function () {
     },
   });
 
+  Meteor.methods({
+    'account.validateEmails'({emails}) {
+      check(arguments[0], {
+        emails: [ String ],
+      });
+
+      emails.forEach(email => Meteor.call('account.validateEmail', { email }));
+    },
+  });
+
   const ACCOUNT_VALIDATE_EMAIL = 'account.validateEmail';
   Meteor.methods({
     'account.validateEmail'({email}) {
