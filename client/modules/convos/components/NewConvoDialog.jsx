@@ -60,7 +60,8 @@ export default class NewConvoDialog extends React.Component {
 
   handlePickerSubmit() {
     const {usersToAdd} = this.props;
-    if (usersToAdd.length === 1) { this.submitAndClose(); }
+    if (usersToAdd.length === 0) { return; }
+    else if (usersToAdd.length === 1) { this.submitAndClose(); }
     else { this.nextStage(); }
   }
 

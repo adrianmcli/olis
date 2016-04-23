@@ -57,7 +57,7 @@ export default class NotesHeader extends React.Component {
     return (
       <div className="notes-header">
         <div className="notes-status">
-          Last Updated:
+          Last Updated:&nbsp;
           <span>
             <TimeAgo
               date={updatedAt}
