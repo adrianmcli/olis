@@ -103,7 +103,7 @@ export default function () {
 
     // Forgot password
     const text =
-      'If you did not recently request to reset your password, you can ignore this email.\r\n' +
+      'If you did not recently request to reset your password, you can ignore this email.\r\n\r\n' +
       'To reset your password, click the link below:\r\n' +
       url;
     return text;
