@@ -57,22 +57,25 @@ export default function () {
     const widgetId = widget._id;
     const note = Notes.findOne(widget.noteId);
 
-    // Update note's widget array
-    const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
-    const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
-    const user = Meteor.users.findOne(userId);
-    note.set({
-      widgetIds: newWidgets,
-      updatedByUsername: user.displayName,
-    });
-    note.save();
+    if (note) {
+      // Update note's widget array
+      const toDeleteIndex = R.findIndex(id => id === widgetId, note.widgetIds);
+      const newWidgets = R.remove(toDeleteIndex, 1, note.widgetIds);
+      const user = Meteor.users.findOne(userId);
+      note.set({
+        widgetIds: newWidgets,
+        updatedByUsername: user.displayName,
+      });
+      note.save();
 
-    // Send system msg
-    Meteor.call('msgs.add.text', {
-      text: `${user.displayName} removed ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
-      convoId: note.convoId,
-      isSystemMsg: true,
-    });
+      // Send system msg
+      Meteor.call('msgs.add.text', {
+        text: `${user.displayName} removed ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
+        convoId: note.convoId,
+        isSystemMsg: true,
+      });
+    }
+
   });
 
   function getIndefiniteArticle(word) {
