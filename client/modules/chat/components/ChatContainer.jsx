@@ -217,7 +217,7 @@ export default class ChatContainer extends React.Component {
       <div style={styles.container}>
         <div style={styles.content}>
           <EmptyIcon style={styles.icon} color={colors.foreground}/>
-          <h1>Looks a little empty!</h1>
+          <h1>Looks a little empty...</h1>
           <p>Start typing in the box below to begin chatting, or add one of our useful tools on the right by clicking the plus symbol at the upper-right corner.</p>
         </div>
       </div>
