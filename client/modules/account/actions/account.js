@@ -95,7 +95,7 @@ export default {
   setRegisterInviteEmails({Meteor, LocalState, FlowRouter}, inviteEmails, callback) {
     const nonBlanks = R.filter(email => email !== '', inviteEmails);
 
-    Meteor.call('account.validateEmails', {emails: nonBlanks}, err => {
+    Meteor.call('account.validate.inviteEmails', {emails: nonBlanks}, err => {
       if (err) { alert(err); }
       else {
         LocalState.set('register.inviteEmails', nonBlanks);

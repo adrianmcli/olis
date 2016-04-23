@@ -9,7 +9,6 @@ export const depsMapper = (context, actions) => ({
   setRegisterInviteEmails: actions.account.setRegisterInviteEmails,
   finishRegistration: actions.account.finishRegistration,
   addMoreInvites: actions.account.addMoreInvites,
-  validateEmail: actions.account.validateEmail,
 });
 
 export const composer = ({context}, onData) => {
