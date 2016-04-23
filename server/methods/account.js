@@ -417,4 +417,44 @@ export default function () {
       });
     },
   });
+
+  const ACCOUNT_IS_STRING_EMAIL = 'account.isStringEmail';
+  Meteor.methods({
+    'account.isStringEmail'({email}) {
+      check(arguments[0], {
+        email: String,
+      });
+
+      if (!EmailValidator.validate(email)) {
+        throw new Meteor.Error(ACCOUNT_IS_STRING_EMAIL, `${email} is not a proper email.`);
+      }
+    },
+  });
+
+  const ACCOUNT_IS_EMAIL_TAKEN = 'account.isEmailTaken';
+  Meteor.methods({
+    'account.isEmailTaken'({email}) {
+      check(arguments[0], {
+        email: String,
+      });
+
+      const user = Accounts.findUserByEmail(email);
+      if (user) {
+        throw new Meteor.Error(ACCOUNT_IS_EMAIL_TAKEN,
+          `The email ${email} is taken. Please enter another one.`);
+      }
+    },
+  });
+
+  const ACCOUNT_VALIDATE_INVITE_EMAIL = 'account.validate.inviteEmail';
+  Meteor.methods({
+    'account.validate.inviteEmail'({email}) {
+      check(arguments[0], {
+        email: String,
+      });
+
+      Meteor.call('account.isStringEmail', {email});
+      Meteor.call('account.isEmailTaken', {email});
+    },
+  });
 }
