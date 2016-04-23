@@ -39,9 +39,12 @@ export class Username extends React.Component {
   }
 
   render() {
+    const { username, profileImageUrl } = this.props;
     return (
       <SettingContainer title='Change Username' onShow={this.handleOnShow.bind(this)}>
-        <div><Chip username={this.props.username} noCloseButton/> is your current username.</div>
+        <div>
+          <Chip username={username} avatarSrc={profileImageUrl} noCloseButton/> is your current username.
+        </div>
         <p style={{marginTop: '24px'}}>Enter a new username below:</p>
         <TextField
           hintText="Choose a recognizable username"

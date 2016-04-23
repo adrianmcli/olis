@@ -32,6 +32,7 @@ export default class MyAccount extends React.Component {
                 key={1}
                 username={username}
                 setUsername={setUsername}
+                profileImageUrl={profileImageUrl}
               />,
           },
           {
