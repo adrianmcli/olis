@@ -51,7 +51,7 @@ export default function () {
         $unset: {invitedBy: ''},
       });
       const text =
-        user.invitedBy + 'has invited you to join' + team.name + ', their team on Olis.\r\n' +
+        user.invitedBy + ' has invited you to join ' + team.name + ', their team on Olis.\r\n\r\n' +
         append;
       return text;
     }
@@ -63,9 +63,13 @@ export default function () {
       });
 
       const teams = Teams.find({userIds: user._id}).fetch();
-      const teamsList = teams.reduce((prev, curr) => {
+
+      // Remove Olis Support
+      const noSupportTeams = R.filter(item => item.name !== 'Olis Support', teams);
+
+      const teamsList = noSupportTeams.reduce((prev, curr) => {
         if (prev === '') { return '-' + curr.name + '\r\n'; }
-        return prev + '\r\n' + '-' + curr.name + '\r\n';
+        return prev + '-' + curr.name + '\r\n';
       }, '');
 
       const text = 'Here are a list of the teams you belong to:\r\n' +
