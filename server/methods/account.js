@@ -463,7 +463,7 @@ export default function () {
       });
 
       Meteor.call('account.isStringEmail', {email});
-      Meteor.call('account.isEmailTaken', {email});
+      Meteor.call('register.isEmailOnWhitelist', {email});
     },
   });
 
