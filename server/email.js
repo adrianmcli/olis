@@ -30,47 +30,44 @@ export default function () {
 
   // Enroll account email
   Accounts.emailTemplates.enrollAccount.subject = function (user) {
-    console.log('enrollAccount subject');
-    console.log(user);
-
-    // const prepend = `Welcome to Olis, ${user.displayName}!`;
-    // const text =
-    //   user.invitedBy ? `${prepend} An account has been created for you by ${user.invitedBy}.` :
-    //   `${prepend}`;
-    const text = user.invitedBy ? `${user.invitedBy} has invited you to join Olis` : `Welcome to Olis!`;
+    // console.log('enrollAccount subject');
+    const text = user.invitedBy ?
+      `${user.invitedBy} has invited you to join Olis` : // Invited to Olis by someone else
+      `Welcome to Olis!`; // Finding my team
     return text;
   };
 
   Accounts.emailTemplates.enrollAccount.text = function (user, url) {
-    console.log('enrollAccount text');
-    console.log(user);
+    // console.log('enrollAccount text');
     const team = Teams.findOne(R.keys(user.roles)[0]);
 
     const append =
-      `In order to setup your account, click the link below:\n\n
+      `In order to setup your account, click the link below:\r\n
       ${url}`;
 
+    // Got invited to a team
     if (user.invitedBy) {
       Meteor.users.update(user._id, {
-        $unset: {invitedBy: ''}
+        $unset: {invitedBy: ''},
       });
-      const text = `${user.invitedBy} has invited you to join ${team.name}, their team on Olis. \n\n${append}`;
+      const text = `${user.invitedBy} has invited you to join ${team.name}, their team on Olis.\r\n${append}`;
       return text;
     }
 
+    // Finding my team
     if (user.findingMyTeam) {
       Meteor.users.update(user._id, {
-        $unset: {findingMyTeam: ''}
+        $unset: {findingMyTeam: ''},
       });
 
       const teams = Teams.find({userIds: user._id}).fetch();
       const teamsList = teams.reduce((prev, curr) => {
-        if (prev === '') { return `${curr.name}\n`; }
-        return `${prev}\n${curr.name}\n`;
+        if (prev === '') { return `- ${curr.name}\r\n`; }
+        return `${prev}\r\n- ${curr.name}\r\n`;
       }, '');
 
-      const text = `Here are a list of the teams you belong to:\n\n
-        ${teamsList}\n
+      const text = `Here are a list of the teams you belong to:\r\n
+        ${teamsList}\r\n
         ${append}`;
       return text;
     }
@@ -90,17 +87,20 @@ export default function () {
     // console.log('resetPassword text');
     // console.log(user);
 
+    // Register without a password
     if (user.isRegistering || !_.has(user, 'services.password.bcrypt')) {
       Meteor.users.update(user._id, {
         $unset: {isRegistering: ''}
       });
 
-      const text = `To setup your password so that you can log into your account, click the link below:\n\n
+      const text = `To setup your password so that you can log into your account, click the link below:\r\n
         ${url}`;
       return text;
     }
-    const text = `If you did not recently request to reset your password, you can ignore this email.\n
-      To reset your password, click the link below:\n\n
+
+    // Forgot password
+    const text = `If you did not recently request to reset your password, you can ignore this email.\r\n
+      To reset your password, click the link below:\r\n
       ${url}`;
     return text;
   };
