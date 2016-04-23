@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import R from 'ramda';
-import { Widgets, Notes } from '/lib/collections';
+import { Widgets, Notes, Convos } from '/lib/collections';
 
 export default function () {
   Widgets.after.insert(function (userId, widget) {
     const user = Meteor.users.findOne(userId);
     const note = Notes.findOne(widget.noteId);
+    const convo = Convos.findOne(note.convoId);
 
     // Insert widget id into note
     const widgetId = widget._id;
@@ -17,11 +18,13 @@ export default function () {
     note.save();
 
     // Send system msg
-    Meteor.call('msgs.add.text', {
-      text: `${user.displayName} added ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
-      convoId: note.convoId,
-      isSystemMsg: true,
-    });
+    if (convo.sendSystemMsgs) {
+      Meteor.call('msgs.add.text', {
+        text: `${user.displayName} added ${getIndefiniteArticle(widget.type)} ${widget.type} tool.`,
+        convoId: note.convoId,
+        isSystemMsg: true,
+      });
+    }
   });
 
   // Collection hooks better than Astro events, you can retrieve the previous doc after update
