@@ -33,15 +33,19 @@ export default function ({Meteor, Collections, Schemas}) {
       convo.set({
         name,
         userIds: [ userId ], // Add yourself first so you can call addMembers method
-        teamId});
+        teamId,
+        sendSystemMsgs: false, // Prevent all system msgs until all other convo initializations done
+      });
       convo.save();
       const convoId = convo._id;
-
-      Meteor.call('convos.addMembers', {convoId, userIds: [ userId, ...userIds ]});
+      Meteor.call('convos.addMembers', {convoId, userIds});
       Meteor.call('notes.add', {convoId});
 
+      convo.set({ sendSystemMsgs: true });
+      convo.save();
+
       return convoId;
-    }
+    },
   });
 
   const CONVOS_ADD_MEMBERS = 'convos.addMembers';
@@ -49,7 +53,7 @@ export default function ({Meteor, Collections, Schemas}) {
     'convos.addMembers'({convoId, userIds}) {
       check(arguments[0], {
         convoId: String,
-        userIds: [ String ]
+        userIds: [ String ],
       });
 
       const userId = Meteor.userId();
@@ -92,11 +96,13 @@ export default function ({Meteor, Collections, Schemas}) {
         return `${curr}`;
       }, '');
 
-      Meteor.call('msgs.add.text', {
-        text: `${addedString} ${addedUsernames.length > 1 ? 'were' : 'was'} added to the chat.`,
-        convoId,
-        isSystemMsg: true,
-      });
+      if (convo.sendSystemMsgs) {
+        Meteor.call('msgs.add.text', {
+          text: `${addedString} ${addedUsernames.length > 1 ? 'were' : 'was'} added to the chat.`,
+          convoId,
+          isSystemMsg: true,
+        });
+      }
 
       return convo;
     },
