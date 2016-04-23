@@ -37,6 +37,7 @@ export default class TodoItem extends React.Component {
         <Checkbox
           checked={completed}
           style={styles.checkbox}
+          inputStyle={{top: 0}}
           onClick={toggleTask.bind(null, id)}
         />
         <label style={labelStyle} onDoubleClick={handleDoubleClick}>{labelText}</label>
@@ -98,12 +99,13 @@ function getStyles() {
     contentContainer: {
       display: 'flex',
       width: '100%',
+      alignItems: 'center',
     },
     checkbox: {
       width: '55px',
       display: 'flex',
       alignItems: 'center',
-      left: '20px',
+      paddingLeft: '20px',
       boxSizing: 'border-box',
     },
     label: {
