@@ -169,6 +169,8 @@ export default function () {
         throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL,
           `The email ${email} is taken. Please enter another one.`);
       }
+
+      Meteor.call('register.isEmailOnWhitelist', {email});
     },
   });
 
