@@ -419,6 +419,7 @@ export default function () {
       // since it would insert a msg from a regular user that called this
       const msg = new Message();
       const superUser = superUsers[0];
+      console.log('-----superUser-----');
       console.log(superUser);
       msg.set({
         content: DraftUtils.getRawFromHTML(
