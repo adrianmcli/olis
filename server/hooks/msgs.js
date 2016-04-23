@@ -4,9 +4,10 @@ import { Messages, Convos, Notifications } from '/lib/collections';
 import Notification from '/lib/schemas/notification';
 
 export default function () {
-  Messages.after.insert(function (userId, doc) {
+  Messages.after.insert(function (_userId, doc) {
     // doc is a msg json obj, but not the Astro obj, so convert to one
     const msg = Messages.findOne(doc._id);
+    const userId = msg.userId;  // In case of insert on behalf of super user in shadow team.
 
     const convo = Convos.findOne(msg.convoId);
     const convoId = convo._id;
