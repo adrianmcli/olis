@@ -28,7 +28,9 @@ export const composer = ({context}, onData) => {
       const user = Meteor.user();
       const lastTimeInConvo = user.lastTimeInConvo;
       const windowIsFocused = LocalState.get('window.isFocused');
-      _routeToRecentConvo({Meteor, FlowRouter, convos, teamId, convoId});
+      if (!convoId) {
+        _routeToRecentConvo({Meteor, FlowRouter, convos, teamId});
+      }
 
       onData(null, {
         convos,
@@ -69,18 +71,16 @@ function _getConvos({Meteor, Collections, teamId}) {
   return convos;
 }
 
-function _routeToRecentConvo({Meteor, FlowRouter, convos, teamId, convoId}) {
-  if (!convoId) {
-    const convoIdsInTeam = convos.map(convo => convo._id);
-    const allConvoIdsOrdered = AccountUtils.getOrderedByVisitConvoIds({Meteor}, 'desc');
-    const inTeamConvoIdsOrdered = R.filter(pair => {
-      const id = pair[0];
-      return R.contains(id, convoIdsInTeam);
-    }, allConvoIdsOrdered);
-    const mostRecentVisted = inTeamConvoIdsOrdered[0][0];
+function _routeToRecentConvo({Meteor, FlowRouter, convos, teamId}) {
+  const convoIdsInTeam = convos.map(convo => convo._id);
+  const allConvoIdsOrdered = AccountUtils.getOrderedByVisitConvoIds({Meteor}, 'desc');
+  const inTeamConvoIdsOrdered = R.filter(pair => {
+    const id = pair[0];
+    return R.contains(id, convoIdsInTeam);
+  }, allConvoIdsOrdered);
+  const mostRecentVisted = inTeamConvoIdsOrdered[0][0];
 
-    if (mostRecentVisted) {
-      FlowRouter.go(`/team/${teamId}/convo/${mostRecentVisted}`);
-    }
+  if (mostRecentVisted) {
+    FlowRouter.go(`/team/${teamId}/convo/${mostRecentVisted}`);
   }
 }
