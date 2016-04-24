@@ -31,7 +31,7 @@ export const composer = ({context}, onData) => {
 
       const selector = {
         userIds: Meteor.userId(),
-        teamId
+        teamId,
       };
       const options = {sort: [ [ 'updatedAt', 'desc' ] ]};
 
