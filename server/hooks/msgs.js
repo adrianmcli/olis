@@ -27,7 +27,7 @@ export default function () {
 
       let lastMsgText = '';
       if (hasImage) { lastMsgText = msg.imageUrl; }
-      else if (hasContent) { lastMsgText = msg.getPlainText(); }
+      else if (hasContent) { lastMsgText = msg.text; }
 
       const baseFields = {
         lastMsgText,

@@ -33,9 +33,11 @@ export default function () {
     });
 
     Meteor.methods({
-      '_makeFakeConvo'(teamId, num) {
-        check(teamId, String);
-        check(num, Number);
+      '_makeFakeConvo'({teamId, num}) {
+        check(arguments[0], {
+          teamId: String,
+          num: Number,
+        });
         const convoId = Meteor.call('convos.add', {name: 'fake convo', userIds: [], teamId});
         for (let i = 1; i <= num; i++) {
           Meteor.call('msgs.add.text', {text: `${i}`, convoId});
@@ -43,7 +45,6 @@ export default function () {
       },
     });
 
-    
     Meteor.methods({
       '_wipeDbAndInitialize'() {
         Meteor.users.remove({});
