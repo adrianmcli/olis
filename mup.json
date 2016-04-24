@@ -3,7 +3,7 @@
   "servers": [
     {
       "host": "olisapp.com",
-      "username": "hl",
+      "username": "root",
       // "password": "password",
       // or pem file (ssh based authentication)
       // WARNING: Keys protected by a passphrase are not supported
