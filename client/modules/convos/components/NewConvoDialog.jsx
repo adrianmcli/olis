@@ -59,10 +59,14 @@ export default class NewConvoDialog extends React.Component {
   }
 
   handlePickerSubmit() {
-    const {usersToAdd} = this.props;
-    if (usersToAdd.length === 0) { return; }
-    else if (usersToAdd.length === 1) { this.submitAndClose(); }
-    else { this.nextStage(); }
+    // Prevent single user convos, allow only 1 convo with another unique user.
+    // const {usersToAdd} = this.props;
+    // if (usersToAdd.length === 0) { return; }
+    // else if (usersToAdd.length === 1) { this.submitAndClose(); }
+    // else { this.nextStage(); }
+
+    // Topic convos only, can make as many as you want with any number of people in it
+    this.nextStage();
   }
 
   handleTitleSubmit() {
