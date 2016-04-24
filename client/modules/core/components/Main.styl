@@ -18,8 +18,9 @@ chat-bg = chat-bg
   flex-shrink 0
 
 #sidebar
-  min-width 320px
-  width 320px
+  max-width 320px
+  min-width 180px
+  width 22%
   height 100%
   background convo-col-bg
   box-shadow -3px 0 6px rgba(0,0,0,0.16), -3px 0 6px rgba(0,0,0,0.23)
@@ -27,6 +28,7 @@ chat-bg = chat-bg
 #chat-column
   background chat-bg
   width calc(50% - 220px)
+  min-width 250px
   height 100%
   flex-grow 1
   flex-shrink 0
@@ -34,7 +36,7 @@ chat-bg = chat-bg
   z-index 1
 
 #notes-column
-  min-width 360px
+  min-width 320px
   width calc(50% - 220px)
   height 100%
   flex-grow 1
