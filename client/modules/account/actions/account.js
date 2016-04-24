@@ -42,7 +42,7 @@ export default {
   },
 
   setRegisterEmail({Meteor, LocalState, FlowRouter}, email, nextPath) {
-    Meteor.call('account.validateEmail', {email}, (err, res) => {
+    Meteor.call('account.validate.registerEmail', {email}, (err, res) => {
       if (err) { alert(err); }
       else {
         LocalState.set('register.email', email);
@@ -127,17 +127,6 @@ export default {
       LocalState.get('register.numInviteInputs') : 3;
 
     LocalState.set('register.numInviteInputs', current + 1);
-  },
-
-  validateEmail({Meteor}, email, onError, onSuccess) {
-    Meteor.call('account.validateEmail', {email}, (err, res) => {
-      if (err) {
-        if (onError) { onError(err); }
-      }
-      else {
-        if (onSuccess) { onSuccess(); }
-      }
-    });
   },
 
   resetPassword({Meteor, FlowRouter, LocalState}) {

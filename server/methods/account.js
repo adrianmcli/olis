@@ -155,35 +155,6 @@ export default function () {
     },
   });
 
-  Meteor.methods({
-    'account.validateEmails'({emails}) {
-      check(arguments[0], {
-        emails: [ String ],
-      });
-
-      emails.forEach(email => Meteor.call('account.validateEmail', { email }));
-    },
-  });
-
-  const ACCOUNT_VALIDATE_EMAIL = 'account.validateEmail';
-  Meteor.methods({
-    'account.validateEmail'({email}) {
-      check(arguments[0], {
-        email: String,
-      });
-      if (!EmailValidator.validate(email)) {
-        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL, `${email} is not a proper email.`);
-      }
-      const user = Accounts.findUserByEmail(email);
-      if (user) {
-        throw new Meteor.Error(ACCOUNT_VALIDATE_EMAIL,
-          `The email ${email} is taken. Please enter another one.`);
-      }
-
-      Meteor.call('register.isEmailOnWhitelist', {email});
-    },
-  });
-
   const ACCOUNT_VALIDATE_USERNAME = 'account.validateUsername';
   Meteor.methods({
     'account.validateUsername'({username}) {
@@ -298,7 +269,7 @@ export default function () {
         throw new Meteor.Error(ACCOUNT_SET_EMAIL, 'Must be logged in to change email.');
       }
       const user = Meteor.users.findOne(userId);
-      Meteor.call('account.validateEmail', {email});
+      Meteor.call('account.validate.registerEmail', {email});
       Accounts.removeEmail(userId, user.emails[0].address);
       Accounts.addEmail(userId, email); // This does not check for proper email form, only existence in DB
     },
@@ -464,6 +435,17 @@ export default function () {
 
       Meteor.call('account.isStringEmail', {email});
       Meteor.call('register.isEmailOnWhitelist', {email});
+    },
+  });
+
+
+  Meteor.methods({
+    'account.validate.registerEmails'({emails}) {
+      check(arguments[0], {
+        emails: [ String ],
+      });
+
+      emails.forEach(email => Meteor.call('account.validate.registerEmail', { email }));
     },
   });
 
