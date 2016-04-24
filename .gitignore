@@ -3,5 +3,8 @@ settings*.json
 npm-shrinkwrap.json
 ssl/
 ssl.pem
+fullchain.pem
+privkey.pem
 node_modules
 *.log
+.meteor-electron

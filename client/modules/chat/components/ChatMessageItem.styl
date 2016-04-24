@@ -1,0 +1,113 @@
+soft-blue = #445BA2
+bubble-color = white
+bubble-color-me = soft-blue
+meta-font-color = #efefef - 50%
+
+.chat-msg-item
+  display flex
+  display -webkit-flex
+  flex-direction column
+  align-items flex-start
+  
+  &.not-first-of-batch
+    
+    .chat-avatar,
+    .chat-author
+      display none
+    
+    .chat-primary
+      margin 0
+      padding-right 0
+      padding-left 48px
+  
+  &.not-first-of-batch.you
+    
+    .chat-primary
+      padding-right 48px
+      padding-left 0
+      
+  .chat-msg-ctx-menu
+    position relative
+    height 36px
+    width 36px
+    margin -12px 0
+    align-self center
+    flex-shrink 0
+
+  .chat-author
+    font-size 12px
+    font-weight 500
+    margin -3px 0 5px
+  .chat-primary
+    margin-top 20px
+    width 88%
+    display flex
+    display -webkit-flex
+    position relative
+    align-items flex-end
+  .chat-body
+    word-break break-word
+  .chat-avatar
+    padding 0 6px 0
+    flex-shrink 0
+    align-self flex-start
+    > img
+      box-sizing initial
+  .chat-bubble
+    border-radius 6px
+    padding 8px
+    margin-bottom 4px
+    font-size 12.5px
+    font-weight 300
+    background bubble-color
+    white-space pre-wrap
+    
+    p
+      margin 0
+
+    & > div > *
+      
+      &:first-child
+        margin-top 0
+      
+      &:last-child
+        margin-bottom 0
+    
+    .translation
+      
+      hr
+        margin 7px 0
+      
+      & > div > *
+      
+        &:first-child
+          margin-top 0
+        
+        &:last-child
+          margin-bottom 0
+
+  .chat-timestamp
+    font-size 10px
+    color meta-font-color
+    white-space no-wrap
+    margin 5px 0 -2px
+  
+  &.you
+    text-align right
+    align-items flex-end
+    .chat-primary 
+      flex-direction row-reverse
+    
+    .chat-author
+      display none
+
+    .chat-bubble
+      text-align left
+      color white
+      background bubble-color-me
+      a
+        color white
+    
+    .chat-timestamp
+      text-align right
+      color rgba(255,255,255,0.5)

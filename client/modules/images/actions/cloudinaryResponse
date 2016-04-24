@@ -1,0 +1,16 @@
+Object {public_id: "czwufqui4yi4rvn7e4c1", version: 1456899289, signature: "f515ac4fab8faf750e5f33ef77c68df6be53ace0", width: 256, height: 292…}
+bytes: 111896
+created_at: "2016-03-02T06:14:49Z"
+etag: "90a69419f5e54a122cd6718158ab151d"
+format: "png"
+height: 292
+public_id: "czwufqui4yi4rvn7e4c1"
+resource_type: "image"
+secure_url: "https://res.cloudinary.com/dmwby0n3f/image/upload/v1456899289/czwufqui4yi4rvn7e4c1.png"
+signature: "f515ac4fab8faf750e5f33ef77c68df6be53ace0"
+tags: Array[0]
+type: "upload"
+url: "http://res.cloudinary.com/dmwby0n3f/image/upload/v1456899289/czwufqui4yi4rvn7e4c1.png"
+version: 1456899289
+width: 256
+__proto__: Object
