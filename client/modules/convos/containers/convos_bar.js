@@ -7,7 +7,7 @@ import {SubsManager} from 'meteor/meteorhacks:subs-manager';
 const depsMapper = (context, actions) => ({
   context: () => context,
   actions: () => actions,
-  selectConvo: actions.convos.select
+  selectConvo: actions.convos.select,
 });
 
 const ConvoSubs = new SubsManager();
@@ -24,7 +24,7 @@ export const composer = ({context}, onData) => {
 
     if (subUsers.ready() && subConvos.ready()) {
       const teamSelector = {
-        [`roles.${teamId}`]: {$exists: true}
+        [`roles.${teamId}`]: {$exists: true},
       };
       const teamUsersArr = Meteor.users.find(teamSelector).fetch();
       const teamUsers = R.zipObj(teamUsersArr.map(teamUser => teamUser._id), teamUsersArr);
@@ -47,7 +47,7 @@ export const composer = ({context}, onData) => {
         teamUsers,
         user,
         teamUsersArr,
-        windowIsFocused
+        windowIsFocused,
       });
     }
   }
