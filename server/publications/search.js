@@ -17,7 +17,7 @@ export default function () {
   Meteor.publish(SEARCH_RESULTS, function ({teamId, text}) {
     check(arguments[0], {
       teamId: String,
-      text: String
+      text: String,
     });
 
     const userId = this.userId;
@@ -98,7 +98,7 @@ export default function () {
 
     _getMsgs();
     _getConvos();
-    _getUsers();
+    if (text !== '') { _getUsers(); }
 
     this.ready();
   });
