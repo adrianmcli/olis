@@ -243,4 +243,10 @@ export default {
       if (err) { alert(err); }
     });
   },
+
+  setDescription({Meteor}, description) {
+    Meteor.call('account.set.description', {description}, err => {
+      if (err) { alert(err); }
+    });
+  },
 };
