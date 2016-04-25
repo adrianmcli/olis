@@ -106,7 +106,7 @@ export default function () {
 
       const nameTrim = teamName.trim();
       if (nameTrim === '') {
-        throw new Meteor.Error(ACCOUNT_VALIDATE_USERNAME, 'Please enter a non-blank username.');
+        throw new Meteor.Error(ACCOUNT_VALIDATE_TEAMNAME, 'Please enter a non-blank team name.');
       }
     },
   });
@@ -118,8 +118,7 @@ export default function () {
         password: String,
       });
 
-      const trimPwd = password.trim();
-      if (trimPwd === '') {
+      if (isBlank(password)) {
         throw new Meteor.Error(ACCOUNT_VALIDATE_PASSWORD, 'Please enter a non-blank password.');
       }
 
@@ -127,3 +126,9 @@ export default function () {
     },
   });
 }
+
+function isBlank(text) {
+  const trimmed = text.trim();
+  return trimmed === '';
+}
+
