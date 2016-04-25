@@ -16,7 +16,8 @@ export default class MyAccount extends React.Component {
       changePassword,
       email, setEmail,
       setTranslationLanguage, translationLangCode,
-      setMuteNotificationSound, muteNotificationSound
+      setMuteNotificationSound, muteNotificationSound,
+      setDescription, description,
     } = this.props;
 
     const dataSource = [
@@ -82,7 +83,7 @@ export default class MyAccount extends React.Component {
               <MuteSound
                 muteNotificationSound={muteNotificationSound}
                 setMuteNotificationSound={setMuteNotificationSound}
-              />
+              />,
           },
         ],
       },
@@ -100,11 +101,15 @@ export default class MyAccount extends React.Component {
                 profileImageUrl={profileImageUrl}
               />,
           },
-          // {
-          //   label: 'Blurb',
-          //   icon: 'chat_bubble',
-          //   content: <div>Edit Blurb</div>,
-          // },
+          {
+            label: 'Description',
+            icon: 'chat_bubble',
+            content:
+              <Description
+                description={description}
+                setDescription={setDescription}
+              />,
+          },
         ],
       },
     ];

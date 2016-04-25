@@ -4,7 +4,7 @@ import R from 'ramda';
 import LangCodes from '/lib/constants/lang_codes';
 
 export default {
-  'set.description'({Meteor}, description) {
+  setDescription({Meteor}, description) {
     Meteor.call('account.set.description', {description}, err => {
       if (err) { alert(err); }
     });
