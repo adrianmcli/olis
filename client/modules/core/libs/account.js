@@ -10,11 +10,11 @@ export default {
     const teamName = LocalState.get('register.teamName');
     const inviteEmails = LocalState.get('register.inviteEmails');
 
-    console.log(`email ${email}`);
-    console.log(`displayName ${displayName}`);
-    console.log(`password ${password}`);
-    console.log(`teamName ${teamName}`);
-    console.log(inviteEmails);
+    // console.log(`email ${email}`);
+    // console.log(`displayName ${displayName}`);
+    // console.log(`password ${password}`);
+    // console.log(`teamName ${teamName}`);
+    // console.log(inviteEmails);
 
     LocalState.set('register.email', null);
     LocalState.set('register.username', null);
@@ -55,8 +55,8 @@ export default {
     }
 
     function _route([ x, {teamId} ]) {
-      console.log(x);
-      console.log(teamId);
+      // console.log(x);
+      // console.log(teamId);
       return new Promise((resolve, reject) => {
         FlowRouter.go(`/team/${teamId}/`);
         resolve({teamId});
