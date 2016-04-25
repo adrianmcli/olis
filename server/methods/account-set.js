@@ -1,13 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Convos, Teams, Messages } from '/lib/collections';
 import { Accounts } from 'meteor/accounts-base';
-import Team from '/lib/schemas/team';
-import Convo from '/lib/schemas/convo';
 import { check } from 'meteor/check';
-import { Random } from 'meteor/random';
-import { Roles } from 'meteor/alanning:roles';
 import R from 'ramda';
-import EmailValidator from 'email-validator';
 import { Cloudinary } from 'meteor/lepozepo:cloudinary';
 
 export default function () {
@@ -186,4 +181,44 @@ export default function () {
       Meteor.users.update(userId, modifier);
     },
   });  
+
+  // SERVER ONLY
+  const ACCOUNT_REMOVE_FROM_TEAM = 'account.removeFromTeam';
+  Meteor.methods({
+    'account.removeFromTeam'({removeUserId, teamId}) {
+      check(arguments[0], {
+        removeUserId: String,
+        teamId: String,
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(ACCOUNT_REMOVE_FROM_TEAM, 'Must be logged in to remove user from team.');
+      }
+      const team = Teams.findOne(teamId);
+      if (!team) {
+        throw new Meteor.Error(ACCOUNT_REMOVE_FROM_TEAM, 'Must remove user from existing team.');
+      }
+      if (!team.isUserAdmin(userId)) {
+        throw new Meteor.Error(ACCOUNT_REMOVE_FROM_TEAM, 'Must be an admin to remove user from team.');
+      }
+
+      const convos = Convos.find({teamId}).fetch();
+      const convoIdsToUnset = convos.reduce((prev, curr) => {
+        const convo = {
+          [`lastTimeInConvo.${curr._id}`]: '',
+        };
+        return R.merge(prev, convo);
+      }, {});
+
+      const unsetObj = R.merge({
+        [`roles.${teamId}`]: '',
+        [`lastTimeInTeam.${teamId}`]: '',
+      }, convoIdsToUnset);
+
+      Meteor.users.update(removeUserId, {
+        $unset: unsetObj,
+      });
+    },
+  });
 }

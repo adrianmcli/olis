@@ -1,14 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import { Convos, Teams, Messages } from '/lib/collections';
 import { Accounts } from 'meteor/accounts-base';
-import Team from '/lib/schemas/team';
-import Convo from '/lib/schemas/convo';
 import { check } from 'meteor/check';
-import { Random } from 'meteor/random';
-import { Roles } from 'meteor/alanning:roles';
-import R from 'ramda';
 import EmailValidator from 'email-validator';
-import { Cloudinary } from 'meteor/lepozepo:cloudinary';
 
 export default function () {
   Meteor.methods({
