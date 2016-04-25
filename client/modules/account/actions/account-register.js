@@ -88,5 +88,5 @@ export default {
       LocalState.get('register.numInviteInputs') : 3;
 
     LocalState.set('register.numInviteInputs', current + 1);
-  },  
+  },
 };
