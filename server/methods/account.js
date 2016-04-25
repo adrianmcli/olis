@@ -460,4 +460,22 @@ export default function () {
       Meteor.call('register.isEmailOnWhitelist', {email});
     },
   });
+
+  const SET_DESC = 'account.set.description';
+  Meteor.methods({
+    'account.set.description'({description}) {
+      check(arguments[0], {
+        description: String,
+      });
+
+      const userId = this.userId;
+      if (!userId) {
+        throw new Meteor.Error(SET_DESC, 'Must be logged in to set description.');
+      }
+
+      Meteor.users.update(userId, {
+        description,
+      });
+    },
+  });
 }
