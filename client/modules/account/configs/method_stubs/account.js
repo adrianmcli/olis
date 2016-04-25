@@ -5,7 +5,7 @@ export default function ({Meteor, Collections}) {
   Meteor.methods({
     'account.setLastTimeInConvo'({convoId}) {
       check(arguments[0], {
-        convoId: String
+        convoId: String,
       });
 
       const userId = this.userId;
@@ -23,10 +23,10 @@ export default function ({Meteor, Collections}) {
       let setObj = {};
       setObj[`lastTimeInConvo.${convoId}`] = {
         timestamp: new Date(),
-        numMsgs: 9999999
+        numMsgs: 9999999,
       };
       const modifier = { $set: setObj };
       Meteor.users.update(userId, modifier);
-    }
+    },
   });
 }
