@@ -8,7 +8,7 @@ const depsMapper = (context, actions) => ({
   searchTeamUsers: actions.search['searchText.teamUsers.set'],
   showUserInfo: actions.teams.setUserIdShown,
   makeUserTeamAdmin: actions.teams.makeUserAdmin,
-  removeUserFromTeam: actions.teams.removeUser
+  removeUserFromTeam: actions.teams.removeUser,
 });
 
 export const composer = ({context}, onData) => {
@@ -25,7 +25,7 @@ export const composer = ({context}, onData) => {
         const regExp = buildRegExp(searchText);
         selector = {$or: [
           {username: regExp},
-          {'emails.address': regExp}
+          {'emails.address': regExp},
         ]};
       }
       selector[`roles.${teamId}`] = {$exists: true};
@@ -39,7 +39,7 @@ export const composer = ({context}, onData) => {
         team,
         teamUsersSearchResult,
         userShown,
-        isAdmin: team.isUserAdmin(Meteor.userId())
+        isAdmin: team.isUserAdmin(Meteor.userId()),
       });
     }
   }
