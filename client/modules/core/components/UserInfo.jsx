@@ -14,6 +14,7 @@ export default class UserInfo extends React.Component {
           avatarSrc={user.profileImageUrl}
         />
         <div style={{fontSize: '18px',lineHeight: '24px'}}>{user.displayName}</div>
+        <div>{user.description}</div>
         {showButtons ? buttons : null}
       </div>
     );
