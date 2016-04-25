@@ -19,7 +19,7 @@ export default function () {
       }
 
       Meteor.users.update(userId, {
-        description,
+        $set: { description },
       });
     },
   });
