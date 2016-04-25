@@ -3,7 +3,7 @@ import React from 'react';
 import SettingsWrapper from '/client/modules/core/components/SettingsWrapper';
 
 import { Username, Password, Email, TranslateLanguage } from './MyAccountSettings';
-import { ProfilePic } from './MyAccountProfile';
+import { ProfilePic, Description } from './MyAccountProfile';
 import { MuteSound } from './MyAccountNotifications';
 
 export default class MyAccount extends React.Component {

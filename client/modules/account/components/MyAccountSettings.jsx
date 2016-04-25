@@ -280,15 +280,3 @@ export class TranslateLanguage extends React.Component {
     );
   }
 }
-
-export class Description extends React.Component {
-  render() {
-    const { description, setDescription } = this.props;
-    return (
-      <div>
-        <div>Description</div>
-        <div>{description}</div>
-      </div>
-    );
-  }
-}

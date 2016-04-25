@@ -123,3 +123,29 @@ export class ProfilePic extends React.Component {
     );
   }
 }
+
+
+export class Description extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleUpdate = () => this._handleUpdate();
+  }
+
+  _handleUpdate() {
+    const { setDescription } = this.props;
+    const value = this.input.value;
+    setDescription(value);
+  }
+
+  render() {
+    const { description } = this.props;
+    return (
+      <div>
+        <div>Description</div>
+        <div>{description}</div>
+        <input type="text" ref={ref => this.input = ref}/>
+        <button onClick={this.handleUpdate}>Update</button>
+      </div>
+    );
+  }
+}
