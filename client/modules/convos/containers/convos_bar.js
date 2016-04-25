@@ -78,9 +78,8 @@ function _routeToRecentConvo({Meteor, FlowRouter, convos, teamId}) {
     const id = pair[0];
     return R.contains(id, convoIdsInTeam);
   }, allConvoIdsOrdered);
-  const mostRecentVisted = inTeamConvoIdsOrdered[0][0];
+  const mostRecentVisted = inTeamConvoIdsOrdered[0] ? inTeamConvoIdsOrdered[0][0] : null;
 
-  if (mostRecentVisted) {
-    FlowRouter.go(`/team/${teamId}/convo/${mostRecentVisted}`);
-  }
+  if (mostRecentVisted) { FlowRouter.go(`/team/${teamId}/convo/${mostRecentVisted}`); }
+  else { FlowRouter.go(`/team/${teamId}`); }
 }
