@@ -82,6 +82,6 @@ export default class TeamDirectory extends React.Component {
 }
 TeamDirectory.defaultProps = {
   team: {
-    name: `Default team name`
-  }
+    name: `Default team name`,
+  },
 };
