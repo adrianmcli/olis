@@ -1,37 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import Team from '/lib/schemas/team';
 import { check } from 'meteor/check';
-import { Roles } from 'meteor/alanning:roles';
 import EmailValidator from 'email-validator';
 
 export default function () {
-  const ACCOUNT_REGISTER_TEAM = 'account.register.createTeam';
-  Meteor.methods({
-    'account.register.createTeam'({teamName}) {
-      check(arguments[0], {
-        teamName: String,
-      });
-
-      // Account creation called from client side, so user is logged in already.
-      const userId = this.userId;
-      if (!userId) {
-        throw new Meteor.Error(ACCOUNT_REGISTER_TEAM, 'Must be logged in to create team.');
-      }
-
-      // Add users to team and set roles
-      const team = new Team();
-      team.set({
-        name: teamName,
-        userIds: [ userId ],
-      });
-      team.save();
-      Roles.addUsersToRoles(userId, [ 'admin' ], team._id);
-
-      return {teamId: team._id};
-    },
-  });
-
   const ACCOUNT_FIND_MY_TEAM = 'account.findMyTeam';
   Meteor.methods({
     'account.findMyTeam'({email}) {
