@@ -65,7 +65,7 @@ export default class ChatMenu extends React.Component {
         targetOrigin={{horizontal: 'right', vertical: 'top'}}
       >
         <MenuItem
-          primaryText="Add people"
+          primaryText="Add to chat"
           onTouchTap={this.openAddPeople.bind(this)}
           leftIcon={<PersonAdd />}
         />
