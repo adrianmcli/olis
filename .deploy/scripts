@@ -1,0 +1,5 @@
+# TODO make this a real script
+
+# copy letsencrypt ssl keys and credentials from server to desktop
+# http://unix.stackexchange.com/questions/106480/how-to-copy-files-from-one-machine-to-another-using-ssh
+scp -r root@olisapp.com:/etc/letsencrypt/ ~/Desktop/
