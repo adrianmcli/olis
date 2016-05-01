@@ -34,7 +34,8 @@ export default function () {
         lastMsgCreatedAt: msg.createdAt,
         recentUserIds,
         recentUsernames,
-        lastUsername: msg.displayName,
+        lastUserId: msg.userId,
+        lastUsername: msg.username,
         numMsgs: Messages.find({convoId}).count(), // SERVER ONLY
       };
 
