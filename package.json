@@ -1,6 +1,6 @@
 {
   "name": "olis",
-  "version": "0.1.0-beta.3",
+  "version": "0.1.0-beta.4",
   "scripts": {
     "lint": "eslint ./lib ./client ./server --ext .js --ext .jsx",
     "lintfix": "npm run lint -- --fix",
