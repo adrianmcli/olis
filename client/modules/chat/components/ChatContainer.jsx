@@ -134,15 +134,15 @@ export default class ChatContainer extends React.Component {
         if (prevMsg.isSystemMsg) { return false; }
         if (msg.userId === prevMsg.userId) { return true; }
         return false;
-      }
+      };
 
       const showTimestamp = () => {
         const lastMsg = index === msgs.length - 1;
         if (lastMsg) { return true; }
 
-        const nextMsg = msgs[index + 1];  
+        const nextMsg = msgs[index + 1];
         if (nextMsg.createdAt - msg.createdAt > 1000 * 60) { return true; }
-      }
+      };
 
       if (msg.isSystemMsg) {
         return (
