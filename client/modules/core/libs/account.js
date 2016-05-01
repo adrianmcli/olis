@@ -10,11 +10,11 @@ export default {
     const teamName = LocalState.get('register.teamName');
     const inviteEmails = LocalState.get('register.inviteEmails');
 
-    console.log(`email ${email}`);
-    console.log(`displayName ${displayName}`);
-    console.log(`password ${password}`);
-    console.log(`teamName ${teamName}`);
-    console.log(inviteEmails);
+    // console.log(`email ${email}`);
+    // console.log(`displayName ${displayName}`);
+    // console.log(`password ${password}`);
+    // console.log(`teamName ${teamName}`);
+    // console.log(inviteEmails);
 
     LocalState.set('register.email', null);
     LocalState.set('register.username', null);
@@ -55,8 +55,8 @@ export default {
     }
 
     function _route([ x, {teamId} ]) {
-      console.log(x);
-      console.log(teamId);
+      // console.log(x);
+      // console.log(teamId);
       return new Promise((resolve, reject) => {
         FlowRouter.go(`/team/${teamId}/`);
         resolve({teamId});
@@ -129,6 +129,13 @@ export default {
     if (!user) { return null; }
     if (!user.lastTimeInConvo || R.isEmpty(user.lastTimeInConvo)) { return null; }
 
+    const sorted = this.getOrderedByVisitConvoIds({Meteor}, 'desc');
+    const convoId = sorted[0][0];
+    return convoId;
+  },
+
+  getOrderedByVisitConvoIds({Meteor}, sortOrder = 'asc') {
+    const user = Meteor.user();
     const pairs = R.toPairs(user.lastTimeInConvo);
 
     const sortByTimestamp = R.sortBy(
@@ -137,10 +144,9 @@ export default {
         R.prop(1)
       )
     );
-    const sorted = sortByTimestamp(pairs); // asc
-    const convoId = R.last(sorted)[0];
-
-    return convoId;
+    const sortedAsc = sortByTimestamp(pairs);
+    if (sortOrder === 'asc') { return sortedAsc; }
+    else if (sortOrder === 'desc') { return R.reverse(sortedAsc); }
   },
 
   convertStringToColor(str) {

@@ -10,7 +10,8 @@ const depsMapper = (context, actions) => ({
   changePassword: actions.account.changePassword,
   setEmail: actions.account.setEmail,
   setTranslationLanguage: actions.account.setTranslationLanguage,
-  setMuteNotificationSound: actions.account.setMuteNotificationSound
+  setMuteNotificationSound: actions.account.setMuteNotificationSound,
+  setDescription: actions.account.setDescription,
 });
 
 export const composer = ({context}, onData) => {
@@ -24,7 +25,8 @@ export const composer = ({context}, onData) => {
       profileImageUrl: user.profileImageUrl ? user.profileImageUrl : null,
       email,
       translationLangCode: user.translationLangCode,
-      muteNotificationSound: user.muteNotificationSound
+      muteNotificationSound: user.muteNotificationSound,
+      description: user.description,
     });
   }
 };

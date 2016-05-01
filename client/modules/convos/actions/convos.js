@@ -3,16 +3,16 @@ import ConvoUtils from '/client/modules/core/libs/convos';
 
 export default {
   add({Meteor, Collections, LocalState, FlowRouter}, name = '', userIds) {
-    const privateConvoId = ConvoUtils.checkForExistingPrivate({Meteor, Collections}, userIds);
+    // const privateConvoId = ConvoUtils.checkForExistingPrivate({Meteor, Collections}, userIds);
     const teamId = FlowRouter.getParam('teamId');
 
-    if (!privateConvoId) {
+    // if (!privateConvoId) {
       Meteor.call('convos.add', {name, userIds, teamId}, (err, convoId) => {
         if (err) { alert(err); }
         else { FlowRouter.go(`/team/${teamId}/convo/${convoId}`); }
       });
-    }
-    else { FlowRouter.go(`/team/${teamId}/convo/${privateConvoId}`); }
+    // }
+    // else { FlowRouter.go(`/team/${teamId}/convo/${privateConvoId}`); }
   },
 
   select({Meteor, FlowRouter}, convoId) {

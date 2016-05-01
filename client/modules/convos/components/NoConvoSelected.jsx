@@ -12,7 +12,9 @@ export default function NoConvoSelected(props) {
   const styles = {
     container: {
       height: '100%',
-      width: '100%',
+      width: 'calc(78% - 80px)',
+      minWidth: 'calc(100% - 400px)',
+      maxWidth: 'calc(100% - 260px)',
       position: 'relative',
       backgroundColor: colors.background,
     },

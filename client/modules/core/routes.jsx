@@ -40,18 +40,18 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
     name: 'root',
     action() {
       mount(MainLayoutCtx, {
-        content: () => (<Home />)
+        content: () => (<Home />),
       });
-    }
+    },
   });
 
   FlowRouter.route('/team', {
     name: 'no-team',
     action() {
       mount(MainLayoutCtx, {
-        content: () => (<Home />)
+        content: () => (<Home />),
       });
-    }
+    },
   });
 
   FlowRouter.route('/team/:teamId', {
@@ -63,17 +63,17 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
       Meteor.call('teams.isMember', {teamId}, (err, res) => {
         if (err) {
           mount(MainLayoutCtx, {
-            content: () => (<div>You are not authorized to view this page.</div>)
+            content: () => (<div>You are not authorized to view this page.</div>),
           });
         }
         else {
           setLastTimeInTeam({params});
           mount(MainLayoutCtx, {
-            content: () => (<Home />)
+            content: () => (<Home />),
           });
         }
       });
-    }
+    },
   });
 
   function getConvoRoute(name) {
@@ -86,18 +86,18 @@ export default function (injectDeps, {Meteor, FlowRouter, Collections, LocalStat
         Meteor.call('convos.isMember', {convoId}, (err, res) => {
           if (err) {
             mount(MainLayoutCtx, {
-              content: () => (<div>You are not authorized to view this page.</div>)
+              content: () => (<div>You are not authorized to view this page.</div>),
             });
           }
           else {
             setLastTimeInTeam({params});
             setLastTimeInConvo({params});
             mount(MainLayoutCtx, {
-              content: () => (<Home />)
+              content: () => (<Home />),
             });
           }
         });
-      }
+      },
     };
   }
   FlowRouter.route('/team/:teamId/convo/:convoId', getConvoRoute('team-convo'));

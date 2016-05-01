@@ -17,52 +17,25 @@ export default class Sidebar extends React.Component {
     const {
       convos, selectConvo, convoId,
       lastTimeInConvo, teamUsers, user, teamUsersArr,
-      windowIsFocused
+      windowIsFocused,
     } = this.props;
     return (
       <GeminiScrollbar>
       <FlipMove>
         {convos.map(convo => {
-          const otherRecentUserIds = convo.recentUserIds.length > 1 ?
-            R.filter(id => id !== user._id, convo.recentUserIds) : [ user._id ]; // Show yourself if you are the only one in convo
-          const lastUserId = R.last(otherRecentUserIds);
-          const lastUser = teamUsers[lastUserId];
+          const unreadCount = getUnreadMsgsCount(convoId, convo, windowIsFocused, lastTimeInConvo);
+          const unread = unreadCount > 0;
+
+          const title = getTitle(convo, teamUsersArr, user);
+          const lastUser = getLastUser(convo, user, teamUsers);
+          const lastUsername = getLastUsername(lastUser, user, convo);
           const avatarSrc = lastUser ? lastUser.profileImageUrl : undefined;
-
-          let lastUsername;
-          if (!lastUser) {
-            const otherRecentUsernames = R.filter(name => name !== user.displayName,
-              convo.recentUsernames);
-            lastUsername = R.last(otherRecentUsernames);
-          }
-          else { lastUsername = lastUser.displayName; }
-
-          let unread = false;
-          let unreadCount = 0;
-          if (convoId === convo._id && windowIsFocused) {
-            unreadCount = 0;
-          }
-          else {
-            if (convo.numMsgs && !_.has(lastTimeInConvo, `${convo._id}.numMsgs`)) {
-              unreadCount = convo.numMsgs;
-            }
-            else if (convo.numMsgs && _.has(lastTimeInConvo, `${convo._id}.numMsgs`)) {
-              unreadCount = convo.numMsgs - lastTimeInConvo[convo._id].numMsgs;
-            }
-          }
-          unread = unreadCount > 0;
-
-          // if (convoId === convo._id) {console.log(`convoId ${convoId}, convo._id ${convo._id}, windowIsFocused ${windowIsFocused}`)}
-
-          // No idea why R.filter doesn't work on an object, even tho it worked on Ramda's website test.
-          const convoUsersArr = R.filter(teamUser => R.contains(teamUser._id, convo.userIds), teamUsersArr);
-          const convoUsers = R.zipObj(convoUsersArr.map(convoUser => convoUser._id), convoUsersArr);
 
           return (
             <ConversationItem
               key={convo._id}
               convoId={convo._id}
-              title={convo.getName(user._id, convoUsers)}
+              title={title}
               lastUpdated={convo.updatedAt}
               previewText={convo.lastMsgText}
               username={lastUsername}
@@ -98,4 +71,47 @@ export default class Sidebar extends React.Component {
       </div>
     );
   }
+}
+
+function getUnreadMsgsCount(convoId, convo, windowIsFocused, lastTimeInConvo) {
+  let unreadCount = 0;
+  if (convoId === convo._id && windowIsFocused) {
+    unreadCount = 0;
+  }
+  else {
+    if (convo.numMsgs && !_.has(lastTimeInConvo, `${convo._id}.numMsgs`)) {
+      unreadCount = convo.numMsgs;
+    }
+    else if (convo.numMsgs && _.has(lastTimeInConvo, `${convo._id}.numMsgs`)) {
+      unreadCount = convo.numMsgs - lastTimeInConvo[convo._id].numMsgs;
+    }
+  }
+  return unreadCount;
+}
+
+function getLastUser(convo, user, teamUsers) {
+  const otherRecentUserIds = convo.recentUserIds.length > 1 ?
+    R.filter(id => id !== user._id, convo.recentUserIds) : [ user._id ]; // Show yourself if you are the only one in convo
+  const lastUserId = R.last(otherRecentUserIds);
+  const lastUser = teamUsers[lastUserId];
+  return lastUser;
+}
+
+function getLastUsername(lastUser, user, convo) {
+  let lastUsername;
+  if (!lastUser) {
+    const otherRecentUsernames = R.filter(name => name !== user.displayName,
+      convo.recentUsernames);
+    lastUsername = R.last(otherRecentUsernames);
+  }
+  else { lastUsername = lastUser.displayName; }
+  return lastUsername;
+}
+
+function getTitle(convo, teamUsersArr, user) {
+  // No idea why R.filter doesn't work on an object, even tho it worked on Ramda's website test.
+  const convoUsersArr = R.filter(teamUser => R.contains(teamUser._id, convo.userIds), teamUsersArr);
+  const convoUsers = R.zipObj(convoUsersArr.map(convoUser => convoUser._id), convoUsersArr);
+  const title = convo.getName(user._id, convoUsers);
+  return title;
 }

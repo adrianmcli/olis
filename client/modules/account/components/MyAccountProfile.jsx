@@ -3,6 +3,7 @@ import React from 'react';
 import AvatarWithDefault from '/client/modules/core/components/AvatarWithDefault.jsx';
 import SettingContainer from '/client/modules/core/components/SettingContainer.jsx';
 
+import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Loading from '/client/modules/core/components/Loading.jsx';
 
@@ -119,6 +120,50 @@ export class ProfilePic extends React.Component {
           { this.state.uploadComplete ? this.renderUploadComplete() : null }
 
         </div>
+      </SettingContainer>
+    );
+  }
+}
+
+
+export class Description extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleUpdate = () => this._handleUpdate();
+  }
+
+  _handleUpdate() {
+    const { setDescription } = this.props;
+    const value = this.input.getValue();
+    setDescription(value);
+  }
+
+  render() {
+    const { description } = this.props;
+    return (
+      <SettingContainer title='Description'>
+
+        <p style={{marginTop: '24px'}}>Enter a description of your role in this team below.</p>
+
+        { description ?
+          <p style={{marginTop: '24px'}}>Your current role description is: {description}</p>
+        : null }
+
+        <TextField
+          hintText="Describe your role"
+          floatingLabelText="Role Description"
+          onEnterKeyDown={this.handleUpdate}
+          ref={ref => this.input = ref}
+        />
+
+        <div style={{marginTop: '24px'}}>
+          <RaisedButton
+            label="Update Description"
+            primary={true}
+            onTouchTap={this.handleUpdate}
+          />
+        </div>
+
       </SettingContainer>
     );
   }

@@ -3,20 +3,19 @@ import {Convos, Teams} from '/lib/collections';
 import {check} from 'meteor/check';
 import R from 'ramda';
 
-const selfFields = {
-  lastTimeInConvo: 1,
-  lastTimeInTeam: 1,
-  profileImageUrl: 1,
-  translationLangCode: 1,
-  muteNotificationSound: 1,
-  displayName: 1,
-};
-
 export const othersFields = {
   displayName: 1,
   emails: 1,
   profileImageUrl: 1,
+  description: 1,
 };
+
+const selfFields = R.merge(othersFields, {
+  lastTimeInConvo: 1,
+  lastTimeInTeam: 1,
+  translationLangCode: 1,
+  muteNotificationSound: 1,
+});
 
 export default function () {
   const SELF = 'self';

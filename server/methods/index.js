@@ -1,5 +1,7 @@
 import test from './_myTest';
-import account from './account';
+import accountNoAcctPaths from './account-no-acct-paths';
+import accountSet from './account-set';
+import accountValidate from './account-validate';
 import teams from './teams';
 import convos from './convos';
 import msgs from './msgs';
@@ -15,7 +17,9 @@ import register from './register';
 
 export default function () {
   test();
-  account();
+  accountNoAcctPaths();
+  accountSet();
+  accountValidate();
   teams();
   convos();
   msgs();

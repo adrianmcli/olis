@@ -1,13 +1,19 @@
 {
   "name": "olis",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "scripts": {
     "lint": "eslint ./lib ./client ./server --ext .js --ext .jsx",
     "lintfix": "npm run lint -- --fix",
     "testonly": "mocha client/**/tests/**/*.js --compilers js:babel-core/register",
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js,jsx",
-    "storybook": "start-storybook -p 9001"
+    "storybook": "start-storybook -p 9001",
+    
+    "setup-production": "mupx setup --config=./.deploy/mupx-production.json --settings=settings.json",
+    "deploy-production": "mupx deploy --config=./.deploy/mupx-production.json --settings=settings.json",
+
+    "setup-test": "mupx setup --config=./.deploy/mupx-TEST.json --settings=settings.json",
+    "deploy-test": "mupx deploy --config=./.deploy/mupx-TEST.json --settings=settings.json"
   },
   "devDependencies": {
     "@kadira/storybook": "^1.1.0",
