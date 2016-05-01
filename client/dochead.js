@@ -1,7 +1,7 @@
 import {DocHead} from 'meteor/kadira:dochead';
 import FaviconNotification from 'favicon-notification';
 
-const favicon = '/favicon.ico?v=1.0.2';
+const favicon = '/favicon.ico?v=1.0.3';
 
 export default function () {
   DocHead.setTitle('Olis');
