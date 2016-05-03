@@ -28,7 +28,7 @@ export default function () {
   Meteor.methods({
     'notifications.set.GCMToken'({token}) {
       check(arguments[0], {
-        token: String,
+        token: Object,
       });
 
       const userId = this.userId;
@@ -39,7 +39,8 @@ export default function () {
       Meteor.users.update(userId, {
         $set: { GCMToken: token},
       });
-      console.log(`${userId} GCMToken = ${token}`);
+      console.log(`${userId} GCMToken`);
+      console.log(token);
     },
   });
 }
