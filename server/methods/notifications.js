@@ -47,27 +47,35 @@ export default function () {
 
   const SEND_GCM_MSG = 'notifications.send.GCMMsg';
   Meteor.methods({
-    'notifications.send.GCMMsg'() {
+    'notifications.send.GCMMsg'({sendToUserId}) {
+      check(arguments[0], {
+        sendToUserId: String,
+      });
+
       const userId = this.userId;
       if (!userId) {
         throw new Meteor.Error(SEND_GCM_MSG, 'Must be logged in to notify others');
       }
-      const user = Meteor.users.findOne(userId);
+      const user = Meteor.users.findOne(sendToUserId);
+      const regToken = user.GCMToken.token;
 
-      const apiKey = Meteor.settings.GCM.server_api_key;
+      if (regToken) {
+        const apiKey = Meteor.settings.GCM.server_api_key;
 
-      let message = new gcm.Message();
-      message.addData('key1', 'msg1');
-      const regTokens = [ user.GCMToken.token ];
+        let message = new gcm.Message();
+        message.addData('key1', 'msg1');
+        const regTokens = [ regToken ];
 
-      // Set up the sender with you API key
-      var sender = new gcm.Sender(apiKey);
+        // Set up the sender with you API key
+        var sender = new gcm.Sender(apiKey);
 
-      // Now the sender can be used to send messages
-      sender.send(message, { registrationTokens: regTokens }, function (err, response) {
-        if (err) { console.error(err); }
-        else { console.log(response); }
-      });
+        console.log(SEND_GCM_MSG);
+        // Now the sender can be used to send messages
+        sender.send(message, { registrationTokens: regTokens }, function (err, response) {
+          if (err) { console.error(err); }
+          else { console.log(response); }
+        });
+      }
     },
   });
 }
