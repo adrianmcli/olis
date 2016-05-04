@@ -2,6 +2,7 @@ import {Meteor} from 'meteor/meteor';
 import {Notifications} from '/lib/collections';
 import {check} from 'meteor/check';
 import gcm from 'node-gcm';
+import _ from 'lodash';
 
 export default function () {
   const REMOVE = 'notifications.remove';
@@ -57,9 +58,9 @@ export default function () {
         throw new Meteor.Error(SEND_GCM_MSG, 'Must be logged in to notify others');
       }
       const user = Meteor.users.findOne(sendToUserId);
-      const regToken = user.GCMToken.token;
 
-      if (regToken) {
+      if (_.has(user, 'GCMToken.token')) {
+        const regToken = user.GCMToken.token;
         const apiKey = Meteor.settings.GCM.server_api_key;
 
         let message = new gcm.Message();
