@@ -46,11 +46,14 @@ export default function () {
     },
   });
 
+  // SERVER ONLY
   const SEND_GCM_MSG = 'notifications.send.GCMMsg';
   Meteor.methods({
-    'notifications.send.GCMMsg'({sendToUserId}) {
+    'notifications.send.GCMMsg'({sendToUserId, convoName, text}) {
       check(arguments[0], {
         sendToUserId: String,
+        convoName: String,
+        text: String,
       });
 
       const userId = this.userId;
@@ -64,7 +67,9 @@ export default function () {
         const apiKey = Meteor.settings.GCM.server_api_key;
 
         let message = new gcm.Message();
-        message.addData('key1', 'msg1');
+        message.addData('convoName', convoName);
+        message.addData('text', text);
+
         const regTokens = [ regToken ];
 
         // Set up the sender with you API key
