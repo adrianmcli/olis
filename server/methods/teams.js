@@ -252,9 +252,9 @@ export default function () {
       if (!team) {
         throw new Meteor.Error(TEAMS_INVITE, 'Must invite people to an existing team.');
       }
-      if (!team.isUserAdmin(userId)) {
-        throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
-      }
+      // if (!team.isUserAdmin(userId)) {
+      //   throw new Meteor.Error(TEAMS_INVITE, 'Must be an admin to invite people to team.');
+      // }
 
       const nonBlank = R.filter(email => email !== '', inviteEmails);
       Meteor.call('account.validate.inviteEmails', {emails: nonBlank});
