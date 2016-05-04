@@ -8,10 +8,8 @@
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js,jsx",
     "storybook": "start-storybook -p 9001",
-    
     "setup-production": "mupx setup --config=./.deploy/mupx-production.json --settings=settings.json",
     "deploy-production": "mupx deploy --config=./.deploy/mupx-production.json --settings=settings.json",
-
     "setup-test": "mupx setup --config=./.deploy/mupx-TEST.json --settings=settings.json",
     "deploy-test": "mupx deploy --config=./.deploy/mupx-TEST.json --settings=settings.json"
   },
@@ -49,6 +47,7 @@
     "material-ui": "^0.14.4 ",
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.12.0",
+    "node-gcm": "^0.14.0",
     "notification-count": "0.0.2",
     "ramda": "^0.18.0",
     "random-words": "^0.0.1",
