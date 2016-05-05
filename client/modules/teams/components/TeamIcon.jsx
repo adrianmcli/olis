@@ -2,6 +2,9 @@ import React from 'react';
 import IconButton from 'material-ui/lib/icon-button';
 import Badge from 'material-ui/lib/badge';
 
+import TitleCounter from 'notification-count';
+import FaviconNotification from 'favicon-notification';
+
 export default class TeamIcon extends React.Component {
   shouldComponentUpdate(nextProps) {
     const {teamId, unread, active} = this.props;
@@ -11,6 +14,42 @@ export default class TeamIcon extends React.Component {
       active !== nextProps.active
     );
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   const before = this.props.unreadCount;
+  //   const after = nextProps.unreadCount;
+  //   if (before !== after) {
+  //     let titleCount = new TitleCounter();
+  //     titleCount.set(after);
+
+  //     if (after > 0) FaviconNotification.add();
+  //     if (after === 0) {
+  //       try { FaviconNotification.remove(); }
+  //       catch (err) { console.log(err); }
+  //     }
+  //     if (after > before) {
+  //       if (!this.props.muteSound) {
+  //         // make audible alert
+  //         // init bunch of sounds
+  //         ion.sound({
+  //           sounds: [
+  //             // {name: 'beer_can_opening'},
+  //             {name: 'button_tiny'},
+  //           ],
+  //           // main config
+  //           path: '/sounds/',
+  //           preload: true,
+  //           multiplay: true,
+  //           volume: 0.9
+  //         });
+
+  //         // play sound
+  //         ion.sound.play('button_tiny');
+  //         // fire native alert
+  //       }
+  //     }
+  //   }
+  // }
 
   handleClick(e) {
     this.props.selectTeam();
