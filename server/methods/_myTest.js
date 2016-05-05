@@ -13,6 +13,32 @@ import R from 'ramda';
 export default function () {
   if (inDevelopment()) {
     Meteor.methods({
+      '_fixConvosWithoutLastUserIdUsernameField'() {
+        const convos = Convos.find().fetch();
+        convos.forEach(convo => {
+
+          const convoId = convo._id;
+          const msgs = Messages.find({convoId}, {
+            limit: 1,
+            sort: [ [ 'createdAt', 'desc' ] ],
+          }).fetch();
+
+          if (!convo.lastUsername) {
+            Convos.update(convo._id, {
+              $set: { lastUsername: msgs[0].username },
+            });
+          }
+
+          if (!convo.lastUserId) {
+            Convos.update(convo._id, {
+              $set: { lastUserId: msgs[0].userId },
+            });
+          }
+        });
+      },
+    });
+
+    Meteor.methods({
       '_fixMsgsWithoutContentField'() {
         const msgs = Messages.find().fetch();
         msgs.forEach(msg => {

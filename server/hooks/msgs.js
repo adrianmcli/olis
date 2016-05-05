@@ -34,6 +34,8 @@ export default function () {
         lastMsgCreatedAt: msg.createdAt,
         recentUserIds,
         recentUsernames,
+        lastUserId: msg.userId,
+        lastUsername: msg.username,
         numMsgs: Messages.find({convoId}).count(), // SERVER ONLY
       };
 
@@ -67,6 +69,7 @@ export default function () {
           convoName: convo.name,
           recentUsernames: [ username ],
           lastProfileImageUrl: user.profileImageUrl,
+          lastMsgText: msg.imageUrl ? msg.imageUrl : msg.text,
         });
         notif.save();
       }
@@ -76,6 +79,7 @@ export default function () {
         oldNotif.set({
           recentUsernames: notifRecentUsernames,
           lastProfileImageUrl: user.profileImageUrl,
+          lastMsgText: msg.imageUrl ? msg.imageUrl : msg.text,
         });
         oldNotif.save();
       }
