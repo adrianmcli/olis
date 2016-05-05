@@ -9,7 +9,7 @@ export default function () {
     const sendToUserId = doc.userId;
     const convoName = doc.convoName;
     const text = doc.lastMsgText;
-    Meteor.call('notifications.send.GCMMsg', {sendToUserId, convoName, text}, err => {
+    Meteor.call('notifications.send.GCMMsg', {sendToUserId, convoId, convoName, text}, err => {
       if (err) { console.log(err); }
     });
   });
