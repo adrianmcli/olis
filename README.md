@@ -1,10 +1,8 @@
 # Olis
 
-A collaborative chat tool focused on bringing persistence and focus to the traditional chat UI.
+A collaborative chat tool intended to bring persistence and focus to the traditional chat UI.
 
-Olis was developed by [@adrianmcli](https://github.com/adrianmcli) and [@hyperh](https://github.com/hyperh) in 2016 in order to field an idea for a more organized approach to chat. The problem we were trying to solve was the frequent need to scroll up and "catch-up" on all the messages we missed while we were away from the chat.
-
-The development of a persistent side panel where information important to the conversation can be gathered and stored was tested out in the development of this app.
+Olis was developed by [@adrianmcli](https://github.com/adrianmcli) and [@hyperh](https://github.com/hyperh) in 2016 in order to field an idea for a more organized approach to chat. The problem we were trying to solve was the frequent need to scroll up and "catch-up" on all the messages we missed while we were away from the conversation. The proposed solution was a persistent side panel where information important to the conversation can be gathered and stored for convenient and immediate reference.
 
 ## App Details
 
